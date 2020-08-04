@@ -1,0 +1,193 @@
+[
+  {
+    "name": "immatriculateNonExistingStudent",
+    "type": "addMatriculationData_SUCCESS",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "immatriculateExistingStudent",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: conflict",
+        "title": "There is already a student for the given matriculationId."
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "immatriculateEmptyFirstNameStudent",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given string does not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "firstName",
+            "reason": "First name must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "immatriculateEmptyLastNameStudent",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given string does not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "lastName",
+            "reason": "Last name must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "immatriculateEmptyLastNameStudent",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "something invalid",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given string does not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "birthDate",
+            "reason": "Birth date must be the following format \"yyyy-mm-dd\""
+          }
+        ]
+      }
+    ]
+  }
+]

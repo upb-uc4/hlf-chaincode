@@ -19,8 +19,8 @@ public class JsonIOTest {
     @SerializedName("input")
     private List<Dummy> input = null;
 
-    @SerializedName("output")
-    private List<Dummy> output = null;
+    @SerializedName("compare")
+    private List<Dummy> compare = null;
 
     public JsonIOTest name(String name) {
         this.name = name;
@@ -94,25 +94,25 @@ public class JsonIOTest {
         this.input = input;
     }
 
-    public JsonIOTest output(List<Dummy> output) {
-        this.output = output;
+    public JsonIOTest compare(List<Dummy> compare) {
+        this.compare = compare;
         return this;
     }
 
-    public JsonIOTest addOutputItem(Dummy outputItem) {
-        if (this.output == null) {
-            this.output = new ArrayList<Dummy>();
+    public JsonIOTest addCompareItem(Dummy compareItem) {
+        if (this.compare == null) {
+            this.compare = new ArrayList<Dummy>();
         }
-        this.output.add(outputItem);
+        this.compare.add(compareItem);
         return this;
     }
 
     @ApiModelProperty(value = "")
-    public List<Dummy> getOutput() {
-        return output;
+    public List<Dummy> getCompare() {
+        return compare;
     }
 
-    public void setOutput(List<Dummy> output) {
-        this.output = output;
+    public void setCompare(List<Dummy> compare) {
+        this.compare = compare;
     }
 }

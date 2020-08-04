@@ -9,7 +9,6 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.*;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.threeten.bp.LocalDate;
 
 import java.time.Instant;
 import java.util.*;
@@ -69,7 +68,7 @@ public final class StudentChaincodeTest {
 
         MockStudentResultIterator() {
             super();
-            studentList = new ArrayList<KeyValue>();
+            studentList = new ArrayList<>();
             studentList.add(new MockKeyValue("0000001",
                     "{\n" +
                             "  \"matriculationId\": \"0000001\",\n" +
@@ -140,7 +139,7 @@ public final class StudentChaincodeTest {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
 
         }
 
@@ -150,13 +149,13 @@ public final class StudentChaincodeTest {
         }
     }
 
-    private final class MockChaincodeStub implements ChaincodeStub {
+    public final class MockChaincodeStub implements ChaincodeStub {
 
         public List<MockKeyValue> putStates;
         private int index = 0;
 
         MockChaincodeStub() {
-            putStates = new ArrayList<MockKeyValue>();
+            putStates = new ArrayList<>();
         }
 
         @Override
@@ -390,174 +389,6 @@ public final class StudentChaincodeTest {
     @Nested
     class AddStudentTransaction {
 
-        @Test
-        public void immatriculateNonExistingStudent() {
-            StudentChaincode contract = new StudentChaincode();
-            GsonWrapper gson = new GsonWrapper();
-            Context ctx = mock(Context.class);
-            MockChaincodeStub stub = new MockChaincodeStub();
-            when(ctx.getStub()).thenReturn(stub);
-            contract.addMatriculationData(ctx, "{\n" +
-                    "  \"matriculationId\": \"0000001\",\n" +
-                    "  \"firstName\": \"firstName1\",\n" +
-                    "  \"lastName\": \"lastName1\",\n" +
-                    "  \"birthDate\": \"2000-07-21\",\n" +
-                    "  \"matriculationStatus\": [\n" +
-                    "    {\n" +
-                    "      \"fieldOfStudy\": \"Computer Science\",\n" +
-                    "      \"intervals\": [\n" +
-                    "        {\n" +
-                    "          \"firstSemester\": \"WS2018\",\n" +
-                    "          \"lastSemester\": \"WS2018\"\n" +
-                    "        }\n" +
-                    "      ]\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}");
-            assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue("0000001",
-                    "{\n" +
-                            "  \"matriculationId\": \"0000001\",\n" +
-                            "  \"firstName\": \"firstName1\",\n" +
-                            "  \"lastName\": \"lastName1\",\n" +
-                            "  \"birthDate\": \"2000-07-21\",\n" +
-                            "  \"matriculationStatus\": [\n" +
-                            "    {\n" +
-                            "      \"fieldOfStudy\": \"Computer Science\",\n" +
-                            "      \"intervals\": [\n" +
-                            "        {\n" +
-                            "          \"firstSemester\": \"WS2018\",\n" +
-                            "          \"lastSemester\": \"WS2018\"\n" +
-                            "        }\n" +
-                            "      ]\n" +
-                            "    }\n" +
-                            "  ]\n" +
-                            "}"));
-        }
-
-        @Test
-        public void immatriculateExistingStudent() {
-            StudentChaincode contract = new StudentChaincode();
-            GsonWrapper gson = new GsonWrapper();
-            Context ctx = mock(Context.class);
-            ChaincodeStub stub = mock(ChaincodeStub.class);
-            when(ctx.getStub()).thenReturn(stub);
-            when(stub.getStringState("0000001")).thenReturn("{\n" +
-                    "  \"matriculationId\": \"0000001\",\n" +
-                    "  \"firstName\": \"firstName1\",\n" +
-                    "  \"lastName\": \"lastName1\",\n" +
-                    "  \"birthDate\": \"2000-07-21\",\n" +
-                    "  \"matriculationStatus\": [\n" +
-                    "    {\n" +
-                    "      \"fieldOfStudy\": \"Computer Science\",\n" +
-                    "      \"intervals\": [\n" +
-                    "        {\n" +
-                    "          \"firstSemester\": \"WS2018\",\n" +
-                    "          \"lastSemester\": \"SS2020\"\n" +
-                    "        }\n" +
-                    "      ]\n" +
-                    "    }\n" +
-                    "  ]\n" +
-                    "}");
-            DetailedError error = gson.fromJson(contract.addMatriculationData(ctx,
-                    "{\n" +
-                            "  \"matriculationId\": \"0000001\",\n" +
-                            "  \"firstName\": \"firstName1\",\n" +
-                            "  \"lastName\": \"lastName1\",\n" +
-                            "  \"birthDate\": \"2000-07-21\",\n" +
-                            "  \"matriculationStatus\": [\n" +
-                            "    {\n" +
-                            "      \"fieldOfStudy\": \"Computer Science\",\n" +
-                            "      \"intervals\": [\n" +
-                            "        {\n" +
-                            "          \"firstSemester\": \"WS2018\",\n" +
-                            "          \"lastSemester\": \"SS2020\"\n" +
-                            "        }\n" +
-                            "      ]\n" +
-                            "    }\n" +
-                            "  ]\n" +
-                            "}"),
-                    DetailedError.class);
-            assertThat(error).isEqualTo(
-                    new DetailedError()
-                            .type("Conflict")
-                            .title("There is already a student for the given matriculationId."));
-        }
-
-        @Test
-        public void immatriculateEmptyFirstNameStudent() {
-            StudentChaincode contract = new StudentChaincode();
-            GsonWrapper gson = new GsonWrapper();
-            Context ctx = mock(Context.class);
-            MockChaincodeStub stub = new MockChaincodeStub();
-            when(ctx.getStub()).thenReturn(stub);
-            DetailedError error = gson.fromJson(contract.addMatriculationData(ctx,
-                    "{\n" +
-                            "  \"matriculationId\": \"0000001\",\n" +
-                            "  \"firstName\": \"\",\n" +
-                            "  \"lastName\": \"lastName1\",\n" +
-                            "  \"birthDate\": \"2000-07-21\",\n" +
-                            "  \"matriculationStatus\": [\n" +
-                            "    {\n" +
-                            "      \"fieldOfStudy\": \"Computer Science\",\n" +
-                            "      \"intervals\": [\n" +
-                            "        {\n" +
-                            "          \"firstSemester\": \"WS2018\",\n" +
-                            "          \"lastSemester\": \"SS2020\"\n" +
-                            "        }\n" +
-                            "      ]\n" +
-                            "    }\n" +
-                            "  ]\n" +
-                            "}"),
-                    DetailedError.class);
-            assertThat(error).isEqualTo(
-                    new DetailedError()
-                            .type("Unprocessable Entity")
-                            .title("The given string does not conform to the specified json format.")
-                            .invalidParams(new ArrayList<InvalidParameter>()
-                            {{
-                                add(new InvalidParameter()
-                                        .name("firstName")
-                                        .reason("First name must not be empty"));
-                            }}));
-        }
-
-        @Test
-        public void immatriculateEmptyLastNameStudent() {
-            StudentChaincode contract = new StudentChaincode();
-            GsonWrapper gson = new GsonWrapper();
-            Context ctx = mock(Context.class);
-            MockChaincodeStub stub = new MockChaincodeStub();
-            when(ctx.getStub()).thenReturn(stub);
-            DetailedError error = gson.fromJson(contract.addMatriculationData(ctx,
-                    "{\n" +
-                            "  \"matriculationId\": \"0000001\",\n" +
-                            "  \"firstName\": \"firstName1\",\n" +
-                            "  \"lastName\": \"\",\n" +
-                            "  \"birthDate\": \"2000-07-21\",\n" +
-                            "  \"matriculationStatus\": [\n" +
-                            "    {\n" +
-                            "      \"fieldOfStudy\": \"Computer Science\",\n" +
-                            "      \"intervals\": [\n" +
-                            "        {\n" +
-                            "          \"firstSemester\": \"WS2018\",\n" +
-                            "          \"lastSemester\": \"SS2020\"\n" +
-                            "        }\n" +
-                            "      ]\n" +
-                            "    }\n" +
-                            "  ]\n" +
-                            "}"),
-                    DetailedError.class);
-            assertThat(error).isEqualTo(
-                    new DetailedError()
-                            .type("Unprocessable Entity")
-                            .title("The given string does not conform to the specified json format.")
-                            .invalidParams(new ArrayList<InvalidParameter>()
-                            {{
-                                add(new InvalidParameter()
-                                        .name("lastName")
-                                        .reason("Last name must not be empty"));
-                            }}));
-        }
 
         @Test
         public void immatriculateInvalidBirthDateStudent() {
@@ -777,7 +608,6 @@ public final class StudentChaincodeTest {
         @Test
         public void addNonExistingXssStudent() {
             StudentChaincode contract = new StudentChaincode();
-            GsonWrapper gson = new GsonWrapper();
             Context ctx = mock(Context.class);
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
@@ -826,7 +656,6 @@ public final class StudentChaincodeTest {
         @Test
         public void updateStudent() {
             StudentChaincode contract = new StudentChaincode();
-            GsonWrapper gson = new GsonWrapper();
             Context ctx = mock(Context.class);
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);

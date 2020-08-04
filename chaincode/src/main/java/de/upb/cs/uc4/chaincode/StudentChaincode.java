@@ -9,8 +9,6 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.ledger.KeyValue;
-import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,7 @@ public class StudentChaincode implements ContractInterface {
         _logger.info("immatriculateStudent");
 
         ChaincodeStub stub = ctx.getStub();
-        Student student = null;
+        Student student;
 
         try
         {
@@ -57,7 +55,7 @@ public class StudentChaincode implements ContractInterface {
         }
 
         String result = stub.getStringState(student.getMatriculationId());
-        if (result != null && result != "") {
+        if (result != null && !result.equals("")) {
             return gson.toJson(new GenericError()
                     .type("hl: conflict")
                     .title("There is already a student for the given matriculationId."));
@@ -123,7 +121,7 @@ public class StudentChaincode implements ContractInterface {
             final String fieldOfStudy,
             final String semester) {
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<InvalidParameter>();
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         SubjectMatriculation.FieldOfStudyEnum fieldOfStudyValue = SubjectMatriculation.FieldOfStudyEnum.fromValue(fieldOfStudy);
 
         if (fieldOfStudyValue == null)
@@ -151,7 +149,7 @@ public class StudentChaincode implements ContractInterface {
                     .type("hl: not found")
                     .title("There is no student for the given matriculationId."));
 
-        Student student = null;
+        Student student;
 
         try
         {
@@ -216,7 +214,7 @@ public class StudentChaincode implements ContractInterface {
                     .reason("Matriculation status must not be empty"));
         else {
 
-            ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<SubjectMatriculation.FieldOfStudyEnum>();
+            ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
 
             for (SubjectMatriculation subInterval: immatriculationStatus) {
 

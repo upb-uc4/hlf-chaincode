@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.Student;
-import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
 import org.hyperledger.fabric.protos.peer.ProposalPackage;
@@ -14,11 +13,10 @@ import org.hyperledger.fabric.shim.ledger.*;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
-import org.threeten.bp.LocalDate;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.*;
@@ -78,7 +76,7 @@ public final class StudentChaincodeTest_new {
 
         MockStudentResultIterator() {
             super();
-            studentList = new ArrayList<KeyValue>();
+            studentList = new ArrayList<>();
             studentList.add(new MockKeyValue("0000001",
                     "{\n" +
                             "  \"matriculationId\": \"0000001\",\n" +
@@ -149,7 +147,7 @@ public final class StudentChaincodeTest_new {
         }
 
         @Override
-        public void close() throws Exception {
+        public void close() {
 
         }
 
@@ -165,7 +163,7 @@ public final class StudentChaincodeTest_new {
         private int index = 0;
 
         MockChaincodeStub() {
-            putStates = new ArrayList<MockKeyValue>();
+            putStates = new ArrayList<>();
         }
 
         @Override
@@ -395,36 +393,59 @@ public final class StudentChaincodeTest_new {
 
     @TestFactory
     List<DynamicTest> createTests() {
-        String filename = "StudentChaincodeTestIO.json";
+        File dir = new File("test_configs");
+        File[] testConfigs = dir.listFiles();
+
         GsonWrapper gson = new GsonWrapper();
-        List<JsonIOTest> testConfig = null;
-        Type type = new TypeToken<List<JsonIOTest>>(){}.getType();
-        try {
-            testConfig = (List<JsonIOTest>) gson.fromJson(
-                    new FileReader(filename),
-                    type);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
+        List<JsonIOTest> testConfig;
+        Type type = new TypeToken<List<JsonIOTest>>() {
+        }.getType();
+        ArrayList<DynamicTest> tests = new ArrayList<>();
+
+        if (testConfigs == null) {
+            throw new RuntimeException("No test configurations found.");
         }
 
-        ArrayList<DynamicTest> tests = new ArrayList<DynamicTest>();
-        for (JsonIOTest test: testConfig) {
-            switch (test.getType()) {
-                case "QUERY_STUDENT":
-                    tests.add(DynamicTest.dynamicTest(
-                            test.getName(),
-                            queryStudentTest(test.getSetup(), test.getInput(), test.getOutput())
-                    ));
+        for (File file: testConfigs) {
+            try {
+                testConfig = gson.fromJson(
+                        new FileReader(file.getPath()),
+                        type);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            for (JsonIOTest test : testConfig) {
+                switch (test.getType()) {
+                    case "getMatriculationData":
+                        tests.add(DynamicTest.dynamicTest(
+                                test.getName(),
+                                getMatriculationDataTest(test.getSetup(), test.getInput(), test.getCompare())
+                        ));
+                        break;
+                    case "addMatriculationData_SUCCESS":
+                        tests.add(DynamicTest.dynamicTest(
+                                test.getName(),
+                                addMatriculationDataSuccessTest(test.getSetup(), test.getInput(), test.getCompare())
+                        ));
+                        break;
+                    case "addMatriculationData_FAILURE":
+                        tests.add(DynamicTest.dynamicTest(
+                                test.getName(),
+                                addMatriculationDataFailureTest(test.getSetup(), test.getInput(), test.getCompare())
+                        ));
+                        break;
+                }
             }
         }
         return tests;
     }
 
-    static Executable queryStudentTest(
+    static Executable getMatriculationDataTest(
             List<Dummy> setup,
             List<Dummy> input,
-            List<Dummy> output
+            List<Dummy> compare
     ) {
         return () -> {
             StudentChaincode contract = new StudentChaincode();
@@ -438,9 +459,52 @@ public final class StudentChaincodeTest_new {
                     contract.getMatriculationData(ctx, input.get(0).getContent()),
                     Student.class);
             assertThat(student).isEqualTo(gson.fromJson(
-                    output.get(0).getContent(),
+                    compare.get(0).getContent(),
                     Student.class
             ));
+        };
+    }
+
+    private Executable addMatriculationDataSuccessTest(
+            List<Dummy> setup,
+            List<Dummy> input,
+            List<Dummy> compare
+    ) {
+        return () -> {
+            StudentChaincode contract = new StudentChaincode();
+            GsonWrapper gson = new GsonWrapper();
+            Context ctx = mock(Context.class);
+            MockChaincodeStub stub = new MockChaincodeStub();
+            when(ctx.getStub()).thenReturn(stub);
+            if (!setup.isEmpty()) {
+                when(stub.getStringState(setup.get(0).getContent()))
+                        .thenReturn(setup.get(1).getContent());
+            }
+            contract.addMatriculationData(ctx, input.get(0).getContent());
+            Student student = gson.fromJson(compare.get(0).getContent(), Student.class);
+            assertThat(stub.putStates.get(0)).isEqualTo(new StudentChaincodeTest_new.MockKeyValue(
+                    student.getMatriculationId(),
+                    compare.get(0).getContent()));
+
+        };
+    }
+
+    private Executable addMatriculationDataFailureTest(
+            List<Dummy> setup,
+            List<Dummy> input,
+            List<Dummy> compare
+    ) {
+        return () -> {
+            StudentChaincode contract = new StudentChaincode();
+            Context ctx = mock(Context.class);
+            ChaincodeStub stub = mock(ChaincodeStub.class);
+            when(ctx.getStub()).thenReturn(stub);
+            if (!setup.isEmpty()) {
+                when(stub.getStringState(setup.get(0).getContent()))
+                        .thenReturn(setup.get(1).getContent());
+            }
+            String result = contract.addMatriculationData(ctx, input.get(0).getContent());
+            assertThat(result).isEqualTo(compare.get(0).getContent());
         };
     }
 }
