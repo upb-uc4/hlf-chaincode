@@ -1,12 +1,16 @@
 package de.upb.cs.uc4.chaincode;
 
 import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import de.upb.cs.uc4.chaincode.model.Dummy;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
 
+import java.io.FileReader;
+import java.io.Reader;
 import java.lang.reflect.Type;
 
 public class GsonWrapper {
@@ -53,6 +57,30 @@ public class GsonWrapper {
                         }
                     })
             .registerTypeAdapter(
+                    Dummy.class,
+                    new JsonSerializer<Dummy>() {
+                        @Override
+                        public JsonElement serialize(Dummy dummy, Type typeOfSrc, JsonSerializationContext context) {
+                            return new JsonPrimitive(dummy.getContent()); // "yyyy-mm-dd"
+                        }
+                    })
+            .registerTypeAdapter(
+                    Dummy.class,
+                    new JsonDeserializer<Dummy>() {
+                        @Override
+                        public Dummy deserialize(
+                                JsonElement json,
+                                Type type,
+                                JsonDeserializationContext jsonDeserializationContext
+                        ) throws JsonParseException {
+                            try {
+                                return new Dummy(json.toString());
+                            } catch (RuntimeException e) {
+                                return null;
+                            }
+                        }
+                    })
+            .registerTypeAdapter(
                     String.class,
                     new JsonDeserializer<String>() {
                         @Override
@@ -72,5 +100,13 @@ public class GsonWrapper {
 
     public <T> String toJson(T object) {
         return gson.toJson(object);
+    }
+
+    public <T> T fromJson(Reader reader, Class<T> t) {
+        return gson.fromJson(reader, t);
+    }
+
+    public <T> T fromJson(Reader reader, Type type) {
+        return gson.fromJson(reader, type);
     }
 }

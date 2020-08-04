@@ -384,79 +384,8 @@ public final class StudentChaincodeTest {
         }
     }
 
-    @Test
-    public void queryExistingStudent() {
-        StudentChaincode contract = new StudentChaincode();
-        GsonWrapper gson = new GsonWrapper();
-        Context ctx = mock(Context.class);
-        ChaincodeStub stub = mock(ChaincodeStub.class);
-        when(ctx.getStub()).thenReturn(stub);
-        when(stub.getStringState("0000001")).thenReturn("{\n" +
-                "  \"matriculationId\": \"0000001\",\n" +
-                "  \"firstName\": \"firstName1\",\n" +
-                "  \"lastName\": \"lastName1\",\n" +
-                "  \"birthDate\": \"2000-07-21\",\n" +
-                "  \"matriculationStatus\": [\n" +
-                "    {\n" +
-                "      \"fieldOfStudy\": \"Computer Science\",\n" +
-                "      \"intervals\": [\n" +
-                "        {\n" +
-                "          \"firstSemester\": \"WS2018\",\n" +
-                "          \"lastSemester\": \"SS2020\"\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}");
-        String tmp = contract.getMatriculationData(ctx, "0000001");
-        Student student = gson.fromJson(contract.getMatriculationData(ctx, "0000001"), Student.class);
-        assertThat(student).isEqualTo(new Student()
-                .matriculationId("0000001")
-                .firstName("firstName1")
-                .lastName("lastName1")
-                .birthDate(LocalDate.parse("2000-07-21"))
-                .matriculationStatus(new ArrayList<SubjectMatriculation>()
-                {{
-                    add(new SubjectMatriculation()
-                            .fieldOfStudy(SubjectMatriculation.FieldOfStudyEnum.COMPUTER_SCIENCE)
-                            .intervals(new ArrayList<MatriculationInterval>()
-                            {{
-                                add(new MatriculationInterval()
-                                        .firstSemester("WS2018")
-                                        .lastSemester("SS2020"));
-                            }}));
-                }}));
-    }
 
-    @Test
-    public void deleteNonExistingStudent() {
-        StudentChaincode contract = new StudentChaincode();
-        GsonWrapper gson = new GsonWrapper();
-        Context ctx = mock(Context.class);
-        ChaincodeStub stub = mock(ChaincodeStub.class);
-        when(ctx.getStub()).thenReturn(stub);
-        when(stub.getStringState("0000001")).thenReturn("{\n" +
-                "  \"matriculationId\": \"0000001\",\n" +
-                "  \"firstName\": \"firstName1\",\n" +
-                "  \"lastName\": \"lastName1\",\n" +
-                "  \"birthDate\": \"2000-07-21\",\n" +
-                "  \"matriculationStatus\": [\n" +
-                "    {\n" +
-                "      \"fieldOfStudy\": \"Computer Science\",\n" +
-                "      \"intervals\": [\n" +
-                "        {\n" +
-                "          \"firstSemester\": \"WS2018\",\n" +
-                "          \"lastSemester\": \"SS2020\"\n" +
-                "        }\n" +
-                "      ]\n" +
-                "    }\n" +
-                "  ]\n" +
-                "}");
-        assertThat(contract.deleteStudent(ctx, "notExisting")).isEqualTo(
-                gson.toJson(new DetailedError()
-                        .type("Not found")
-                        .title("There is no student for the given matriculationId.")));
-    }
+
 
     @Nested
     class AddStudentTransaction {

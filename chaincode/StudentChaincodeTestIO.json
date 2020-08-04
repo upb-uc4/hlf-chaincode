@@ -1,0 +1,42 @@
+[
+  {
+    "name": "queryExistingStudent",
+    "type": "QUERY_STUDENT",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001"
+    ],
+    "output": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
