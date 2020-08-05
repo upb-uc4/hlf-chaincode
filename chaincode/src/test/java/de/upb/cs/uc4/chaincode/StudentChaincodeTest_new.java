@@ -436,6 +436,15 @@ public final class StudentChaincodeTest_new {
                                 addMatriculationDataFailureTest(test.getSetup(), test.getInput(), test.getCompare())
                         ));
                         break;
+                    /*
+                    case "updateMatriculationData_SUCESS":
+                        tests.add(DynamicTest.dynamicTest(
+                                test.getName(),
+                                updateMatriculationDataSuccessTest(test.getSetup(), test.getInput(), test.getCompare())
+                        ));
+                        break;
+
+                     */
                 }
             }
         }
@@ -507,4 +516,32 @@ public final class StudentChaincodeTest_new {
             assertThat(result).isEqualTo(compare.get(0).getContent());
         };
     }
+/*
+    private Executable updateMatriculationDataSuccessTest(
+            List<Dummy> setup,
+            List<Dummy> input,
+            List<Dummy> compare
+    ) {
+        return () -> {
+            StudentChaincode contract = new StudentChaincode();
+            GsonWrapper gson = new GsonWrapper();
+            Context ctx = mock(Context.class);
+            MockChaincodeStub stub = new MockChaincodeStub();
+            when(ctx.getStub()).thenReturn(stub);
+            when(stub.getStringState(setup.get(0).getContent()))
+                    .thenReturn(setup.get(1).getContent());
+            contract.updateMatriculationData(ctx, input.get(1).getContent());
+            Student student = gson.fromJson(
+                    contract.getMatriculationData(ctx, input.get(0).getContent()),
+                    Student.class);
+            assertThat(student).isEqualTo(gson.fromJson(
+                    compare.get(0).getContent(),
+                    Student.class
+            ));
+
+        };
+
+    }
+
+ */
 }

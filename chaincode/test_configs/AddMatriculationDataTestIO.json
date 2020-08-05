@@ -158,7 +158,7 @@
 
 
   {
-    "name": "immatriculateEmptyLastNameStudent",
+    "name": "immatriculateInvalidBirthDateStudent",
     "type": "addMatriculationData_FAILURE",
     "setup": [],
     "input": [
@@ -185,6 +185,177 @@
           {
             "name": "birthDate",
             "reason": "Birth date must be the following format \"yyyy-mm-dd\""
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "immatriculateEmptyMatriculationStatusStudent",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given string does not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "matriculationStatus",
+            "reason": "Matriculation status must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "immatriculateEmptyIntervalStudent",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given string does not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "SubjectMatriculationInterval.intervals",
+            "reason": "Intervals must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "immatriculateEmptyFieldOfStudyStudent",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "",
+            "semesters": [
+              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given string does not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "SubjectMatriculationInterval.fieldOfStudy",
+            "reason": "Field of study must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "immatriculateInvalidSemesterStudent",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WWS2018/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given string does not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "matriculationStatus.semesters",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingXssStudent",
+    "type": "addMatriculationData_SUCCESS",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1<p>alert(\\\"XSS\\\");</p>\",\n",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1alert(\\\"XSS\\\");\",\n",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
           }
         ]
       }
