@@ -1,6 +1,6 @@
 [
   {
-    "name": "queryExistingStudent",
+    "name": "queryExistingMatriculationData",
     "type": "getMatriculationData",
     "setup": [
       "0000001",

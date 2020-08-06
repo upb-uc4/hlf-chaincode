@@ -1,11 +1,12 @@
 package de.upb.cs.uc4.chaincode;
 
+
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.mock.MockKeyValue;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
-import de.upb.cs.uc4.chaincode.model.Student;
+import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.DynamicTest;
@@ -23,7 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public final class StudentChaincodeTest {
+public final class MatriculationDataChaincodeTest {
 
     @TestFactory
     List<DynamicTest> createTests() {
@@ -96,19 +97,19 @@ public final class StudentChaincodeTest {
             List<Dummy> compare
     ) {
         return () -> {
-            StudentChaincode contract = new StudentChaincode();
+            MatriculationDataChaincode contract = new MatriculationDataChaincode();
             GsonWrapper gson = new GsonWrapper();
             Context ctx = mock(Context.class);
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
             when(stub.getStringState(setup.get(0).getContent()))
                     .thenReturn(setup.get(1).getContent());
-            Student student = gson.fromJson(
+            MatriculationData matriculationData = gson.fromJson(
                     contract.getMatriculationData(ctx, input.get(0).getContent()),
-                    Student.class);
-            assertThat(student).isEqualTo(gson.fromJson(
+                    MatriculationData.class);
+            assertThat(matriculationData).isEqualTo(gson.fromJson(
                     compare.get(0).getContent(),
-                    Student.class
+                    MatriculationData.class
             ));
         };
     }
@@ -119,7 +120,7 @@ public final class StudentChaincodeTest {
             List<Dummy> compare
     ) {
         return () -> {
-            StudentChaincode contract = new StudentChaincode();
+            MatriculationDataChaincode contract = new MatriculationDataChaincode();
             GsonWrapper gson = new GsonWrapper();
             Context ctx = mock(Context.class);
             MockChaincodeStub stub = new MockChaincodeStub();
@@ -129,9 +130,9 @@ public final class StudentChaincodeTest {
                         .thenReturn(setup.get(1).getContent());
             }
             contract.addMatriculationData(ctx, input.get(0).getContent());
-            Student student = gson.fromJson(compare.get(0).getContent(), Student.class);
+            MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue(
-                    student.getMatriculationId(),
+                    matriculationData.getMatriculationId(),
                     compare.get(0).getContent()));
         };
     }
@@ -142,7 +143,7 @@ public final class StudentChaincodeTest {
             List<Dummy> compare
     ) {
         return () -> {
-            StudentChaincode contract = new StudentChaincode();
+            MatriculationDataChaincode contract = new MatriculationDataChaincode();
             Context ctx = mock(Context.class);
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
@@ -161,16 +162,16 @@ public final class StudentChaincodeTest {
             List<Dummy> compare
     ) {
         return () -> {
-            StudentChaincode contract = new StudentChaincode();
+            MatriculationDataChaincode contract = new MatriculationDataChaincode();
             GsonWrapper gson = new GsonWrapper();
             Context ctx = mock(Context.class);
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
             stub.putStringState(setup.get(0).getContent(),setup.get(1).getContent());
             contract.updateMatriculationData(ctx, input.get(1).getContent());
-            Student student = gson.fromJson(compare.get(0).getContent(), Student.class);
+            MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue(
-                    student.getMatriculationId(),
+                    matriculationData.getMatriculationId(),
                     compare.get(0).getContent()));
         };
 
@@ -182,7 +183,7 @@ public final class StudentChaincodeTest {
             List<Dummy> compare
     ) {
         return () -> {
-            StudentChaincode contract = new StudentChaincode();
+            MatriculationDataChaincode contract = new MatriculationDataChaincode();
             Context ctx = mock(Context.class);
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);

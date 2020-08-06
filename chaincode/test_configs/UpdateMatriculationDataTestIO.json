@@ -1,6 +1,6 @@
 [
   {
-    "name": "updateStudent",
+    "name": "updateMatriculationData",
     "type": "updateMatriculationData_SUCESS",
     "setup": [
       "0000001",
@@ -55,7 +55,7 @@
   },
 
   {
-    "name": "updateNonExistingStudent",
+    "name": "updateNonExistingMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -94,13 +94,13 @@
     "compare": [
       {
         "type": "hl: not found",
-        "title": "There is no student for the given matriculationId."
+        "title": "There is no MatriculationData for the given matriculationId."
       }
     ]
   },
 
   {
-    "name": "updateEmptyFirstNameStudent",
+    "name": "updateEmptyFirstNameMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -151,7 +151,7 @@
   },
 
   {
-    "name": "updateInvalidBirthDateStudent",
+    "name": "updateInvalidBirthDateMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -202,7 +202,7 @@
   },
 
   {
-    "name": "updateEmptyLastNameStudent",
+    "name": "updateEmptyLastNameMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -254,7 +254,7 @@
 
 
   {
-    "name": "updateEmptyMatriculationStatusStudent",
+    "name": "updateEmptyMatriculationStatusMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -300,7 +300,7 @@
 
 
   {
-    "name": "updateEmptySemestersStudent",
+    "name": "updateEmptySemestersMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -351,7 +351,7 @@
 
 
   {
-    "name": "updateEmptyFieldOfStudyStudent",
+    "name": "updateEmptyFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -404,7 +404,7 @@
 
 
   {
-    "name": "updateFirstSemesterBeforeBirthDateStudent",
+    "name": "updateFirstSemesterBeforeBirthDateMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -457,7 +457,7 @@
 
 
   {
-    "name": "updateInvalidSemesterStudent",
+    "name": "updateInvalidSemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -510,7 +510,7 @@
 
 
   {
-    "name": "updateDuplicateFieldOfStudyStudent",
+    "name": "updateDuplicateFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -569,7 +569,7 @@
 
 
   {
-    "name": "updateDuplicateSemesterStudent",
+    "name": "updateDuplicateSemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",

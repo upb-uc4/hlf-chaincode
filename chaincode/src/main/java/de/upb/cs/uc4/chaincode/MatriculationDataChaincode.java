@@ -16,12 +16,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Contract(
-        name="UC4.student"
+        name="UC4.MatriculationData"
 )
 @Default
-public class StudentChaincode implements ContractInterface {
+public class MatriculationDataChaincode implements ContractInterface {
 
-    private static Log _logger = LogFactory.getLog(StudentChaincode.class);
+    private static Log _logger = LogFactory.getLog(MatriculationDataChaincode.class);
     // setup gson (de-)serializer capable of (de-)serializing dates
     private static final GsonWrapper gson = new GsonWrapper();
 
@@ -31,21 +31,21 @@ public class StudentChaincode implements ContractInterface {
     }
 
     /**
-     * Adds a student to the ledger.
+     * Adds MatriculationData to the ledger.
      * @param ctx
-     * @param jsonStudent json-representation of a student to be added
+     * @param jsonMatriculationData json-representation of a MatriculationData to be added
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
-    public String addMatriculationData(final Context ctx, final String jsonStudent) {
-        _logger.info("immatriculateStudent");
+    public String addMatriculationData(final Context ctx, final String jsonMatriculationData) {
+        _logger.info("immatriculateMatriculationData");
 
         ChaincodeStub stub = ctx.getStub();
-        Student student;
+        MatriculationData matriculationData;
 
         try
         {
-            student = gson.fromJson(jsonStudent, Student.class);
+            matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
         }
         catch(Exception e)
         {
@@ -54,14 +54,14 @@ public class StudentChaincode implements ContractInterface {
                     .title("The given string does not conform to the specified format."));
         }
 
-        String result = stub.getStringState(student.getMatriculationId());
+        String result = stub.getStringState(matriculationData.getMatriculationId());
         if (result != null && !result.equals("")) {
             return gson.toJson(new GenericError()
                     .type("hl: conflict")
-                    .title("There is already a student for the given matriculationId."));
+                    .title("There is already a MatriculationData for the given matriculationId."));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForStudent(student);
+        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(matriculationData);
 
         if(!invalidParams.isEmpty()){
             return gson.toJson(new DetailedError()
@@ -70,18 +70,18 @@ public class StudentChaincode implements ContractInterface {
                     .invalidParams(invalidParams));
         }
 
-        stub.putStringState(student.getMatriculationId(),gson.toJson(student));
+        stub.putStringState(matriculationData.getMatriculationId(),gson.toJson(matriculationData));
         return "";
     }
 
     @Transaction()
-    public String updateMatriculationData(final Context ctx, final String jsonStudent) {
+    public String updateMatriculationData(final Context ctx, final String jsonMatriculationData) {
 
         ChaincodeStub stub = ctx.getStub();
 
-        Student updatedStudent = gson.fromJson(jsonStudent, Student.class);
+        MatriculationData updatedMatriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForStudent(updatedStudent);
+        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(updatedMatriculationData);
 
         if (!invalidParams.isEmpty())
             return gson.toJson(new DetailedError()
@@ -89,15 +89,15 @@ public class StudentChaincode implements ContractInterface {
                     .title("The given string does not conform to the specified format.")
                     .invalidParams(invalidParams));
 
-        String studentOnLedger = stub.getStringState(updatedStudent.getMatriculationId());
+        String MatriculationDataOnLedger = stub.getStringState(updatedMatriculationData.getMatriculationId());
 
-        if(studentOnLedger == null || studentOnLedger.equals(""))
+        if(MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals(""))
             return gson.toJson(new GenericError()
                     .type("hl: not found")
-                    .title("There is no student for the given matriculationId."));
+                    .title("There is no MatriculationData for the given matriculationId."));
 
-        stub.delState(updatedStudent.getMatriculationId());
-        stub.putStringState(updatedStudent.getMatriculationId(), gson.toJson(updatedStudent));
+        stub.delState(updatedMatriculationData.getMatriculationId());
+        stub.putStringState(updatedMatriculationData.getMatriculationId(), gson.toJson(updatedMatriculationData));
         return "";
     }
 
@@ -105,13 +105,13 @@ public class StudentChaincode implements ContractInterface {
     public String getMatriculationData(final Context ctx, final String matriculationId) {
 
         ChaincodeStub stub = ctx.getStub();
-        Student student = gson.fromJson(stub.getStringState(matriculationId), Student.class);
+        MatriculationData matriculationData = gson.fromJson(stub.getStringState(matriculationId), MatriculationData.class);
 
-        if(student == null || student.equals(""))
+        if(matriculationData == null || matriculationData.equals(""))
             return gson.toJson(new DetailedError()
                     .type("hl: not found")
-                    .title("There is no student for the given matriculationId."));
-        return gson.toJson(student);
+                    .title("There is no MatriculationData for the given matriculationId."));
+        return gson.toJson(matriculationData);
     }
 
     @Transaction()
@@ -142,18 +142,18 @@ public class StudentChaincode implements ContractInterface {
 
         ChaincodeStub stub = ctx.getStub();
 
-        String jsonStudent = stub.getStringState(matriculationId);
+        String jsonMatriculationData = stub.getStringState(matriculationId);
 
-        if(jsonStudent == null || jsonStudent.equals(""))
+        if(jsonMatriculationData == null || jsonMatriculationData.equals(""))
             return gson.toJson(new GenericError()
                     .type("hl: not found")
-                    .title("There is no student for the given matriculationId."));
+                    .title("There is no MatriculationData for the given matriculationId."));
 
-        Student student;
+        MatriculationData matriculationData;
 
         try
         {
-            student = gson.fromJson(jsonStudent, Student.class);
+            matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
         }
         catch(Exception e)
         {
@@ -162,7 +162,7 @@ public class StudentChaincode implements ContractInterface {
                     .title("The state on the ledger does not conform to the specified format."));
         }
 
-        for (SubjectMatriculation item: student.getMatriculationStatus()) {
+        for (SubjectMatriculation item: matriculationData.getMatriculationStatus()) {
             if (item.getFieldOfStudy() == fieldOfStudyValue) {
                 for (String existingSemester: item.getSemesters()) {
                     if (existingSemester.equals(semester))
@@ -173,7 +173,7 @@ public class StudentChaincode implements ContractInterface {
             }
         }
 
-        student.addMatriculationStatusItem(new SubjectMatriculation()
+        matriculationData.addMatriculationStatusItem(new SubjectMatriculation()
                 .fieldOfStudy(fieldOfStudyValue)
                 .semesters(new ArrayList<String>()
                 {{add(semester);}})
@@ -182,31 +182,31 @@ public class StudentChaincode implements ContractInterface {
         return "";
     }
 
-    private ArrayList<InvalidParameter> getErrorForStudent(Student student) {
+    private ArrayList<InvalidParameter> getErrorForMatriculationData(MatriculationData matriculationData) {
 
         ArrayList<InvalidParameter> list = new ArrayList<>();
 
-        if(student.getMatriculationId() == null || student.getMatriculationId().equals(""))
+        if(matriculationData.getMatriculationId() == null || matriculationData.getMatriculationId().equals(""))
             list.add(new InvalidParameter()
                     .name("matriculationID")
                     .reason("ID is empty"));
 
-        if (student.getFirstName() == null || student.getFirstName().equals(""))
+        if (matriculationData.getFirstName() == null || matriculationData.getFirstName().equals(""))
             list.add(new InvalidParameter()
                     .name("firstName")
                     .reason("First name must not be empty"));
 
-        if (student.getLastName() == null || student.getLastName().equals(""))
+        if (matriculationData.getLastName() == null || matriculationData.getLastName().equals(""))
             list.add(new InvalidParameter()
                     .name("lastName")
                     .reason("Last name must not be empty"));
 
-        if (student.getBirthDate() == null)
+        if (matriculationData.getBirthDate() == null)
             list.add(new InvalidParameter()
                     .name("birthDate")
                     .reason("Birth date must be the following format \"yyyy-mm-dd\""));
 
-        List<SubjectMatriculation> immatriculationStatus = student.getMatriculationStatus();
+        List<SubjectMatriculation> immatriculationStatus = matriculationData.getMatriculationStatus();
 
         if (immatriculationStatus == null || immatriculationStatus.size() == 0)
             list.add(new InvalidParameter()
@@ -243,10 +243,10 @@ public class StudentChaincode implements ContractInterface {
                                 .name("matriculationStatus.semesters")
                                 .reason("A semester must not be empty."));
 
-                    if (semesterFormatValid(semester) && student.getBirthDate() != null) {
+                    if (semesterFormatValid(semester) && matriculationData.getBirthDate() != null) {
 
                         int semesterYear = Integer.parseInt(semester.substring(2, 6));
-                        if (semesterYear < student.getBirthDate().getYear()) {
+                        if (semesterYear < matriculationData.getBirthDate().getYear()) {
                             list.add(new InvalidParameter()
                                     .name("matriculationStatus.semesters")
                                     .reason("First semester must not be earlier than birth date."));

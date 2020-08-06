@@ -1,8 +1,7 @@
 package de.upb.cs.uc4.chaincode.mock;
 
 import de.upb.cs.uc4.chaincode.GsonWrapper;
-import de.upb.cs.uc4.chaincode.StudentChaincodeTest;
-import de.upb.cs.uc4.chaincode.model.Student;
+import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 
 import java.util.Objects;
@@ -45,7 +44,7 @@ final public class MockKeyValue implements KeyValue {
         GsonWrapper gson = new GsonWrapper();
         return Objects.equals(this.key, other.key) &&
                 Objects.equals(
-                        gson.fromJson(this.value, Student.class),
-                        gson.fromJson(other.value, Student.class));
+                        gson.fromJson(this.value, MatriculationData.class),
+                        gson.fromJson(other.value, MatriculationData.class));
     }
 }

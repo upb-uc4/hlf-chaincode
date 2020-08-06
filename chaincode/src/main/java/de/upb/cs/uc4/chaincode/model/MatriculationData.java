@@ -23,13 +23,13 @@ import java.util.List;
 import org.threeten.bp.LocalDate;
 
 /**
- * Student
+ * MatriculationData
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2020-07-26T19:00:46.792+02:00")
 
 
 
-public class Student {
+public class MatriculationData {
   @SerializedName("matriculationId")
   private String matriculationId = null;
 
@@ -45,7 +45,7 @@ public class Student {
   @SerializedName("matriculationStatus")
   private List<SubjectMatriculation> matriculationStatus = null;
 
-  public Student matriculationId(String matriculationId) {
+  public MatriculationData matriculationId(String matriculationId) {
     this.matriculationId = matriculationId;
     return this;
   }
@@ -63,7 +63,7 @@ public class Student {
     this.matriculationId = matriculationId;
   }
 
-  public Student firstName(String firstName) {
+  public MatriculationData firstName(String firstName) {
     this.firstName = firstName;
     return this;
   }
@@ -81,7 +81,7 @@ public class Student {
     this.firstName = firstName;
   }
 
-  public Student lastName(String lastName) {
+  public MatriculationData lastName(String lastName) {
     this.lastName = lastName;
     return this;
   }
@@ -99,7 +99,7 @@ public class Student {
     this.lastName = lastName;
   }
 
-  public Student birthDate(LocalDate birthDate) {
+  public MatriculationData birthDate(LocalDate birthDate) {
     this.birthDate = birthDate;
     return this;
   }
@@ -117,12 +117,12 @@ public class Student {
     this.birthDate = birthDate;
   }
 
-  public Student matriculationStatus(List<SubjectMatriculation> matriculationStatus) {
+  public MatriculationData matriculationStatus(List<SubjectMatriculation> matriculationStatus) {
     this.matriculationStatus = matriculationStatus;
     return this;
   }
 
-  public Student addMatriculationStatusItem(SubjectMatriculation matriculationStatusItem) {
+  public MatriculationData addMatriculationStatusItem(SubjectMatriculation matriculationStatusItem) {
     if (this.matriculationStatus == null) {
       this.matriculationStatus = new ArrayList<SubjectMatriculation>();
     }
@@ -152,12 +152,12 @@ public class Student {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Student student = (Student) o;
-    return Objects.equals(this.matriculationId, student.matriculationId) &&
-        Objects.equals(this.firstName, student.firstName) &&
-        Objects.equals(this.lastName, student.lastName) &&
-        Objects.equals(this.birthDate, student.birthDate) &&
-        Objects.equals(this.matriculationStatus, student.matriculationStatus);
+    MatriculationData matriculationData = (MatriculationData) o;
+    return Objects.equals(this.matriculationId, matriculationData.matriculationId) &&
+        Objects.equals(this.firstName, matriculationData.firstName) &&
+        Objects.equals(this.lastName, matriculationData.lastName) &&
+        Objects.equals(this.birthDate, matriculationData.birthDate) &&
+        Objects.equals(this.matriculationStatus, matriculationData.matriculationStatus);
   }
 
   @Override
@@ -169,7 +169,7 @@ public class Student {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class Student {\n");
+    sb.append("class MatriculationData {\n");
     
     sb.append("    matriculationId: ").append(toIndentedString(matriculationId)).append("\n");
     sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
