@@ -196,29 +196,29 @@ public class MatriculationDataChaincode implements ContractInterface {
         ArrayList<InvalidParameter> list = new ArrayList<>();
 
         if(matriculationData.getMatriculationId() == null || matriculationData.getMatriculationId().equals(""))
-            list.add(new InvalidParameter()
+            addAbsent(list, new InvalidParameter()
                     .name("matriculationID")
                     .reason("ID is empty"));
 
         if (matriculationData.getFirstName() == null || matriculationData.getFirstName().equals(""))
-            list.add(new InvalidParameter()
+            addAbsent(list, new InvalidParameter()
                     .name("firstName")
                     .reason("First name must not be empty"));
 
         if (matriculationData.getLastName() == null || matriculationData.getLastName().equals(""))
-            list.add(new InvalidParameter()
+            addAbsent(list, new InvalidParameter()
                     .name("lastName")
                     .reason("Last name must not be empty"));
 
         if (matriculationData.getBirthDate() == null)
-            list.add(new InvalidParameter()
+            addAbsent(list, new InvalidParameter()
                     .name("birthDate")
                     .reason("Birth date must be the following format \"yyyy-mm-dd\""));
 
         List<SubjectMatriculation> immatriculationStatus = matriculationData.getMatriculationStatus();
 
         if (immatriculationStatus == null || immatriculationStatus.size() == 0)
-            list.add(new InvalidParameter()
+            addAbsent(list, new InvalidParameter()
                     .name("matriculationStatus")
                     .reason("Matriculation status must not be empty"));
         else {
@@ -228,19 +228,19 @@ public class MatriculationDataChaincode implements ContractInterface {
             for (SubjectMatriculation subMat: immatriculationStatus) {
 
                 if (subMat.getFieldOfStudy() == null || subMat.getFieldOfStudy().equals(""))
-                    list.add(new InvalidParameter()
+                    addAbsent(list, new InvalidParameter()
                             .name("SubjectMatriculation.fieldOfStudy")
                             .reason("Field of study must not be empty."));
                 else
                     if (existingFields.contains(subMat.getFieldOfStudy()))
-                        list.add(new InvalidParameter()
+                        addAbsent(list, new InvalidParameter()
                                 .name("SubjectMatriculation.fieldOfStudy")
                                 .reason("Each field of study should only appear in one SubjectMatriculation."));
                     else
                         existingFields.add(subMat.getFieldOfStudy());
 
                 if (subMat.getSemesters() == null || subMat.getSemesters().size() == 0)
-                    list.add(new InvalidParameter()
+                    addAbsent(list, new InvalidParameter()
                             .name("SubjectMatriculation.semesters")
                             .reason("Semesters must not be empty."));
 
@@ -248,7 +248,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                 for (String semester: subMat.getSemesters()) {
                     if (semester == null || semester.equals(""))
-                        list.add(new InvalidParameter()
+                        addAbsent(list, new InvalidParameter()
                                 .name("matriculationStatus.semesters")
                                 .reason("A semester must not be empty."));
 
@@ -256,13 +256,13 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                         int semesterYear = Integer.parseInt(semester.substring(2, 6));
                         if (semesterYear < matriculationData.getBirthDate().getYear()) {
-                            list.add(new InvalidParameter()
+                            addAbsent(list, new InvalidParameter()
                                     .name("matriculationStatus.semesters")
                                     .reason("First semester must not be earlier than birth date."));
                         }
 
                         if (existingSemesters.contains(semester))
-                            list.add(new InvalidParameter()
+                            addAbsent(list, new InvalidParameter()
                                     .name("SubjectMatriculation.semesters")
                                     .reason("Each semester should only appear once in SubjectMatriculation.semesters."));
                         else
@@ -270,7 +270,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                     }
 
                     if (!semesterFormatValid(semester))
-                        list.add(new InvalidParameter()
+                        addAbsent(list, new InvalidParameter()
                                 .name("matriculationStatus.semesters")
                                 .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
                 }
@@ -292,5 +292,13 @@ public class MatriculationDataChaincode implements ContractInterface {
                 return false;
         }
         return true;
+    }
+
+    private void addAbsent (List<InvalidParameter> list, InvalidParameter invParam) {
+        for (InvalidParameter param: list) {
+            if (param.equals(invParam))
+                return;
+        }
+        list.add(invParam);
     }
 }

@@ -487,7 +487,14 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WWS2018/19", "SS2020"
+              "WWS2018/19", "SSS2020"
+
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "WWS2018/19", "SSS2020"
 
             ]
           }
