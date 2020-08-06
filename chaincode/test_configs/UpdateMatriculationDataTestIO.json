@@ -139,7 +139,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "firstName",
@@ -190,7 +190,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "birthDate",
@@ -241,7 +241,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "lastName",
@@ -287,7 +287,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "matriculationStatus",
@@ -338,7 +338,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "SubjectMatriculation.semesters",
@@ -391,7 +391,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "SubjectMatriculation.fieldOfStudy",
@@ -444,7 +444,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "matriculationStatus.semesters",
@@ -497,7 +497,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "matriculationStatus.semesters",
@@ -556,7 +556,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "SubjectMatriculation.fieldOfStudy",
@@ -609,7 +609,7 @@
     "compare": [
       {
         "type": "hl: unprocessable entity",
-        "title": "The given string does not conform to the specified format.",
+        "title": "The given parameters do not conform to the specified format.",
         "invalidParams":[
           {
             "name": "SubjectMatriculation.semesters",

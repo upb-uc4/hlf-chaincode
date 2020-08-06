@@ -43,15 +43,12 @@ public class MatriculationDataChaincode implements ContractInterface {
         ChaincodeStub stub = ctx.getStub();
         MatriculationData matriculationData;
 
-        try
-        {
+        try {
             matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
-        }
-        catch(Exception e)
-        {
+        } catch(Exception e) {
             return gson.toJson(new GenericError()
                     .type("hl: unprocessable entity")
-                    .title("The given string does not conform to the specified format."));
+                    .title("The given parameters do not conform to the specified format."));
         }
 
         String result = stub.getStringState(matriculationData.getMatriculationId());
@@ -66,7 +63,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if(!invalidParams.isEmpty()){
             return gson.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
-                    .title("The given string does not conform to the specified format.")
+                    .title("The given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
         }
 
@@ -79,14 +76,21 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         ChaincodeStub stub = ctx.getStub();
 
-        MatriculationData updatedMatriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
+        MatriculationData updatedMatriculationData;
+        try {
+            updatedMatriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
+        } catch(Exception e) {
+        return gson.toJson(new GenericError()
+                .type("hl: unprocessable entity")
+                .title("The given parameters do not conform to the specified format."));
+        }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(updatedMatriculationData);
 
         if (!invalidParams.isEmpty())
             return gson.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
-                    .title("The given string does not conform to the specified format.")
+                    .title("The given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
 
         String MatriculationDataOnLedger = stub.getStringState(updatedMatriculationData.getMatriculationId());
@@ -105,7 +109,15 @@ public class MatriculationDataChaincode implements ContractInterface {
     public String getMatriculationData(final Context ctx, final String matriculationId) {
 
         ChaincodeStub stub = ctx.getStub();
-        MatriculationData matriculationData = gson.fromJson(stub.getStringState(matriculationId), MatriculationData.class);
+        MatriculationData matriculationData;
+
+        try {
+            matriculationData = gson.fromJson(stub.getStringState(matriculationId), MatriculationData.class);
+        } catch(Exception e) {
+            return gson.toJson(new GenericError()
+                    .type("hl: unprocessable ledger state")
+                    .title("The state on the ledger does not conform to the specified format."));
+        }
 
         if(matriculationData == null || matriculationData.equals(""))
             return gson.toJson(new DetailedError()
@@ -137,7 +149,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if (!invalidParams.isEmpty())
             return gson.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
-                    .title("The given string does not conform to the specified format.")
+                    .title("The given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
 
         ChaincodeStub stub = ctx.getStub();
@@ -151,12 +163,9 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         MatriculationData matriculationData;
 
-        try
-        {
+        try {
             matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
-        }
-        catch(Exception e)
-        {
+        } catch(Exception e) {
             return gson.toJson(new GenericError()
                     .type("hl: unprocessable ledger state")
                     .title("The state on the ledger does not conform to the specified format."));
