@@ -230,7 +230,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                 if (subMat.getFieldOfStudy() == null || subMat.getFieldOfStudy().equals(""))
                     addAbsent(list, new InvalidParameter()
                             .name("SubjectMatriculation.fieldOfStudy")
-                            .reason("Field of study must not be empty."));
+                            .reason("Field of study must be one of the specified values."));
                 else
                     if (existingFields.contains(subMat.getFieldOfStudy()))
                         addAbsent(list, new InvalidParameter()

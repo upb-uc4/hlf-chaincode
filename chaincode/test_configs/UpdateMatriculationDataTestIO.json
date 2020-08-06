@@ -395,7 +395,60 @@
         "invalidParams":[
           {
             "name": "SubjectMatriculation.fieldOfStudy",
-            "reason": "Field of study must not be empty."
+            "reason": "Field of study must be one of the specified values."
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateNonExistingFieldOfStudyMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Something invalid",
+            "semesters": [
+              "WS2018/19", "SS2020"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "SubjectMatriculation.fieldOfStudy",
+            "reason": "Field of study must be one of the specified values."
           }
         ]
       }
