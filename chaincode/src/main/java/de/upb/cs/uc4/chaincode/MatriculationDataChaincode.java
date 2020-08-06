@@ -283,6 +283,14 @@ public class MatriculationDataChaincode implements ContractInterface {
     public boolean semesterFormatValid(String semester) {
         Pattern pattern = Pattern.compile("^(WS\\d{4}/\\d{2}|SS\\d{4})");
         Matcher matcher = pattern.matcher(semester);
-        return matcher.matches();
+        if (!matcher.matches())
+            return false;
+        if ("WS".equals(semester.substring(0,2))) {
+            int year1 = Integer.parseInt(semester.substring(4,6));
+            int year2 = Integer.parseInt(semester.substring(7,9));
+            if (year2 != (year1 + 1) % 100)
+                return false;
+        }
+        return true;
     }
 }

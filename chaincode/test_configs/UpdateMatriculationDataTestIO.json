@@ -510,6 +510,59 @@
 
 
   {
+    "name": "updateInvalidYearSemesterMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/20", "SS2020"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "matriculationStatus.semesters",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
     "name": "updateDuplicateFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
