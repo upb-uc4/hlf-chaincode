@@ -300,7 +300,7 @@
 
 
   {
-    "name": "updateEmptyIntervalStudent",
+    "name": "updateEmptySemestersStudent",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -341,8 +341,8 @@
         "title": "The given string does not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "SubjectMatriculationInterval.intervals",
-            "reason": "Intervals must not be empty"
+            "name": "SubjectMatriculation.semesters",
+            "reason": "Semesters must not be empty."
           }
         ]
       }
@@ -394,13 +394,14 @@
         "title": "The given string does not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "SubjectMatriculationInterval.fieldOfStudy",
-            "reason": "Field of study must not be empty"
+            "name": "SubjectMatriculation.fieldOfStudy",
+            "reason": "Field of study must not be empty."
           }
         ]
       }
     ]
   },
+
 
   {
     "name": "updateFirstSemesterBeforeBirthDateStudent",
@@ -454,6 +455,7 @@
     ]
   },
 
+
   {
     "name": "updateInvalidSemesterStudent",
     "type": "updateMatriculationData_FAILURE",
@@ -506,6 +508,7 @@
     ]
   },
 
+
   {
     "name": "updateDuplicateFieldOfStudyStudent",
     "type": "updateMatriculationData_FAILURE",
@@ -556,8 +559,61 @@
         "title": "The given string does not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "SubjectMatriculationInterval.fieldOfStudy",
-            "reason": "Each field of study should only appear in one SubjectMatriculationInterval."
+            "name": "SubjectMatriculation.fieldOfStudy",
+            "reason": "Each field of study should only appear in one SubjectMatriculation."
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateDuplicateSemesterStudent",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "SS2019"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given string does not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "SubjectMatriculation.semesters",
+            "reason": "Each semester should only appear once in SubjectMatriculation.semesters."
           }
         ]
       }

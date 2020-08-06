@@ -222,7 +222,7 @@
 
 
   {
-    "name": "immatriculateEmptyIntervalStudent",
+    "name": "immatriculateEmptySemestersStudent",
     "type": "addMatriculationData_FAILURE",
     "setup": [],
     "input": [
@@ -246,8 +246,8 @@
         "title": "The given string does not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "SubjectMatriculationInterval.intervals",
-            "reason": "Intervals must not be empty"
+            "name": "SubjectMatriculation.semesters",
+            "reason": "Semesters must not be empty."
           }
         ]
       }
@@ -281,8 +281,8 @@
         "title": "The given string does not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "SubjectMatriculationInterval.fieldOfStudy",
-            "reason": "Field of study must not be empty"
+            "name": "SubjectMatriculation.fieldOfStudy",
+            "reason": "Field of study must not be empty."
           }
         ]
       }

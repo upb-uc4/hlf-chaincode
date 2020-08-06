@@ -216,26 +216,28 @@ public class StudentChaincode implements ContractInterface {
 
             ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
 
-            for (SubjectMatriculation subInterval: immatriculationStatus) {
+            for (SubjectMatriculation subMat: immatriculationStatus) {
 
-                if (subInterval.getFieldOfStudy() == null || subInterval.getFieldOfStudy().equals(""))
+                if (subMat.getFieldOfStudy() == null || subMat.getFieldOfStudy().equals(""))
                     list.add(new InvalidParameter()
-                            .name("SubjectMatriculationInterval.fieldOfStudy")
-                            .reason("Field of study must not be empty"));
+                            .name("SubjectMatriculation.fieldOfStudy")
+                            .reason("Field of study must not be empty."));
                 else
-                    if (existingFields.contains(subInterval.getFieldOfStudy()))
+                    if (existingFields.contains(subMat.getFieldOfStudy()))
                         list.add(new InvalidParameter()
-                                .name("SubjectMatriculationInterval.fieldOfStudy")
-                                .reason("Each field of study should only appear in one SubjectMatriculationInterval."));
+                                .name("SubjectMatriculation.fieldOfStudy")
+                                .reason("Each field of study should only appear in one SubjectMatriculation."));
                     else
-                        existingFields.add(subInterval.getFieldOfStudy());
+                        existingFields.add(subMat.getFieldOfStudy());
 
-                if (subInterval.getSemesters() == null || subInterval.getSemesters().size() == 0)
+                if (subMat.getSemesters() == null || subMat.getSemesters().size() == 0)
                     list.add(new InvalidParameter()
-                            .name("SubjectMatriculationInterval.intervals")
-                            .reason("Intervals must not be empty"));
+                            .name("SubjectMatriculation.semesters")
+                            .reason("Semesters must not be empty."));
 
-                for (String semester: subInterval.getSemesters()) {
+                ArrayList<String> existingSemesters = new ArrayList<>();
+
+                for (String semester: subMat.getSemesters()) {
                     if (semester == null || semester.equals(""))
                         list.add(new InvalidParameter()
                                 .name("matriculationStatus.semesters")
@@ -249,6 +251,13 @@ public class StudentChaincode implements ContractInterface {
                                     .name("matriculationStatus.semesters")
                                     .reason("First semester must not be earlier than birth date."));
                         }
+
+                        if (existingSemesters.contains(semester))
+                            list.add(new InvalidParameter()
+                                    .name("SubjectMatriculation.semesters")
+                                    .reason("Each semester should only appear once in SubjectMatriculation.semesters."));
+                        else
+                            existingSemesters.add(semester);
                     }
 
                     if (!semesterFormatValid(semester))
