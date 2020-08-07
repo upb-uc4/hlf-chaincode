@@ -71,7 +71,7 @@ public final class MatriculationDataChaincodeTest {
                                 addMatriculationDataFailureTest(test.getSetup(), test.getInput(), test.getCompare())
                         ));
                         break;
-                    case "updateMatriculationData_SUCESS":
+                    case "updateMatriculationData_SUCCESS":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
                                 updateMatriculationDataSuccessTest(test.getSetup(), test.getInput(), test.getCompare())

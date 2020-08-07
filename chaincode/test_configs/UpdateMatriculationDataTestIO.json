@@ -1,7 +1,7 @@
 [
   {
     "name": "updateMatriculationData",
-    "type": "updateMatriculationData_SUCESS",
+    "type": "updateMatriculationData_SUCCESS",
     "setup": [
       "0000001",
       {

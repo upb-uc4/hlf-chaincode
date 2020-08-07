@@ -178,6 +178,8 @@ public class MatriculationDataChaincode implements ContractInterface {
                         return "";
                 }
                 item.addsemestersItem(semester);
+                stub.delState(matriculationData.getMatriculationId());
+                stub.putStringState(matriculationData.getMatriculationId(), gson.toJson(matriculationData));
                 return "";
             }
         }
@@ -188,6 +190,8 @@ public class MatriculationDataChaincode implements ContractInterface {
                 {{add(semester);}})
         );
 
+        stub.delState(matriculationData.getMatriculationId());
+        stub.putStringState(matriculationData.getMatriculationId(), gson.toJson(matriculationData));
         return "";
     }
 
