@@ -62,8 +62,8 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if(!invalidParams.isEmpty()){
             return gson.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
-                    .title("The given parameters do not conform to the specified format.")
+                    .type("hl: unprocessable field")
+                    .title("The following fields in the given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
         }
 
@@ -89,8 +89,8 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if (!invalidParams.isEmpty())
             return gson.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
-                    .title("The given parameters do not conform to the specified format.")
+                    .type("hl: unprocessable field")
+                    .title("The following fields in the given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
 
         String MatriculationDataOnLedger = stub.getStringState(updatedMatriculationData.getMatriculationId());
@@ -148,8 +148,8 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if (!invalidParams.isEmpty())
             return gson.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
-                    .title("The given parameters do not conform to the specified format.")
+                    .type("hl: unprocessable field")
+                    .title("The following fields in the given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
 
         ChaincodeStub stub = ctx.getStub();
