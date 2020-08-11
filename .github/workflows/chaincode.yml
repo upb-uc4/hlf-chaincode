@@ -1,4 +1,4 @@
-name: Hyperledger Test Pipeline
+name: Hyperledger Chaincode Test Pipeline
 
 on:
   push:

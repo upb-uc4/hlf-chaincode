@@ -1,0 +1,735 @@
+[
+  {
+    "name": "updateMatriculationData",
+    "type": "updateMatriculationData_SUCCESS",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "WS2020/21"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "WS2020/21"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "updateNonExistingMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000002",
+      {
+        "matriculationId": "0000002",
+        "firstName": "firstName2",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: not found",
+        "title": "There is no MatriculationData for the given matriculationId."
+      }
+    ]
+  },
+
+  {
+    "name": "updateEmptyFirstNameMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "firstName",
+            "reason": "First name must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "updateInvalidBirthDateMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-0721",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "birthDate",
+            "reason": "Birth date must be the following format \"yyyy-mm-dd\""
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "updateEmptyLastNameMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "lastName",
+            "reason": "Last name must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateEmptyMatriculationStatusMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "matriculationStatus",
+            "reason": "Matriculation status must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateEmptySemestersMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "SubjectMatriculation.semesters",
+            "reason": "Semesters must not be empty."
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateEmptyFieldOfStudyMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "",
+            "semesters": [
+              "WS2018/19", "SS2020"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "SubjectMatriculation.fieldOfStudy",
+            "reason": "Field of study must be one of the specified values."
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateNonExistingFieldOfStudyMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Something invalid",
+            "semesters": [
+              "WS2018/19", "SS2020"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "SubjectMatriculation.fieldOfStudy",
+            "reason": "Field of study must be one of the specified values."
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateFirstSemesterBeforeBirthDateMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS1999/00", "SS2020"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "matriculationStatus.semesters",
+            "reason": "First semester must not be earlier than birth date."
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateInvalidSemesterMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WWS2018/19", "SSS2020"
+
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "WWS2018/19", "SSS2020"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "matriculationStatus.semesters",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateInvalidYearSemesterMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/20", "SS2020"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "matriculationStatus.semesters",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateDuplicateFieldOfStudyMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+
+            ]
+          },
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "SubjectMatriculation.fieldOfStudy",
+            "reason": "Each field of study should only appear in one SubjectMatriculation."
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateDuplicateSemesterMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "SS2019"
+
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "SubjectMatriculation.semesters",
+            "reason": "Each semester should only appear once in SubjectMatriculation.semesters."
+          }
+        ]
+      }
+    ]
+  }
+]
