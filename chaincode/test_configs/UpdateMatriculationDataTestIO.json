@@ -20,7 +20,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -75,7 +74,6 @@
       }
     ],
     "input": [
-      "0000002",
       {
         "matriculationId": "0000002",
         "firstName": "firstName2",
@@ -120,7 +118,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "",
@@ -171,7 +168,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -222,7 +218,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -274,7 +269,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -320,7 +314,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -371,7 +364,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -424,7 +416,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -477,7 +468,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -530,7 +520,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -590,7 +579,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -643,7 +631,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -702,7 +689,6 @@
       }
     ],
     "input": [
-      "0000001",
       {
         "matriculationId": "0000001",
         "firstName": "firstName1",
@@ -729,6 +715,143 @@
             "reason": "Each semester should only appear once in SubjectMatriculation.semesters."
           }
         ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "updateEmptyMatriculationIdMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      {
+        "matriculationId": "",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "matriculationId",
+            "reason": "ID is empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "updateEmptySemesterMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", ""
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams":[
+          {
+            "name": "matriculationStatus.semesters",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "updateUnprocessableMatriculationData",
+    "type": "updateMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "ladida"
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given parameter does not conform to the specified format."
       }
     ]
   }

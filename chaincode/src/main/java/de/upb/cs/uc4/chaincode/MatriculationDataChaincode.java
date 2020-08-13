@@ -48,7 +48,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return gson.toJson(new GenericError()
                     .type("hl: unprocessable entity")
-                    .title("The given parameters do not conform to the specified format."));
+                    .title("The given parameter does not conform to the specified format."));
         }
 
         String result = stub.getStringState(matriculationData.getMatriculationId());
@@ -82,7 +82,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
         return gson.toJson(new GenericError()
                 .type("hl: unprocessable entity")
-                .title("The given parameters do not conform to the specified format."));
+                .title("The given parameter does not conform to the specified format."));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(updatedMatriculationData);
@@ -144,7 +144,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if (!semesterFormatValid(semester))
             invalidParams.add(new InvalidParameter()
                     .name("semester")
-                    .reason("First semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
+                    .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
 
         if (!invalidParams.isEmpty())
             return gson.toJson(new DetailedError()
@@ -201,7 +201,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if(matriculationData.getMatriculationId() == null || matriculationData.getMatriculationId().equals(""))
             addAbsent(list, new InvalidParameter()
-                    .name("matriculationID")
+                    .name("matriculationId")
                     .reason("ID is empty"));
 
         if (matriculationData.getFirstName() == null || matriculationData.getFirstName().equals(""))
@@ -251,11 +251,6 @@ public class MatriculationDataChaincode implements ContractInterface {
                 ArrayList<String> existingSemesters = new ArrayList<>();
 
                 for (String semester: subMat.getSemesters()) {
-                    if (semester == null || semester.equals(""))
-                        addAbsent(list, new InvalidParameter()
-                                .name("matriculationStatus.semesters")
-                                .reason("A semester must not be empty."));
-
                     if (semesterFormatValid(semester) && matriculationData.getBirthDate() != null) {
 
                         int semesterYear = Integer.parseInt(semester.substring(2, 6));

@@ -395,5 +395,22 @@
         ]
       }
     ]
+  },
+
+
+
+  {
+    "name": "addUnprocessableMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      "ladida"
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The given parameter does not conform to the specified format."
+      }
+    ]
   }
 ]
