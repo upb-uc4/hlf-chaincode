@@ -84,7 +84,18 @@ public final class MatriculationDataChaincodeTest {
                                 updateMatriculationDataFailureTest(test.getSetup(), test.getInput(), test.getCompare())
                         ));
                         break;
-
+                    case "addEntryToMatriculationData_SUCCESS":
+                        tests.add(DynamicTest.dynamicTest(
+                                test.getName(),
+                                addEntryToMatriculationDataSuccessTest(test.getSetup(), test.getInput(), test.getCompare())
+                        ));
+                        break;
+                    case "addEntryToMatriculationData_FAILURE":
+                        tests.add(DynamicTest.dynamicTest(
+                                test.getName(),
+                                addEntryToMatriculationDataFailureTest(test.getSetup(), test.getInput(), test.getCompare())
+                        ));
+                        break;
                 }
             }
         }
@@ -102,8 +113,9 @@ public final class MatriculationDataChaincodeTest {
             Context ctx = mock(Context.class);
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
-            when(stub.getStringState(setup.get(0).getContent()))
-                    .thenReturn(setup.get(1).getContent());
+            if (!setup.isEmpty())
+                when(stub.getStringState(setup.get(0).getContent()))
+                        .thenReturn(setup.get(1).getContent());
             MatriculationData matriculationData = gson.fromJson(
                     contract.getMatriculationData(ctx, input.get(0).getContent()),
                     MatriculationData.class);
@@ -126,8 +138,7 @@ public final class MatriculationDataChaincodeTest {
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
             if (!setup.isEmpty()) {
-                when(stub.getStringState(setup.get(0).getContent()))
-                        .thenReturn(setup.get(1).getContent());
+                stub.putStringState(setup.get(0).getContent(), setup.get(1).getContent());
             }
             contract.addMatriculationData(ctx, input.get(0).getContent());
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
@@ -168,7 +179,7 @@ public final class MatriculationDataChaincodeTest {
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
             stub.putStringState(setup.get(0).getContent(),setup.get(1).getContent());
-            contract.updateMatriculationData(ctx, input.get(1).getContent());
+            contract.updateMatriculationData(ctx, input.get(0).getContent());
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue(
                     matriculationData.getMatriculationId(),
@@ -188,8 +199,57 @@ public final class MatriculationDataChaincodeTest {
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
             stub.putStringState(setup.get(0).getContent(),setup.get(1).getContent());
-            String result = contract.updateMatriculationData(ctx, input.get(1).getContent());
+            String result = contract.updateMatriculationData(ctx, input.get(0).getContent());
 
+            assertThat(result).isEqualTo(compare.get(0).getContent());
+        };
+    }
+
+    private Executable addEntryToMatriculationDataSuccessTest(
+            List<Dummy> setup,
+            List<Dummy> input,
+            List<Dummy> compare
+    ) {
+        return () -> {
+            MatriculationDataChaincode contract = new MatriculationDataChaincode();
+            GsonWrapper gson = new GsonWrapper();
+            Context ctx = mock(Context.class);
+            MockChaincodeStub stub = new MockChaincodeStub();
+            when(ctx.getStub()).thenReturn(stub);
+            if (!setup.isEmpty()) {
+                stub.putStringState(setup.get(0).getContent(), setup.get(1).getContent());
+            }
+            contract.addEntryToMatriculationData(
+                    ctx,
+                    input.get(0).getContent(),
+                    input.get(1).getContent(),
+                    input.get(2).getContent());
+            MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
+            assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue(
+                    matriculationData.getMatriculationId(),
+                    compare.get(0).getContent()));
+        };
+    }
+
+    private Executable addEntryToMatriculationDataFailureTest(
+            List<Dummy> setup,
+            List<Dummy> input,
+            List<Dummy> compare
+    ) {
+        return () -> {
+            MatriculationDataChaincode contract = new MatriculationDataChaincode();
+            Context ctx = mock(Context.class);
+            ChaincodeStub stub = mock(ChaincodeStub.class);
+            when(ctx.getStub()).thenReturn(stub);
+            if (!setup.isEmpty()) {
+                when(stub.getStringState(setup.get(0).getContent()))
+                        .thenReturn(setup.get(1).getContent());
+            }
+            String result = contract.addEntryToMatriculationData(
+                    ctx,
+                    input.get(0).getContent(),
+                    input.get(1).getContent(),
+                    input.get(2).getContent());
             assertThat(result).isEqualTo(compare.get(0).getContent());
         };
     }

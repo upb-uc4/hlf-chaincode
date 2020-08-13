@@ -38,5 +38,42 @@
         ]
       }
     ]
+  },
+
+
+
+  {
+    "name": "queryNonExistingMatriculationData",
+    "type": "getMatriculationData",
+    "setup": [],
+    "input": [
+      "0000001"
+    ],
+    "compare": [
+      {
+        "type": "hl: not found",
+        "title": "There is no MatriculationData for the given matriculationId."
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "queryUnprocessableMatriculationData",
+    "type": "getMatriculationData",
+    "setup": [
+      "0000001",
+      "something unprocessable"
+    ],
+    "input": [
+      "0000001"
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable ledger state",
+        "title": "The state on the ledger does not conform to the specified format."
+      }
+    ]
   }
 ]
