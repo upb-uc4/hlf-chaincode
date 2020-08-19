@@ -1,7 +1,7 @@
 [
   {
     "name": "TestCollection",
-    "policy": "OR('SampleOrg.member')",
+    "policy": "OR('org0.member')",
     "requiredPeerCount": 0,
     "maxPeerCount": 3,
     "blockToLive": 0,
