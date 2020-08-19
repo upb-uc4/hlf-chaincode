@@ -8,6 +8,7 @@ import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 @Default
 public class MatriculationDataChaincode implements ContractInterface {
 
+    private final String collectionName = "TestCollection";
     private static Log _logger = LogFactory.getLog(MatriculationDataChaincode.class);
     // setup gson (de-)serializer capable of (de-)serializing dates
     private static final GsonWrapper gson = new GsonWrapper();
@@ -51,7 +53,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .title("The given parameter does not conform to the specified format."));
         }
 
-        String result = stub.getStringState(matriculationData.getMatriculationId());
+        String result = stub.getPrivateDataUTF8(collectionName, matriculationData.getMatriculationId());
         if (result != null && !result.equals("")) {
             return gson.toJson(new GenericError()
                     .type("hl: conflict")
@@ -67,7 +69,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .invalidParams(invalidParams));
         }
 
-        stub.putStringState(matriculationData.getMatriculationId(),gson.toJson(matriculationData));
+        stub.putPrivateData(collectionName, matriculationData.getMatriculationId(),gson.toJson(matriculationData));
         return "";
     }
 
@@ -93,15 +95,15 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .title("The following fields in the given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
 
-        String MatriculationDataOnLedger = stub.getStringState(updatedMatriculationData.getMatriculationId());
+        String MatriculationDataOnLedger = stub.getPrivateDataUTF8(collectionName, updatedMatriculationData.getMatriculationId());
 
         if(MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals(""))
             return gson.toJson(new GenericError()
                     .type("hl: not found")
                     .title("There is no MatriculationData for the given matriculationId."));
 
-        stub.delState(updatedMatriculationData.getMatriculationId());
-        stub.putStringState(updatedMatriculationData.getMatriculationId(), gson.toJson(updatedMatriculationData));
+        stub.delPrivateData(collectionName, updatedMatriculationData.getMatriculationId());
+        stub.putPrivateData(collectionName, updatedMatriculationData.getMatriculationId(), gson.toJson(updatedMatriculationData));
         return "";
     }
 
@@ -112,7 +114,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         MatriculationData matriculationData;
 
         try {
-            matriculationData = gson.fromJson(stub.getStringState(matriculationId), MatriculationData.class);
+            matriculationData = gson.fromJson(stub.getPrivateDataUTF8(collectionName, matriculationId), MatriculationData.class);
         } catch(Exception e) {
             return gson.toJson(new GenericError()
                     .type("hl: unprocessable ledger state")
@@ -154,7 +156,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         ChaincodeStub stub = ctx.getStub();
 
-        String jsonMatriculationData = stub.getStringState(matriculationId);
+        String jsonMatriculationData = stub.getPrivateDataUTF8(collectionName, matriculationId);
 
         if(jsonMatriculationData == null || jsonMatriculationData.equals(""))
             return gson.toJson(new GenericError()
@@ -178,8 +180,8 @@ public class MatriculationDataChaincode implements ContractInterface {
                         return "";
                 }
                 item.addsemestersItem(semester);
-                stub.delState(matriculationData.getMatriculationId());
-                stub.putStringState(matriculationData.getMatriculationId(), gson.toJson(matriculationData));
+                stub.delPrivateData(collectionName, matriculationData.getMatriculationId());
+                stub.putPrivateData(collectionName, matriculationData.getMatriculationId(), gson.toJson(matriculationData));
                 return "";
             }
         }
@@ -190,8 +192,8 @@ public class MatriculationDataChaincode implements ContractInterface {
                 {{add(semester);}})
         );
 
-        stub.delState(matriculationData.getMatriculationId());
-        stub.putStringState(matriculationData.getMatriculationId(), gson.toJson(matriculationData));
+        stub.delPrivateData(collectionName, matriculationData.getMatriculationId());
+        stub.putPrivateData(collectionName, matriculationData.getMatriculationId(), gson.toJson(matriculationData));
         return "";
     }
 
