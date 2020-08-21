@@ -35,16 +35,17 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Adds MatriculationData to the ledger.
      * @param ctx
-     * @param jsonMatriculationData json-representation of a MatriculationData to be added
+     * TODO jsonMatriculationData json-representation of a MatriculationData to be added
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
-    public String addMatriculationData(final Context ctx, final String jsonMatriculationData) {
+    public String addMatriculationData(final Context ctx) {//, final String jsonMatriculationData) { TODO
         _logger.info("immatriculateMatriculationData");
 
         ChaincodeStub stub = ctx.getStub();
         MatriculationData matriculationData;
 
+        String jsonMatriculationData = stub.getTransient().get("0").toString();
         try {
             matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
