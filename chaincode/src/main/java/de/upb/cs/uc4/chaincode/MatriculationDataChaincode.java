@@ -45,7 +45,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         ChaincodeStub stub = ctx.getStub();
         MatriculationData matriculationData;
 
-        String jsonMatriculationData = stub.getTransient().get("0").toString();
+        String jsonMatriculationData = new String(stub.getTransient().get("0"));
         try {
             matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
