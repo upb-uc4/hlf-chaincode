@@ -660,7 +660,7 @@
         "invalidParams":[
           {
             "name": "SubjectMatriculation.fieldOfStudy",
-            "reason": "Each field of study should only appear in one SubjectMatriculation."
+            "reason": "Each field of study must only appear in one SubjectMatriculation."
           }
         ]
       }
@@ -712,7 +712,7 @@
         "invalidParams":[
           {
             "name": "SubjectMatriculation.semesters",
-            "reason": "Each semester should only appear once in SubjectMatriculation.semesters."
+            "reason": "Each semester must only appear once in SubjectMatriculation.semesters."
           }
         ]
       }
@@ -764,7 +764,7 @@
         "invalidParams":[
           {
             "name": "matriculationId",
-            "reason": "ID is empty"
+            "reason": "ID must not be empty"
           }
         ]
       }
