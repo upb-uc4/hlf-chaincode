@@ -54,6 +54,72 @@
   },
 
   {
+    "name": "updateMultiFieldOfStudyMatriculationData",
+    "type": "updateMatriculationData_SUCCESS",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "WS2020/21"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "WS2018/19", "WS2020/21"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "WS2020/21"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "WS2018/19", "WS2020/21"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
     "name": "updateNonExistingMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
