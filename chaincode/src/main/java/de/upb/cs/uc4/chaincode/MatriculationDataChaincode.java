@@ -1,8 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.model.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -222,7 +220,7 @@ public class MatriculationDataChaincode implements ContractInterface {
     }
 
     /**
-     * Returns a list of errors descibing everything wrong with the given matriculationData
+     * Returns a list of errors describing everything wrong with the given matriculationData
      * @param matriculationData matriculationData to return errors for
      * @return a list of all errors found for the given matriculationData
      */
@@ -254,9 +252,9 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .reason("Birth date must be the following format \"yyyy-mm-dd\""));
         }
 
-        List<SubjectMatriculation> immatriculationStatus = matriculationData.getMatriculationStatus();
+        List<SubjectMatriculation> matriculationStatus = matriculationData.getMatriculationStatus();
 
-        if (immatriculationStatus == null || immatriculationStatus.isEmpty()) {
+        if (matriculationStatus == null || matriculationStatus.isEmpty()) {
             addAbsent(list, new InvalidParameter()
                     .name("matriculationStatus")
                     .reason("Matriculation status must not be empty"));
@@ -264,7 +262,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
             ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
 
-            for (SubjectMatriculation subMat: immatriculationStatus) {
+            for (SubjectMatriculation subMat: matriculationStatus) {
 
                 if (subMat.getFieldOfStudy() == null) {
                     addAbsent(list, new InvalidParameter()
