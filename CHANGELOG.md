@@ -1,4 +1,21 @@
-# [v.0.5.0] (2020-08-11)
+# [v0.6.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.5.0...v0.6.0) (2020-08-19)
+
+## Feature
+- add licence
+- split up errors to be unambiguous
+- add tests
+
+## Bug Fixes
+- prevent invalid paramters from appearing multiple times in the same error
+
+## Refactor
+-
+
+## Usability
+-
+
+
+# v0.5.0 (2020-08-11)
 
 ## Feature
 - add UC4.MatriculationData chaincode
