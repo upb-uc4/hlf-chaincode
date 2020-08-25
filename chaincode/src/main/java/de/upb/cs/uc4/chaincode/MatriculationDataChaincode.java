@@ -266,12 +266,12 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                 if (subMat.getFieldOfStudy() == null) {
                     addAbsent(list, new InvalidParameter()
-                            .name("SubjectMatriculation.fieldOfStudy")
+                            .name("subjectMatriculation.fieldOfStudy")
                             .reason("Field of study must be one of the specified values."));
                 } else {
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
                         addAbsent(list, new InvalidParameter()
-                                .name("SubjectMatriculation.fieldOfStudy")
+                                .name("subjectMatriculation.fieldOfStudy")
                                 .reason("Each field of study must only appear in one SubjectMatriculation."));
                     } else
                         existingFields.add(subMat.getFieldOfStudy());
@@ -279,7 +279,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                 if (subMat.getSemesters() == null || subMat.getSemesters().isEmpty()) {
                     addAbsent(list, new InvalidParameter()
-                            .name("SubjectMatriculation.semesters")
+                            .name("subjectMatriculation.semesters")
                             .reason("Semesters must not be empty."));
                 }
                 ArrayList<String> existingSemesters = new ArrayList<>();
@@ -296,7 +296,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                         if (existingSemesters.contains(semester)) {
                             addAbsent(list, new InvalidParameter()
-                                    .name("SubjectMatriculation.semesters")
+                                    .name("subjectMatriculation.semesters")
                                     .reason("Each semester must only appear once in SubjectMatriculation.semesters."));
                         } else
                             existingSemesters.add(semester);
