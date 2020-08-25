@@ -70,7 +70,7 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Updates MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param jsonMatriculationData json-representation of the updated MatriculationData
+     * @param jsonMatriculationData json-representation of the new MatriculationData to replace the old with
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
