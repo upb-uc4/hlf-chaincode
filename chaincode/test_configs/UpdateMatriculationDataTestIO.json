@@ -334,7 +334,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "SubjectMatriculation.semesters",
+            "name": "subjectMatriculation.semesters",
             "reason": "Semesters must not be empty."
           }
         ]
@@ -386,7 +386,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "SubjectMatriculation.fieldOfStudy",
+            "name": "subjectMatriculation.fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
@@ -438,7 +438,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "SubjectMatriculation.fieldOfStudy",
+            "name": "subjectMatriculation.fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
@@ -659,7 +659,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "SubjectMatriculation.fieldOfStudy",
+            "name": "subjectMatriculation.fieldOfStudy",
             "reason": "Each field of study must only appear in one SubjectMatriculation."
           }
         ]
@@ -711,7 +711,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "SubjectMatriculation.semesters",
+            "name": "subjectMatriculation.semesters",
             "reason": "Each semester must only appear once in SubjectMatriculation.semesters."
           }
         ]
