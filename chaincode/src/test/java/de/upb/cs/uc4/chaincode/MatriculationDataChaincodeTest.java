@@ -113,6 +113,8 @@ public final class MatriculationDataChaincodeTest {
             Context ctx = mock(Context.class);
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
+            when(stub.getStringState(null)).thenThrow(new RuntimeException());
+            when(stub.getStringState("")).thenThrow(new RuntimeException());
             if (!setup.isEmpty())
                 when(stub.getStringState(setup.get(0).getContent()))
                         .thenReturn(setup.get(1).getContent());
@@ -158,6 +160,8 @@ public final class MatriculationDataChaincodeTest {
             Context ctx = mock(Context.class);
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
+            when(stub.getStringState(null)).thenThrow(new RuntimeException());
+            when(stub.getStringState("")).thenThrow(new RuntimeException());
             if (!setup.isEmpty()) {
                 when(stub.getStringState(setup.get(0).getContent()))
                         .thenReturn(setup.get(1).getContent());
@@ -241,6 +245,8 @@ public final class MatriculationDataChaincodeTest {
             Context ctx = mock(Context.class);
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
+            when(stub.getStringState(null)).thenThrow(new RuntimeException());
+            when(stub.getStringState("")).thenThrow(new RuntimeException());
             if (!setup.isEmpty()) {
                 when(stub.getStringState(setup.get(0).getContent()))
                         .thenReturn(setup.get(1).getContent());

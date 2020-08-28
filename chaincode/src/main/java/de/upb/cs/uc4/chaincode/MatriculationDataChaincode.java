@@ -47,13 +47,6 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .title("The given parameter does not conform to the specified format."));
         }
 
-        String result = stub.getStringState(matriculationData.getMatriculationId());
-        if (result != null && !result.equals("")) {
-            return GSON.toJson(new GenericError()
-                    .type("hl: conflict")
-                    .title("There is already a MatriculationData for the given matriculationId."));
-        }
-
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(matriculationData);
 
         if (!invalidParams.isEmpty()) {
@@ -63,7 +56,14 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .invalidParams(invalidParams));
         }
 
-        stub.putStringState(matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
+        String result = stub.getStringState(matriculationData.getMatriculationId());
+        if (result != null && !result.equals("")) {
+            return GSON.toJson(new GenericError()
+                    .type("hl: conflict")
+                    .title("There is already a MatriculationData for the given matriculationId."));
+        }
+
+        stub.putStringState(matriculationData.getMatriculationId(),GSON.toJson(matriculationData));
         return "";
     }
 
