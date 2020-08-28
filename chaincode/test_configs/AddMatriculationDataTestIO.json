@@ -369,7 +369,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "subjectMatriculation.semesters",
+            "name": "matriculationStatus[0].semesters",
             "reason": "Semesters must not be empty."
           }
         ]
@@ -404,7 +404,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "subjectMatriculation.fieldOfStudy",
+            "name": "matriculationStatus[0].fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
@@ -439,7 +439,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "subjectMatriculation.fieldOfStudy",
+            "name": "matriculationStatus[0].fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
@@ -474,7 +474,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "matriculationStatus.semesters",
+            "name": "matriculationStatus[0].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]

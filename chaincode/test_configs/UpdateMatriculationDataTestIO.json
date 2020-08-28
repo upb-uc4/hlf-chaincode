@@ -400,7 +400,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "subjectMatriculation.semesters",
+            "name": "matriculationStatus[0].semesters",
             "reason": "Semesters must not be empty."
           }
         ]
@@ -452,7 +452,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "subjectMatriculation.fieldOfStudy",
+            "name": "matriculationStatus[0].fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
@@ -504,7 +504,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "subjectMatriculation.fieldOfStudy",
+            "name": "matriculationStatus[0].fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
@@ -514,7 +514,7 @@
 
 
   {
-    "name": "updateFirstSemesterBeforeBirthDateMatriculationData",
+    "name": "updateSemesterBeforeBirthDateMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": [
       "0000001",
@@ -556,8 +556,8 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "matriculationStatus.semesters",
-            "reason": "First semester must not be earlier than birth date."
+            "name": "matriculationStatus[0].semesters[0]",
+            "reason": "Semester must not be earlier than birth date."
           }
         ]
       }
@@ -615,7 +615,19 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "matriculationStatus.semesters",
+            "name": "matriculationStatus[0].semesters[0]",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          },
+          {
+            "name": "matriculationStatus[0].semesters[1]",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          },
+          {
+            "name": "matriculationStatus[1].semesters[0]",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          },
+          {
+            "name": "matriculationStatus[1].semesters[1]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]
@@ -667,7 +679,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "matriculationStatus.semesters",
+            "name": "matriculationStatus[0].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]
@@ -725,8 +737,8 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "subjectMatriculation.fieldOfStudy",
-            "reason": "Each field of study must only appear in one SubjectMatriculation."
+            "name": "matriculationStatus[1].fieldOfStudy",
+            "reason": "Each field of study must only appear in one matriculationStatus."
           }
         ]
       }
@@ -777,8 +789,8 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "subjectMatriculation.semesters",
-            "reason": "Each semester must only appear once in SubjectMatriculation.semesters."
+            "name": "matriculationStatus[0].semesters[2]",
+            "reason": "Each semester must only appear once in matriculationStatus.semesters."
           }
         ]
       }
@@ -881,7 +893,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams":[
           {
-            "name": "matriculationStatus.semesters",
+            "name": "matriculationStatus[0].semesters[1]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]

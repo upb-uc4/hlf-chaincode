@@ -262,49 +262,55 @@ public class MatriculationDataChaincode implements ContractInterface {
 
             ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
 
-            for (SubjectMatriculation subMat: matriculationStatus) {
+            for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
+
+                SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
                 if (subMat.getFieldOfStudy() == null) {
                     addAbsent(list, new InvalidParameter()
-                            .name("subjectMatriculation.fieldOfStudy")
+                            .name("matriculationStatus["+subMatIndex+"].fieldOfStudy")
                             .reason("Field of study must be one of the specified values."));
                 } else {
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
                         addAbsent(list, new InvalidParameter()
-                                .name("subjectMatriculation.fieldOfStudy")
-                                .reason("Each field of study must only appear in one SubjectMatriculation."));
+                                .name("matriculationStatus["+subMatIndex+"].fieldOfStudy")
+                                .reason("Each field of study must only appear in one matriculationStatus."));
                     } else
                         existingFields.add(subMat.getFieldOfStudy());
                 }
 
-                if (subMat.getSemesters() == null || subMat.getSemesters().isEmpty()) {
+                List<String> semesters = subMat.getSemesters();
+                if (semesters == null || semesters.isEmpty()) {
                     addAbsent(list, new InvalidParameter()
-                            .name("subjectMatriculation.semesters")
+                            .name("matriculationStatus["+subMatIndex+"].semesters")
                             .reason("Semesters must not be empty."));
                 }
-                ArrayList<String> existingSemesters = new ArrayList<>();
 
-                for (String semester: subMat.getSemesters()) {
+                ArrayList<String> existingSemesters = new ArrayList<>();
+                for (int semesterIndex=0; semesterIndex<semesters.size(); semesterIndex++) {
+
+                    String semester = semesters.get(semesterIndex);
+
                     if (semesterFormatValid(semester) && matriculationData.getBirthDate() != null) {
 
                         int semesterYear = Integer.parseInt(semester.substring(2, 6));
                         if (semesterYear < matriculationData.getBirthDate().getYear()) {
                             addAbsent(list, new InvalidParameter()
-                                    .name("matriculationStatus.semesters")
-                                    .reason("First semester must not be earlier than birth date."));
+                                    .name("matriculationStatus["+subMatIndex+"].semesters["+semesterIndex+"]")
+                                    .reason("Semester must not be earlier than birth date."));
                         }
 
                         if (existingSemesters.contains(semester)) {
                             addAbsent(list, new InvalidParameter()
-                                    .name("subjectMatriculation.semesters")
-                                    .reason("Each semester must only appear once in SubjectMatriculation.semesters."));
+                                    .name("matriculationStatus["+subMatIndex+"].semesters["+semesterIndex+"]")
+                                    .reason("Each semester must only appear once in matriculationStatus.semesters."));
                         } else
                             existingSemesters.add(semester);
                     }
 
                     if (!semesterFormatValid(semester)) {
                         addAbsent(list, new InvalidParameter()
-                                .name("matriculationStatus.semesters")
+                                .name("matriculationStatus["+subMatIndex+"].semesters["+semesterIndex+"]")
                                 .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
                     }
                 }
