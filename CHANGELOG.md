@@ -1,3 +1,24 @@
+# [v0.7.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.6.0.1...v0.7.0) (2020-08-31)
+
+## Feature
+-
+
+## Bug Fixes
+-
+
+## Refactor
+- add transaction comments
+- establish consistency among invalid parameter error reasons
+- establish consistency for code style (if statements)
+- establish consistency between variable names and java naming convention
+- remove unused logger
+- remove unnecessary conditions
+
+
+## Usability
+-
+
+
 # [v0.6.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.5.0...v0.6.0) (2020-08-19)
 
 ## Feature
