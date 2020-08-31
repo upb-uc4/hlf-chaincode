@@ -1,7 +1,7 @@
 [
   {
     "name": "TestCollection",
-    "policy": "OR('org1MSP.member','org2MSP.member')",
+    "policy": "OR('org1MSP.member','org2MSP.member','SampleOrg.member')",
     "requiredPeerCount": 0,
     "maxPeerCount": 3,
     "blockToLive": 0,
