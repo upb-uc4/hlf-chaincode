@@ -226,8 +226,7 @@ public final class MatriculationDataChaincodeTest {
             contract.addEntryToMatriculationData(
                     ctx,
                     input.get(0).getContent(),
-                    input.get(1).getContent(),
-                    input.get(2).getContent());
+                    input.get(1).getContent());
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue(
                     matriculationData.getMatriculationId(),
@@ -254,8 +253,7 @@ public final class MatriculationDataChaincodeTest {
             String result = contract.addEntryToMatriculationData(
                     ctx,
                     input.get(0).getContent(),
-                    input.get(1).getContent(),
-                    input.get(2).getContent());
+                    input.get(1).getContent());
             assertThat(result).isEqualTo(compare.get(0).getContent());
         };
     }

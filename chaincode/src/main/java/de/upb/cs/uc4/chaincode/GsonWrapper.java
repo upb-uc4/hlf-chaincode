@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode;
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import de.upb.cs.uc4.chaincode.model.Dummy;
+import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.threeten.bp.LocalDate;
@@ -12,6 +13,7 @@ import org.threeten.bp.format.DateTimeParseException;
 import java.io.FileReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 public class GsonWrapper {
 
@@ -112,5 +114,9 @@ public class GsonWrapper {
 
     public <T> T fromJson(Reader reader, Type type) {
         return gson.fromJson(reader, type);
+    }
+
+    public <T> T fromJson(String json, Type type) {
+        return gson.fromJson(json, type);
     }
 }

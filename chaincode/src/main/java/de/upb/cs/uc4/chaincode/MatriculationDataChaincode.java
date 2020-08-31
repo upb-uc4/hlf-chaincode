@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
+import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.model.*;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
@@ -8,6 +9,7 @@ import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -140,40 +142,14 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Adds a semester entry to a fieldOfStudy of MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param matriculationId matriculationId of the MatriculationData to add the entry to
-     * @param fieldOfStudy fieldOfStudy within the MatriculationData to add the entry to
-     *                     (must not necessarily already exist when calling this transaction)
-     * @param semester the semester entry to add to the fieldOfStudy within the MatriculationData
+     * TODO add param
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
     public String addEntryToMatriculationData (
             final Context ctx,
             final String matriculationId,
-            final String fieldOfStudy,
-            final String semester) {
-
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        SubjectMatriculation.FieldOfStudyEnum fieldOfStudyValue = SubjectMatriculation.FieldOfStudyEnum.fromValue(fieldOfStudy);
-
-        if (fieldOfStudyValue == null) {
-            invalidParams.add(new InvalidParameter()
-                    .name("fieldOfStudy")
-                    .reason("The given value is not accepted."));
-        }
-
-        if (!semesterFormatValid(semester)) {
-            invalidParams.add(new InvalidParameter()
-                    .name("semester")
-                    .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
-        }
-
-        if (!invalidParams.isEmpty()) {
-            return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable field")
-                    .title("The following fields in the given parameters do not conform to the specified format.")
-                    .invalidParams(invalidParams));
-        }
+            final String jsonSubjectMatriculation) {
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -195,24 +171,39 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .title("The state on the ledger does not conform to the specified format."));
         }
 
-        for (SubjectMatriculation item: matriculationData.getMatriculationStatus()) {
-            if (item.getFieldOfStudy() == fieldOfStudyValue) {
-                for (String existingSemester: item.getSemesters()) {
-                    if (existingSemester.equals(semester))
-                        return "";
-                }
-                item.addsemestersItem(semester);
-                stub.delState(matriculationData.getMatriculationId());
-                stub.putStringState(matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
-                return "";
-            }
+        Type listType = new TypeToken<ArrayList<MatriculationData>>(){}.getType();
+        ArrayList<SubjectMatriculation> matriculationStatus = GSON.fromJson(jsonSubjectMatriculation, listType);
+
+        ArrayList<InvalidParameter> invalidParams = getErrorForSubjectMatriculationList(matriculationStatus);
+
+        if (!invalidParams.isEmpty()) {
+            return GSON.toJson(new DetailedError()
+                    .type("hl: unprocessable field")
+                    .title("The following fields in the given parameters do not conform to the specified format.")
+                    .invalidParams(invalidParams));
         }
 
-        matriculationData.addMatriculationStatusItem(new SubjectMatriculation()
-                .fieldOfStudy(fieldOfStudyValue)
-                .semesters(new ArrayList<String>()
-                {{add(semester);}})
-        );
+        // TODO move test for existence into SubjectMatriculation.addSemestersItem
+       for (SubjectMatriculation newItem: matriculationStatus) {
+           boolean exists = false;
+            for (SubjectMatriculation item : matriculationData.getMatriculationStatus()) {
+                if (item.getFieldOfStudy() == newItem.getFieldOfStudy()) {
+                    exists = true;
+                    for (String newSemester : newItem.getSemesters()) {
+                        if (item.getSemesters().contains(newSemester))
+                            continue;
+                        item.addsemestersItem(newSemester);
+                    }
+                }
+            }
+            if (!exists) {
+                SubjectMatriculation item = new SubjectMatriculation().fieldOfStudy(newItem.getFieldOfStudy());
+                matriculationData.getMatriculationStatus().add(item);
+                for (String newSemester : newItem.getSemesters()) {
+                    item.addsemestersItem(newSemester);
+                }
+            }
+        }
 
         stub.delState(matriculationData.getMatriculationId());
         stub.putStringState(matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
@@ -253,10 +244,28 @@ public class MatriculationDataChaincode implements ContractInterface {
         }
 
         List<SubjectMatriculation> matriculationStatus = matriculationData.getMatriculationStatus();
+        list.addAll(getErrorForSubjectMatriculationList(
+                matriculationStatus,
+                matriculationData,
+                "matriculationStatus"));
+        return list;
+    }
+
+    private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
+            List<SubjectMatriculation> matriculationStatus) {
+        return getErrorForSubjectMatriculationList(matriculationStatus, null, "");
+    }
+
+    private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
+            List<SubjectMatriculation> matriculationStatus,
+            MatriculationData matriculationData,
+            String prefix) { // TODO prefix param
+
+        ArrayList<InvalidParameter> list = new ArrayList<>();
 
         if (matriculationStatus == null || matriculationStatus.isEmpty()) {
             addAbsent(list, new InvalidParameter()
-                    .name("matriculationStatus")
+                    .name(prefix)
                     .reason("Matriculation status must not be empty"));
         } else {
 
@@ -268,12 +277,12 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                 if (subMat.getFieldOfStudy() == null) {
                     addAbsent(list, new InvalidParameter()
-                            .name("matriculationStatus["+subMatIndex+"].fieldOfStudy")
+                            .name(prefix+"["+subMatIndex+"].fieldOfStudy")
                             .reason("Field of study must be one of the specified values."));
                 } else {
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
                         addAbsent(list, new InvalidParameter()
-                                .name("matriculationStatus["+subMatIndex+"].fieldOfStudy")
+                                .name(prefix+"["+subMatIndex+"].fieldOfStudy")
                                 .reason("Each field of study must only appear in one matriculationStatus."));
                     } else
                         existingFields.add(subMat.getFieldOfStudy());
@@ -282,7 +291,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                 List<String> semesters = subMat.getSemesters();
                 if (semesters == null || semesters.isEmpty()) {
                     addAbsent(list, new InvalidParameter()
-                            .name("matriculationStatus["+subMatIndex+"].semesters")
+                            .name(prefix+"["+subMatIndex+"].semesters")
                             .reason("Semesters must not be empty."));
                 }
 
@@ -296,13 +305,13 @@ public class MatriculationDataChaincode implements ContractInterface {
                         int semesterYear = Integer.parseInt(semester.substring(2, 6));
                         if (semesterYear < matriculationData.getBirthDate().getYear()) {
                             addAbsent(list, new InvalidParameter()
-                                    .name("matriculationStatus["+subMatIndex+"].semesters["+semesterIndex+"]")
+                                    .name(prefix+"["+subMatIndex+"].semesters["+semesterIndex+"]")
                                     .reason("Semester must not be earlier than birth date."));
                         }
 
                         if (existingSemesters.contains(semester)) {
                             addAbsent(list, new InvalidParameter()
-                                    .name("matriculationStatus["+subMatIndex+"].semesters["+semesterIndex+"]")
+                                    .name(prefix+"["+subMatIndex+"].semesters["+semesterIndex+"]")
                                     .reason("Each semester must only appear once in matriculationStatus.semesters."));
                         } else
                             existingSemesters.add(semester);
@@ -310,13 +319,12 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                     if (!semesterFormatValid(semester)) {
                         addAbsent(list, new InvalidParameter()
-                                .name("matriculationStatus["+subMatIndex+"].semesters["+semesterIndex+"]")
+                                .name(prefix+"["+subMatIndex+"].semesters["+semesterIndex+"]")
                                 .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
                     }
                 }
             }
         }
-
         return list;
     }
 

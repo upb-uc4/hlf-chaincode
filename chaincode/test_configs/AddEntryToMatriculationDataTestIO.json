@@ -21,8 +21,14 @@
     ],
     "input": [
       "0000001",
-      "Computer Science",
-      "SS2019"
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
     ],
     "compare": [
       {
@@ -67,8 +73,14 @@
     ],
     "input": [
       "0000001",
-      "Philosophy",
-      "SS2019"
+      [
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
     ],
     "compare": [
       {
@@ -118,8 +130,14 @@
     ],
     "input": [
       "0000001",
-      "Computer Science",
-      "WS2018/19"
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
     ],
     "compare": [
       {
@@ -163,8 +181,14 @@
     ],
     "input": [
       "0000001",
-      "something invalid",
-      "WS2018/19"
+      [
+        {
+          "fieldOfStudy": "something invalid",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
     ],
     "compare": [
       {
@@ -204,8 +228,14 @@
     ],
     "input": [
       "0000001",
-      "Computer Science",
-      "WS2018/17"
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/17"
+          ]
+        }
+      ]
     ],
     "compare": [
       {
@@ -245,8 +275,14 @@
     ],
     "input": [
       "0000002",
-      "Computer Science",
-      "WS2018/19"
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
     ],
     "compare": [
       {
@@ -267,8 +303,12 @@
     ],
     "input": [
       "0000001",
-      "Computer Science",
-      "WS2018/19"
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": "WS2018/19"
+        }
+      ]
     ],
     "compare": [
       {
