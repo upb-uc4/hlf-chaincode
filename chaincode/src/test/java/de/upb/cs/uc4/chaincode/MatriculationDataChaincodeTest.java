@@ -17,10 +17,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.contentOf;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -114,7 +115,7 @@ public final class MatriculationDataChaincodeTest {
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
             if (!setup.isEmpty())
-                when(stub.getStringState(setup.get(0).getContent()))
+                when(stub.getPrivateDataUTF8(contract.getCollectionName(), setup.get(0).getContent()))
                         .thenReturn(setup.get(1).getContent());
             MatriculationData matriculationData = gson.fromJson(
                     contract.getMatriculationData(ctx, input.get(0).getContent()),
@@ -138,13 +139,20 @@ public final class MatriculationDataChaincodeTest {
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
             if (!setup.isEmpty()) {
-                stub.putStringState(setup.get(0).getContent(), setup.get(1).getContent());
+                stub.putPrivateData(contract.getCollectionName(), setup.get(0).getContent(), setup.get(1).getContent());
             }
-            contract.addMatriculationData(ctx, input.get(0).getContent());
+            stub.setTransient(
+                    input.stream().collect(
+                            Collectors.toMap(
+                                    entry -> String.valueOf(input.indexOf(entry)),
+                                    entry -> entry.getContent().getBytes())));
+            contract.addMatriculationData(ctx);
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
-            assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue(
-                    matriculationData.getMatriculationId(),
-                    compare.get(0).getContent()));
+            assertThat(
+                    new String(stub.getPrivateData(
+                            contract.getCollectionName(),
+                            matriculationData.getMatriculationId())))
+                    .isEqualTo(compare.get(0).getContent());
         };
     }
 
@@ -159,10 +167,15 @@ public final class MatriculationDataChaincodeTest {
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
             if (!setup.isEmpty()) {
-                when(stub.getStringState(setup.get(0).getContent()))
+                when(stub.getPrivateDataUTF8(contract.getCollectionName(), setup.get(0).getContent()))
                         .thenReturn(setup.get(1).getContent());
             }
-            String result = contract.addMatriculationData(ctx, input.get(0).getContent());
+            when(stub.getTransient()).thenReturn(
+                    input.stream().collect(
+                            Collectors.toMap(
+                                    entry -> String.valueOf(input.indexOf(entry)),
+                                    entry -> entry.getContent().getBytes())));
+            String result = contract.addMatriculationData(ctx);
             assertThat(result).isEqualTo(compare.get(0).getContent());
         };
     }
@@ -178,12 +191,19 @@ public final class MatriculationDataChaincodeTest {
             Context ctx = mock(Context.class);
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
-            stub.putStringState(setup.get(0).getContent(),setup.get(1).getContent());
-            contract.updateMatriculationData(ctx, input.get(0).getContent());
+            stub.putPrivateData(contract.getCollectionName(), setup.get(0).getContent(), setup.get(1).getContent());
+            stub.setTransient(
+                    input.stream().collect(
+                            Collectors.toMap(
+                                    entry -> String.valueOf(input.indexOf(entry)),
+                                    entry -> entry.getContent().getBytes())));
+            contract.updateMatriculationData(ctx);
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
-            assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue(
-                    matriculationData.getMatriculationId(),
-                    compare.get(0).getContent()));
+            assertThat(
+                    new String(stub.getPrivateData(
+                            contract.getCollectionName(),
+                            matriculationData.getMatriculationId())))
+                    .isEqualTo(compare.get(0).getContent());
         };
 
     }
@@ -198,8 +218,13 @@ public final class MatriculationDataChaincodeTest {
             Context ctx = mock(Context.class);
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
-            stub.putStringState(setup.get(0).getContent(),setup.get(1).getContent());
-            String result = contract.updateMatriculationData(ctx, input.get(0).getContent());
+            stub.putPrivateData(contract.getCollectionName(), setup.get(0).getContent(), setup.get(1).getContent());
+            stub.setTransient(
+                    input.stream().collect(
+                            Collectors.toMap(
+                                    entry -> String.valueOf(input.indexOf(entry)),
+                                    entry -> entry.getContent().getBytes())));
+            String result = contract.updateMatriculationData(ctx);
 
             assertThat(result).isEqualTo(compare.get(0).getContent());
         };
@@ -217,7 +242,7 @@ public final class MatriculationDataChaincodeTest {
             MockChaincodeStub stub = new MockChaincodeStub();
             when(ctx.getStub()).thenReturn(stub);
             if (!setup.isEmpty()) {
-                stub.putStringState(setup.get(0).getContent(), setup.get(1).getContent());
+                stub.putPrivateData(contract.getCollectionName(), setup.get(0).getContent(), setup.get(1).getContent());
             }
             contract.addEntryToMatriculationData(
                     ctx,
@@ -225,9 +250,11 @@ public final class MatriculationDataChaincodeTest {
                     input.get(1).getContent(),
                     input.get(2).getContent());
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
-            assertThat(stub.putStates.get(0)).isEqualTo(new MockKeyValue(
-                    matriculationData.getMatriculationId(),
-                    compare.get(0).getContent()));
+            assertThat(
+                    new String(stub.getPrivateData(
+                            contract.getCollectionName(),
+                            matriculationData.getMatriculationId())))
+                    .isEqualTo(compare.get(0).getContent());
         };
     }
 
@@ -242,7 +269,7 @@ public final class MatriculationDataChaincodeTest {
             ChaincodeStub stub = mock(ChaincodeStub.class);
             when(ctx.getStub()).thenReturn(stub);
             if (!setup.isEmpty()) {
-                when(stub.getStringState(setup.get(0).getContent()))
+                when(stub.getPrivateDataUTF8(contract.getCollectionName(), setup.get(0).getContent()))
                         .thenReturn(setup.get(1).getContent());
             }
             String result = contract.addEntryToMatriculationData(

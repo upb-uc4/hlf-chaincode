@@ -9,9 +9,9 @@ import java.util.Objects;
 final public class MockKeyValue implements KeyValue {
 
     private final String key;
-    private final String value;
+    private final byte[] value;
 
-    public MockKeyValue(final String key, final String value) {
+    public MockKeyValue(final String key, final byte[] value) {
         super();
         this.key = key;
         this.value = value;
@@ -24,12 +24,12 @@ final public class MockKeyValue implements KeyValue {
 
     @Override
     public String getStringValue() {
-        return this.value;
+        return this.value.toString();
     }
 
     @Override
     public byte[] getValue() {
-        return this.value.getBytes();
+        return this.value;
     }
 
     @Override
@@ -44,7 +44,7 @@ final public class MockKeyValue implements KeyValue {
         GsonWrapper gson = new GsonWrapper();
         return Objects.equals(this.key, other.key) &&
                 Objects.equals(
-                        gson.fromJson(this.value, MatriculationData.class),
-                        gson.fromJson(other.value, MatriculationData.class));
+                        gson.fromJson(this.value.toString(), MatriculationData.class),
+                        gson.fromJson(other.value.toString(), MatriculationData.class));
     }
 }

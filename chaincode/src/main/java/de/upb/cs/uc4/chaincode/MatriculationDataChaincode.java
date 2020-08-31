@@ -27,6 +27,10 @@ public class MatriculationDataChaincode implements ContractInterface {
     // setup gson (de-)serializer capable of (de-)serializing dates
     private static final GsonWrapper gson = new GsonWrapper();
 
+    public String getCollectionName() {
+        return collectionName;
+    }
+
     @Transaction()
     public void initLedger(final Context ctx) {
 
@@ -39,13 +43,15 @@ public class MatriculationDataChaincode implements ContractInterface {
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
-    public String addMatriculationData(final Context ctx) {//, final String jsonMatriculationData) { TODO
+    public String addMatriculationData(final Context ctx) {
         _logger.info("immatriculateMatriculationData");
 
         ChaincodeStub stub = ctx.getStub();
-        MatriculationData matriculationData;
 
+        // read transient args
         String jsonMatriculationData = new String(stub.getTransient().get("0"));
+
+        MatriculationData matriculationData;
         try {
             matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
@@ -75,9 +81,12 @@ public class MatriculationDataChaincode implements ContractInterface {
     }
 
     @Transaction()
-    public String updateMatriculationData(final Context ctx, final String jsonMatriculationData) {
+    public String updateMatriculationData(final Context ctx) {
 
         ChaincodeStub stub = ctx.getStub();
+
+        // read transient args
+        String jsonMatriculationData = new String(stub.getTransient().get("0"));
 
         MatriculationData updatedMatriculationData;
         try {
