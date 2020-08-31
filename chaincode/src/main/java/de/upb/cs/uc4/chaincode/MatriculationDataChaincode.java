@@ -1,8 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.model.*;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -21,9 +19,8 @@ import java.util.regex.Pattern;
 @Default
 public class MatriculationDataChaincode implements ContractInterface {
 
-    private static Log _logger = LogFactory.getLog(MatriculationDataChaincode.class);
     // setup gson (de-)serializer capable of (de-)serializing dates
-    private static final GsonWrapper gson = new GsonWrapper();
+    private static final GsonWrapper GSON = new GsonWrapper();
 
     @Transaction()
     public void initLedger(final Context ctx) {
@@ -32,29 +29,28 @@ public class MatriculationDataChaincode implements ContractInterface {
 
     /**
      * Adds MatriculationData to the ledger.
-     * @param ctx
+     * @param ctx transaction context providing access to ChaincodeStub etc.
      * @param jsonMatriculationData json-representation of a MatriculationData to be added
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
     public String addMatriculationData(final Context ctx, final String jsonMatriculationData) {
-        _logger.info("immatriculateMatriculationData");
 
         ChaincodeStub stub = ctx.getStub();
         MatriculationData matriculationData;
 
         try {
-            matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
+            matriculationData = GSON.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            return gson.toJson(new GenericError()
+            return GSON.toJson(new GenericError()
                     .type("hl: unprocessable entity")
                     .title("The given parameter does not conform to the specified format."));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(matriculationData);
 
-        if(!invalidParams.isEmpty()){
-            return gson.toJson(new DetailedError()
+        if (!invalidParams.isEmpty()) {
+            return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable field")
                     .title("The following fields in the given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
@@ -62,15 +58,21 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         String result = stub.getStringState(matriculationData.getMatriculationId());
         if (result != null && !result.equals("")) {
-            return gson.toJson(new GenericError()
+            return GSON.toJson(new GenericError()
                     .type("hl: conflict")
                     .title("There is already a MatriculationData for the given matriculationId."));
         }
 
-        stub.putStringState(matriculationData.getMatriculationId(),gson.toJson(matriculationData));
+        stub.putStringState(matriculationData.getMatriculationId(),GSON.toJson(matriculationData));
         return "";
     }
 
+    /**
+     * Updates MatriculationData on the ledger.
+     * @param ctx transaction context providing access to ChaincodeStub etc.
+     * @param jsonMatriculationData json-representation of the new MatriculationData to replace the old with
+     * @return Empty string on success, serialized error on failure
+     */
     @Transaction()
     public String updateMatriculationData(final Context ctx, final String jsonMatriculationData) {
 
@@ -78,33 +80,41 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         MatriculationData updatedMatriculationData;
         try {
-            updatedMatriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
+            updatedMatriculationData = GSON.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-        return gson.toJson(new GenericError()
+        return GSON.toJson(new GenericError()
                 .type("hl: unprocessable entity")
                 .title("The given parameter does not conform to the specified format."));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(updatedMatriculationData);
 
-        if (!invalidParams.isEmpty())
-            return gson.toJson(new DetailedError()
+        if (!invalidParams.isEmpty()) {
+            return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable field")
                     .title("The following fields in the given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
+        }
 
         String MatriculationDataOnLedger = stub.getStringState(updatedMatriculationData.getMatriculationId());
 
-        if(MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals(""))
-            return gson.toJson(new GenericError()
+        if (MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals("")) {
+            return GSON.toJson(new GenericError()
                     .type("hl: not found")
                     .title("There is no MatriculationData for the given matriculationId."));
+        }
 
         stub.delState(updatedMatriculationData.getMatriculationId());
-        stub.putStringState(updatedMatriculationData.getMatriculationId(), gson.toJson(updatedMatriculationData));
+        stub.putStringState(updatedMatriculationData.getMatriculationId(), GSON.toJson(updatedMatriculationData));
         return "";
     }
 
+    /**
+     * Gets MatriculationData from the ledger.
+     * @param ctx transaction context providing access to ChaincodeStub etc.
+     * @param matriculationId matriculationId of the MatriculationData to be returned
+     * @return Serialized MatriculationData on success, serialized error on failure
+     */
     @Transaction()
     public String getMatriculationData(final Context ctx, final String matriculationId) {
 
@@ -112,20 +122,30 @@ public class MatriculationDataChaincode implements ContractInterface {
         MatriculationData matriculationData;
 
         try {
-            matriculationData = gson.fromJson(stub.getStringState(matriculationId), MatriculationData.class);
+            matriculationData = GSON.fromJson(stub.getStringState(matriculationId), MatriculationData.class);
         } catch(Exception e) {
-            return gson.toJson(new GenericError()
+            return GSON.toJson(new GenericError()
                     .type("hl: unprocessable ledger state")
                     .title("The state on the ledger does not conform to the specified format."));
         }
 
-        if(matriculationData == null || matriculationData.equals(""))
-            return gson.toJson(new DetailedError()
+        if (matriculationData == null) {
+            return GSON.toJson(new DetailedError()
                     .type("hl: not found")
                     .title("There is no MatriculationData for the given matriculationId."));
-        return gson.toJson(matriculationData);
+        }
+        return GSON.toJson(matriculationData);
     }
 
+    /**
+     * Adds a semester entry to a fieldOfStudy of MatriculationData on the ledger.
+     * @param ctx transaction context providing access to ChaincodeStub etc.
+     * @param matriculationId matriculationId of the MatriculationData to add the entry to
+     * @param fieldOfStudy fieldOfStudy within the MatriculationData to add the entry to
+     *                     (must not necessarily already exist when calling this transaction)
+     * @param semester the semester entry to add to the fieldOfStudy within the MatriculationData
+     * @return Empty string on success, serialized error on failure
+     */
     @Transaction()
     public String addEntryToMatriculationData (
             final Context ctx,
@@ -136,37 +156,41 @@ public class MatriculationDataChaincode implements ContractInterface {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         SubjectMatriculation.FieldOfStudyEnum fieldOfStudyValue = SubjectMatriculation.FieldOfStudyEnum.fromValue(fieldOfStudy);
 
-        if (fieldOfStudyValue == null)
+        if (fieldOfStudyValue == null) {
             invalidParams.add(new InvalidParameter()
                     .name("fieldOfStudy")
                     .reason("The given value is not accepted."));
+        }
 
-        if (!semesterFormatValid(semester))
+        if (!semesterFormatValid(semester)) {
             invalidParams.add(new InvalidParameter()
                     .name("semester")
                     .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
+        }
 
-        if (!invalidParams.isEmpty())
-            return gson.toJson(new DetailedError()
+        if (!invalidParams.isEmpty()) {
+            return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable field")
                     .title("The following fields in the given parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
+        }
 
         ChaincodeStub stub = ctx.getStub();
 
         String jsonMatriculationData = stub.getStringState(matriculationId);
 
-        if(jsonMatriculationData == null || jsonMatriculationData.equals(""))
-            return gson.toJson(new GenericError()
+        if (jsonMatriculationData == null || jsonMatriculationData.equals("")) {
+            return GSON.toJson(new GenericError()
                     .type("hl: not found")
                     .title("There is no MatriculationData for the given matriculationId."));
+        }
 
         MatriculationData matriculationData;
 
         try {
-            matriculationData = gson.fromJson(jsonMatriculationData, MatriculationData.class);
+            matriculationData = GSON.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            return gson.toJson(new GenericError()
+            return GSON.toJson(new GenericError()
                     .type("hl: unprocessable ledger state")
                     .title("The state on the ledger does not conform to the specified format."));
         }
@@ -179,7 +203,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                 }
                 item.addsemestersItem(semester);
                 stub.delState(matriculationData.getMatriculationId());
-                stub.putStringState(matriculationData.getMatriculationId(), gson.toJson(matriculationData));
+                stub.putStringState(matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
                 return "";
             }
         }
@@ -191,63 +215,73 @@ public class MatriculationDataChaincode implements ContractInterface {
         );
 
         stub.delState(matriculationData.getMatriculationId());
-        stub.putStringState(matriculationData.getMatriculationId(), gson.toJson(matriculationData));
+        stub.putStringState(matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
         return "";
     }
 
+    /**
+     * Returns a list of errors describing everything wrong with the given matriculationData
+     * @param matriculationData matriculationData to return errors for
+     * @return a list of all errors found for the given matriculationData
+     */
     private ArrayList<InvalidParameter> getErrorForMatriculationData(MatriculationData matriculationData) {
 
         ArrayList<InvalidParameter> list = new ArrayList<>();
 
-        if(matriculationData.getMatriculationId() == null || matriculationData.getMatriculationId().equals(""))
+        if(matriculationData.getMatriculationId() == null || matriculationData.getMatriculationId().equals("")) {
             addAbsent(list, new InvalidParameter()
                     .name("matriculationId")
-                    .reason("ID is empty"));
+                    .reason("ID must not be empty"));
+        }
 
-        if (matriculationData.getFirstName() == null || matriculationData.getFirstName().equals(""))
+        if (matriculationData.getFirstName() == null || matriculationData.getFirstName().equals("")) {
             addAbsent(list, new InvalidParameter()
                     .name("firstName")
                     .reason("First name must not be empty"));
+        }
 
-        if (matriculationData.getLastName() == null || matriculationData.getLastName().equals(""))
+        if (matriculationData.getLastName() == null || matriculationData.getLastName().equals("")) {
             addAbsent(list, new InvalidParameter()
                     .name("lastName")
                     .reason("Last name must not be empty"));
+        }
 
-        if (matriculationData.getBirthDate() == null)
+        if (matriculationData.getBirthDate() == null) {
             addAbsent(list, new InvalidParameter()
                     .name("birthDate")
                     .reason("Birth date must be the following format \"yyyy-mm-dd\""));
+        }
 
-        List<SubjectMatriculation> immatriculationStatus = matriculationData.getMatriculationStatus();
+        List<SubjectMatriculation> matriculationStatus = matriculationData.getMatriculationStatus();
 
-        if (immatriculationStatus == null || immatriculationStatus.size() == 0)
+        if (matriculationStatus == null || matriculationStatus.isEmpty()) {
             addAbsent(list, new InvalidParameter()
                     .name("matriculationStatus")
                     .reason("Matriculation status must not be empty"));
-        else {
+        } else {
 
             ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
 
-            for (SubjectMatriculation subMat: immatriculationStatus) {
+            for (SubjectMatriculation subMat: matriculationStatus) {
 
-                if (subMat.getFieldOfStudy() == null || subMat.getFieldOfStudy().equals(""))
+                if (subMat.getFieldOfStudy() == null) {
                     addAbsent(list, new InvalidParameter()
-                            .name("SubjectMatriculation.fieldOfStudy")
+                            .name("subjectMatriculation.fieldOfStudy")
                             .reason("Field of study must be one of the specified values."));
-                else
-                    if (existingFields.contains(subMat.getFieldOfStudy()))
+                } else {
+                    if (existingFields.contains(subMat.getFieldOfStudy())) {
                         addAbsent(list, new InvalidParameter()
-                                .name("SubjectMatriculation.fieldOfStudy")
-                                .reason("Each field of study should only appear in one SubjectMatriculation."));
-                    else
+                                .name("subjectMatriculation.fieldOfStudy")
+                                .reason("Each field of study must only appear in one SubjectMatriculation."));
+                    } else
                         existingFields.add(subMat.getFieldOfStudy());
+                }
 
-                if (subMat.getSemesters() == null || subMat.getSemesters().size() == 0)
+                if (subMat.getSemesters() == null || subMat.getSemesters().isEmpty()) {
                     addAbsent(list, new InvalidParameter()
-                            .name("SubjectMatriculation.semesters")
+                            .name("subjectMatriculation.semesters")
                             .reason("Semesters must not be empty."));
-
+                }
                 ArrayList<String> existingSemesters = new ArrayList<>();
 
                 for (String semester: subMat.getSemesters()) {
@@ -260,18 +294,19 @@ public class MatriculationDataChaincode implements ContractInterface {
                                     .reason("First semester must not be earlier than birth date."));
                         }
 
-                        if (existingSemesters.contains(semester))
+                        if (existingSemesters.contains(semester)) {
                             addAbsent(list, new InvalidParameter()
-                                    .name("SubjectMatriculation.semesters")
-                                    .reason("Each semester should only appear once in SubjectMatriculation.semesters."));
-                        else
+                                    .name("subjectMatriculation.semesters")
+                                    .reason("Each semester must only appear once in SubjectMatriculation.semesters."));
+                        } else
                             existingSemesters.add(semester);
                     }
 
-                    if (!semesterFormatValid(semester))
+                    if (!semesterFormatValid(semester)) {
                         addAbsent(list, new InvalidParameter()
                                 .name("matriculationStatus.semesters")
                                 .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
+                    }
                 }
             }
         }
@@ -279,6 +314,11 @@ public class MatriculationDataChaincode implements ContractInterface {
         return list;
     }
 
+    /**
+     * Checks the given semester string for validity.
+     * @param semester semester string to check for validity
+     * @return true if semester is a valid description of a semester, false otherwise
+     */
     public boolean semesterFormatValid(String semester) {
         Pattern pattern = Pattern.compile("^(WS\\d{4}/\\d{2}|SS\\d{4})");
         Matcher matcher = pattern.matcher(semester);
@@ -293,11 +333,13 @@ public class MatriculationDataChaincode implements ContractInterface {
         return true;
     }
 
+    /**
+     * Adds invParam to list, if list does not already contain the invParam. Otherwise does nothing.
+     * @param list list to add the invParam to
+     * @param invParam invParam to add to list
+     */
     private void addAbsent (List<InvalidParameter> list, InvalidParameter invParam) {
-        for (InvalidParameter param: list) {
-            if (param.equals(invParam))
-                return;
-        }
-        list.add(invParam);
+        if (!list.contains(invParam))
+            list.add(invParam);
     }
 }
