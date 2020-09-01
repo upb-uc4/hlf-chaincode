@@ -33,29 +33,35 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Adds MatriculationData to the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param jsonMatriculationData json-representation of a MatriculationData to be added
+     * @param newMatriculationData json-representation of a MatriculationData to be added
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
-    public String addMatriculationData(final Context ctx, final String jsonMatriculationData) {
+    public String addMatriculationData(final Context ctx, final String newMatriculationData) {
 
         ChaincodeStub stub = ctx.getStub();
         MatriculationData matriculationData;
 
         try {
-            matriculationData = GSON.fromJson(jsonMatriculationData, MatriculationData.class);
+            matriculationData = GSON.fromJson(newMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            return GSON.toJson(new GenericError()
+            return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
-                    .title("The given parameter does not conform to the specified format."));
+                    .title("The following parameters do not conform to the specified format.")
+                    .invalidParams(new ArrayList<InvalidParameter>() {{
+                        add(new InvalidParameter()
+                                .name("newMatriculationData")
+                                .reason("The given parameter cannot be parsed from json."));
+                    }}));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(matriculationData);
+        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(
+                matriculationData, "newMatriculationData");
 
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable field")
-                    .title("The following fields in the given parameters do not conform to the specified format.")
+                    .type("hl: unprocessable entity")
+                    .title("The following parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
         }
 
@@ -73,33 +79,39 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Updates MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param jsonMatriculationData json-representation of the new MatriculationData to replace the old with
+     * @param updatedMatriculationData json-representation of the new MatriculationData to replace the old with
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
-    public String updateMatriculationData(final Context ctx, final String jsonMatriculationData) {
+    public String updateMatriculationData(final Context ctx, final String updatedMatriculationData) {
 
         ChaincodeStub stub = ctx.getStub();
 
-        MatriculationData updatedMatriculationData;
+        MatriculationData matriculationData;
         try {
-            updatedMatriculationData = GSON.fromJson(jsonMatriculationData, MatriculationData.class);
+            matriculationData = GSON.fromJson(updatedMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-        return GSON.toJson(new GenericError()
-                .type("hl: unprocessable entity")
-                .title("The given parameter does not conform to the specified format."));
+            return GSON.toJson(new DetailedError()
+                    .type("hl: unprocessable entity")
+                    .title("The following parameters do not conform to the specified format.")
+                    .invalidParams(new ArrayList<InvalidParameter>() {{
+                        add(new InvalidParameter()
+                                .name("updatedMatriculationData")
+                                .reason("The given parameter cannot be parsed from json."));
+                    }}));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(updatedMatriculationData);
+        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(
+                matriculationData, "updatedMatriculationData");
 
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable field")
-                    .title("The following fields in the given parameters do not conform to the specified format.")
+                    .type("hl: unprocessable entity")
+                    .title("The following parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
         }
 
-        String MatriculationDataOnLedger = stub.getStringState(updatedMatriculationData.getMatriculationId());
+        String MatriculationDataOnLedger = stub.getStringState(matriculationData.getMatriculationId());
 
         if (MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals("")) {
             return GSON.toJson(new GenericError()
@@ -107,8 +119,8 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .title("There is no MatriculationData for the given matriculationId."));
         }
 
-        stub.delState(updatedMatriculationData.getMatriculationId());
-        stub.putStringState(updatedMatriculationData.getMatriculationId(), GSON.toJson(updatedMatriculationData));
+        stub.delState(matriculationData.getMatriculationId());
+        stub.putStringState(matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
         return "";
     }
 
@@ -144,14 +156,14 @@ public class MatriculationDataChaincode implements ContractInterface {
      * Adds a semester entry to a fieldOfStudy of MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
      * @param matriculationId matriculationId to add the matriculations to
-     * @param listOfSubjectMatriculation list of matriculations
+     * @param matriculations list of matriculations
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
     public String addEntriesToMatriculationData (
             final Context ctx,
             final String matriculationId,
-            final String listOfSubjectMatriculation) {
+            final String matriculations) {
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -176,25 +188,25 @@ public class MatriculationDataChaincode implements ContractInterface {
         Type listType = new TypeToken<ArrayList<SubjectMatriculation>>(){}.getType();
         ArrayList<SubjectMatriculation> matriculationStatus;
         try {
-            matriculationStatus = GSON.fromJson(listOfSubjectMatriculation, listType);
+            matriculationStatus = GSON.fromJson(matriculations, listType);
         } catch(Exception e) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable field")
-                    .title("The following fields in the given parameters do not conform to the specified format.")
+                    .type("hl: unprocessable entity")
+                    .title("The following parameters do not conform to the specified format.")
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
-                                .name("listOfSubjectMatriculation")
+                                .name("matriculations")
                                 .reason("The given parameter cannot be parsed from json."));
                     }}));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForSubjectMatriculationList(
-                matriculationStatus, matriculationData.getBirthDate(), "listOfSubjectMatriculation");
+                matriculationStatus, matriculationData.getBirthDate(), "matriculations");
 
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable field")
-                    .title("The following fields in the given parameters do not conform to the specified format.")
+                    .type("hl: unprocessable entity")
+                    .title("The following parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
         }
 
@@ -229,31 +241,33 @@ public class MatriculationDataChaincode implements ContractInterface {
      * @param matriculationData matriculationData to return errors for
      * @return a list of all errors found for the given matriculationData
      */
-    private ArrayList<InvalidParameter> getErrorForMatriculationData(MatriculationData matriculationData) {
+    private ArrayList<InvalidParameter> getErrorForMatriculationData(
+            MatriculationData matriculationData,
+            String prefix) {
 
         ArrayList<InvalidParameter> list = new ArrayList<>();
 
         if(matriculationData.getMatriculationId() == null || matriculationData.getMatriculationId().equals("")) {
             addAbsent(list, new InvalidParameter()
-                    .name("matriculationId")
+                    .name(prefix+"matriculationId")
                     .reason("ID must not be empty"));
         }
 
         if (matriculationData.getFirstName() == null || matriculationData.getFirstName().equals("")) {
             addAbsent(list, new InvalidParameter()
-                    .name("firstName")
+                    .name(prefix+"firstName")
                     .reason("First name must not be empty"));
         }
 
         if (matriculationData.getLastName() == null || matriculationData.getLastName().equals("")) {
             addAbsent(list, new InvalidParameter()
-                    .name("lastName")
+                    .name(prefix+"lastName")
                     .reason("Last name must not be empty"));
         }
 
         if (matriculationData.getBirthDate() == null) {
             addAbsent(list, new InvalidParameter()
-                    .name("birthDate")
+                    .name(prefix+"birthDate")
                     .reason("Birth date must be the following format \"yyyy-mm-dd\""));
         }
 
@@ -261,7 +275,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         list.addAll(getErrorForSubjectMatriculationList(
                 matriculationStatus,
                 matriculationData.getBirthDate(),
-                "matriculationStatus"));
+                prefix+"matriculationStatus"));
         return list;
     }
 
