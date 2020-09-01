@@ -192,11 +192,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "hl: unprocessable entity",
+        "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "listOfSubjectMatriculation[0].fieldOfStudy",
+            "name": "matriculations[0].fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
@@ -239,11 +239,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "hl: unprocessable entity",
+        "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "listOfSubjectMatriculation[0].semesters[0]",
+            "name": "matriculations[0].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]

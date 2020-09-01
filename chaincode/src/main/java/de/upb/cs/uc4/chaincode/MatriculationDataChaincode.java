@@ -245,6 +245,9 @@ public class MatriculationDataChaincode implements ContractInterface {
             MatriculationData matriculationData,
             String prefix) {
 
+        if (!prefix.equals(null))
+            prefix += ".";
+
         ArrayList<InvalidParameter> list = new ArrayList<>();
 
         if(matriculationData.getMatriculationId() == null || matriculationData.getMatriculationId().equals("")) {
