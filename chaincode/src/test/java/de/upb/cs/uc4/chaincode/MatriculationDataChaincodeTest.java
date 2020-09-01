@@ -223,7 +223,7 @@ public final class MatriculationDataChaincodeTest {
             if (!setup.isEmpty()) {
                 stub.putStringState(setup.get(0).getContent(), setup.get(1).getContent());
             }
-            contract.addEntryToMatriculationData(
+            contract.addEntriesToMatriculationData(
                     ctx,
                     input.get(0).getContent(),
                     input.get(1).getContent());
@@ -250,7 +250,7 @@ public final class MatriculationDataChaincodeTest {
                 when(stub.getStringState(setup.get(0).getContent()))
                         .thenReturn(setup.get(1).getContent());
             }
-            String result = contract.addEntryToMatriculationData(
+            String result = contract.addEntriesToMatriculationData(
                     ctx,
                     input.get(0).getContent(),
                     input.get(1).getContent());

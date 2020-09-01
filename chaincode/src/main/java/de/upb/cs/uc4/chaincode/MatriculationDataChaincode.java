@@ -8,6 +8,7 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.threeten.bp.LocalDate;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -142,14 +143,15 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Adds a semester entry to a fieldOfStudy of MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * TODO add param
+     * @param matriculationId matriculationId to add the matriculations to
+     * @param listOfSubjectMatriculation list of matriculations
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
-    public String addEntryToMatriculationData (
+    public String addEntriesToMatriculationData (
             final Context ctx,
             final String matriculationId,
-            final String jsonSubjectMatriculation) {
+            final String listOfSubjectMatriculation) {
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -171,10 +173,23 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .title("The state on the ledger does not conform to the specified format."));
         }
 
-        Type listType = new TypeToken<ArrayList<MatriculationData>>(){}.getType();
-        ArrayList<SubjectMatriculation> matriculationStatus = GSON.fromJson(jsonSubjectMatriculation, listType);
+        Type listType = new TypeToken<ArrayList<SubjectMatriculation>>(){}.getType();
+        ArrayList<SubjectMatriculation> matriculationStatus;
+        try {
+            matriculationStatus = GSON.fromJson(listOfSubjectMatriculation, listType);
+        } catch(Exception e) {
+            return GSON.toJson(new DetailedError()
+                    .type("hl: unprocessable field")
+                    .title("The following fields in the given parameters do not conform to the specified format.")
+                    .invalidParams(new ArrayList<InvalidParameter>() {{
+                        add(new InvalidParameter()
+                                .name("listOfSubjectMatriculation")
+                                .reason("The given parameter cannot be parsed from json."));
+                    }}));
+        }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForSubjectMatriculationList(matriculationStatus);
+        ArrayList<InvalidParameter> invalidParams = getErrorForSubjectMatriculationList(
+                matriculationStatus, matriculationData.getBirthDate(), "listOfSubjectMatriculation");
 
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
@@ -183,7 +198,6 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .invalidParams(invalidParams));
         }
 
-        // TODO move test for existence into SubjectMatriculation.addSemestersItem
        for (SubjectMatriculation newItem: matriculationStatus) {
            boolean exists = false;
             for (SubjectMatriculation item : matriculationData.getMatriculationStatus()) {
@@ -246,20 +260,21 @@ public class MatriculationDataChaincode implements ContractInterface {
         List<SubjectMatriculation> matriculationStatus = matriculationData.getMatriculationStatus();
         list.addAll(getErrorForSubjectMatriculationList(
                 matriculationStatus,
-                matriculationData,
+                matriculationData.getBirthDate(),
                 "matriculationStatus"));
         return list;
     }
 
     private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
-            List<SubjectMatriculation> matriculationStatus) {
-        return getErrorForSubjectMatriculationList(matriculationStatus, null, "");
+            List<SubjectMatriculation> matriculationStatus,
+            LocalDate birthDate) {
+        return getErrorForSubjectMatriculationList(matriculationStatus, birthDate, "");
     }
 
     private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
             List<SubjectMatriculation> matriculationStatus,
-            MatriculationData matriculationData,
-            String prefix) { // TODO prefix param
+            LocalDate birthDate,
+            String prefix) {
 
         ArrayList<InvalidParameter> list = new ArrayList<>();
 
@@ -300,10 +315,10 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                     String semester = semesters.get(semesterIndex);
 
-                    if (semesterFormatValid(semester) && matriculationData.getBirthDate() != null) {
+                    if (semesterFormatValid(semester) && birthDate != null) {
 
                         int semesterYear = Integer.parseInt(semester.substring(2, 6));
-                        if (semesterYear < matriculationData.getBirthDate().getYear()) {
+                        if (semesterYear < birthDate.getYear()) {
                             addAbsent(list, new InvalidParameter()
                                     .name(prefix+"["+subMatIndex+"].semesters["+semesterIndex+"]")
                                     .reason("Semester must not be earlier than birth date."));
