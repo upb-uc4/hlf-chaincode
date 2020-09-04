@@ -316,5 +316,43 @@
         "title": "The state on the ledger does not conform to the specified format."
       }
     ]
+  },
+
+  {
+    "name": "addUnprocessableMatriculationDataToEntry",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      "something unprocessable"
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable entity",
+        "title": "The following parameters do not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "matriculations",
+            "reason": "The given parameter cannot be parsed from json."
+          }
+        ]
+      }
+    ]
   }
 ]

@@ -13,6 +13,7 @@ import org.threeten.bp.LocalDate;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,10 +26,13 @@ public class MatriculationDataChaincode implements ContractInterface {
     // setup gson (de-)serializer capable of (de-)serializing dates
     private static final GsonWrapper GSON = new GsonWrapper();
 
+    /*
+    IntelliJ says this method is never used?!
     @Transaction()
     public void initLedger(final Context ctx) {
 
     }
+    **/
 
     /**
      * Adds MatriculationData to the ledger.
@@ -48,7 +52,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
                     .title("The following parameters do not conform to the specified format.")
-                    .invalidParams(new ArrayList<InvalidParameter>() {{
+                    .invalidParams(new ArrayList<>() {{
                         add(new InvalidParameter()
                                 .name("newMatriculationData")
                                 .reason("The given parameter cannot be parsed from json."));
@@ -94,7 +98,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
                     .title("The following parameters do not conform to the specified format.")
-                    .invalidParams(new ArrayList<InvalidParameter>() {{
+                    .invalidParams(new ArrayList<>() {{
                         add(new InvalidParameter()
                                 .name("updatedMatriculationData")
                                 .reason("The given parameter cannot be parsed from json."));
@@ -193,7 +197,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
                     .title("The following parameters do not conform to the specified format.")
-                    .invalidParams(new ArrayList<InvalidParameter>() {{
+                    .invalidParams(new ArrayList<>() {{
                         add(new InvalidParameter()
                                 .name("matriculations")
                                 .reason("The given parameter cannot be parsed from json."));
@@ -245,7 +249,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             MatriculationData matriculationData,
             String prefix) {
 
-        if (!prefix.equals(null))
+        if (!prefix.isEmpty())
             prefix += ".";
 
         ArrayList<InvalidParameter> list = new ArrayList<>();
@@ -282,11 +286,15 @@ public class MatriculationDataChaincode implements ContractInterface {
         return list;
     }
 
+    /*
+    Also never used?
+
     private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
             List<SubjectMatriculation> matriculationStatus,
             LocalDate birthDate) {
         return getErrorForSubjectMatriculationList(matriculationStatus, birthDate, "");
     }
+    */
 
     private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
             List<SubjectMatriculation> matriculationStatus,
@@ -328,7 +336,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                 }
 
                 ArrayList<String> existingSemesters = new ArrayList<>();
-                for (int semesterIndex=0; semesterIndex<semesters.size(); semesterIndex++) {
+                for (int semesterIndex = 0; semesterIndex< Objects.requireNonNull(semesters).size(); semesterIndex++) {
 
                     String semester = semesters.get(semesterIndex);
 
@@ -373,8 +381,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if ("WS".equals(semester.substring(0,2))) {
             int year1 = Integer.parseInt(semester.substring(4,6));
             int year2 = Integer.parseInt(semester.substring(7,9));
-            if (year2 != (year1 + 1) % 100)
-                return false;
+            return year2 == (year1 + 1) % 100;
         }
         return true;
     }
