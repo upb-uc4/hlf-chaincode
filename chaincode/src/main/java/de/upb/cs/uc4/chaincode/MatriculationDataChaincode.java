@@ -52,7 +52,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
                     .title("The following parameters do not conform to the specified format.")
-                    .invalidParams(new ArrayList<>() {{
+                    .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("newMatriculationData")
                                 .reason("The given parameter cannot be parsed from json."));
@@ -98,7 +98,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
                     .title("The following parameters do not conform to the specified format.")
-                    .invalidParams(new ArrayList<>() {{
+                    .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("updatedMatriculationData")
                                 .reason("The given parameter cannot be parsed from json."));
@@ -197,7 +197,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GSON.toJson(new DetailedError()
                     .type("hl: unprocessable entity")
                     .title("The following parameters do not conform to the specified format.")
-                    .invalidParams(new ArrayList<>() {{
+                    .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("matriculations")
                                 .reason("The given parameter cannot be parsed from json."));
