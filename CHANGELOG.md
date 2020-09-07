@@ -1,3 +1,19 @@
+# [v0.7.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.0...v0.7.1) (2020-09-7)
+
+## Feature
+- move sensitive data to transient data field [#17](https://github.com/upb-uc4/hlf-chaincode/pull/17)
+
+## Bug Fixes
+-
+
+## Refactor
+- refactor tests for private data transactions
+
+
+## Usability
+-
+
+
 # [v0.7.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.6.0.1...v0.7.0) (2020-08-31)
 
 ## Feature
