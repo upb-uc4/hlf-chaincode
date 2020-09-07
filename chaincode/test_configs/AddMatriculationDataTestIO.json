@@ -86,6 +86,77 @@
 
 
   {
+    "name": "addEmptyMatriculationIdMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "matriculationId",
+            "reason": "ID must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addOmittedMatriculationIdMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      {
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "hl: unprocessable field",
+        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "invalidParams": [
+          {
+            "name": "matriculationId",
+            "reason": "ID must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
     "name": "addEmptyFirstNameMatriculationData",
     "type": "addMatriculationData_FAILURE",
     "setup": [],
@@ -246,7 +317,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "SubjectMatriculation.semesters",
+            "name": "subjectMatriculation.semesters",
             "reason": "Semesters must not be empty."
           }
         ]
@@ -281,7 +352,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "SubjectMatriculation.fieldOfStudy",
+            "name": "subjectMatriculation.fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
@@ -316,7 +387,7 @@
         "title": "The following fields in the given parameters do not conform to the specified format.",
         "invalidParams": [
           {
-            "name": "SubjectMatriculation.fieldOfStudy",
+            "name": "subjectMatriculation.fieldOfStudy",
             "reason": "Field of study must be one of the specified values."
           }
         ]
