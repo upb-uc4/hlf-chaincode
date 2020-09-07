@@ -27,7 +27,8 @@ public final class MatriculationDataChaincodeTest {
 
     @TestFactory
     List<DynamicTest> createTests() {
-        File dir = new File("test_configs");
+        String testConfigDir = "src/test/resources/test_configs";
+        File dir = new File(testConfigDir);
         File[] testConfigs = dir.listFiles();
 
         GsonWrapper gson = new GsonWrapper();
@@ -149,9 +150,9 @@ public final class MatriculationDataChaincodeTest {
             contract.addMatriculationData(ctx);
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(
-                    new String(stub.getPrivateDataUTF8(
+                    stub.getPrivateDataUTF8(
                             contract.getCollectionName(),
-                            matriculationData.getMatriculationId())))
+                            matriculationData.getMatriculationId()))
                     .isEqualTo(compare.get(0).getContent());
         };
     }
@@ -202,9 +203,9 @@ public final class MatriculationDataChaincodeTest {
             contract.updateMatriculationData(ctx);
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(
-                    new String(stub.getPrivateDataUTF8(
+                    stub.getPrivateDataUTF8(
                             contract.getCollectionName(),
-                            matriculationData.getMatriculationId())))
+                            matriculationData.getMatriculationId()))
                     .isEqualTo(compare.get(0).getContent());
         };
 
@@ -252,9 +253,9 @@ public final class MatriculationDataChaincodeTest {
                     input.get(1).getContent());
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(
-                    new String(stub.getPrivateDataUTF8(
+                    stub.getPrivateDataUTF8(
                             contract.getCollectionName(),
-                            matriculationData.getMatriculationId())))
+                            matriculationData.getMatriculationId()))
                     .isEqualTo(compare.get(0).getContent());
         };
     }

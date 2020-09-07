@@ -296,16 +296,6 @@ public class MatriculationDataChaincode implements ContractInterface {
         return list;
     }
 
-    /*
-    Also never used?
-
-    private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
-            List<SubjectMatriculation> matriculationStatus,
-            LocalDate birthDate) {
-        return getErrorForSubjectMatriculationList(matriculationStatus, birthDate, "");
-    }
-    */
-
     private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
             List<SubjectMatriculation> matriculationStatus,
             LocalDate birthDate,
