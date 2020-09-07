@@ -306,7 +306,9 @@
       [
         {
           "fieldOfStudy": "Computer Science",
-          "semesters": "WS2018/19"
+          "semesters": [
+            "WS2018/19"
+          ]
         }
       ]
     ],
