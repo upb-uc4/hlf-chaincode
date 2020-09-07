@@ -8,7 +8,6 @@ import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
-import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
@@ -38,8 +37,9 @@ public class MatriculationDataChaincode implements ContractInterface {
 
     /**
      * Adds MatriculationData to the ledger.
+     * Transient params:
+     *     [0] matriculationData json representation of the new matriculation data
      * @param ctx
-     * TODO jsonMatriculationData json-representation of a MatriculationData to be added
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
