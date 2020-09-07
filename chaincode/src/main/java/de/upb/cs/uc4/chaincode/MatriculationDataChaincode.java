@@ -35,8 +35,8 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Adds MatriculationData to the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * Transient params:
-     *     [0] matriculationData json representation of the new matriculation data
+     *            Transient params:
+     *                [0] newMatriculationData json representation of the new matriculation data
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
@@ -79,6 +79,8 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Updates MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
+     *            Transient params:
+     *                [0] updatedMatriculationData json-representation of the new MatriculationData to replace the old with
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
@@ -338,8 +340,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if ("WS".equals(semester.substring(0,2))) {
             int year1 = Integer.parseInt(semester.substring(4,6));
             int year2 = Integer.parseInt(semester.substring(7,9));
-            if (year2 != (year1 + 1) % 100)
-                return false;
+            return year2 == (year1 + 1) % 100;
         }
         return true;
     }
