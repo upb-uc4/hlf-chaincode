@@ -50,7 +50,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             matriculationData = GSON.fromJson(newMatriculationData, MatriculationData.class);
         } catch(Exception e) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
+                    .type("HLUnprocessableEntity")
                     .title("The following parameters do not conform to the specified format.")
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
@@ -64,7 +64,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
+                    .type("HLUnprocessableEntity")
                     .title("The following parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
         }
@@ -72,7 +72,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         String result = stub.getStringState(matriculationData.getMatriculationId());
         if (result != null && !result.equals("")) {
             return GSON.toJson(new GenericError()
-                    .type("hl: conflict")
+                    .type("HLConflict")
                     .title("There is already a MatriculationData for the given matriculationId."));
         }
 
@@ -96,7 +96,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             matriculationData = GSON.fromJson(updatedMatriculationData, MatriculationData.class);
         } catch(Exception e) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
+                    .type("HLUnprocessableEntity")
                     .title("The following parameters do not conform to the specified format.")
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
@@ -110,7 +110,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
+                    .type("HLUnprocessableEntity")
                     .title("The following parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
         }
@@ -119,7 +119,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if (MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals("")) {
             return GSON.toJson(new GenericError()
-                    .type("hl: not found")
+                    .type("HLNotFound")
                     .title("There is no MatriculationData for the given matriculationId."));
         }
 
@@ -144,13 +144,13 @@ public class MatriculationDataChaincode implements ContractInterface {
             matriculationData = GSON.fromJson(stub.getStringState(matriculationId), MatriculationData.class);
         } catch(Exception e) {
             return GSON.toJson(new GenericError()
-                    .type("hl: unprocessable ledger state")
+                    .type("HLUnprocessableLedgerState")
                     .title("The state on the ledger does not conform to the specified format."));
         }
 
         if (matriculationData == null) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: not found")
+                    .type("HLNotFound")
                     .title("There is no MatriculationData for the given matriculationId."));
         }
         return GSON.toJson(matriculationData);
@@ -175,7 +175,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if (jsonMatriculationData == null || jsonMatriculationData.equals("")) {
             return GSON.toJson(new GenericError()
-                    .type("hl: not found")
+                    .type("HLNotFound")
                     .title("There is no MatriculationData for the given matriculationId."));
         }
 
@@ -185,7 +185,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             matriculationData = GSON.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
             return GSON.toJson(new GenericError()
-                    .type("hl: unprocessable ledger state")
+                    .type("HLUnprocessableLedgerState")
                     .title("The state on the ledger does not conform to the specified format."));
         }
 
@@ -195,7 +195,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             matriculationStatus = GSON.fromJson(matriculations, listType);
         } catch(Exception e) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
+                    .type("HLUnprocessableEntity")
                     .title("The following parameters do not conform to the specified format.")
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
@@ -209,7 +209,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
-                    .type("hl: unprocessable entity")
+                    .type("HLUnprocessableEntity")
                     .title("The following parameters do not conform to the specified format.")
                     .invalidParams(invalidParams));
         }

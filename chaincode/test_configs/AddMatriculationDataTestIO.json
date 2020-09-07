@@ -129,7 +129,7 @@
     ],
     "compare": [
       {
-        "type": "hl: conflict",
+        "type": "HLConflict",
         "title": "There is already a MatriculationData for the given matriculationId."
       }
     ]
@@ -159,7 +159,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -194,7 +194,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -230,7 +230,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -266,7 +266,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -302,7 +302,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -331,7 +331,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -365,7 +365,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -400,7 +400,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -435,7 +435,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -470,7 +470,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {
@@ -531,7 +531,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format.",
         "invalidParams": [
           {

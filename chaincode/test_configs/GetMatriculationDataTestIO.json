@@ -51,7 +51,7 @@
     ],
     "compare": [
       {
-        "type": "hl: not found",
+        "type": "HLNotFound",
         "title": "There is no MatriculationData for the given matriculationId."
       }
     ]
@@ -71,7 +71,7 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable ledger state",
+        "type": "HLUnprocessableLedgerState",
         "title": "The state on the ledger does not conform to the specified format."
       }
     ]
