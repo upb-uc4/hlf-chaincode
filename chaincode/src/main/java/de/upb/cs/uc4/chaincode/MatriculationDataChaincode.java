@@ -23,29 +23,35 @@ import java.util.regex.Pattern;
 @Default
 public class MatriculationDataChaincode implements ContractInterface {
 
+    private final String collectionName = "TestCollection";
     // setup gson (de-)serializer capable of (de-)serializing dates
     private static final GsonWrapper GSON = new GsonWrapper();
 
-    /*
-    IntelliJ says this method is never used?!
+    public String getCollectionName() {
+        return collectionName;
+    }
+
     @Transaction()
     public void initLedger(final Context ctx) {
 
     }
-    **/
 
     /**
      * Adds MatriculationData to the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param newMatriculationData json-representation of a MatriculationData to be added
+     *            Transient params:
+     *                [0] newMatriculationData json representation of the new matriculation data
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
-    public String addMatriculationData(final Context ctx, final String newMatriculationData) {
+    public String addMatriculationData(final Context ctx) {
 
         ChaincodeStub stub = ctx.getStub();
-        MatriculationData matriculationData;
 
+        // read transient args
+        String newMatriculationData = new String(stub.getTransient().get("0"));
+
+        MatriculationData matriculationData;
         try {
             matriculationData = GSON.fromJson(newMatriculationData, MatriculationData.class);
         } catch(Exception e) {
@@ -69,27 +75,31 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .invalidParams(invalidParams));
         }
 
-        String result = stub.getStringState(matriculationData.getMatriculationId());
+        String result = stub.getPrivateDataUTF8(collectionName, matriculationData.getMatriculationId());
         if (result != null && !result.equals("")) {
             return GSON.toJson(new GenericError()
                     .type("HLConflict")
                     .title("There is already a MatriculationData for the given matriculationId."));
         }
 
-        stub.putStringState(matriculationData.getMatriculationId(),GSON.toJson(matriculationData));
+        stub.putPrivateData(collectionName, matriculationData.getMatriculationId(),GSON.toJson(matriculationData));
         return "";
     }
 
     /**
      * Updates MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param updatedMatriculationData json-representation of the new MatriculationData to replace the old with
+     *            Transient params:
+     *                [0] updatedMatriculationData json-representation of the new MatriculationData to replace the old with
      * @return Empty string on success, serialized error on failure
      */
     @Transaction()
-    public String updateMatriculationData(final Context ctx, final String updatedMatriculationData) {
+    public String updateMatriculationData(final Context ctx) {
 
         ChaincodeStub stub = ctx.getStub();
+
+        // read transient args
+        String updatedMatriculationData = new String(stub.getTransient().get("0"));
 
         MatriculationData matriculationData;
         try {
@@ -115,7 +125,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .invalidParams(invalidParams));
         }
 
-        String MatriculationDataOnLedger = stub.getStringState(matriculationData.getMatriculationId());
+        String MatriculationDataOnLedger = stub.getPrivateDataUTF8(collectionName, matriculationData.getMatriculationId());
 
         if (MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals("")) {
             return GSON.toJson(new GenericError()
@@ -123,8 +133,8 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .title("There is no MatriculationData for the given matriculationId."));
         }
 
-        stub.delState(matriculationData.getMatriculationId());
-        stub.putStringState(matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
+        stub.delPrivateData(collectionName, matriculationData.getMatriculationId());
+        stub.putPrivateData(collectionName, matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
         return "";
     }
 
@@ -141,7 +151,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         MatriculationData matriculationData;
 
         try {
-            matriculationData = GSON.fromJson(stub.getStringState(matriculationId), MatriculationData.class);
+            matriculationData = GSON.fromJson(stub.getPrivateDataUTF8(collectionName, matriculationId), MatriculationData.class);
         } catch(Exception e) {
             return GSON.toJson(new GenericError()
                     .type("HLUnprocessableLedgerState")
@@ -171,7 +181,7 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         ChaincodeStub stub = ctx.getStub();
 
-        String jsonMatriculationData = stub.getStringState(matriculationId);
+        String jsonMatriculationData = stub.getPrivateDataUTF8(collectionName, matriculationId);
 
         if (jsonMatriculationData == null || jsonMatriculationData.equals("")) {
             return GSON.toJson(new GenericError()
@@ -235,8 +245,8 @@ public class MatriculationDataChaincode implements ContractInterface {
             }
         }
 
-        stub.delState(matriculationData.getMatriculationId());
-        stub.putStringState(matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
+        stub.delPrivateData(collectionName, matriculationData.getMatriculationId());
+        stub.putPrivateData(collectionName, matriculationData.getMatriculationId(), GSON.toJson(matriculationData));
         return "";
     }
 

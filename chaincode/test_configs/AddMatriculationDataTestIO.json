@@ -489,7 +489,7 @@
     "input": [
       {
         "matriculationId": "0000001",
-        "firstName": "firstName1<p>alert(\\\"XSS\\\");</p>\",\n",
+        "firstName": "firstName1<p>alert(\\\"XSS\\\");</p>\",",
         "lastName": "lastName1",
         "birthDate": "2000-07-21",
         "matriculationStatus": [
@@ -505,7 +505,7 @@
     "compare": [
       {
         "matriculationId": "0000001",
-        "firstName": "firstName1alert(\\\"XSS\\\");\",\n",
+        "firstName": "firstName1alert(\\\"XSS\\\");\",",
         "lastName": "lastName1",
         "birthDate": "2000-07-21",
         "matriculationStatus": [
