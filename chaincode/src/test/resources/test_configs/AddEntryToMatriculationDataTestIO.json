@@ -428,7 +428,7 @@
         "invalidParams": [
           {
             "name":"matriculations[0].semesters[0]",
-            "reason":"Semester must not be earlier than birth date."
+            "reason":"Semester must not be earlier than birth date"
           },
           {
             "name":"matriculations[1].semesters[0]",
@@ -481,7 +481,7 @@
         "invalidParams": [
           {
             "name": "matriculations[0].fieldOfStudy",
-            "reason": "Field of study must be one of the specified values."
+            "reason": "Field of study must be one of the specified values"
           }
         ]
       }
@@ -635,7 +635,7 @@
         "invalidParams": [
           {
             "name": "matriculations",
-            "reason": "The given parameter cannot be parsed from json."
+            "reason": "The given parameter cannot be parsed from json"
           }
         ]
       }

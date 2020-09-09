@@ -370,7 +370,7 @@
         "invalidParams": [
           {
             "name": "newMatriculationData.matriculationStatus[0].semesters",
-            "reason": "Semesters must not be empty."
+            "reason": "Semesters must not be empty"
           }
         ]
       }
@@ -405,7 +405,7 @@
         "invalidParams": [
           {
             "name": "newMatriculationData.matriculationStatus[0].fieldOfStudy",
-            "reason": "Field of study must be one of the specified values."
+            "reason": "Field of study must be one of the specified values"
           }
         ]
       }
@@ -440,7 +440,7 @@
         "invalidParams": [
           {
             "name": "newMatriculationData.matriculationStatus[0].fieldOfStudy",
-            "reason": "Field of study must be one of the specified values."
+            "reason": "Field of study must be one of the specified values"
           }
         ]
       }
@@ -536,7 +536,7 @@
         "invalidParams": [
           {
             "name": "newMatriculationData",
-            "reason": "The given parameter cannot be parsed from json."
+            "reason": "The given parameter cannot be parsed from json"
           }
         ]
       }

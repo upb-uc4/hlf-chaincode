@@ -61,7 +61,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("newMatriculationData")
-                                .reason("The given parameter cannot be parsed from json."));
+                                .reason("The given parameter cannot be parsed from json"));
                     }}));
         }
 
@@ -111,7 +111,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("updatedMatriculationData")
-                                .reason("The given parameter cannot be parsed from json."));
+                                .reason("The given parameter cannot be parsed from json"));
                     }}));
         }
 
@@ -210,7 +210,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("matriculations")
-                                .reason("The given parameter cannot be parsed from json."));
+                                .reason("The given parameter cannot be parsed from json"));
                     }}));
         }
 
@@ -318,12 +318,12 @@ public class MatriculationDataChaincode implements ContractInterface {
                 if (subMat.getFieldOfStudy() == null) {
                     addAbsent(list, new InvalidParameter()
                             .name(prefix+"["+subMatIndex+"].fieldOfStudy")
-                            .reason("Field of study must be one of the specified values."));
+                            .reason("Field of study must be one of the specified values"));
                 } else {
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
                         addAbsent(list, new InvalidParameter()
                                 .name(prefix+"["+subMatIndex+"].fieldOfStudy")
-                                .reason("Each field of study must only appear in one matriculationStatus."));
+                                .reason("Each field of study must only appear in one matriculationStatus"));
                     } else
                         existingFields.add(subMat.getFieldOfStudy());
                 }
@@ -332,7 +332,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                 if (semesters == null || semesters.isEmpty()) {
                     addAbsent(list, new InvalidParameter()
                             .name(prefix+"["+subMatIndex+"].semesters")
-                            .reason("Semesters must not be empty."));
+                            .reason("Semesters must not be empty"));
                 }
 
                 ArrayList<String> existingSemesters = new ArrayList<>();
@@ -346,13 +346,13 @@ public class MatriculationDataChaincode implements ContractInterface {
                         if (semesterYear < birthDate.getYear()) {
                             addAbsent(list, new InvalidParameter()
                                     .name(prefix+"["+subMatIndex+"].semesters["+semesterIndex+"]")
-                                    .reason("Semester must not be earlier than birth date."));
+                                    .reason("Semester must not be earlier than birth date"));
                         }
 
                         if (existingSemesters.contains(semester)) {
                             addAbsent(list, new InvalidParameter()
                                     .name(prefix+"["+subMatIndex+"].semesters["+semesterIndex+"]")
-                                    .reason("Each semester must only appear once in matriculationStatus.semesters."));
+                                    .reason("Each semester must only appear once in matriculationStatus.semesters"));
                         } else
                             existingSemesters.add(semester);
                     }

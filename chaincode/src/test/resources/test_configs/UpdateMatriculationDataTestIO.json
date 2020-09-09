@@ -401,7 +401,7 @@
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters",
-            "reason": "Semesters must not be empty."
+            "reason": "Semesters must not be empty"
           }
         ]
       }
@@ -453,7 +453,7 @@
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].fieldOfStudy",
-            "reason": "Field of study must be one of the specified values."
+            "reason": "Field of study must be one of the specified values"
           }
         ]
       }
@@ -505,7 +505,7 @@
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].fieldOfStudy",
-            "reason": "Field of study must be one of the specified values."
+            "reason": "Field of study must be one of the specified values"
           }
         ]
       }
@@ -557,7 +557,7 @@
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters[0]",
-            "reason": "Semester must not be earlier than birth date."
+            "reason": "Semester must not be earlier than birth date"
           }
         ]
       }
@@ -738,7 +738,7 @@
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[1].fieldOfStudy",
-            "reason": "Each field of study must only appear in one matriculationStatus."
+            "reason": "Each field of study must only appear in one matriculationStatus"
           }
         ]
       }
@@ -790,7 +790,7 @@
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters[2]",
-            "reason": "Each semester must only appear once in matriculationStatus.semesters."
+            "reason": "Each semester must only appear once in matriculationStatus.semesters"
           }
         ]
       }
@@ -933,7 +933,7 @@
         "invalidParams":[
           {
             "name": "updatedMatriculationData",
-            "reason": "The given parameter cannot be parsed from json."
+            "reason": "The given parameter cannot be parsed from json"
           }
         ]
       }
