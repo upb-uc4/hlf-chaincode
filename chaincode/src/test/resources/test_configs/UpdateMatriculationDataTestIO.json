@@ -158,7 +158,7 @@
     "compare": [
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId."
+        "title": "There is no MatriculationData for the given matriculationId"
       }
     ]
   },
@@ -202,7 +202,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.firstName",
@@ -252,7 +252,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.birthDate",
@@ -302,7 +302,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.lastName",
@@ -347,7 +347,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus",
@@ -397,7 +397,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters",
@@ -449,7 +449,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].fieldOfStudy",
@@ -501,7 +501,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].fieldOfStudy",
@@ -553,7 +553,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters[0]",
@@ -612,7 +612,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters[0]",
@@ -676,7 +676,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters[0]",
@@ -734,7 +734,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[1].fieldOfStudy",
@@ -786,7 +786,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters[2]",
@@ -838,7 +838,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationId",
@@ -890,7 +890,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData.matriculationStatus[0].semesters[1]",
@@ -929,7 +929,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
             "name": "updatedMatriculationData",

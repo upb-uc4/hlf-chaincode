@@ -57,7 +57,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return GSON.toJson(new DetailedError()
                     .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format.")
+                    .title("The following parameters do not conform to the specified format")
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("newMatriculationData")
@@ -71,7 +71,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
                     .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format.")
+                    .title("The following parameters do not conform to the specified format")
                     .invalidParams(invalidParams));
         }
 
@@ -79,7 +79,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if (result != null && !result.equals("")) {
             return GSON.toJson(new GenericError()
                     .type("HLConflict")
-                    .title("There is already a MatriculationData for the given matriculationId."));
+                    .title("There is already a MatriculationData for the given matriculationId"));
         }
 
         stub.putPrivateData(collectionName, matriculationData.getMatriculationId(),GSON.toJson(matriculationData));
@@ -107,7 +107,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return GSON.toJson(new DetailedError()
                     .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format.")
+                    .title("The following parameters do not conform to the specified format")
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("updatedMatriculationData")
@@ -121,7 +121,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
                     .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format.")
+                    .title("The following parameters do not conform to the specified format")
                     .invalidParams(invalidParams));
         }
 
@@ -130,7 +130,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if (MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals("")) {
             return GSON.toJson(new GenericError()
                     .type("HLNotFound")
-                    .title("There is no MatriculationData for the given matriculationId."));
+                    .title("There is no MatriculationData for the given matriculationId"));
         }
 
         stub.delPrivateData(collectionName, matriculationData.getMatriculationId());
@@ -155,13 +155,13 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return GSON.toJson(new GenericError()
                     .type("HLUnprocessableLedgerState")
-                    .title("The state on the ledger does not conform to the specified format."));
+                    .title("The state on the ledger does not conform to the specified format"));
         }
 
         if (matriculationData == null) {
             return GSON.toJson(new DetailedError()
                     .type("HLNotFound")
-                    .title("There is no MatriculationData for the given matriculationId."));
+                    .title("There is no MatriculationData for the given matriculationId"));
         }
         return GSON.toJson(matriculationData);
     }
@@ -186,7 +186,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if (jsonMatriculationData == null || jsonMatriculationData.equals("")) {
             return GSON.toJson(new GenericError()
                     .type("HLNotFound")
-                    .title("There is no MatriculationData for the given matriculationId."));
+                    .title("There is no MatriculationData for the given matriculationId"));
         }
 
         MatriculationData matriculationData;
@@ -196,7 +196,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return GSON.toJson(new GenericError()
                     .type("HLUnprocessableLedgerState")
-                    .title("The state on the ledger does not conform to the specified format."));
+                    .title("The state on the ledger does not conform to the specified format"));
         }
 
         Type listType = new TypeToken<ArrayList<SubjectMatriculation>>(){}.getType();
@@ -206,7 +206,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return GSON.toJson(new DetailedError()
                     .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format.")
+                    .title("The following parameters do not conform to the specified format")
                     .invalidParams(new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("matriculations")
@@ -220,7 +220,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         if (!invalidParams.isEmpty()) {
             return GSON.toJson(new DetailedError()
                     .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format.")
+                    .title("The following parameters do not conform to the specified format")
                     .invalidParams(invalidParams));
         }
 

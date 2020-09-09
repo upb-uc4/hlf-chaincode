@@ -424,7 +424,7 @@
     "compare": [
       {
         "type":"HLUnprocessableEntity",
-        "title":"The following parameters do not conform to the specified format.",
+        "title":"The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name":"matriculations[0].semesters[0]",
@@ -477,7 +477,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name": "matriculations[0].fieldOfStudy",
@@ -524,7 +524,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name": "matriculations[0].semesters[0]",
@@ -571,7 +571,7 @@
     "compare": [
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId."
+        "title": "There is no MatriculationData for the given matriculationId"
       }
     ]
   },
@@ -599,7 +599,7 @@
     "compare": [
       {
         "type": "HLUnprocessableLedgerState",
-        "title": "The state on the ledger does not conform to the specified format."
+        "title": "The state on the ledger does not conform to the specified format"
       }
     ]
   },
@@ -631,7 +631,7 @@
     "compare": [
       {
         "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format.",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name": "matriculations",
