@@ -1,3 +1,20 @@
+# [v0.7.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.1...v0.7.2) (2020-09-9)
+
+## Feature
+-
+
+## Bug Fixes
+- split up *collections_config* for dev/production network [#21](https://github.com/upb-uc4/hlf-chaincode/pull/21)
+
+## Refactor
+- refactor ```addEntryToMatriculation``` to take list of entries [#20](https://github.com/upb-uc4/hlf-chaincode/pull/20)
+- refactor error format to conform to api [#37](https://github.com/upb-uc4/api/pull/37), [#39](https://github.com/upb-uc4/api/pull/39)
+
+
+## Usability
+-
+
+
 # [v0.7.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.0...v0.7.1) (2020-09-7)
 
 ## Feature
