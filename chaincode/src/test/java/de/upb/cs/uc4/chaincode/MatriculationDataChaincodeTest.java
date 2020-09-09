@@ -27,7 +27,8 @@ public final class MatriculationDataChaincodeTest {
 
     @TestFactory
     List<DynamicTest> createTests() {
-        File dir = new File("test_configs");
+        String testConfigDir = "src/test/resources/test_configs";
+        File dir = new File(testConfigDir);
         File[] testConfigs = dir.listFiles();
 
         GsonWrapper gson = new GsonWrapper();
@@ -149,9 +150,9 @@ public final class MatriculationDataChaincodeTest {
             contract.addMatriculationData(ctx);
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(
-                    new String(stub.getPrivateData(
+                    stub.getPrivateDataUTF8(
                             contract.getCollectionName(),
-                            matriculationData.getMatriculationId())))
+                            matriculationData.getMatriculationId()))
                     .isEqualTo(compare.get(0).getContent());
         };
     }
@@ -202,9 +203,9 @@ public final class MatriculationDataChaincodeTest {
             contract.updateMatriculationData(ctx);
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(
-                    new String(stub.getPrivateData(
+                    stub.getPrivateDataUTF8(
                             contract.getCollectionName(),
-                            matriculationData.getMatriculationId())))
+                            matriculationData.getMatriculationId()))
                     .isEqualTo(compare.get(0).getContent());
         };
 
@@ -246,16 +247,15 @@ public final class MatriculationDataChaincodeTest {
             if (!setup.isEmpty()) {
                 stub.putPrivateData(contract.getCollectionName(), setup.get(0).getContent(), setup.get(1).getContent());
             }
-            contract.addEntryToMatriculationData(
+            contract.addEntriesToMatriculationData(
                     ctx,
                     input.get(0).getContent(),
-                    input.get(1).getContent(),
-                    input.get(2).getContent());
+                    input.get(1).getContent());
             MatriculationData matriculationData = gson.fromJson(compare.get(0).getContent(), MatriculationData.class);
             assertThat(
-                    new String(stub.getPrivateData(
+                    stub.getPrivateDataUTF8(
                             contract.getCollectionName(),
-                            matriculationData.getMatriculationId())))
+                            matriculationData.getMatriculationId()))
                     .isEqualTo(compare.get(0).getContent());
         };
     }
@@ -276,11 +276,10 @@ public final class MatriculationDataChaincodeTest {
                 when(stub.getPrivateDataUTF8(contract.getCollectionName(), setup.get(0).getContent()))
                         .thenReturn(setup.get(1).getContent());
             }
-            String result = contract.addEntryToMatriculationData(
+            String result = contract.addEntriesToMatriculationData(
                     ctx,
                     input.get(0).getContent(),
-                    input.get(1).getContent(),
-                    input.get(2).getContent());
+                    input.get(1).getContent());
             assertThat(result).isEqualTo(compare.get(0).getContent());
         };
     }

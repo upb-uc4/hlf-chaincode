@@ -40,6 +40,58 @@
 
 
   {
+    "name": "addNonExistingMultiFieldOfStudyMatriculationData",
+    "type": "addMatriculationData_SUCCESS",
+    "setup": [],
+    "input": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
     "name": "addExistingMatriculationData",
     "type": "addMatriculationData_FAILURE",
     "setup": [
@@ -77,8 +129,8 @@
     ],
     "compare": [
       {
-        "type": "hl: conflict",
-        "title": "There is already a MatriculationData for the given matriculationId."
+        "type": "HLConflict",
+        "title": "There is already a MatriculationData for the given matriculationId"
       }
     ]
   },
@@ -107,11 +159,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "matriculationId",
+            "name": "newMatriculationData.matriculationId",
             "reason": "ID must not be empty"
           }
         ]
@@ -142,11 +194,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "matriculationId",
+            "name": "newMatriculationData.matriculationId",
             "reason": "ID must not be empty"
           }
         ]
@@ -178,11 +230,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "firstName",
+            "name": "newMatriculationData.firstName",
             "reason": "First name must not be empty"
           }
         ]
@@ -214,11 +266,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "lastName",
+            "name": "newMatriculationData.lastName",
             "reason": "Last name must not be empty"
           }
         ]
@@ -250,11 +302,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "birthDate",
+            "name": "newMatriculationData.birthDate",
             "reason": "Birth date must be the following format \"yyyy-mm-dd\""
           }
         ]
@@ -279,11 +331,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "matriculationStatus",
+            "name": "newMatriculationData.matriculationStatus",
             "reason": "Matriculation status must not be empty"
           }
         ]
@@ -313,12 +365,12 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "subjectMatriculation.semesters",
-            "reason": "Semesters must not be empty."
+            "name": "newMatriculationData.matriculationStatus[0].semesters",
+            "reason": "Semesters must not be empty"
           }
         ]
       }
@@ -348,12 +400,12 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "subjectMatriculation.fieldOfStudy",
-            "reason": "Field of study must be one of the specified values."
+            "name": "newMatriculationData.matriculationStatus[0].fieldOfStudy",
+            "reason": "Field of study must be one of the specified values"
           }
         ]
       }
@@ -383,12 +435,12 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "subjectMatriculation.fieldOfStudy",
-            "reason": "Field of study must be one of the specified values."
+            "name": "newMatriculationData.matriculationStatus[0].fieldOfStudy",
+            "reason": "Field of study must be one of the specified values"
           }
         ]
       }
@@ -418,11 +470,11 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable field",
-        "title": "The following fields in the given parameters do not conform to the specified format.",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "matriculationStatus.semesters",
+            "name": "newMatriculationData.matriculationStatus[0].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]
@@ -479,8 +531,14 @@
     ],
     "compare": [
       {
-        "type": "hl: unprocessable entity",
-        "title": "The given parameter does not conform to the specified format."
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "newMatriculationData",
+            "reason": "The given parameter cannot be parsed from json"
+          }
+        ]
       }
     ]
   }

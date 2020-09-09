@@ -1,0 +1,644 @@
+[
+  {
+    "name": "addEntryToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addEntryToNonExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addExistingEntryToExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addTwoEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Mathematics",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Mathematics",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Mathematics",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Mathematics",
+            "semesters": [
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          },
+          {
+            "fieldOfStudy": "Mathematics",
+            "semesters": [
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Mathematics",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Mathematics",
+            "semesters": [
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addMultipleInvalidEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS1990"
+          ]
+        },
+        {
+          "fieldOfStudy": "Mathematics",
+          "semesters": [
+            "WS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019/20"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type":"HLUnprocessableEntity",
+        "title":"The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name":"matriculations[0].semesters[0]",
+            "reason":"Semester must not be earlier than birth date"
+          },
+          {
+            "name":"matriculations[1].semesters[0]",
+            "reason":"Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          },
+          {
+            "name":"matriculations[2].semesters[0]",
+            "reason":"Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addInvalidSubjectEntryToExistingMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "something invalid",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "matriculations[0].fieldOfStudy",
+            "reason": "Field of study must be one of the specified values"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addInvalidSemesterEntryToExistingMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/17"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "matriculations[0].semesters[0]",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addNonExistingMatriculationIdEntryToExistingMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000002",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no MatriculationData for the given matriculationId"
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addEntryToUnprocessableMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      "something unprocessable"
+    ],
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
+      }
+    ]
+  },
+
+  {
+    "name": "addUnprocessableMatriculationDataToEntry",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": [
+      "0000001",
+      {
+        "matriculationId": "0000001",
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "birthDate": "2000-07-21",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "input": [
+      "0000001",
+      "something unprocessable"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "matriculations",
+            "reason": "The given parameter cannot be parsed from json"
+          }
+        ]
+      }
+    ]
+  }
+]
