@@ -1,7 +1,24 @@
-# [v0.7.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.1...v0.7.2) (2020-09-9)
+# [v0.8.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.2...v0.8.0) (2020-09-14)
 
 ## Feature
 -
+
+## Bug Fixes
+- fix tests not throwing error when querying ```getPrivateDataUTF8``` for empty string [#25](https://github.com/upb-uc4/hlf-chaincode/pull/25)
+
+## Refactor
+- 
+
+
+## Usability
+-
+
+
+
+# [v0.7.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.1...v0.7.2) (2020-09-9)
+
+## Feature
+- 
 
 ## Bug Fixes
 - split up *collections_config* for dev/production network [#21](https://github.com/upb-uc4/hlf-chaincode/pull/21)
@@ -18,7 +35,7 @@
 # [v0.7.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.0...v0.7.1) (2020-09-7)
 
 ## Feature
-- move sensitive data to transient data field [#17](https://github.com/upb-uc4/hlf-chaincode/pull/17)
+- move sensitive data to transient data field and store data in private data collection [#17](https://github.com/upb-uc4/hlf-chaincode/pull/17)
 
 ## Bug Fixes
 -
