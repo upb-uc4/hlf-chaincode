@@ -577,6 +577,30 @@
   },
 
 
+  {
+    "name": "addEmptyMatriculationIdEntryToMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": [],
+    "input": [
+      "",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no MatriculationData for the given matriculationId"
+      }
+    ]
+  },
+
+
 
   {
     "name": "addEntryToUnprocessableMatriculationData",
