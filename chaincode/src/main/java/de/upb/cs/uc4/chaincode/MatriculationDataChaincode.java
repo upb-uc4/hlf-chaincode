@@ -181,14 +181,22 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         ChaincodeStub stub = ctx.getStub();
 
-        String jsonMatriculationData = stub.getPrivateDataUTF8(collectionName, matriculationId);
-
+        // retrieve jsonMatriculationData
+        String jsonMatriculationData;
+        try {
+            jsonMatriculationData = stub.getPrivateDataUTF8(collectionName, matriculationId);
+        } catch(Exception e) {
+            return GSON.toJson(new GenericError()
+                    .type("HLNotFound")
+                    .title("There is no MatriculationData for the given matriculationId"));
+        }
         if (jsonMatriculationData == null || jsonMatriculationData.equals("")) {
             return GSON.toJson(new GenericError()
                     .type("HLNotFound")
                     .title("There is no MatriculationData for the given matriculationId"));
         }
 
+        // retrieve MatriculationData Object
         MatriculationData matriculationData;
 
         try {
@@ -199,6 +207,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                     .title("The state on the ledger does not conform to the specified format"));
         }
 
+        // manipulate object as intended
         Type listType = new TypeToken<ArrayList<SubjectMatriculation>>(){}.getType();
         ArrayList<SubjectMatriculation> matriculationStatus;
         try {
