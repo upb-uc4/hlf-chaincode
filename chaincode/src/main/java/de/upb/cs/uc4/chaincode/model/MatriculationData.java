@@ -30,23 +30,14 @@ import org.threeten.bp.LocalDate;
 
 
 public class MatriculationData {
-  @SerializedName("matriculationId")
-  private String matriculationId = null;
-
-  @SerializedName("firstName")
-  private String firstName = null;
-
-  @SerializedName("lastName")
-  private String lastName = null;
-
-  @SerializedName("birthDate")
-  private LocalDate birthDate = null;
+  @SerializedName("enrollmentId")
+  private String enrollmentId = null;
 
   @SerializedName("matriculationStatus")
   private List<SubjectMatriculation> matriculationStatus = null;
 
-  public MatriculationData matriculationId(String matriculationId) {
-    this.matriculationId = matriculationId;
+  public MatriculationData enrollmentId(String enrollmentId) {
+    this.enrollmentId = enrollmentId;
     return this;
   }
 
@@ -55,66 +46,12 @@ public class MatriculationData {
    * @return matriculationId
   **/
   @ApiModelProperty(value = "")
-  public String getMatriculationId() {
-    return matriculationId;
+  public String getEnrollmentId() {
+    return enrollmentId;
   }
 
-  public void setMatriculationId(String matriculationId) {
-    this.matriculationId = matriculationId;
-  }
-
-  public MatriculationData firstName(String firstName) {
-    this.firstName = firstName;
-    return this;
-  }
-
-   /**
-   * Get firstName
-   * @return firstName
-  **/
-  @ApiModelProperty(value = "")
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public void setFirstName(String firstName) {
-    this.firstName = firstName;
-  }
-
-  public MatriculationData lastName(String lastName) {
-    this.lastName = lastName;
-    return this;
-  }
-
-   /**
-   * Get lastName
-   * @return lastName
-  **/
-  @ApiModelProperty(value = "")
-  public String getLastName() {
-    return lastName;
-  }
-
-  public void setLastName(String lastName) {
-    this.lastName = lastName;
-  }
-
-  public MatriculationData birthDate(LocalDate birthDate) {
-    this.birthDate = birthDate;
-    return this;
-  }
-
-   /**
-   * Get birthDate
-   * @return birthDate
-  **/
-  @ApiModelProperty(value = "")
-  public LocalDate getBirthDate() {
-    return birthDate;
-  }
-
-  public void setBirthDate(LocalDate birthDate) {
-    this.birthDate = birthDate;
+  public void setEnrollmentId(String enrollmentId) {
+    this.enrollmentId = enrollmentId;
   }
 
   public MatriculationData matriculationStatus(List<SubjectMatriculation> matriculationStatus) {
@@ -153,16 +90,13 @@ public class MatriculationData {
       return false;
     }
     MatriculationData matriculationData = (MatriculationData) o;
-    return Objects.equals(this.matriculationId, matriculationData.matriculationId) &&
-        Objects.equals(this.firstName, matriculationData.firstName) &&
-        Objects.equals(this.lastName, matriculationData.lastName) &&
-        Objects.equals(this.birthDate, matriculationData.birthDate) &&
+    return Objects.equals(this.enrollmentId, matriculationData.enrollmentId) &&
         Objects.equals(this.matriculationStatus, matriculationData.matriculationStatus);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(matriculationId, firstName, lastName, birthDate, matriculationStatus);
+    return Objects.hash(enrollmentId, matriculationStatus);
   }
 
 
@@ -171,10 +105,7 @@ public class MatriculationData {
     StringBuilder sb = new StringBuilder();
     sb.append("class MatriculationData {\n");
     
-    sb.append("    matriculationId: ").append(toIndentedString(matriculationId)).append("\n");
-    sb.append("    firstName: ").append(toIndentedString(firstName)).append("\n");
-    sb.append("    lastName: ").append(toIndentedString(lastName)).append("\n");
-    sb.append("    birthDate: ").append(toIndentedString(birthDate)).append("\n");
+    sb.append("    enrollmentId: ").append(toIndentedString(enrollmentId)).append("\n");
     sb.append("    matriculationStatus: ").append(toIndentedString(matriculationStatus)).append("\n");
     sb.append("}");
     return sb.toString();

@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public final class MockChaincodeStub implements ChaincodeStub {
 
     private Map<String, List<MockKeyValue>> dataCollections;
@@ -30,6 +32,13 @@ public final class MockChaincodeStub implements ChaincodeStub {
         if (!dataCollections.containsKey(collection)) {
             dataCollections.put(collection, new ArrayList<>());
         }
+        MockKeyValue existing = null;
+        for (MockKeyValue entry: dataCollections.get(collection)) {
+            if (entry.getKey().equals(key))
+                existing = entry;
+        }
+        if (existing != null)
+            dataCollections.get(collection).remove(existing);
         dataCollections.get(collection).add(new MockKeyValue(key, value));
     }
 
@@ -73,7 +82,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public String getStringState(String key) {
-        return getByteState(key).toString();
+        return new String(getByteState(key), UTF_8);
     }
 
     @Override
