@@ -1,3 +1,22 @@
+# [v0.9.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.8.0...v0.9.0) (2020-09-28)
+
+## Feature
+-
+
+## Bug Fixes
+-
+
+## Refactor
+- pseudonymize MatriculationData by replacing first name, last name, and birth date by an enrollment-ID
+- move MatriculationData from private-data collection to contract-wide ledger
+- move transaction arguments from transient-data field to arguments
+
+
+## Usability
+-
+
+
+
 # [v0.8.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.2...v0.8.0) (2020-09-14)
 
 ## Feature
