@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.model.GenericError;
+import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 
 public class MatriculationDataContractUtil extends ContractUtil {
 

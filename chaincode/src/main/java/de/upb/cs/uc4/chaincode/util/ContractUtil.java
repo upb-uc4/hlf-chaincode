@@ -38,6 +38,12 @@ abstract public class ContractUtil {
                 .title("The state on the ledger does not conform to the specified format");
     }
 
+    public InvalidParameter getEmptyEnrollmentIdParam() {
+        return new InvalidParameter()
+                .name("enrollmentId")
+                .reason("ID must not be empty");
+    }
+
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {
         stub.putStringState(key,value);
         return value;

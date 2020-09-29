@@ -110,9 +110,7 @@ public class CertificateChaincode implements ContractInterface {
     private ArrayList<InvalidParameter> getErrorForEnrollmentId(final String enrollmentId) {
         ArrayList<InvalidParameter> list = new ArrayList<>();
         if (enrollmentId == null || enrollmentId.equals("")) {
-            list.add(new InvalidParameter()
-                    .name("enrollmentId")
-                    .reason("ID must not be empty"));
+            list.add(cUtil.getEmptyEnrollmentIdParam());
         }
         return list;
     }
@@ -120,9 +118,7 @@ public class CertificateChaincode implements ContractInterface {
     private ArrayList<InvalidParameter> getErrorForCertificate(final String certificate) {
         ArrayList<InvalidParameter> list = new ArrayList<>();
         if (certificate == null || certificate.equals("")) {
-            list.add(new InvalidParameter()
-                    .name("certificate")
-                    .reason("Certificate must not be empty"));
+            list.add(cUtil.getEmptyCertificateParam());
         }
         return list;
     }
