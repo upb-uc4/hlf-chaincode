@@ -1,6 +1,6 @@
 package de.upb.cs.uc4.chaincode.mock;
 
-import de.upb.cs.uc4.chaincode.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 
