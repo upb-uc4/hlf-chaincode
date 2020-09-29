@@ -39,8 +39,12 @@ abstract public class ContractUtil {
     }
 
     public InvalidParameter getEmptyEnrollmentIdParam() {
+        return getEmptyEnrollmentIdParam("");
+    }
+
+    public InvalidParameter getEmptyEnrollmentIdParam(String prefix) {
         return new InvalidParameter()
-                .name("enrollmentId")
+                .name(prefix + "enrollmentId")
                 .reason("ID must not be empty");
     }
 

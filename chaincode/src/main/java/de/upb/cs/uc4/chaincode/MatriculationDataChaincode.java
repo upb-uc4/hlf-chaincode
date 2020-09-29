@@ -48,14 +48,12 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
                     new ArrayList<InvalidParameter>() {{
-                        add(new InvalidParameter()
-                                .name("newMatriculationData")
-                                .reason("The given parameter cannot be parsed from json"));
+                        add(cUtil.getUnparsableMatriculationDataParam());
                     }}));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(
-                matriculationData, "newMatriculationData");
+                matriculationData, "matriculationData");
 
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
@@ -86,14 +84,12 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
                     new ArrayList<InvalidParameter>() {{
-                        add(new InvalidParameter()
-                                .name("updatedMatriculationData")
-                                .reason("The given parameter cannot be parsed from json"));
+                        add(cUtil.getUnparsableMatriculationDataParam());
                     }}));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(
-                matriculationData, "updatedMatriculationData");
+                matriculationData, "matriculationData");
 
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
@@ -175,9 +171,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         } catch(Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
                     new ArrayList<InvalidParameter>() {{
-                        add(new InvalidParameter()
-                                .name("matriculations")
-                                .reason("The given parameter cannot be parsed from json"));
+                        add(cUtil.getUnparsableMatriculationParam());
                     }}));
         }
 
@@ -227,9 +221,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         ArrayList<InvalidParameter> list = new ArrayList<>();
 
         if(matriculationData.getEnrollmentId() == null || matriculationData.getEnrollmentId().equals("")) {
-            addAbsent(list, new InvalidParameter()
-                    .name(prefix+"enrollmentId")
-                    .reason("ID must not be empty"));
+            addAbsent(list, cUtil.getEmptyEnrollmentIdParam(prefix));
         }
 
         List<SubjectMatriculation> matriculationStatus = matriculationData.getMatriculationStatus();
@@ -246,9 +238,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         ArrayList<InvalidParameter> list = new ArrayList<>();
 
         if (matriculationStatus == null || matriculationStatus.isEmpty()) {
-            addAbsent(list, new InvalidParameter()
-                    .name(prefix)
-                    .reason("Matriculation status must not be empty"));
+            addAbsent(list, cUtil.getEmptyMatriculationStatusParam(prefix));
         } else {
 
             ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
@@ -258,23 +248,17 @@ public class MatriculationDataChaincode implements ContractInterface {
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
                 if (subMat.getFieldOfStudy() == null) {
-                    addAbsent(list, new InvalidParameter()
-                            .name(prefix+"["+subMatIndex+"].fieldOfStudy")
-                            .reason("Field of study must be one of the specified values"));
+                    addAbsent(list, cUtil.getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
                 } else {
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
-                        addAbsent(list, new InvalidParameter()
-                                .name(prefix+"["+subMatIndex+"].fieldOfStudy")
-                                .reason("Each field of study must only appear in one matriculationStatus"));
+                        addAbsent(list, cUtil.getDuplicateFieldOfStudyParam(prefix, subMatIndex));
                     } else
                         existingFields.add(subMat.getFieldOfStudy());
                 }
 
                 List<String> semesters = subMat.getSemesters();
                 if (semesters == null || semesters.isEmpty()) {
-                    addAbsent(list, new InvalidParameter()
-                            .name(prefix+"["+subMatIndex+"].semesters")
-                            .reason("Semesters must not be empty"));
+                    addAbsent(list, cUtil.getEmptySemestersParam(prefix + "[" + subMatIndex + "]."));
                 }
 
                 ArrayList<String> existingSemesters = new ArrayList<>();
@@ -284,17 +268,13 @@ public class MatriculationDataChaincode implements ContractInterface {
 
                     if (semesterFormatValid(semester)) {
                         if (existingSemesters.contains(semester)) {
-                            addAbsent(list, new InvalidParameter()
-                                    .name(prefix+"["+subMatIndex+"].semesters["+semesterIndex+"]")
-                                    .reason("Each semester must only appear once in matriculationStatus.semesters"));
+                            addAbsent(list, cUtil.getDuplicateSemesterParam(prefix + "["+subMatIndex+"].semesters", semesterIndex));
                         } else
                             existingSemesters.add(semester);
                     }
 
                     if (!semesterFormatValid(semester)) {
-                        addAbsent(list, new InvalidParameter()
-                                .name(prefix+"["+subMatIndex+"].semesters["+semesterIndex+"]")
-                                .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""));
+                        addAbsent(list, cUtil.getInvalidSemesterParam(prefix+"["+subMatIndex+"].semesters", semesterIndex));
                     }
                 }
             }
