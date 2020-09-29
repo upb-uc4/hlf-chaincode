@@ -1,20 +1,17 @@
 package de.upb.cs.uc4.chaincode;
 
-import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Course;
 import de.upb.cs.uc4.chaincode.model.Error;
+import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
-import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
 import java.util.ArrayList;
 

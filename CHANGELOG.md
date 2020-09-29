@@ -1,4 +1,17 @@
-# [v0.9.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.8.0...v0.9.0) (2020-09-28)
+# [v1.0.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v1.0.0...v1.0.1) (2020-09-29)
+
+## Feature
+- add certificate contract
+- add certificate contract tests
+
+## Refactor
+- refactor matriculation-data contract tests
+- update matriculation-data contract transaction documentation
+- out-source errors to utilities
+
+
+
+# [v1.0.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.8.0...v1.0.0) (2020-09-28)
 
 ## Feature
 -

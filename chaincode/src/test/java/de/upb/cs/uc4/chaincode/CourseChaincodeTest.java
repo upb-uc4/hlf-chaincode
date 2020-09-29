@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.model.Course;
 import de.upb.cs.uc4.chaincode.model.Error;
+import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
 import org.hyperledger.fabric.protos.peer.ProposalPackage;
