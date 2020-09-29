@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.DynamicTest;
@@ -52,9 +53,9 @@ public final class CertificateChaincodeTest {
             }
 
             for (JsonIOTest test : testConfig) {
-                List<String> setup = toStringList(test.getSetup());
-                List<String> input = toStringList(test.getInput());
-                List<String> compare = toStringList(test.getCompare());
+                List<String> setup = TestUtil.toStringList(test.getSetup());
+                List<String> input = TestUtil.toStringList(test.getInput());
+                List<String> compare = TestUtil.toStringList(test.getCompare());
                 switch (test.getType()) {
                     case "getCertificate":
                         tests.add(DynamicTest.dynamicTest(
@@ -213,9 +214,5 @@ public final class CertificateChaincodeTest {
                         Collectors.toMap(
                                 entry -> String.valueOf(input.indexOf(entry)),
                                 entry -> entry.getContent().getBytes())));
-    }
-
-    private List<String> toStringList(List<Dummy> list) {
-        return list.stream().map(dummy -> dummy.getContent()).collect(Collectors.toList());
     }
 }
