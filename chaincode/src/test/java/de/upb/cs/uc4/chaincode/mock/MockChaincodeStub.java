@@ -47,6 +47,8 @@ public final class MockChaincodeStub implements ChaincodeStub {
     }
 
     private byte[] getByteState(String collection, String key) {
+        if (key == null || key.equals(""))
+            throw new RuntimeException();
         if (!dataCollections.containsKey(collection))
             return new byte[0];
         for (MockKeyValue keyValue : dataCollections.get(collection)) {

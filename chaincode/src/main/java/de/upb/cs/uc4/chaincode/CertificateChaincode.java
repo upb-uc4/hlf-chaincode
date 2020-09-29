@@ -101,7 +101,7 @@ public class CertificateChaincode implements ContractInterface {
 
         String certificate = stub.getStringState(enrollmentId);
 
-        if (certificate == null) {
+        if (certificate == null || certificate.equals("")) {
             return GsonWrapper.toJson(cUtil.getNotFoundError());
         }
         return certificate;
