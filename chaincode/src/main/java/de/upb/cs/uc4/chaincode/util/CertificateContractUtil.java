@@ -2,7 +2,6 @@ package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.ContractUtil;
 
 public class CertificateContractUtil extends ContractUtil {
 

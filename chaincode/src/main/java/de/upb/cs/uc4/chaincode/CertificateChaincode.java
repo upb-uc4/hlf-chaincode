@@ -18,7 +18,7 @@ import java.util.ArrayList;
 @Default
 public class CertificateChaincode implements ContractInterface {
 
-    private CertificateContractUtil cUtil = new CertificateContractUtil();
+    private final CertificateContractUtil cUtil = new CertificateContractUtil();
 
     @Transaction()
     public void initLedger(final Context ctx) {
@@ -93,8 +93,7 @@ public class CertificateChaincode implements ContractInterface {
 
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        invalidParams.addAll(getErrorForEnrollmentId(enrollmentId));
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<> (getErrorForEnrollmentId(enrollmentId));
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }

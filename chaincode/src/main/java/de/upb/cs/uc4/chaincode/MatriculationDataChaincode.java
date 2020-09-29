@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 @Default
 public class MatriculationDataChaincode implements ContractInterface {
 
-    private MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
+    private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
     @Transaction()
     public void initLedger(final Context ctx) {

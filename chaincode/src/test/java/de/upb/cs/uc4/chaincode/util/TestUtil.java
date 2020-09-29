@@ -3,7 +3,6 @@ package de.upb.cs.uc4.chaincode.util;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +12,7 @@ import static org.mockito.Mockito.when;
 
 public class TestUtil {
     public static List<String> toStringList(List<Dummy> list) {
-        return list.stream().map(dummy -> dummy.getContent()).collect(Collectors.toList());
+        return list.stream().map(Dummy::getContent).collect(Collectors.toList());
     }
 
     public static Context mockContext(List<String> setup) {
@@ -28,5 +27,13 @@ public class TestUtil {
             stub.putStringState(setup.get(i), setup.get(i+1));
         }
         return stub;
+    }
+
+    public void setTransientMap(MockChaincodeStub stub, List<Dummy> input) {
+        stub.setTransient(
+                input.stream().collect(
+                        Collectors.toMap(
+                                entry -> String.valueOf(input.indexOf(entry)),
+                                entry -> entry.getContent().getBytes())));
     }
 }

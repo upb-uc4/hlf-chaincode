@@ -2,14 +2,11 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
-import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
@@ -19,11 +16,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public final class MatriculationDataChaincodeTest {
 
@@ -213,21 +207,5 @@ public final class MatriculationDataChaincodeTest {
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
         };
-    }
-
-    private void setTransientMap(MockChaincodeStub stub, List<Dummy> input) {
-        stub.setTransient(
-                input.stream().collect(
-                        Collectors.toMap(
-                                entry -> String.valueOf(input.indexOf(entry)),
-                                entry -> entry.getContent().getBytes())));
-    }
-
-    private void setTransientMapMock(ChaincodeStub stub, List<Dummy> input) {
-        when(stub.getTransient()).thenReturn(
-                input.stream().collect(
-                        Collectors.toMap(
-                                entry -> String.valueOf(input.indexOf(entry)),
-                                entry -> entry.getContent().getBytes())));
     }
 }

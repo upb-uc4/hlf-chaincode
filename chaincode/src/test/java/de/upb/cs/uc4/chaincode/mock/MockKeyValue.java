@@ -6,6 +6,8 @@ import org.hyperledger.fabric.shim.ledger.KeyValue;
 
 import java.util.Objects;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 final public class MockKeyValue implements KeyValue {
 
     private final String key;
@@ -24,7 +26,7 @@ final public class MockKeyValue implements KeyValue {
 
     @Override
     public String getStringValue() {
-        return this.value.toString();
+        return new String(this.value, UTF_8);
     }
 
     @Override
@@ -41,10 +43,9 @@ final public class MockKeyValue implements KeyValue {
             return false;
         }
         MockKeyValue other = (MockKeyValue) o;
-        GsonWrapper gson = new GsonWrapper();
         return Objects.equals(this.key, other.key) &&
                 Objects.equals(
-                        gson.fromJson(this.value.toString(), MatriculationData.class),
-                        gson.fromJson(other.value.toString(), MatriculationData.class));
+                        GsonWrapper.fromJson(new String(this.value, UTF_8), MatriculationData.class),
+                        GsonWrapper.fromJson(new String(other.value, UTF_8), MatriculationData.class));
     }
 }

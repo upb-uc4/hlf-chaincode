@@ -69,10 +69,6 @@ public class GsonWrapper {
         return gson.toJson(object);
     }
 
-    public static <T> T fromJson(Reader reader, Class<T> t) {
-        return gson.fromJson(reader, t);
-    }
-
     public static <T> T fromJson(Reader reader, Type type) {
         return gson.fromJson(reader, type);
     }
