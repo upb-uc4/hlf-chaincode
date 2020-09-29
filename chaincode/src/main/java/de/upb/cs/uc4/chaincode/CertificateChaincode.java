@@ -50,7 +50,7 @@ public class CertificateChaincode implements ContractInterface {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        return cUtil.putAndGetStringState(stub, enrollmentId, GsonWrapper.toJson(certificate));
+        return cUtil.putAndGetStringState(stub, enrollmentId, certificate);
     }
 
     /**
@@ -75,7 +75,7 @@ public class CertificateChaincode implements ContractInterface {
 
         String certificateOnLedger = stub.getStringState(enrollmentId);
 
-        if (certificate == null || certificate.equals("")) {
+        if (certificateOnLedger == null || certificateOnLedger.equals("")) {
             return GsonWrapper.toJson(cUtil.getNotFoundError());
         }
 
