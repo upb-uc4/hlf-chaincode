@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 abstract public class ContractUtil {
 
+    protected String keyPrefix = "";
+
     public DetailedError getUnprocessableEntityError(ArrayList<InvalidParameter> invalidParams) {
         return new DetailedError()
                 .type("HLUnprocessableEntity")
@@ -45,7 +47,15 @@ abstract public class ContractUtil {
     }
 
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {
-        stub.putStringState(key,value);
+        stub.putStringState(keyPrefix + key,value);
         return value;
+    }
+
+    public String getStringState(ChaincodeStub stub, String key) {
+        return stub.getStringState(keyPrefix + key);
+    }
+
+    public String getKeyPrefix() {
+        return keyPrefix;
     }
 }
