@@ -16,6 +16,10 @@ abstract public class ContractUtil {
                 .invalidParams(invalidParams);
     }
 
+    public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
+        return getUnprocessableEntityError(getArrayList(invalidParam));
+    }
+
     public abstract GenericError getConflictError();
 
     protected GenericError getConflictError(String thing) {
@@ -51,5 +55,11 @@ abstract public class ContractUtil {
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {
         stub.putStringState(key,value);
         return value;
+    }
+
+    public ArrayList<InvalidParameter> getArrayList(InvalidParameter invalidParam) {
+        return new ArrayList<InvalidParameter>() {{
+            add(invalidParam);
+        }};
     }
 }

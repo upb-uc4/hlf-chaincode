@@ -46,10 +46,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         try {
             matriculationData = GsonWrapper.fromJson(newMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
-                    new ArrayList<InvalidParameter>() {{
-                        add(cUtil.getUnparsableMatriculationDataParam());
-                    }}));
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(
@@ -82,10 +79,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         try {
             matriculationData = GsonWrapper.fromJson(updatedMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
-                    new ArrayList<InvalidParameter>() {{
-                        add(cUtil.getUnparsableMatriculationDataParam());
-                    }}));
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(
@@ -169,10 +163,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         try {
             matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
         } catch(Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
-                    new ArrayList<InvalidParameter>() {{
-                        add(cUtil.getUnparsableMatriculationParam());
-                    }}));
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationParam()));
         }
 
         ArrayList<InvalidParameter> invalidParams = getErrorForSubjectMatriculationList(
