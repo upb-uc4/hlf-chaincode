@@ -5,10 +5,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -24,10 +21,7 @@
     ],
     "compare": [
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -52,7 +46,7 @@
     "compare": [
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId"
+        "title": "There is no MatriculationData for the given enrollmentId"
       }
     ]
   },

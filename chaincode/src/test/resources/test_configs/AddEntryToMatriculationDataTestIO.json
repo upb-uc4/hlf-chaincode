@@ -5,10 +5,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -32,10 +29,7 @@
     ],
     "compare": [
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -57,10 +51,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -84,10 +75,7 @@
     ],
     "compare": [
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -114,10 +102,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -141,10 +126,7 @@
     ],
     "compare": [
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -163,10 +145,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -196,10 +175,7 @@
     ],
     "compare": [
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -225,10 +201,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -264,10 +237,7 @@
     ],
     "compare": [
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -299,10 +269,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -350,10 +317,7 @@
     ],
     "compare": [
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -384,10 +348,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -427,10 +388,6 @@
         "title":"The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name":"matriculations[0].semesters[0]",
-            "reason":"Semester must not be earlier than birth date"
-          },
-          {
             "name":"matriculations[1].semesters[0]",
             "reason":"Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           },
@@ -449,10 +406,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -496,10 +450,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -538,15 +489,12 @@
 
 
   {
-    "name": "addNonExistingMatriculationIdEntryToExistingMatriculationData",
+    "name": "addNonExistingEnrollmentIdEntryToExistingMatriculationData",
     "type": "addEntryToMatriculationData_FAILURE",
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -571,14 +519,14 @@
     "compare": [
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId"
+        "title": "There is no MatriculationData for the given enrollmentId"
       }
     ]
   },
 
 
   {
-    "name": "addEmptyMatriculationIdEntryToMatriculationData",
+    "name": "addEmptyEnrollmentIdEntryToMatriculationData",
     "type": "addEntryToMatriculationData_FAILURE",
     "setup": [],
     "input": [
@@ -595,7 +543,7 @@
     "compare": [
       {
         "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given matriculationId"
+        "title": "There is no MatriculationData for the given enrollmentId"
       }
     ]
   },
@@ -634,10 +582,7 @@
     "setup": [
       "0000001",
       {
-        "matriculationId": "0000001",
-        "firstName": "firstName1",
-        "lastName": "lastName1",
-        "birthDate": "2000-07-21",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
