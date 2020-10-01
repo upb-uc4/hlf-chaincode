@@ -6,8 +6,11 @@ import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import java.util.ArrayList;
 
 public class MatriculationDataContractUtil extends ContractUtil {
-
     private final String thing = "MatriculationData";
+
+    public MatriculationDataContractUtil() {
+        keyPrefix = "matriculationData:";
+    }
 
     @Override
     public GenericError getConflictError() {

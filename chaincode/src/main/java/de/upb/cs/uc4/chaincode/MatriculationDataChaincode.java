@@ -56,7 +56,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        String result = stub.getStringState(matriculationData.getEnrollmentId());
+        String result = cUtil.getStringState(stub, matriculationData.getEnrollmentId());
         if (result != null && !result.equals("")) {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
@@ -89,7 +89,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        String MatriculationDataOnLedger = stub.getStringState(matriculationData.getEnrollmentId());
+        String MatriculationDataOnLedger = cUtil.getStringState(stub, matriculationData.getEnrollmentId());
 
         if (MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals("")) {
             return GsonWrapper.toJson(cUtil.getNotFoundError());
@@ -111,7 +111,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         MatriculationData matriculationData;
 
         try {
-            matriculationData = GsonWrapper.fromJson(stub.getStringState(enrollmentId), MatriculationData.class);
+            matriculationData = GsonWrapper.fromJson(cUtil.getStringState(stub, enrollmentId), MatriculationData.class);
         } catch(Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableLedgerStateError());
         }
@@ -140,7 +140,7 @@ public class MatriculationDataChaincode implements ContractInterface {
         // retrieve jsonMatriculationData
         String jsonMatriculationData;
         try {
-            jsonMatriculationData = stub.getStringState(enrollmentId);
+            jsonMatriculationData = cUtil.getStringState(stub, enrollmentId);
         } catch(Exception e) {
             return GsonWrapper.toJson(cUtil.getNotFoundError());
         }

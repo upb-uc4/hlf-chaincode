@@ -45,7 +45,7 @@ public class CertificateChaincode implements ContractInterface {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        String result = stub.getStringState(enrollmentId);
+        String result = cUtil.getStringState(stub, enrollmentId);
         if (result != null && !result.equals("")) {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
@@ -73,7 +73,7 @@ public class CertificateChaincode implements ContractInterface {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        String certificateOnLedger = stub.getStringState(enrollmentId);
+        String certificateOnLedger = cUtil.getStringState(stub, enrollmentId);
 
         if (certificateOnLedger == null || certificateOnLedger.equals("")) {
             return GsonWrapper.toJson(cUtil.getNotFoundError());
@@ -98,7 +98,7 @@ public class CertificateChaincode implements ContractInterface {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        String certificate = stub.getStringState(enrollmentId);
+        String certificate = cUtil.getStringState(stub, enrollmentId);
 
         if (certificate == null || certificate.equals("")) {
             return GsonWrapper.toJson(cUtil.getNotFoundError());

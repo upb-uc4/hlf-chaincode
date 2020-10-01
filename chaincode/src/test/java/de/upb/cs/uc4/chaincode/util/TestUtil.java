@@ -16,15 +16,19 @@ public class TestUtil {
     }
 
     public static Context mockContext(List<String> setup) {
+        return mockContext(setup, "");
+    }
+
+    public static Context mockContext(List<String> setup, String keyPrefix) {
         Context ctx = mock(Context.class);
-        when(ctx.getStub()).thenReturn(mockStub(setup));
+        when(ctx.getStub()).thenReturn(mockStub(setup, keyPrefix));
         return ctx;
     }
 
-    private static MockChaincodeStub mockStub(List<String> setup) {
+    private static MockChaincodeStub mockStub(List<String> setup, String keyPrefix) {
         MockChaincodeStub stub = new MockChaincodeStub();
         for (int i=0; i<setup.size(); i+=2) {
-            stub.putStringState(setup.get(i), setup.get(i+1));
+            stub.putStringState(keyPrefix + setup.get(i), setup.get(i+1));
         }
         return stub;
     }

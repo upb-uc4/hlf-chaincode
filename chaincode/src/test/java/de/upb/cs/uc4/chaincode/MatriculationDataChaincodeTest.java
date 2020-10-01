@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
@@ -20,6 +21,9 @@ import java.util.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public final class MatriculationDataChaincodeTest {
+
+    private final MatriculationDataChaincode contract = new MatriculationDataChaincode();
+    private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
     @TestFactory
     List<DynamicTest> createTests() {
@@ -98,14 +102,13 @@ public final class MatriculationDataChaincodeTest {
         return tests;
     }
 
-    static Executable getMatriculationDataTest(
+    private Executable getMatriculationDataTest(
             List<String> setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            MatriculationDataChaincode contract = new MatriculationDataChaincode();
-            Context ctx = TestUtil.mockContext(setup);
+            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
 
             MatriculationData matriculationData = GsonWrapper.fromJson(
                     contract.getMatriculationData(ctx, input.get(0)),
@@ -121,13 +124,12 @@ public final class MatriculationDataChaincodeTest {
             List<String> compare
     ) {
         return () -> {
-            MatriculationDataChaincode contract = new MatriculationDataChaincode();
-            Context ctx = TestUtil.mockContext(setup);
+            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
 
             assertThat(contract.addMatriculationData(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(ctx.getStub().getStringState(matriculationData.getEnrollmentId()))
+            assertThat(ctx.getStub().getStringState(cUtil.getKeyPrefix() + matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
     }
@@ -138,8 +140,7 @@ public final class MatriculationDataChaincodeTest {
             List<String> compare
     ) {
         return () -> {
-            MatriculationDataChaincode contract = new MatriculationDataChaincode();
-            Context ctx = TestUtil.mockContext(setup);
+            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
 
             String result = contract.addMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -152,13 +153,12 @@ public final class MatriculationDataChaincodeTest {
             List<String> compare
     ) {
         return () -> {
-            MatriculationDataChaincode contract = new MatriculationDataChaincode();
-            Context ctx = TestUtil.mockContext(setup);
+            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
 
             assertThat(contract.updateMatriculationData(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(ctx.getStub().getStringState(matriculationData.getEnrollmentId()))
+            assertThat(ctx.getStub().getStringState(cUtil.getKeyPrefix() + matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
 
@@ -170,8 +170,7 @@ public final class MatriculationDataChaincodeTest {
             List<String> compare
     ) {
         return () -> {
-            MatriculationDataChaincode contract = new MatriculationDataChaincode();
-            Context ctx = TestUtil.mockContext(setup);
+            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
 
             String result = contract.updateMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -184,13 +183,12 @@ public final class MatriculationDataChaincodeTest {
             List<String> compare
     ) {
         return () -> {
-            MatriculationDataChaincode contract = new MatriculationDataChaincode();
-            Context ctx = TestUtil.mockContext(setup);
+            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
 
             assertThat(contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(ctx.getStub().getStringState(matriculationData.getEnrollmentId()))
+            assertThat(ctx.getStub().getStringState(cUtil.getKeyPrefix() + matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
     }
@@ -201,8 +199,7 @@ public final class MatriculationDataChaincodeTest {
             List<String> compare
     ) {
         return () -> {
-            MatriculationDataChaincode contract = new MatriculationDataChaincode();
-            Context ctx = TestUtil.mockContext(setup);
+            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
 
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
