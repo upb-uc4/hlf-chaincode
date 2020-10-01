@@ -4,8 +4,11 @@ import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 
 public class CertificateContractUtil extends ContractUtil {
-
     private final String thing = "certificate";
+
+    public CertificateContractUtil() {
+        keyPrefix = "certificate:";
+    }
 
     @Override
     public GenericError getConflictError() {
