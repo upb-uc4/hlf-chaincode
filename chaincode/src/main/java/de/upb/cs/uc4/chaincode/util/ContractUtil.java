@@ -72,4 +72,9 @@ abstract public class ContractUtil {
             add(invalidParam);
         }};
     }
+
+    public boolean keyExists(ChaincodeStub stub, String key) {
+        String result = getStringState(stub, key);
+        return result != null && !result.equals("");
+    }
 }
