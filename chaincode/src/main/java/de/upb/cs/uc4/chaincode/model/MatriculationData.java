@@ -122,5 +122,28 @@ public class MatriculationData {
     return o.toString().replace("\n", "\n    ");
   }
 
+  public void addAbsent(ArrayList<SubjectMatriculation> matriculationStatus) {
+    for (SubjectMatriculation newItem: matriculationStatus) {
+      boolean exists = false;
+      for (SubjectMatriculation item : this.getMatriculationStatus()) {
+        if (item.getFieldOfStudy() == newItem.getFieldOfStudy()) {
+          exists = true;
+          for (String newSemester : newItem.getSemesters()) {
+            if (item.getSemesters().contains(newSemester))
+              continue;
+            item.addsemestersItem(newSemester);
+          }
+        }
+      }
+      if (!exists) {
+        SubjectMatriculation item = new SubjectMatriculation().fieldOfStudy(newItem.getFieldOfStudy());
+        this.getMatriculationStatus().add(item);
+        for (String newSemester : newItem.getSemesters()) {
+          item.addsemestersItem(newSemester);
+        }
+      }
+    }
+  }
+
 }
 

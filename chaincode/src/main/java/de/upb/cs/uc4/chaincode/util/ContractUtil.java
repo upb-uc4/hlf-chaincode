@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
+import java.util.List;
 
 abstract public class ContractUtil {
 
@@ -76,5 +77,13 @@ abstract public class ContractUtil {
     public boolean keyExists(ChaincodeStub stub, String key) {
         String result = getStringState(stub, key);
         return result != null && !result.equals("");
+    }
+
+    public boolean valueUnset(String value) {
+        return value == null || value.equals("");
+    }
+
+    public <T> boolean valueUnset(List<T> value) {
+        return value == null || value.isEmpty();
     }
 }

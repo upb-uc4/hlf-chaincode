@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
@@ -13,10 +14,6 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Contract(
         name="UC4.MatriculationData"
@@ -49,9 +46,8 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(
+        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(
                 matriculationData, "matriculationData");
-
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
@@ -81,9 +77,8 @@ public class MatriculationDataChaincode implements ContractInterface {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(
+        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(
                 matriculationData, "matriculationData");
-
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
@@ -106,15 +101,10 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         ChaincodeStub stub = ctx.getStub();
         MatriculationData matriculationData;
-
         try {
-            matriculationData = GsonWrapper.fromJson(cUtil.getStringState(stub, enrollmentId), MatriculationData.class);
-        } catch(Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableLedgerStateError());
-        }
-
-        if (matriculationData == null) {
-            return GsonWrapper.toJson(cUtil.getNotFoundError());
+            matriculationData = cUtil.getState(stub, enrollmentId);
+        } catch(LedgerAccessError e) {
+            return e.getJsonError();
         }
         return GsonWrapper.toJson(matriculationData);
     }
@@ -134,167 +124,30 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         ChaincodeStub stub = ctx.getStub();
 
-        // retrieve jsonMatriculationData
-        String jsonMatriculationData;
-        try {
-            jsonMatriculationData = cUtil.getStringState(stub, enrollmentId);
-        } catch(Exception e) {
-            return GsonWrapper.toJson(cUtil.getNotFoundError());
-        }
-        if (jsonMatriculationData == null || jsonMatriculationData.equals("")) {
-            return GsonWrapper.toJson(cUtil.getNotFoundError());
-        }
-
-        // retrieve MatriculationData Object
-        MatriculationData matriculationData;
-
-        try {
-            matriculationData = GsonWrapper.fromJson(jsonMatriculationData, MatriculationData.class);
-        } catch(Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableLedgerStateError());
-        }
-
-        // manipulate object as intended
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        if (cUtil.valueUnset(enrollmentId))
+            invalidParams.add(cUtil.getEmptyEnrollmentIdParam());
         Type listType = new TypeToken<ArrayList<SubjectMatriculation>>(){}.getType();
         ArrayList<SubjectMatriculation> matriculationStatus;
         try {
             matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
         } catch(Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationParam()));
+            invalidParams.add(cUtil.getUnparsableMatriculationParam());
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
-
-        ArrayList<InvalidParameter> invalidParams = getErrorForSubjectMatriculationList(
-                matriculationStatus, "matriculations");
-
+        invalidParams = cUtil.getErrorForSubjectMatriculationList(matriculationStatus, "matriculations");
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-       for (SubjectMatriculation newItem: matriculationStatus) {
-           boolean exists = false;
-            for (SubjectMatriculation item : matriculationData.getMatriculationStatus()) {
-                if (item.getFieldOfStudy() == newItem.getFieldOfStudy()) {
-                    exists = true;
-                    for (String newSemester : newItem.getSemesters()) {
-                        if (item.getSemesters().contains(newSemester))
-                            continue;
-                        item.addsemestersItem(newSemester);
-                    }
-                }
-            }
-            if (!exists) {
-                SubjectMatriculation item = new SubjectMatriculation().fieldOfStudy(newItem.getFieldOfStudy());
-                matriculationData.getMatriculationStatus().add(item);
-                for (String newSemester : newItem.getSemesters()) {
-                    item.addsemestersItem(newSemester);
-                }
-            }
+        MatriculationData matriculationData;
+        try {
+            matriculationData = cUtil.getState(stub, enrollmentId);
+        } catch(LedgerAccessError e) {
+            return e.getJsonError();
         }
 
+        matriculationData.addAbsent(matriculationStatus);
         return cUtil.putAndGetStringState(stub, matriculationData.getEnrollmentId(), GsonWrapper.toJson(matriculationData));
-    }
-
-    /**
-     * Returns a list of errors describing everything wrong with the given matriculationData
-     * @param matriculationData matriculationData to return errors for
-     * @return a list of all errors found for the given matriculationData
-     */
-    private ArrayList<InvalidParameter> getErrorForMatriculationData(
-            MatriculationData matriculationData,
-            String prefix) {
-
-        if (!prefix.isEmpty())
-            prefix += ".";
-
-        ArrayList<InvalidParameter> list = new ArrayList<>();
-
-        if(matriculationData.getEnrollmentId() == null || matriculationData.getEnrollmentId().equals("")) {
-            addAbsent(list, cUtil.getEmptyEnrollmentIdParam(prefix));
-        }
-
-        List<SubjectMatriculation> matriculationStatus = matriculationData.getMatriculationStatus();
-        list.addAll(getErrorForSubjectMatriculationList(
-                matriculationStatus,
-                prefix+"matriculationStatus"));
-        return list;
-    }
-
-    private ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
-            List<SubjectMatriculation> matriculationStatus,
-            String prefix) {
-
-        ArrayList<InvalidParameter> list = new ArrayList<>();
-
-        if (matriculationStatus == null || matriculationStatus.isEmpty()) {
-            addAbsent(list, cUtil.getEmptyMatriculationStatusParam(prefix));
-        } else {
-
-            ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
-
-            for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
-
-                SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
-
-                if (subMat.getFieldOfStudy() == null) {
-                    addAbsent(list, cUtil.getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
-                } else {
-                    if (existingFields.contains(subMat.getFieldOfStudy())) {
-                        addAbsent(list, cUtil.getDuplicateFieldOfStudyParam(prefix, subMatIndex));
-                    } else
-                        existingFields.add(subMat.getFieldOfStudy());
-                }
-
-                List<String> semesters = subMat.getSemesters();
-                if (semesters == null || semesters.isEmpty()) {
-                    addAbsent(list, cUtil.getEmptySemestersParam(prefix + "[" + subMatIndex + "]."));
-                }
-
-                ArrayList<String> existingSemesters = new ArrayList<>();
-                for (int semesterIndex = 0; semesterIndex< Objects.requireNonNull(semesters).size(); semesterIndex++) {
-
-                    String semester = semesters.get(semesterIndex);
-
-                    if (semesterFormatValid(semester)) {
-                        if (existingSemesters.contains(semester)) {
-                            addAbsent(list, cUtil.getDuplicateSemesterParam(prefix + "["+subMatIndex+"].semesters", semesterIndex));
-                        } else
-                            existingSemesters.add(semester);
-                    }
-
-                    if (!semesterFormatValid(semester)) {
-                        addAbsent(list, cUtil.getInvalidSemesterParam(prefix+"["+subMatIndex+"].semesters", semesterIndex));
-                    }
-                }
-            }
-        }
-        return list;
-    }
-
-    /**
-     * Checks the given semester string for validity.
-     * @param semester semester string to check for validity
-     * @return true if semester is a valid description of a semester, false otherwise
-     */
-    public boolean semesterFormatValid(String semester) {
-        Pattern pattern = Pattern.compile("^(WS\\d{4}/\\d{2}|SS\\d{4})");
-        Matcher matcher = pattern.matcher(semester);
-        if (!matcher.matches())
-            return false;
-        if ("WS".equals(semester.substring(0,2))) {
-            int year1 = Integer.parseInt(semester.substring(4,6));
-            int year2 = Integer.parseInt(semester.substring(7,9));
-            return year2 == (year1 + 1) % 100;
-        }
-        return true;
-    }
-
-    /**
-     * Adds invParam to list, if list does not already contain the invParam. Otherwise does nothing.
-     * @param list list to add the invParam to
-     * @param invParam invParam to add to list
-     */
-    private void addAbsent (List<InvalidParameter> list, InvalidParameter invParam) {
-        if (!list.contains(invParam))
-            list.add(invParam);
     }
 }
