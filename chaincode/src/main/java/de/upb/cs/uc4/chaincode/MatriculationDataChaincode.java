@@ -135,7 +135,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             invalidParams.add(cUtil.getUnparsableMatriculationParam());
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
-        invalidParams = cUtil.getErrorForSubjectMatriculationList(matriculationStatus, "matriculations");
+        invalidParams.addAll(cUtil.getErrorForSubjectMatriculationList(matriculationStatus, "matriculations"));
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }

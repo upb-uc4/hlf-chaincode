@@ -542,8 +542,14 @@
     ],
     "compare": [
       {
-        "type": "HLNotFound",
-        "title": "There is no MatriculationData for the given enrollmentId"
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "enrollmentId",
+            "reason": "ID must not be empty"
+          }
+        ]
       }
     ]
   },
