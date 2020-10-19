@@ -2,13 +2,14 @@ package de.upb.cs.uc4.chaincode;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.util.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.threeten.bp.LocalDate;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -23,8 +24,7 @@ import java.util.regex.Pattern;
 @Default
 public class MatriculationDataChaincode implements ContractInterface {
 
-    // setup gson (de-)serializer capable of (de-)serializing dates
-    private static final GsonWrapper GSON = new GsonWrapper();
+    private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
     @Transaction()
     public void initLedger(final Context ctx) {
@@ -34,9 +34,8 @@ public class MatriculationDataChaincode implements ContractInterface {
     /**
      * Adds MatriculationData to the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     *            Transient params:
-     *                [0] newMatriculationData json representation of the new matriculation data
-     * @return Empty string on success, serialized error on failure
+     * @param newMatriculationData MatriculationData to be added
+     * @return newMatriculationData on success, serialized error on failure
      */
     @Transaction()
     public String addMatriculationData(final Context ctx, String newMatriculationData) {
@@ -45,12 +44,10 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         MatriculationData matriculationData;
         try {
-            matriculationData = GSON.fromJson(newMatriculationData, MatriculationData.class);
+            matriculationData = GsonWrapper.fromJson(newMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            return GSON.toJson(new DetailedError()
-                    .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format")
-                    .invalidParams(new ArrayList<InvalidParameter>() {{
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
+                    new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("newMatriculationData")
                                 .reason("The given parameter cannot be parsed from json"));
@@ -61,28 +58,22 @@ public class MatriculationDataChaincode implements ContractInterface {
                 matriculationData, "newMatriculationData");
 
         if (!invalidParams.isEmpty()) {
-            return GSON.toJson(new DetailedError()
-                    .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format")
-                    .invalidParams(invalidParams));
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        String result = stub.getStringState(matriculationData.getEnrollmentId());
+        String result = cUtil.getStringState(stub, matriculationData.getEnrollmentId());
         if (result != null && !result.equals("")) {
-            return GSON.toJson(new GenericError()
-                    .type("HLConflict")
-                    .title("There is already a MatriculationData for the given enrollmentId"));
+            return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        return putAndGetStringState(stub, matriculationData.getEnrollmentId(), GSON.toJson(matriculationData));
+        return cUtil.putAndGetStringState(stub, matriculationData.getEnrollmentId(), GsonWrapper.toJson(matriculationData));
     }
 
     /**
      * Updates MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     *            Transient params:
-     *                [0] updatedMatriculationData json-representation of the new MatriculationData to replace the old with
-     * @return Empty string on success, serialized error on failure
+     * @param updatedMatriculationData json-representation of the new MatriculationData to replace the old with
+     * @return updatedMatriculationData on success, serialized error on failure
      */
     @Transaction()
     public String updateMatriculationData(final Context ctx, String updatedMatriculationData) {
@@ -91,12 +82,10 @@ public class MatriculationDataChaincode implements ContractInterface {
 
         MatriculationData matriculationData;
         try {
-            matriculationData = GSON.fromJson(updatedMatriculationData, MatriculationData.class);
+            matriculationData = GsonWrapper.fromJson(updatedMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            return GSON.toJson(new DetailedError()
-                    .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format")
-                    .invalidParams(new ArrayList<InvalidParameter>() {{
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
+                    new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("updatedMatriculationData")
                                 .reason("The given parameter cannot be parsed from json"));
@@ -107,21 +96,16 @@ public class MatriculationDataChaincode implements ContractInterface {
                 matriculationData, "updatedMatriculationData");
 
         if (!invalidParams.isEmpty()) {
-            return GSON.toJson(new DetailedError()
-                    .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format")
-                    .invalidParams(invalidParams));
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        String MatriculationDataOnLedger = stub.getStringState(matriculationData.getEnrollmentId());
+        String MatriculationDataOnLedger = cUtil.getStringState(stub, matriculationData.getEnrollmentId());
 
         if (MatriculationDataOnLedger == null || MatriculationDataOnLedger.equals("")) {
-            return GSON.toJson(new GenericError()
-                    .type("HLNotFound")
-                    .title("There is no MatriculationData for the given enrollmentId"));
+            return GsonWrapper.toJson(cUtil.getNotFoundError());
         }
 
-        return putAndGetStringState(stub, matriculationData.getEnrollmentId(), GSON.toJson(matriculationData));
+        return cUtil.putAndGetStringState(stub, matriculationData.getEnrollmentId(), GsonWrapper.toJson(matriculationData));
     }
 
     /**
@@ -137,19 +121,15 @@ public class MatriculationDataChaincode implements ContractInterface {
         MatriculationData matriculationData;
 
         try {
-            matriculationData = GSON.fromJson(stub.getStringState(enrollmentId), MatriculationData.class);
+            matriculationData = GsonWrapper.fromJson(cUtil.getStringState(stub, enrollmentId), MatriculationData.class);
         } catch(Exception e) {
-            return GSON.toJson(new GenericError()
-                    .type("HLUnprocessableLedgerState")
-                    .title("The state on the ledger does not conform to the specified format"));
+            return GsonWrapper.toJson(cUtil.getUnprocessableLedgerStateError());
         }
 
         if (matriculationData == null) {
-            return GSON.toJson(new DetailedError()
-                    .type("HLNotFound")
-                    .title("There is no MatriculationData for the given enrollmentId"));
+            return GsonWrapper.toJson(cUtil.getNotFoundError());
         }
-        return GSON.toJson(matriculationData);
+        return GsonWrapper.toJson(matriculationData);
     }
 
     /**
@@ -157,7 +137,7 @@ public class MatriculationDataChaincode implements ContractInterface {
      * @param ctx transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId enrollmentId to add the matriculations to
      * @param matriculations list of matriculations
-     * @return Empty string on success, serialized error on failure
+     * @return Updated MatriculationData on success, serialized error on failure
      */
     @Transaction()
     public String addEntriesToMatriculationData (
@@ -170,39 +150,31 @@ public class MatriculationDataChaincode implements ContractInterface {
         // retrieve jsonMatriculationData
         String jsonMatriculationData;
         try {
-            jsonMatriculationData = stub.getStringState(enrollmentId);
+            jsonMatriculationData = cUtil.getStringState(stub, enrollmentId);
         } catch(Exception e) {
-            return GSON.toJson(new GenericError()
-                    .type("HLNotFound")
-                    .title("There is no MatriculationData for the given enrollmentId"));
+            return GsonWrapper.toJson(cUtil.getNotFoundError());
         }
         if (jsonMatriculationData == null || jsonMatriculationData.equals("")) {
-            return GSON.toJson(new GenericError()
-                    .type("HLNotFound")
-                    .title("There is no MatriculationData for the given enrollmentId"));
+            return GsonWrapper.toJson(cUtil.getNotFoundError());
         }
 
         // retrieve MatriculationData Object
         MatriculationData matriculationData;
 
         try {
-            matriculationData = GSON.fromJson(jsonMatriculationData, MatriculationData.class);
+            matriculationData = GsonWrapper.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            return GSON.toJson(new GenericError()
-                    .type("HLUnprocessableLedgerState")
-                    .title("The state on the ledger does not conform to the specified format"));
+            return GsonWrapper.toJson(cUtil.getUnprocessableLedgerStateError());
         }
 
         // manipulate object as intended
         Type listType = new TypeToken<ArrayList<SubjectMatriculation>>(){}.getType();
         ArrayList<SubjectMatriculation> matriculationStatus;
         try {
-            matriculationStatus = GSON.fromJson(matriculations, listType);
+            matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
         } catch(Exception e) {
-            return GSON.toJson(new DetailedError()
-                    .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format")
-                    .invalidParams(new ArrayList<InvalidParameter>() {{
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(
+                    new ArrayList<InvalidParameter>() {{
                         add(new InvalidParameter()
                                 .name("matriculations")
                                 .reason("The given parameter cannot be parsed from json"));
@@ -213,10 +185,7 @@ public class MatriculationDataChaincode implements ContractInterface {
                 matriculationStatus, "matriculations");
 
         if (!invalidParams.isEmpty()) {
-            return GSON.toJson(new DetailedError()
-                    .type("HLUnprocessableEntity")
-                    .title("The following parameters do not conform to the specified format")
-                    .invalidParams(invalidParams));
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
        for (SubjectMatriculation newItem: matriculationStatus) {
@@ -240,7 +209,7 @@ public class MatriculationDataChaincode implements ContractInterface {
             }
         }
 
-        return putAndGetStringState(stub, matriculationData.getEnrollmentId(), GSON.toJson(matriculationData));
+        return cUtil.putAndGetStringState(stub, matriculationData.getEnrollmentId(), GsonWrapper.toJson(matriculationData));
     }
 
     /**
@@ -359,10 +328,5 @@ public class MatriculationDataChaincode implements ContractInterface {
     private void addAbsent (List<InvalidParameter> list, InvalidParameter invParam) {
         if (!list.contains(invParam))
             list.add(invParam);
-    }
-
-    private String putAndGetStringState(ChaincodeStub stub, String key, String value) {
-        stub.putStringState(key,value);
-        return value;
     }
 }

@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode;
+package de.upb.cs.uc4.chaincode.util;
 
 import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Dummy;
@@ -61,23 +61,19 @@ public class GsonWrapper {
                             Jsoup.clean(json.getAsJsonPrimitive().getAsString(), Whitelist.none()))
             .create();
 
-    public <T> T fromJson(String json, Class<T> t) throws JsonSyntaxException {
+    public static <T> T fromJson(String json, Class<T> t) throws JsonSyntaxException {
         return gson.fromJson(json, t);
     }
 
-    public <T> String toJson(T object) {
+    public static <T> String toJson(T object) {
         return gson.toJson(object);
     }
 
-    public <T> T fromJson(Reader reader, Class<T> t) {
-        return gson.fromJson(reader, t);
-    }
-
-    public <T> T fromJson(Reader reader, Type type) {
+    public static <T> T fromJson(Reader reader, Type type) {
         return gson.fromJson(reader, type);
     }
 
-    public <T> T fromJson(String json, Type type) {
+    public static <T> T fromJson(String json, Type type) {
         return gson.fromJson(json, type);
     }
 }
