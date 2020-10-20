@@ -4,9 +4,7 @@ import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
-import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -15,8 +13,7 @@ import java.util.ArrayList;
 @Contract(
         name="UC4.Certificate"
 )
-@Default
-public class CertificateChaincode implements ContractInterface {
+public class CertificateContract extends ContractBase {
 
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
 

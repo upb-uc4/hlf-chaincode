@@ -1,16 +1,11 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;
-import org.hyperledger.fabric.contract.annotation.Contract;
-import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
-@Contract(
-        name="UC4.Version"
-)
-@Default
-public class VersionChaincode implements ContractInterface {
+
+public abstract class ContractBase implements ContractInterface {
 
     private final String version = "v0.10.1";
 

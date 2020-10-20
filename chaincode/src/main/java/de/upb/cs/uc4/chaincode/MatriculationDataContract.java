@@ -5,7 +5,6 @@ import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
 import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.contract.ContractInterface;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -22,7 +21,7 @@ import java.util.regex.Pattern;
         name="UC4.MatriculationData"
 )
 @Default
-public class MatriculationDataChaincode implements ContractInterface {
+public class MatriculationDataContract extends ContractBase {
 
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
