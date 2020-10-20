@@ -1,4 +1,21 @@
-# [v1.0.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v1.0.1...v1.0.2) (2020-10-01)
+# [v0.10.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.10.0...v0.10.1) (2020-10-20)
+
+## Feature
+- add version chaincode
+
+
+
+# [v0.10.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.9.2...v0.10.0) (2020-10-19)
+
+## Bug Fixes
+- fix error related to updated fabric shim version
+
+## Refactor
+- purge courses chaincode
+
+
+
+# [v0.9.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.9.1...v0.9.2) (2020-10-01)
 
 ## Bug Fixes
 - fix MatriculationDataContract and CertificateContract storing data under the same key (i.e. enrollmentId)
@@ -8,7 +25,7 @@
 
 
 
-# [v1.0.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v1.0.0...v1.0.1) (2020-09-29)
+# [v0.9.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.9.0...v0.9.1) (2020-09-29)
 
 ## Feature
 - add certificate contract
@@ -21,7 +38,7 @@
 
 
 
-# [v1.0.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.8.0...v1.0.0) (2020-09-28)
+# [v0.9.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.8.0...v0.9.0) (2020-09-28)
 
 ## Feature
 -

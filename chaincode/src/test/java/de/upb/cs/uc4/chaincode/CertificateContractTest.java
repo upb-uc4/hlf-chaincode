@@ -20,9 +20,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class  CertificateChaincodeTest {
+public final class CertificateContractTest {
 
-    private final CertificateChaincode contract = new CertificateChaincode();
+    private final CertificateContract contract = new CertificateContract();
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
 
     @TestFactory
