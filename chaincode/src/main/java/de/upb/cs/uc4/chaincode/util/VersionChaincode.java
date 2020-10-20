@@ -12,7 +12,7 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 @Default
 public class VersionChaincode implements ContractInterface {
 
-    private final String version = "v0.10.0";
+    private final String version = "v0.10.1";
 
     /**
      * Gets version of the chaincode
