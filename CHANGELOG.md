@@ -1,3 +1,10 @@
+# [v0.10.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.10.0...v0.10.1) (2020-10-20)
+
+## Feature
+- add version chaincode
+
+
+
 # [v0.10.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.9.2...v0.10.0) (2020-10-19)
 
 ## Bug Fixes
@@ -5,6 +12,8 @@
 
 ## Refactor
 - purge courses chaincode
+
+
 
 # [v0.9.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.9.1...v0.9.2) (2020-10-01)
 
