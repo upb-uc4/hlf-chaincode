@@ -171,7 +171,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus",
+            "name": "matriculationData.matriculationStatus",
             "reason": "Matriculation status must not be empty"
           }
         ]
@@ -215,7 +215,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus[0].semesters",
+            "name": "matriculationData.matriculationStatus[0].semesters",
             "reason": "Semesters must not be empty"
           }
         ]
@@ -261,7 +261,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus[0].fieldOfStudy",
+            "name": "matriculationData.matriculationStatus[0].fieldOfStudy",
             "reason": "Field of study must be one of the specified values"
           }
         ]
@@ -307,7 +307,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus[0].fieldOfStudy",
+            "name": "matriculationData.matriculationStatus[0].fieldOfStudy",
             "reason": "Field of study must be one of the specified values"
           }
         ]
@@ -361,19 +361,19 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus[0].semesters[0]",
+            "name": "matriculationData.matriculationStatus[0].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           },
           {
-            "name": "updatedMatriculationData.matriculationStatus[0].semesters[1]",
+            "name": "matriculationData.matriculationStatus[0].semesters[1]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           },
           {
-            "name": "updatedMatriculationData.matriculationStatus[1].semesters[0]",
+            "name": "matriculationData.matriculationStatus[1].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           },
           {
-            "name": "updatedMatriculationData.matriculationStatus[1].semesters[1]",
+            "name": "matriculationData.matriculationStatus[1].semesters[1]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]
@@ -419,7 +419,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus[0].semesters[0]",
+            "name": "matriculationData.matriculationStatus[0].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]
@@ -471,7 +471,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus[1].fieldOfStudy",
+            "name": "matriculationData.matriculationStatus[1].fieldOfStudy",
             "reason": "Each field of study must only appear in one matriculationStatus"
           }
         ]
@@ -517,7 +517,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus[0].semesters[2]",
+            "name": "matriculationData.matriculationStatus[0].semesters[2]",
             "reason": "Each semester must only appear once in matriculationStatus.semesters"
           }
         ]
@@ -563,7 +563,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.enrollmentId",
+            "name": "matriculationData.enrollmentId",
             "reason": "ID must not be empty"
           }
         ]
@@ -609,7 +609,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData.matriculationStatus[0].semesters[1]",
+            "name": "matriculationData.matriculationStatus[0].semesters[1]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]
@@ -645,7 +645,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams":[
           {
-            "name": "updatedMatriculationData",
+            "name": "matriculationData",
             "reason": "The given parameter cannot be parsed from json"
           }
         ]
