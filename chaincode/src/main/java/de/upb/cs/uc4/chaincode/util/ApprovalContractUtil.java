@@ -1,7 +1,9 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
+import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -15,6 +17,7 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
+    private final String thing = "list of approvals";
 
     public ApprovalContractUtil() {
         keyPrefix = "draft:";
@@ -27,7 +30,13 @@ public class ApprovalContractUtil extends ContractUtil {
 
     @Override
     public GenericError getNotFoundError() {
-        return null;
+        return super.getNotFoundError(thing);
+    }
+
+    public GenericError getInternalError() {
+        return new GenericError()
+                .type("HLInternalError")
+                .title("SHA-256 appearently does not exist lol...");
     }
 
     public String getDraftKey(final String contractName, final String transactionName, final String... params) throws NoSuchAlgorithmException {
@@ -46,14 +55,29 @@ public class ApprovalContractUtil extends ContractUtil {
         return id.getMSPID() + "::" + id.getId();
     }
 
+    public HashSet<String> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
+        String jsonApprovals;
+        jsonApprovals = getStringState(stub, key);
+        if (valueUnset(jsonApprovals)) {
+            throw new LedgerAccessError(GsonWrapper.toJson(getNotFoundError()));
+        }
+        HashSet<String> approvals;
+        try {
+            Type setType = new TypeToken<HashSet<String>>(){}.getType();
+            approvals = GsonWrapper.fromJson(jsonApprovals, setType);
+        } catch(Exception e) {
+            throw new LedgerAccessError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
+        }
+        return approvals;
+    }
+
     public String addApproval(ChaincodeStub stub, final String key, final String id) {
         String jsonApprovals = this.getStringState(stub, key);
         HashSet<String> approvals;
-        if (jsonApprovals == null || jsonApprovals.equals("")) { // TODO: replace by valueUnset
-            approvals = new HashSet<>();
-        } else {
-            Type setType = new TypeToken<HashSet<String>>(){}.getType();
-            approvals = GsonWrapper.fromJson(jsonApprovals, setType);
+        try{
+            approvals = getState(stub, key);
+        } catch(LedgerAccessError e) {
+            return e.getJsonError();
         }
         approvals.add(id);
         jsonApprovals = GsonWrapper.toJson(approvals);
