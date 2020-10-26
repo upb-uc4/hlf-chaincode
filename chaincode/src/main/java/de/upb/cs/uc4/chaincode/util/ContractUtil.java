@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
+import java.util.List;
 
 abstract public class ContractUtil {
 
@@ -16,6 +17,10 @@ abstract public class ContractUtil {
                 .type("HLUnprocessableEntity")
                 .title("The following parameters do not conform to the specified format")
                 .invalidParams(invalidParams);
+    }
+
+    public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
+        return getUnprocessableEntityError(getArrayList(invalidParam));
     }
 
     public abstract GenericError getConflictError();
@@ -41,8 +46,12 @@ abstract public class ContractUtil {
     }
 
     public InvalidParameter getEmptyEnrollmentIdParam() {
+        return getEmptyEnrollmentIdParam("");
+    }
+
+    public InvalidParameter getEmptyEnrollmentIdParam(String prefix) {
         return new InvalidParameter()
-                .name("enrollmentId")
+                .name(prefix + "enrollmentId")
                 .reason("ID must not be empty");
     }
 
@@ -57,5 +66,24 @@ abstract public class ContractUtil {
 
     public String getKeyPrefix() {
         return keyPrefix;
+    }
+
+    public ArrayList<InvalidParameter> getArrayList(InvalidParameter invalidParam) {
+        return new ArrayList<InvalidParameter>() {{
+            add(invalidParam);
+        }};
+    }
+
+    public boolean keyExists(ChaincodeStub stub, String key) {
+        String result = getStringState(stub, key);
+        return result != null && !result.equals("");
+    }
+
+    public boolean valueUnset(String value) {
+        return value == null || value.equals("");
+    }
+
+    public <T> boolean valueUnset(List<T> value) {
+        return value == null || value.isEmpty();
     }
 }

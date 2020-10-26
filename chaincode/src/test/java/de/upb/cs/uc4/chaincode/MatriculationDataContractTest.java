@@ -20,9 +20,9 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class MatriculationDataChaincodeTest {
+public final class MatriculationDataContractTest {
 
-    private final MatriculationDataChaincode contract = new MatriculationDataChaincode();
+    private final MatriculationDataContract contract = new MatriculationDataContract();
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
     @TestFactory
