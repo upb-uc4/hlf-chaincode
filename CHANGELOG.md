@@ -1,3 +1,8 @@
+# [v0.11.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.10.1...v0.11.0) (2020-10-26)
+
+Release (no changes to previous version)
+
+
 # [v0.10.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.10.0...v0.10.1) (2020-10-20)
 
 ## Feature
@@ -40,11 +45,6 @@
 
 # [v0.9.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.8.0...v0.9.0) (2020-09-28)
 
-## Feature
--
-
-## Bug Fixes
--
 
 ## Refactor
 - pseudonymize MatriculationData by replacing first name, last name, and birth date by an enrollment-ID
@@ -52,32 +52,15 @@
 - move transaction arguments from transient-data field to arguments
 
 
-## Usability
--
-
-
 
 # [v0.8.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.2...v0.8.0) (2020-09-14)
-
-## Feature
--
 
 ## Bug Fixes
 - fix tests not throwing error when querying ```getPrivateDataUTF8``` for empty string [#25](https://github.com/upb-uc4/hlf-chaincode/pull/25)
 
-## Refactor
-- 
-
-
-## Usability
--
-
 
 
 # [v0.7.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.1...v0.7.2) (2020-09-9)
-
-## Feature
-- 
 
 ## Bug Fixes
 - split up *collections_config* for dev/production network [#21](https://github.com/upb-uc4/hlf-chaincode/pull/21)
@@ -87,33 +70,18 @@
 - refactor error format to conform to api [#37](https://github.com/upb-uc4/api/pull/37), [#39](https://github.com/upb-uc4/api/pull/39)
 
 
-## Usability
--
-
 
 # [v0.7.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.7.0...v0.7.1) (2020-09-7)
 
 ## Feature
 - move sensitive data to transient data field and store data in private data collection [#17](https://github.com/upb-uc4/hlf-chaincode/pull/17)
 
-## Bug Fixes
--
-
 ## Refactor
 - refactor tests for private data transactions
 
 
-## Usability
--
-
 
 # [v0.7.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.6.0.1...v0.7.0) (2020-08-31)
-
-## Feature
--
-
-## Bug Fixes
--
 
 ## Refactor
 - add transaction comments
@@ -123,9 +91,6 @@
 - remove unused logger
 - remove unnecessary conditions
 
-
-## Usability
--
 
 
 # [v0.6.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.5.0...v0.6.0) (2020-08-19)
@@ -138,11 +103,6 @@
 ## Bug Fixes
 - prevent invalid paramters from appearing multiple times in the same error
 
-## Refactor
--
-
-## Usability
--
 
 
 # v0.5.0 (2020-08-11)
@@ -156,15 +116,9 @@
 - add GenericError
 - add UC4.MatriculationData tests
 
-## Bug Fixes
-- 
-
 ## Refactor
 - rework DetailedError to conform to API specification
 - rework MatriculationData to conform to API specification
   - rework SubjectMatriculation
   - delete MatriculationInterval
 - rework test format to extensively outsource JSON-IO
-
-### Usability
-- 
