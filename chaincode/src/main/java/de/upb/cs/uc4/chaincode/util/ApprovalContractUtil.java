@@ -14,9 +14,9 @@ import java.util.Base64;
 import java.util.HashSet;
 import java.util.stream.Collectors;
 
-public class DraftContractUtil extends ContractUtil {
+public class ApprovalContractUtil extends ContractUtil {
 
-    public DraftContractUtil() {
+    public ApprovalContractUtil() {
         keyPrefix = "draft:";
     }
 
@@ -30,8 +30,8 @@ public class DraftContractUtil extends ContractUtil {
         return null;
     }
 
-    public String getDraftKey(final String transactionName, final String... params) throws NoSuchAlgorithmException {
-        String all = transactionName + Arrays.stream(params).collect(Collectors.joining());
+    public String getDraftKey(final String contractName, final String transactionName, final String... params) throws NoSuchAlgorithmException {
+        String all = contractName + transactionName + Arrays.stream(params).collect(Collectors.joining());
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
         return new String(Base64.getEncoder().encode(bytes));
@@ -56,7 +56,8 @@ public class DraftContractUtil extends ContractUtil {
             approvals = GsonWrapper.fromJson(jsonApprovals, setType);
         }
         approvals.add(id);
-        this.putAndGetStringState(stub, key, GsonWrapper.toJson(approvals));
-        return ""; // TODO: return something?
+        jsonApprovals = GsonWrapper.toJson(approvals);
+        this.putAndGetStringState(stub, key, jsonApprovals);
+        return jsonApprovals;
     }
 }
