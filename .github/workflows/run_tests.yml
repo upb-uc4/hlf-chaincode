@@ -1,4 +1,4 @@
-name: Hyperledger Chaincode Test Pipeline
+name: Run Gradlew Test
 
 on:
   push:
@@ -33,7 +33,7 @@ jobs:
       run: |
         pushd ./chaincode
         echo "##########################"
-        echo "# starting chaincode test#"
+        echo "starting chaincode test"
         echo "##########################"
         ./gradlew test
         echo "##########################"
