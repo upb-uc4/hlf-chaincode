@@ -72,7 +72,6 @@ public class ApprovalContractUtil extends ContractUtil {
     }
 
     public String addApproval(ChaincodeStub stub, final String key, final String id) {
-        String jsonApprovals = this.getStringState(stub, key);
         HashSet<String> approvals;
         try{
             approvals = getState(stub, key);
@@ -80,8 +79,8 @@ public class ApprovalContractUtil extends ContractUtil {
             return e.getJsonError();
         }
         approvals.add(id);
-        jsonApprovals = GsonWrapper.toJson(approvals);
-        this.putAndGetStringState(stub, key, jsonApprovals);
+        String jsonApprovals = GsonWrapper.toJson(approvals);
+        putAndGetStringState(stub, key, jsonApprovals);
         return jsonApprovals;
     }
 }
