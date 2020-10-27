@@ -1,0 +1,70 @@
+/* repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+authentication(userName: ossrhUsername, password: ossrhPassword)
+  }
+
+snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+authentication(userName: ossrhUsername, password: ossrhPassword)
+  }*/
+def getRepositoryUrl() {
+    def releaseRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+    def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+    if (version.endsWith('SNAPSHOT')) {
+        return snapshotsRepoUrl
+    } else {
+        return releaseRepoUrl
+    }
+}
+
+def SONATYPE_USERNAME = findProperty("SONATYPE_USERNAME").toString()
+def SONATYPE_PW = findProperty("SONATYPE_PW").toString()
+def PGP_Key = findProperty("PGP_SECRET").toString()
+def PGP_PASSPHRASE = findProperty("PGP_PASSPHRASE").toString()
+
+publishing {
+    repositories {
+        maven {
+            credentials {
+                username = SONATYPE_USERNAME
+                password = SONATYPE_PW
+            }
+            // beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+            url = getRepositoryUrl()
+        }
+    }
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'hlf-chaincode'
+            pom {
+                // group = 'de.upb.cs.uc4' // set by general info
+                // verion = '0.0.0-Snapshot' // set by general info
+                // name = 'hlf-chaincode' // set by general info
+                description = 'The UC4 chaincode to set up our UniversityCredits4.0 network'
+                url = 'https://uc4.cs.upb.de/'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'UC4'
+                        name = 'UC4'
+                        email = 'UC4_official@web.de'
+                        url = 'https://github.com/upb-uc4'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/upb-uc4/hlf-chaincode.git'
+                    developerConnection = 'scm:git:git@github.com:upb-uc4/hlf-chaincode.git'
+                    url = 'https://github.com/upb-uc4/hlf-chaincode'
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(PGP_Key, PGP_PASSPHRASE)
+    sign publishing.publications.mavenJava
+}
