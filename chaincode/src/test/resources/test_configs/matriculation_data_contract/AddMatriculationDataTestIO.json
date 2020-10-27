@@ -265,44 +265,13 @@
         "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus[0].fieldOfStudy",
-            "reason": "Field of study must be one of the specified values"
+            "reason": "Field of study must not be empty"
           }
         ]
       }
     ]
   },
 
-
-  {
-    "name": "addInvalidFieldOfStudyMatriculationData",
-    "type": "addMatriculationData_FAILURE",
-    "setup": [],
-    "input": [
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Something invalid",
-            "semesters": [
-              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
-    "compare": [
-      {
-        "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format",
-        "invalidParams": [
-          {
-            "name": "matriculationData.matriculationStatus[0].fieldOfStudy",
-            "reason": "Field of study must be one of the specified values"
-          }
-        ]
-      }
-    ]
-  },
 
 
   {
