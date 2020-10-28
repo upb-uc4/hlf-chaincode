@@ -40,3 +40,10 @@ jobs:
         echo "#  finish chaincode test #"
         echo "##########################"
         popd
+
+    # Upload Coverage Report
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v1
+      with:
+        name: jacocoHtml
+        path: chaincode/build
