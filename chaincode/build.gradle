@@ -18,9 +18,9 @@ dependencies {
     implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.2.0'
     implementation 'com.owlike:genson:1.5'
     implementation 'com.google.code.gson:gson:2.8.6'
-    compile group: 'org.threeten', name: 'threetenbp', version: '1.4.4'
-    compile group: 'io.swagger', name: 'swagger-annotations', version: '1.5.0'
-    compile group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+    api group: 'org.threeten', name: 'threetenbp', version: '1.4.4'
+    api group: 'io.swagger', name: 'swagger-annotations', version: '1.5.0'
+    api group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
     testImplementation 'org.assertj:assertj-core:3.11.1'
     testImplementation 'org.mockito:mockito-core:2.+'
@@ -37,7 +37,12 @@ repositories {
     }
 }
 
-group 'de.upb.cs.uc4'
+// variables
+def isReleaseVersion = !version.endsWith("SNAPSHOT")
+def javaMainClass = 'org.hyperledger.fabric.contract.ContractRouter'
+group = 'de.upb.cs.uc4'
+
+// versioning
 version = "0.0.0-SNAPSHOT"
 gitVersioning.apply {
   branch {
@@ -50,22 +55,15 @@ gitVersioning.apply {
   }
 }
 
-// Tell gradle which main class to execute
-apply plugin : 'java'
-ext {
-    isReleaseVersion = !version.endsWith("SNAPSHOT")
-    javaMainClass = 'org.hyperledger.fabric.contract.ContractRouter'
+application {
+    mainClassName = javaMainClass
 }
 
 shadowJar {
-    version = rootProject.version
+    archiveVersion = rootProject.version
     manifest {
-        attributes 'Main-Class': ext.javaMainClass
+        attributes 'Main-Class': javaMainClass
     }
-}
-
-application {
-    mainClassName = javaMainClass
 }
 
 test {
@@ -75,6 +73,17 @@ test {
     }
 }
 
+// testcoverage
+apply plugin: "jacoco"
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.70
+            }
+        }
+    }
+}
 check.dependsOn jacocoTestCoverageVerification
 
 // release config

@@ -36,7 +36,7 @@ publishing {
             artifactId = 'hlf-chaincode'
             pom {
                 // group = 'de.upb.cs.uc4' // set by general info
-                // verion = '0.0.0-Snapshot' // set by general info
+                // version = '0.0.0-Snapshot' // set by general info
                 // name = 'hlf-chaincode' // set by general info
                 description = 'The UC4 chaincode to set up our UniversityCredits4.0 network'
                 url = 'https://uc4.cs.upb.de/'
