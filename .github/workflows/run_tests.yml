@@ -45,5 +45,5 @@ jobs:
     - name: Upload coverage report
       uses: actions/upload-artifact@v1
       with:
-        name: jacocoHtml
-        path: chaincode/build
+        name: coverage-report
+        path: chaincode/build/jacocoHtml
