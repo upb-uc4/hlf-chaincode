@@ -2,30 +2,12 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-/* repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-authentication(userName: ossrhUsername, password: ossrhPassword)
-  }
-
-snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-authentication(userName: ossrhUsername, password: ossrhPassword)
-  }*/
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier.set("javadoc")
-    from javadoc.destinationDir
-}
-
-task sourceJar(type: Jar) {
-    archiveClassifier.set("sources")
-    from sourceSets.main.allJava
-}
-
 def isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 publishing {
     publications {
         myPublication(MavenPublication) {
-            from components.java
+            from(components.java)
 
             pom {
                 // group = 'de.upb.cs.uc4' // set by general info
