@@ -6,8 +6,8 @@ plugins {
     id 'java'
     id 'java-library-distribution'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'jacoco'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'me.qoomon.git-versioning' version '2.1.1'
     id 'maven-publish'
     // id 'maven'
@@ -37,60 +37,25 @@ repositories {
     }
 }
 
+// version config
+apply from: "$rootDir/gradle/versioning.gradle"
+// test and coverage config
+apply from: "$rootDir/gradle/test.gradle"
+// release config
+apply from: "$rootDir/gradle/release.gradle"
+
 // variables
 def isReleaseVersion = !version.endsWith("SNAPSHOT")
 def javaMainClass = 'org.hyperledger.fabric.contract.ContractRouter'
 group = 'de.upb.cs.uc4'
 
-// versioning
-version = "0.0.0-SNAPSHOT"
-gitVersioning.apply {
-  branch {
-    pattern = '(?<branch>.+)'
-    versionFormat = '${branch}-${commit.timestamp.datetime}-SNAPSHOT'
-  }
-  tag {
-    pattern = 'v(?<tagVersion>([0-9].[0-9].[0-9]))'
-    versionFormat = '${tagVersion}'
-  }
-}
-
+// packaging config
 application {
     mainClassName = javaMainClass
 }
-
 shadowJar {
     archiveVersion.set(rootProject.version.toString())
     manifest {
         attributes 'Main-Class': javaMainClass
     }
 }
-
-// test and coverage
-test {
-    useJUnitPlatform()
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
-    finalizedBy(jacocoTestReport)
-}
-jacocoTestReport {
-    dependsOn jacocoTestCoverageVerification
-    reports {
-        html.destination file("${buildDir}/jacocoHtml")
-    }
-}
-jacocoTestCoverageVerification {
-    dependsOn test
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.70
-            }
-        }
-    }
-}
-
-
-// release config
-apply from: "$rootDir/release.gradle"
