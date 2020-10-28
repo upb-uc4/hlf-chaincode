@@ -40,3 +40,10 @@ jobs:
         echo "#  finish chaincode test #"
         echo "##########################"
         popd
+        
+    # Upload artifact
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: hlf-chaincode
+        path: chaincode/build/install/hlf-chaincode
