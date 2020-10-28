@@ -4,14 +4,16 @@
 
 plugins {
     id 'java'
+    id 'groovy'
+    id 'java-library'
     id 'java-library-distribution'
     id 'application'
     id 'jacoco'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'me.qoomon.git-versioning' version '2.1.1'
-    id 'maven-publish'
     // id 'maven'
     id 'signing'
+    id 'maven-publish'
 }
 
 dependencies {
@@ -45,7 +47,6 @@ apply from: "$rootDir/gradle/test.gradle"
 apply from: "$rootDir/gradle/release.gradle"
 
 // variables
-def isReleaseVersion = !version.endsWith("SNAPSHOT")
 def javaMainClass = 'org.hyperledger.fabric.contract.ContractRouter'
 group = 'de.upb.cs.uc4'
 
