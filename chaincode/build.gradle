@@ -6,7 +6,7 @@ plugins {
     id 'java'
     id 'java-library-distribution'
     id 'application'
-    id 'com.github.johnrengelman.shadow' version '5.1.0'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'jacoco'
     id 'me.qoomon.git-versioning' version '2.1.1'
     id 'maven-publish'
@@ -60,22 +60,28 @@ application {
 }
 
 shadowJar {
-    archiveVersion = rootProject.version
+    archiveVersion.set(rootProject.version.toString())
     manifest {
         attributes 'Main-Class': javaMainClass
     }
 }
 
+// test and coverage
 test {
     useJUnitPlatform()
     testLogging {
         events "passed", "skipped", "failed"
     }
+    finalizedBy(jacocoTestReport)
 }
-
-// testcoverage
-apply plugin: "jacoco"
+jacocoTestReport {
+    dependsOn jacocoTestCoverageVerification
+    reports {
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
 jacocoTestCoverageVerification {
+    dependsOn test
     violationRules {
         rule {
             limit {
@@ -84,7 +90,7 @@ jacocoTestCoverageVerification {
         }
     }
 }
-check.dependsOn jacocoTestCoverageVerification
+
 
 // release config
 apply from: "$rootDir/release.gradle"
