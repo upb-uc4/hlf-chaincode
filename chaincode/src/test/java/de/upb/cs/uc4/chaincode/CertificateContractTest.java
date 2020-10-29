@@ -7,6 +7,7 @@ import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
@@ -113,7 +114,9 @@ public final class CertificateContractTest {
 
             assertThat(contract.addCertificate(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
-            assertThat(ctx.getStub().getStringState(cUtil.getKeyPrefix() + input.get(0)))
+            ChaincodeStub stub = ctx.getStub();
+            String fullKey = stub.createCompositeKey(cUtil.getKeyPrefix(), input.get(0)).toString();
+            assertThat(ctx.getStub().getStringState(fullKey))
                     .isEqualTo(compare.get(0));
         };
     }
@@ -141,7 +144,9 @@ public final class CertificateContractTest {
 
             assertThat(contract.updateCertificate(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
-            assertThat(ctx.getStub().getStringState(cUtil.getKeyPrefix() + input.get(0)))
+            ChaincodeStub stub = ctx.getStub();
+            String fullKey = stub.createCompositeKey(cUtil.getKeyPrefix(), input.get(0)).toString();
+            assertThat(ctx.getStub().getStringState(fullKey))
                     .isEqualTo(compare.get(0));
         };
 

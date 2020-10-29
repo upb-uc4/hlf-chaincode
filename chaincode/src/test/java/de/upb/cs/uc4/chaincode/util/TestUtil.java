@@ -28,7 +28,8 @@ public class TestUtil {
     private static MockChaincodeStub mockStub(List<String> setup, String keyPrefix) {
         MockChaincodeStub stub = new MockChaincodeStub();
         for (int i=0; i<setup.size(); i+=2) {
-            stub.putStringState(keyPrefix + setup.get(i), setup.get(i+1));
+            String fullKey = stub.createCompositeKey(keyPrefix, setup.get(i)).toString();
+            stub.putStringState(fullKey, setup.get(i+1));
         }
         return stub;
     }

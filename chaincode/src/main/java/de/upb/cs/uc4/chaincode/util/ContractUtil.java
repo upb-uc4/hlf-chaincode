@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.model.DetailedError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ledger.CompositeKey;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,12 +57,14 @@ abstract public class ContractUtil {
     }
 
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {
-        stub.putStringState(keyPrefix + key,value);
+        String fullKey = stub.createCompositeKey(keyPrefix, key).toString();
+        stub.putStringState(fullKey,value);
         return value;
     }
 
     public String getStringState(ChaincodeStub stub, String key) {
-        return stub.getStringState(keyPrefix + key);
+        String fullKey = stub.createCompositeKey(keyPrefix, key).toString();
+        return stub.getStringState(fullKey);
     }
 
     public String getKeyPrefix() {
