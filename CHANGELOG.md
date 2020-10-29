@@ -1,3 +1,9 @@
+# [v0.11.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.0...v0.11.1) (2020-10-29)
+
+## Refactor
+- replace makeshift composite keys by fabric's built in composite keys
+
+
 # [v0.11.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.10.1...v0.11.0) (2020-10-26)
 
 Release (no changes to previous version)
