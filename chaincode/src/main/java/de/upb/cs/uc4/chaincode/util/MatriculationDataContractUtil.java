@@ -17,7 +17,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
     private final String thing = "MatriculationData";
 
     public MatriculationDataContractUtil() {
-        keyPrefix = "matriculationData:";
+        keyPrefix = "matriculationData";
     }
 
     @Override
