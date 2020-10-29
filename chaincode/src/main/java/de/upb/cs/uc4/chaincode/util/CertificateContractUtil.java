@@ -7,7 +7,7 @@ public class CertificateContractUtil extends ContractUtil {
     private final String thing = "certificate";
 
     public CertificateContractUtil() {
-        keyPrefix = "certificate:";
+        keyPrefix = "certificate";
     }
 
     @Override
