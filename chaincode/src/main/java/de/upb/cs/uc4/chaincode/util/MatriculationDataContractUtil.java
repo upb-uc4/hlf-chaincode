@@ -54,6 +54,12 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 .reason("Field of study must be one of the specified values");
     }
 
+    public InvalidParameter getEmptyFieldOfStudyParam(String prefix) {
+        return new InvalidParameter()
+                .name(prefix+"fieldOfStudy")
+                .reason("Field of study must not be empty");
+    }
+
     public InvalidParameter getDuplicateFieldOfStudyParam(String prefix, int index) {
         return new InvalidParameter()
                 .name(prefix+"[" + index + "].fieldOfStudy")
@@ -126,15 +132,16 @@ public class MatriculationDataContractUtil extends ContractUtil {
         if (valueUnset(matriculationStatus)) {
             invalidParams.add(getEmptyMatriculationStatusParam(prefix));
         } else {
-            ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
+            ArrayList<String> existingFields = new ArrayList<>();
 
             for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
-                if (subMat.getFieldOfStudy() == null) {
-                    invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
+                if (valueUnset(subMat.getFieldOfStudy())) {
+                    invalidParams.add(getEmptyFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
                 } else {
+                    // TODO: check if fieldOfStudy on ledger (getInvalidFieldOfStudyParam)
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
                         invalidParams.add(getDuplicateFieldOfStudyParam(prefix, subMatIndex));
                     } else
