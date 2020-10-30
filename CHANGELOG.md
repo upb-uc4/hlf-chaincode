@@ -1,3 +1,9 @@
+# [v0.11.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.1...v0.11.2) (2020-10-30)
+
+## Refactor
+- replace field of study enum by string, allowing for configurable fields of study
+
+
 # [v0.11.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.0...v0.11.1) (2020-10-29)
 
 ## Refactor
