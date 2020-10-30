@@ -17,7 +17,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -104,7 +103,8 @@ public final class ApprovalContractTest {
             assertThat(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)))
                     .isEqualTo(compare.get(0));
             ChaincodeStub stub = ctx.getStub();
-            String fullKey = stub.createCompositeKey(cUtil.getKeyPrefix(), input.get(0)).toString();
+            String key = cUtil.getDraftKey(contract(input), transaction(input), params(input));
+            String fullKey = stub.createCompositeKey(cUtil.getKeyPrefix(), key).toString();
             assertThat(ctx.getStub().getStringState(fullKey))
                     .isEqualTo(compare.get(0));
         };

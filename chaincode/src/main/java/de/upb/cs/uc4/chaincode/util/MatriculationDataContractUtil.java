@@ -1,6 +1,8 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
@@ -88,13 +90,13 @@ public class MatriculationDataContractUtil extends ContractUtil {
         String jsonMatriculationData;
         jsonMatriculationData = getStringState(stub, key);
         if (valueUnset(jsonMatriculationData)) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getNotFoundError()));
+            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
         MatriculationData matriculationData;
         try {
             matriculationData = GsonWrapper.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
+            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
         }
         return matriculationData;
     }

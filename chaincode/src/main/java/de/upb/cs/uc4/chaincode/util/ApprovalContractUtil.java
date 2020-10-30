@@ -2,9 +2,10 @@ package de.upb.cs.uc4.chaincode.util;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
-import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -13,10 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashSet;
-import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
     private final String thing = "list of approvals";
@@ -55,7 +53,7 @@ public class ApprovalContractUtil extends ContractUtil {
     }
 
     public String getDraftKey(final String contractName, final String transactionName, final String... params) throws NoSuchAlgorithmException {
-        String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + Arrays.stream(params).collect(Collectors.joining(HASH_DELIMITER));
+        String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + String.join(HASH_DELIMITER, params);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
         return new String(Base64.getEncoder().encode(bytes));
@@ -67,21 +65,21 @@ public class ApprovalContractUtil extends ContractUtil {
      * @return draftId
      */
     public String getDraftId(final ClientIdentity id) {
-        return id.getMSPID() + "::" + id.getId();
+        return id.getMSPID() + HASH_DELIMITER + id.getId(); //TODO: rework delimiting
     }
 
     public ArrayList<String> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
         String jsonApprovals;
         jsonApprovals = getStringState(stub, key);
         if (valueUnset(jsonApprovals)) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getNotFoundError()));
+            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
         ArrayList<String> approvals;
         try {
             Type setType = new TypeToken<ArrayList<String>>(){}.getType();
             approvals = GsonWrapper.fromJson(jsonApprovals, setType);
         } catch(Exception e) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
+            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
         }
         return approvals;
     }
@@ -90,6 +88,8 @@ public class ApprovalContractUtil extends ContractUtil {
         ArrayList<String> approvals;
         try{
             approvals = getState(stub, key);
+        } catch(LedgerStateNotFoundError e) {
+            approvals = new ArrayList<>();
         } catch(LedgerAccessError e) {
             return e.getJsonError();
         }
@@ -101,7 +101,7 @@ public class ApprovalContractUtil extends ContractUtil {
         return jsonApprovals;
     }
 
-    public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName, String... params) {
+    public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         if (valueUnset(contractName)) {
             invalidParams.add(getEmptyContractNameParam());

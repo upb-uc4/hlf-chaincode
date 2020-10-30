@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
@@ -12,7 +11,6 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 @Contract(
         name="UC4.Approval"
