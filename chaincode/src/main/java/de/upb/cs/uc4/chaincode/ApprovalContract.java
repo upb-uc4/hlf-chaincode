@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
+import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -10,6 +11,7 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 @Contract(
@@ -26,14 +28,20 @@ public class ApprovalContract extends ContractBase {
      */
     @Transaction()
     public String approveTransaction(final Context ctx, final String contractName, final String transactionName, final String... params) {
-
         ChaincodeStub stub = ctx.getStub();
+
+        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
+        if (!invalidParams.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        }
+
         String key;
         try {
             key = cUtil.getDraftKey(contractName, transactionName, params);
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
+
         String id = cUtil.getDraftId(ctx.getClientIdentity());
         return cUtil.addApproval(stub, key, id);
     }
@@ -42,6 +50,11 @@ public class ApprovalContract extends ContractBase {
     public String getApprovals(final Context ctx, final String contractName, final String transactionName, final String... params) {
         ChaincodeStub stub = ctx.getStub();
 
+        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
+        if (!invalidParams.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        }
+
         String key;
         try {
             key = cUtil.getDraftKey(contractName, transactionName, params);
@@ -49,7 +62,7 @@ public class ApprovalContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
 
-        HashSet<String> approvals;
+        ArrayList<String> approvals;
         try{
             approvals = cUtil.getState(stub, key);
         } catch(LedgerAccessError e) {

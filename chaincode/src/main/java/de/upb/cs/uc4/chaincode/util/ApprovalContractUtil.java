@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode.util;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
+import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -11,6 +12,7 @@ import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.HashSet;
@@ -18,6 +20,7 @@ import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
     private final String thing = "list of approvals";
+    private final String HASH_DELIMITER = "::"; //TODO: rework delimiting
 
     public ApprovalContractUtil() {
         keyPrefix = "draft:";
@@ -39,8 +42,20 @@ public class ApprovalContractUtil extends ContractUtil {
                 .title("SHA-256 appearently does not exist lol...");
     }
 
+    public InvalidParameter getEmptyContractNameParam() {
+        return new InvalidParameter()
+                .name("contractName")
+                .reason("Contract name must not be empty");
+    }
+
+    public InvalidParameter getEmptyTransactionNameParam() {
+        return new InvalidParameter()
+                .name("transactionName")
+                .reason("Transaction name must not be empty");
+    }
+
     public String getDraftKey(final String contractName, final String transactionName, final String... params) throws NoSuchAlgorithmException {
-        String all = contractName + transactionName + Arrays.stream(params).collect(Collectors.joining());
+        String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + Arrays.stream(params).collect(Collectors.joining(HASH_DELIMITER));
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
         return new String(Base64.getEncoder().encode(bytes));
@@ -55,15 +70,15 @@ public class ApprovalContractUtil extends ContractUtil {
         return id.getMSPID() + "::" + id.getId();
     }
 
-    public HashSet<String> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
+    public ArrayList<String> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
         String jsonApprovals;
         jsonApprovals = getStringState(stub, key);
         if (valueUnset(jsonApprovals)) {
             throw new LedgerAccessError(GsonWrapper.toJson(getNotFoundError()));
         }
-        HashSet<String> approvals;
+        ArrayList<String> approvals;
         try {
-            Type setType = new TypeToken<HashSet<String>>(){}.getType();
+            Type setType = new TypeToken<ArrayList<String>>(){}.getType();
             approvals = GsonWrapper.fromJson(jsonApprovals, setType);
         } catch(Exception e) {
             throw new LedgerAccessError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
@@ -72,15 +87,28 @@ public class ApprovalContractUtil extends ContractUtil {
     }
 
     public String addApproval(ChaincodeStub stub, final String key, final String id) {
-        HashSet<String> approvals;
+        ArrayList<String> approvals;
         try{
             approvals = getState(stub, key);
         } catch(LedgerAccessError e) {
             return e.getJsonError();
         }
-        approvals.add(id);
+        if (!approvals.contains(id)) {
+            approvals.add(id);
+        }
         String jsonApprovals = GsonWrapper.toJson(approvals);
         putAndGetStringState(stub, key, jsonApprovals);
         return jsonApprovals;
+    }
+
+    public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName, String... params) {
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        if (valueUnset(contractName)) {
+            invalidParams.add(getEmptyContractNameParam());
+        }
+        if (valueUnset(transactionName)) {
+            invalidParams.add(getEmptyTransactionNameParam());
+        }
+        return invalidParams;
     }
 }
