@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 
 public class MatriculationDataContractUtil extends ContractUtil {
     private final String thing = "MatriculationData";
+    private final String identifier = "enrollmentId";
 
     public MatriculationDataContractUtil() {
         keyPrefix = "matriculationData";
@@ -24,12 +25,12 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
     @Override
     public GenericError getConflictError() {
-        return super.getConflictError(thing);
+        return super.getConflictError(thing, identifier);
     }
 
     @Override
     public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing);
+        return super.getNotFoundError(thing, identifier);
     }
 
     public InvalidParameter getUnparsableMatriculationDataParam() {

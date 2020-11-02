@@ -37,7 +37,7 @@
     "compare": [
       {
         "type": "HLNotFound",
-        "title": "There is no list of approvals for the given enrollmentId"
+        "title": "There is no list of approvals for the given transaction"
       }
     ]
   },

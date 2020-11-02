@@ -18,6 +18,7 @@ import java.util.Base64;
 
 public class ApprovalContractUtil extends ContractUtil {
     private final String thing = "list of approvals";
+    private final String identifier = "transaction";
     private final String HASH_DELIMITER = "::"; //TODO: rework delimiting
 
     public ApprovalContractUtil() {
@@ -31,7 +32,7 @@ public class ApprovalContractUtil extends ContractUtil {
 
     @Override
     public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing);
+        return super.getNotFoundError(thing, identifier);
     }
 
     public GenericError getInternalError() {
