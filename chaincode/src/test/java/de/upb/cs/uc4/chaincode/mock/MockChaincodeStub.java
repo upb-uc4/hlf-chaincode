@@ -166,7 +166,9 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(CompositeKey compositeKey) {
-        return null;
+        PartialKeyIterator iterator = new PartialKeyIterator(dataCollections.get(defaultCollection).iterator(), compositeKey.toString());
+        QueryResultsIterator<KeyValue> resultsIterator = new MockQueryResultsIterator(iterator);
+        return resultsIterator;
     }
 
     @Override
