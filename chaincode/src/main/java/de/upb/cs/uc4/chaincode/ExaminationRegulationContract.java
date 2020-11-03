@@ -90,4 +90,26 @@ public class ExaminationRegulationContract extends ContractBase {
         }
         return GsonWrapper.toJson(regulations);
     }
+
+    /**
+     * Closes the specified examination regulation (i.e. sets the active flag to false).
+     * @param ctx transaction context providing access to ChaincodeStub etc.
+     * @param name name of the examination regulation to be closed
+     * @return examination regulation on success, serialized error on failure
+     */
+    @Transaction()
+    public String closeExaminationRegulation(final Context ctx, final String name) {
+
+        ChaincodeStub stub = ctx.getStub();
+
+        ExaminationRegulation regulation;
+        try {
+            regulation = cUtil.getState(stub, name);
+        } catch (LedgerAccessError e) {
+            return e.getJsonError();
+        }
+
+        regulation.setActive(false);
+        return cUtil.putAndGetStringState(stub, regulation.getName(), GsonWrapper.toJson(regulation));
+    }
 }
