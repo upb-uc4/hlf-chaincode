@@ -1,3 +1,10 @@
+# [v0.11.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.2...v0.11.3) (2020-11-03)
+
+## Feature
+- add approval contract
+- add approval contract tests
+
+
 # [v0.11.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.1...v0.11.2) (2020-10-30)
 
 ## Refactor
