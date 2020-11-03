@@ -17,11 +17,6 @@ public class CertificateContract extends ContractBase {
 
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
 
-    @Transaction()
-    public void initLedger(final Context ctx) {
-
-    }
-
     /**
      * Adds a certificate to the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.

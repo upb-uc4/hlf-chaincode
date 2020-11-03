@@ -22,11 +22,6 @@ public class MatriculationDataContract extends ContractBase {
 
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
-    @Transaction()
-    public void initLedger(final Context ctx) {
-
-    }
-
     /**
      * Adds MatriculationData to the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.

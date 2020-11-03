@@ -1,0 +1,119 @@
+[
+  {
+    "name": "approveNewTransaction",
+    "type": "approveTransaction_SUCCESS",
+    "setup": [],
+    "input": [
+      "UC4.Certificate",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      [
+        "testMspId::testId"
+      ]
+    ]
+  },
+
+
+  {
+    "name": "approveExistingTransaction",
+    "type": "approveTransaction_SUCCESS",
+    "setup": [
+      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
+      [
+        "User1",
+        "User2"
+      ]
+    ],
+    "input": [
+      "UC4.Certificate",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      [
+        "User1",
+        "User2",
+        "testMspId::testId"
+      ]
+    ]
+  },
+
+
+  {
+    "name": "approveApprovedTransaction",
+    "type": "approveTransaction_SUCCESS",
+    "setup": [
+      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
+      [
+        "User1",
+        "testMspId::testId"
+      ]
+    ],
+    "input": [
+      "UC4.Certificate",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      [
+        "User1",
+        "testMspId::testId"
+      ]
+    ]
+  },
+
+
+  {
+    "name": "approveEmptyContractNameTransaction",
+    "type": "approveTransaction_FAILURE",
+    "setup": [],
+    "input": [
+      "",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "contractName",
+            "reason": "Contract name must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "approveEmptyTransactionNameTransaction",
+    "type": "approveTransaction_FAILURE",
+    "setup": [],
+    "input": [
+      "UC4.Certificate",
+      "",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "transactionName",
+            "reason": "Transaction name must not be empty"
+          }
+        ]
+      }
+    ]
+  }
+]

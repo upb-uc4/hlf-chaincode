@@ -2,8 +2,11 @@ package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Dummy;
+import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.contract.Context;
 
+import java.io.IOException;
+import java.security.cert.CertificateException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +25,10 @@ public class TestUtil {
     public static Context mockContext(List<String> setup, String keyPrefix) {
         Context ctx = mock(Context.class);
         when(ctx.getStub()).thenReturn(mockStub(setup, keyPrefix));
+        ClientIdentity testId = mock(ClientIdentity.class);
+        when(testId.getMSPID()).thenReturn("testMspId");
+        when(testId.getId()).thenReturn("testId");
+        when(ctx.getClientIdentity()).thenReturn(testId);
         return ctx;
     }
 
