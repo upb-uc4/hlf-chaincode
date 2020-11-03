@@ -8,7 +8,6 @@ import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
@@ -109,7 +108,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             MatriculationData matriculationData = GsonWrapper.fromJson(
                     contract.getMatriculationData(ctx, input.get(0)),
@@ -125,14 +124,12 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             assertThat(contract.addMatriculationData(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            ChaincodeStub stub = ctx.getStub();
-            String fullKey = stub.createCompositeKey(cUtil.getKeyPrefix(), matriculationData.getEnrollmentId()).toString();
-            assertThat(ctx.getStub().getStringState(fullKey))
+            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
     }
@@ -143,7 +140,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             String result = contract.addMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -156,14 +153,12 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             assertThat(contract.updateMatriculationData(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            ChaincodeStub stub = ctx.getStub();
-            String fullKey = stub.createCompositeKey(cUtil.getKeyPrefix(), matriculationData.getEnrollmentId()).toString();
-            assertThat(ctx.getStub().getStringState(fullKey))
+            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
 
@@ -175,7 +170,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             String result = contract.updateMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -188,14 +183,12 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             assertThat(contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            ChaincodeStub stub = ctx.getStub();
-            String fullKey = stub.createCompositeKey(cUtil.getKeyPrefix(), matriculationData.getEnrollmentId()).toString();
-            assertThat(ctx.getStub().getStringState(fullKey))
+            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
     }
@@ -206,7 +199,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));

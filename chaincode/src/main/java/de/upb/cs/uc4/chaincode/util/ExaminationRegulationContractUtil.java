@@ -1,6 +1,8 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
@@ -32,10 +34,16 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                 .reason("The given parameter cannot be parsed from json");
     }
 
+    public InvalidParameter getUnparsableNameListParam() {
+        return new InvalidParameter()
+                .name("names")
+                .reason("The given parameter cannot be parsed from json");
+    }
+
     private InvalidParameter getEmptyNameParam() {
         return new InvalidParameter()
-                .name("examinationRegulation")
-                .reason("Examination regulation must not be empty");
+                .name("examinationRegulation.name")
+                .reason("Name must not be empty");
     }
 
     public InvalidParameter getEmptyModulesParam(String prefix) {
@@ -72,13 +80,13 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         String jsonExaminationRegulation;
         jsonExaminationRegulation = getStringState(stub, key);
         if (valueUnset(jsonExaminationRegulation)) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getNotFoundError()));
+            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
         ExaminationRegulation examinationRegulation;
         try {
             examinationRegulation = GsonWrapper.fromJson(jsonExaminationRegulation, ExaminationRegulation.class);
         } catch(Exception e) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
+            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
         }
         return examinationRegulation;
     }

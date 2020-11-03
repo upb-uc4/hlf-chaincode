@@ -9,7 +9,13 @@ public class MockCompositeKey extends CompositeKey {
     private static String DELIMITER = ":::";
     public MockCompositeKey(String objectType, String... attributes) {
         super(objectType, attributes);
-        compositeKey = objectType + DELIMITER + Arrays.stream(attributes).reduce((a,b) -> a + DELIMITER + b).get();
+        if (attributes.length == 0) {
+            compositeKey = objectType + DELIMITER;
+        } else if (attributes.length == 1) {
+            compositeKey = objectType + DELIMITER + attributes[0] + DELIMITER;
+        } else {
+            compositeKey = objectType + DELIMITER + Arrays.stream(attributes).reduce((a, b) -> a + DELIMITER + b).get();
+        }
     }
 
     @Override

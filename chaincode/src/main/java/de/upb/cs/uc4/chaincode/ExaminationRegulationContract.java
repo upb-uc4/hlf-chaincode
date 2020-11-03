@@ -1,6 +1,8 @@
 package de.upb.cs.uc4.chaincode;
 
+import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
@@ -9,6 +11,7 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -49,8 +52,7 @@ public class ExaminationRegulationContract extends ContractBase {
             validModules.addAll(regulation.getModules());
         }
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        invalidParams.addAll(cUtil.getErrorForExaminationRegulation(newExaminationRegulation, validModules));
+        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForExaminationRegulation(newExaminationRegulation, validModules);
 
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
@@ -71,18 +73,27 @@ public class ExaminationRegulationContract extends ContractBase {
      * @return examination regulations on success, serialized error on failure
      */
     @Transaction()
-    public String getExaminationRegulations(final Context ctx, final String... names) {
+    public String getExaminationRegulations(final Context ctx, final String names) {
 
         ChaincodeStub stub = ctx.getStub();
 
+        ArrayList<String> nameList;
+        Type listType = new TypeToken<ArrayList<String>>(){}.getType();
+        try {
+            nameList = GsonWrapper.fromJson(names, listType);
+        } catch(Exception e) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableNameListParam()));
+        }
+
         ArrayList<ExaminationRegulation> regulations = new ArrayList<>();
-        for (String name: names) {
+        for (String name: nameList) {
             if (!cUtil.valueUnset(name)) {
                 ExaminationRegulation regulation;
                 try {
                     regulation = cUtil.getState(stub, name);
+                } catch (LedgerStateNotFoundError e) {
+                    continue;
                 } catch (LedgerAccessError e) {
-                    // TODO: only abort on unprocessable state, not on state not found
                     return e.getJsonError();
                 }
                 regulations.add(regulation);

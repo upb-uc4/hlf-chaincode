@@ -13,9 +13,7 @@ public class PartialKeyIterator implements Iterator<KeyValue> {
     public PartialKeyIterator(Iterator<MockKeyValue> iterator, String partialKey) {
         this.iterator = iterator;
         this.partialKey = partialKey;
-        if (iterator.hasNext()) {
-            this.nextReturn = iterator.next();
-        }
+        this.nextReturn = null;
         this.lastReturned = null;
     }
 

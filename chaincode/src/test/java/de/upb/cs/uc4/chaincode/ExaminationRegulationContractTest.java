@@ -2,8 +2,9 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
-import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
@@ -20,14 +21,14 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class CertificateContractTest {
+public final class ExaminationRegulationContractTest {
 
-    private final CertificateContract contract = new CertificateContract();
-    private final CertificateContractUtil cUtil = new CertificateContractUtil();
+    private final ExaminationRegulationContract contract = new ExaminationRegulationContract();
+    private final ExaminationRegulationContractUtil cUtil = new ExaminationRegulationContractUtil();
 
     @TestFactory
     List<DynamicTest> createTests() {
-        String testConfigDir = "src/test/resources/test_configs/certificate_contract";
+        String testConfigDir = "src/test/resources/test_configs/examination_regulation_contract";
         File dir = new File(testConfigDir);
         File[] testConfigs = dir.listFiles();
 
@@ -52,34 +53,34 @@ public final class CertificateContractTest {
                 List<String> input = TestUtil.toStringList(test.getInput());
                 List<String> compare = TestUtil.toStringList(test.getCompare());
                 switch (test.getType()) {
-                    case "getCertificate":
+                    case "getExaminationRegulations":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
-                                getCertificateTest(setup, input, compare)
+                                getExaminationRegulationsTest(setup, input, compare)
                         ));
                         break;
-                    case "addCertificate_SUCCESS":
+                    case "addExaminationRegulation_SUCCESS":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
-                                addCertificateSuccessTest(setup, input, compare)
+                                addExaminationRegulationSuccessTest(setup, input, compare)
                         ));
                         break;
-                    case "addCertificate_FAILURE":
+                    case "addExaminationRegulation_FAILURE":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
-                                addCertificateFailureTest(setup, input, compare)
+                                addExaminationRegulationFailureTest(setup, input, compare)
                         ));
                         break;
-                    case "updateCertificate_SUCCESS":
+                    case "closeExaminationRegulation_SUCCESS":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
-                                updateCertificateSuccessTest(setup, input, compare)
+                                closeExaminationRegulationSuccessTest(setup, input, compare)
                         ));
                         break;
-                    case "updateCertificate_FAILURE":
+                    case "closeExaminationRegulation_FAILURE":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
-                                updateCertificateFailureTest(setup, input, compare)
+                                closeExaminationRegulationFailureTest(setup, input, compare)
                         ));
                         break;
                     default:
@@ -90,7 +91,7 @@ public final class CertificateContractTest {
         return tests;
     }
 
-    private Executable getCertificateTest(
+    private Executable getExaminationRegulationsTest(
             List<String> setup,
             List<String> input,
             List<String> compare
@@ -98,12 +99,16 @@ public final class CertificateContractTest {
         return () -> {
             Context ctx = TestUtil.mockContext(setup, cUtil);
 
-            String certificate = contract.getCertificate(ctx, input.get(0));
-            assertThat(certificate).isEqualTo(compare.get(0));
+            Type listType = new TypeToken<ArrayList<ExaminationRegulation>>(){}.getType();
+            ArrayList<ExaminationRegulation> regulations = GsonWrapper.fromJson(
+                    contract.getExaminationRegulations(ctx, input.get(0)),
+                    listType);
+            assertThat(regulations)
+                    .isEqualTo(GsonWrapper.fromJson(compare.get(0), listType));
         };
     }
 
-    private Executable addCertificateSuccessTest(
+    private Executable addExaminationRegulationSuccessTest(
             List<String> setup,
             List<String> input,
             List<String> compare
@@ -111,14 +116,15 @@ public final class CertificateContractTest {
         return () -> {
             Context ctx = TestUtil.mockContext(setup, cUtil);
 
-            assertThat(contract.addCertificate(ctx, input.get(0), input.get(1)))
+            assertThat(contract.addExaminationRegulation(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
-            assertThat(cUtil.getStringState(ctx.getStub(), input.get(0)))
+            ExaminationRegulation regulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
+            assertThat(cUtil.getStringState(ctx.getStub(), regulation.getName()))
                     .isEqualTo(compare.get(0));
         };
     }
 
-    private Executable addCertificateFailureTest(
+    private Executable addExaminationRegulationFailureTest(
             List<String> setup,
             List<String> input,
             List<String> compare
@@ -126,12 +132,12 @@ public final class CertificateContractTest {
         return () -> {
             Context ctx = TestUtil.mockContext(setup, cUtil);
 
-            String result = contract.addCertificate(ctx, input.get(0), input.get(1));
+            String result = contract.addExaminationRegulation(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
         };
     }
 
-    private Executable updateCertificateSuccessTest(
+    private Executable closeExaminationRegulationSuccessTest(
             List<String> setup,
             List<String> input,
             List<String> compare
@@ -139,15 +145,16 @@ public final class CertificateContractTest {
         return () -> {
             Context ctx = TestUtil.mockContext(setup, cUtil);
 
-            assertThat(contract.updateCertificate(ctx, input.get(0), input.get(1)))
+            assertThat(contract.closeExaminationRegulation(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
-            assertThat(cUtil.getStringState(ctx.getStub(), input.get(0)))
+            ExaminationRegulation regulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
+            assertThat(cUtil.getStringState(ctx.getStub(), regulation.getName()))
                     .isEqualTo(compare.get(0));
         };
 
     }
 
-    private Executable updateCertificateFailureTest(
+    private Executable closeExaminationRegulationFailureTest(
             List<String> setup,
             List<String> input,
             List<String> compare
@@ -155,7 +162,7 @@ public final class CertificateContractTest {
         return () -> {
             Context ctx = TestUtil.mockContext(setup, cUtil);
 
-            String result = contract.updateCertificate(ctx, input.get(0), input.get(1));
+            String result = contract.closeExaminationRegulation(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
         };
     }

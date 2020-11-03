@@ -1,0 +1,87 @@
+[
+  {
+    "name": "queryExistingExaminationRegulations",
+    "type": "getExaminationRegulations",
+    "setup": [
+      "Computer Science v1",
+      {
+        "name": "Computer Science v1",
+        "active": false,
+        "modules": [
+          {
+            "id": "M.1275.01158",
+            "name": "Math 1"
+          }
+        ]
+      },
+      "Computer Science v2",
+      {
+        "name": "Computer Science v2",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01158",
+            "name": "Math 1"
+          }
+        ]
+      },
+      "Computer Science v3",
+      {
+        "name": "Computer Science v3",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01158",
+            "name": "Math 1"
+          }
+        ]
+      }
+    ],
+    "input": [
+      [
+        "Computer Science v2",
+        "Computer Science v3",
+        "Computer Science v4"
+      ]
+    ],
+    "compare": [
+      [
+        {
+          "name": "Computer Science v2",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        },
+        {
+          "name": "Computer Science v3",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        }
+      ]
+    ]
+  },
+
+
+  {
+    "name": "queryNonExistingExaminationRegulations",
+    "type": "getExaminationRegulations",
+    "setup": [],
+    "input": [
+      [
+        "Computer Science v3"
+      ]
+    ],
+    "compare": [
+      []
+    ]
+  }
+]

@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.util;
 
+import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.model.DetailedError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
@@ -8,6 +9,7 @@ import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +31,10 @@ abstract public class ContractUtil {
     public abstract GenericError getConflictError();
 
     protected GenericError getConflictError(String thing, String identifier) {
+        String article = "aeio".contains(Character.toString(thing.charAt(0)).toLowerCase()) ? "an" : "a";
         return new GenericError()
                 .type("HLConflict")
-                .title("There is already a " + thing + " for the given " + identifier);
+                .title("There is already " + article + " " + thing + " for the given " + identifier);
     }
 
     public abstract GenericError getNotFoundError();
