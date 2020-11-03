@@ -1,6 +1,8 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
@@ -15,6 +17,7 @@ import java.util.regex.Pattern;
 
 public class MatriculationDataContractUtil extends ContractUtil {
     private final String thing = "MatriculationData";
+    private final String identifier = "enrollmentId";
 
     public MatriculationDataContractUtil() {
         keyPrefix = "matriculationData";
@@ -22,12 +25,12 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
     @Override
     public GenericError getConflictError() {
-        return super.getConflictError(thing);
+        return super.getConflictError(thing, identifier);
     }
 
     @Override
     public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing);
+        return super.getNotFoundError(thing, identifier);
     }
 
     public InvalidParameter getUnparsableMatriculationDataParam() {
@@ -88,13 +91,13 @@ public class MatriculationDataContractUtil extends ContractUtil {
         String jsonMatriculationData;
         jsonMatriculationData = getStringState(stub, key);
         if (valueUnset(jsonMatriculationData)) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getNotFoundError()));
+            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
         MatriculationData matriculationData;
         try {
             matriculationData = GsonWrapper.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
+            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
         }
         return matriculationData;
     }

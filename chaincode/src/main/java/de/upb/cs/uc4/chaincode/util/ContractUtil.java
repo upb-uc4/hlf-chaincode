@@ -28,18 +28,18 @@ abstract public class ContractUtil {
 
     public abstract GenericError getConflictError();
 
-    protected GenericError getConflictError(String thing) {
+    protected GenericError getConflictError(String thing, String identifier) {
         return new GenericError()
                 .type("HLConflict")
-                .title("There is already a " + thing + " for the given enrollmentId");
+                .title("There is already a " + thing + " for the given " + identifier);
     }
 
     public abstract GenericError getNotFoundError();
 
-    protected GenericError getNotFoundError(String thing) {
+    protected GenericError getNotFoundError(String thing, String identifier) {
         return new GenericError()
                 .type("HLNotFound")
-                .title("There is no " + thing + " for the given enrollmentId");
+                .title("There is no " + thing + " for the given " + identifier);
     }
 
     public GenericError getUnprocessableLedgerStateError() {

@@ -10,6 +10,7 @@ import java.util.*;
 
 public class ExaminationRegulationContractUtil extends ContractUtil {
     private final String thing = "examination regulation";
+    private final String identifier = "name";
 
     public ExaminationRegulationContractUtil() {
         keyPrefix = "examination-regulation";
@@ -17,12 +18,12 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
 
     @Override
     public GenericError getConflictError() {
-        return super.getConflictError(thing);
+        return super.getConflictError(thing, identifier);
     }
 
     @Override
     public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing);
+        return super.getNotFoundError(thing, identifier);
     }
 
     public InvalidParameter getUnparsableExaminationRegulationParam() {
