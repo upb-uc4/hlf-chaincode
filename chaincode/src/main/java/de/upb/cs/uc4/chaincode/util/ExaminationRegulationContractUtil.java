@@ -107,7 +107,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         return examinationRegulations;
     }
 
-    public ArrayList<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<Module> validModules) {
+    public ArrayList<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<ExaminationRegulationModule> validModules) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if(valueUnset(examinationRegulation.getName())) {
@@ -121,7 +121,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         return invalidParams;
     }
 
-    public ArrayList<InvalidParameter> getErrorForModuleList(List<Module> modules, String prefix, Set<Module> validModules) {
+    public ArrayList<InvalidParameter> getErrorForModuleList(List<ExaminationRegulationModule> modules, String prefix, Set<ExaminationRegulationModule> validModules) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(modules)) {
@@ -131,7 +131,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
 
             for (int moduleIndex=0; moduleIndex<modules.size(); moduleIndex++) {
 
-                Module module = modules.get(moduleIndex);
+                ExaminationRegulationModule module = modules.get(moduleIndex);
 
                 if (valueUnset(module.getId())) {
                     invalidParams.add(getEmptyModuleIdParam(prefix + "[" + moduleIndex + "]."));
@@ -144,7 +144,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                 if (valueUnset(module.getName())) {
                     invalidParams.add(getEmptyModuleNameParam(prefix + "[" + moduleIndex + "]."));
                 }
-                for (Module validModule: validModules) {
+                for (ExaminationRegulationModule validModule: validModules) {
                     if (module.getId().equals(validModule.getId()) && !module.equals(validModule)) {
                         invalidParams.add(getInconsistentModuleParam(prefix + "[" + moduleIndex + "]"));
                         break;

@@ -3,12 +3,10 @@ package de.upb.cs.uc4.chaincode.model;
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 
-public class Module {
+public class ExaminationRegulationModule {
 
   @SerializedName("id")
   private String id = null;
@@ -16,12 +14,12 @@ public class Module {
   @SerializedName("name")
   private String name = null;
 
-  public Module id(String id) {
+  public ExaminationRegulationModule id(String id) {
     this.id = id;
     return this;
   }
 
-  public Module name(String name) {
+  public ExaminationRegulationModule name(String name) {
     this.name = name;
     return this;
   }
@@ -55,7 +53,7 @@ public class Module {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    Module module = (Module) o;
+    ExaminationRegulationModule module = (ExaminationRegulationModule) o;
     return Objects.equals(this.id, module.id) &&
         Objects.equals(this.name, module.name);
   }

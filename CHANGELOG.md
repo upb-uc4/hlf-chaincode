@@ -1,3 +1,11 @@
+# [v0.11.5](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.4...v0.11.5) (2020-11-04)
+
+## Refactor
+- rename ```Module``` model to ```ExaminationRegulationModule```
+- rename matriculation-contract transaction parameters to be consistent with the api
+
+
+
 # [v0.11.4](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.3...v0.11.4) (2020-11-04)
 
 ## Feature
