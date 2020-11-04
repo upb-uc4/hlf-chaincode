@@ -1,3 +1,10 @@
+# [v0.11.4](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.3...v0.11.4) (2020-11-04)
+
+## Feature
+- add examination-regulation contract
+- add examination-regulation contract tests
+
+
 # [v0.11.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.2...v0.11.3) (2020-11-03)
 
 ## Feature
