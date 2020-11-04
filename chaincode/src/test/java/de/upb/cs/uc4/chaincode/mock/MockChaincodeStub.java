@@ -7,21 +7,19 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.*;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public final class MockChaincodeStub implements ChaincodeStub {
 
-    private Map<String, List<MockKeyValue>> dataCollections;
-    private String defaultCollection = "default";
+    private final Map<String, List<MockKeyValue>> dataCollections;
+    private final String defaultCollection = "default";
     private Map<String, byte[]> transientMap;
 
     public MockChaincodeStub() {
         dataCollections = new HashMap<>();
+        dataCollections.put(defaultCollection, new ArrayList<>());
     }
 
     public void setTransient(Map<String, byte[]> transientMap) {
@@ -129,7 +127,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public byte[] getStateValidationParameter(String key) {
-        return new byte[0];
+        return null;
     }
 
     @Override
@@ -168,8 +166,9 @@ public final class MockChaincodeStub implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(CompositeKey compositeKey) {
-        return null;
+    public MockQueryResultsIterator getStateByPartialCompositeKey(CompositeKey compositeKey) {
+        PartialKeyIterator iterator = new PartialKeyIterator(dataCollections.get(defaultCollection).iterator(), compositeKey.toString());
+        return new MockQueryResultsIterator(iterator);
     }
 
     @Override
@@ -179,12 +178,12 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public CompositeKey createCompositeKey(String objectType, String... attributes) {
-        return null;
+        return new MockCompositeKey(objectType, attributes);
     }
 
     @Override
     public CompositeKey splitCompositeKey(String compositeKey) {
-        return null;
+        return MockCompositeKey.parseCompositeKey(compositeKey);
     }
 
     @Override
@@ -209,12 +208,12 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public byte[] getPrivateDataHash(String collection, String key) {
-        return new byte[0];
+        return null;
     }
 
     @Override
     public byte[] getPrivateDataValidationParameter(String collection, String key) {
-        return new byte[0];
+        return null;
     }
 
     @Override
@@ -279,7 +278,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public byte[] getCreator() {
-        return new byte[0];
+        return null;
     }
 
     @Override
@@ -289,7 +288,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public byte[] getBinding() {
-        return new byte[0];
+        return null;
     }
 
     @Override

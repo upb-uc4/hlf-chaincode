@@ -1,6 +1,8 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
@@ -15,19 +17,20 @@ import java.util.regex.Pattern;
 
 public class MatriculationDataContractUtil extends ContractUtil {
     private final String thing = "MatriculationData";
+    private final String identifier = "enrollmentId";
 
     public MatriculationDataContractUtil() {
-        keyPrefix = "matriculationData:";
+        keyPrefix = "matriculationData";
     }
 
     @Override
     public GenericError getConflictError() {
-        return super.getConflictError(thing);
+        return super.getConflictError(thing, identifier);
     }
 
     @Override
     public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing);
+        return super.getNotFoundError(thing, identifier);
     }
 
     public InvalidParameter getUnparsableMatriculationDataParam() {
@@ -52,6 +55,12 @@ public class MatriculationDataContractUtil extends ContractUtil {
         return new InvalidParameter()
                 .name(prefix+"fieldOfStudy")
                 .reason("Field of study must be one of the specified values");
+    }
+
+    public InvalidParameter getEmptyFieldOfStudyParam(String prefix) {
+        return new InvalidParameter()
+                .name(prefix+"fieldOfStudy")
+                .reason("Field of study must not be empty");
     }
 
     public InvalidParameter getDuplicateFieldOfStudyParam(String prefix, int index) {
@@ -82,13 +91,13 @@ public class MatriculationDataContractUtil extends ContractUtil {
         String jsonMatriculationData;
         jsonMatriculationData = getStringState(stub, key);
         if (valueUnset(jsonMatriculationData)) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getNotFoundError()));
+            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
         MatriculationData matriculationData;
         try {
             matriculationData = GsonWrapper.fromJson(jsonMatriculationData, MatriculationData.class);
         } catch(Exception e) {
-            throw new LedgerAccessError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
+            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
         }
         return matriculationData;
     }
@@ -127,15 +136,16 @@ public class MatriculationDataContractUtil extends ContractUtil {
         if (valueUnset(matriculationStatus)) {
             invalidParams.add(getEmptyMatriculationStatusParam(prefix));
         } else {
-            ArrayList<SubjectMatriculation.FieldOfStudyEnum> existingFields = new ArrayList<>();
+            ArrayList<String> existingFields = new ArrayList<>();
 
             for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
-                if (subMat.getFieldOfStudy() == null) {
-                    invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
+                if (valueUnset(subMat.getFieldOfStudy())) {
+                    invalidParams.add(getEmptyFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
                 } else {
+                    // TODO: check if fieldOfStudy on ledger (getInvalidFieldOfStudyParam)
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
                         invalidParams.add(getDuplicateFieldOfStudyParam(prefix, subMatIndex));
                     } else

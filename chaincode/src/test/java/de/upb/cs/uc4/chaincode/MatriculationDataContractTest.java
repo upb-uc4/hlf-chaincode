@@ -108,7 +108,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             MatriculationData matriculationData = GsonWrapper.fromJson(
                     contract.getMatriculationData(ctx, input.get(0)),
@@ -124,12 +124,12 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             assertThat(contract.addMatriculationData(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(ctx.getStub().getStringState(cUtil.getKeyPrefix() + matriculationData.getEnrollmentId()))
+            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
     }
@@ -140,7 +140,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             String result = contract.addMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -153,12 +153,12 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             assertThat(contract.updateMatriculationData(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(ctx.getStub().getStringState(cUtil.getKeyPrefix() + matriculationData.getEnrollmentId()))
+            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
 
@@ -170,7 +170,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             String result = contract.updateMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -183,12 +183,12 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             assertThat(contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(ctx.getStub().getStringState(cUtil.getKeyPrefix() + matriculationData.getEnrollmentId()))
+            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
                     .isEqualTo(compare.get(0));
         };
     }
@@ -199,7 +199,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));

@@ -1,0 +1,94 @@
+[
+  {
+    "name": "queryExistingApprovals",
+    "type": "getApprovals",
+    "setup": [
+      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
+      [
+        "User1",
+        "User2"
+      ]
+    ],
+    "input": [
+      "UC4.Certificate",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      [
+        "User1",
+        "User2"
+      ]
+    ]
+  },
+
+
+  {
+    "name": "queryNonExistingApprovals",
+    "type": "getApprovals",
+    "setup": [],
+    "input": [
+      "UC4.Certificate",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no list of approvals for the given transaction"
+      }
+    ]
+  },
+
+
+  {
+    "name": "queryEmptyContractNameCertificate",
+    "type": "getApprovals",
+    "setup": [],
+    "input": [
+      "",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "contractName",
+            "reason": "Contract name must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "queryEmptyTransactionNameCertificate",
+    "type": "getApprovals",
+    "setup": [],
+    "input": [
+      "UC4.Certificate",
+      "",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "transactionName",
+            "reason": "Transaction name must not be empty"
+          }
+        ]
+      }
+    ]
+  }
+]

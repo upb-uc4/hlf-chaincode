@@ -1,3 +1,37 @@
+# [v0.11.5](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.4...v0.11.5) (2020-11-04)
+
+## Refactor
+- rename ```Module``` model to ```ExaminationRegulationModule```
+- rename matriculation-contract transaction parameters to be consistent with the api
+
+
+
+# [v0.11.4](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.3...v0.11.4) (2020-11-04)
+
+## Feature
+- add examination-regulation contract
+- add examination-regulation contract tests
+
+
+# [v0.11.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.2...v0.11.3) (2020-11-03)
+
+## Feature
+- add approval contract
+- add approval contract tests
+
+
+# [v0.11.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.1...v0.11.2) (2020-10-30)
+
+## Refactor
+- replace field of study enum by string, allowing for configurable fields of study
+
+
+# [v0.11.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.0...v0.11.1) (2020-10-29)
+
+## Refactor
+- replace makeshift composite keys by fabric's built in composite keys
+
+
 # [v0.11.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.10.1...v0.11.0) (2020-10-26)
 
 Release (no changes to previous version)

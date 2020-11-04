@@ -5,19 +5,20 @@ import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 
 public class CertificateContractUtil extends ContractUtil {
     private final String thing = "certificate";
+    private final String identifier = "enrollmentId";
 
     public CertificateContractUtil() {
-        keyPrefix = "certificate:";
+        keyPrefix = "certificate";
     }
 
     @Override
     public GenericError getConflictError() {
-        return super.getConflictError(thing);
+        return super.getConflictError(thing, identifier);
     }
 
     @Override
     public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing);
+        return super.getNotFoundError(thing, identifier);
     }
 
     public InvalidParameter getEmptyCertificateParam() {

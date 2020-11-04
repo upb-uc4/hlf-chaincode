@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Dummy;
+import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.contract.Context;
 
 import java.util.List;
@@ -15,20 +16,20 @@ public class TestUtil {
         return list.stream().map(Dummy::getContent).collect(Collectors.toList());
     }
 
-    public static Context mockContext(List<String> setup) {
-        return mockContext(setup, "");
-    }
-
-    public static Context mockContext(List<String> setup, String keyPrefix) {
+    public static Context mockContext(List<String> setup, ContractUtil cUtil) {
         Context ctx = mock(Context.class);
-        when(ctx.getStub()).thenReturn(mockStub(setup, keyPrefix));
+        when(ctx.getStub()).thenReturn(mockStub(setup, cUtil));
+        ClientIdentity testId = mock(ClientIdentity.class);
+        when(testId.getMSPID()).thenReturn("testMspId");
+        when(testId.getId()).thenReturn("testId");
+        when(ctx.getClientIdentity()).thenReturn(testId);
         return ctx;
     }
 
-    private static MockChaincodeStub mockStub(List<String> setup, String keyPrefix) {
+    private static MockChaincodeStub mockStub(List<String> setup, ContractUtil cUtil) {
         MockChaincodeStub stub = new MockChaincodeStub();
         for (int i=0; i<setup.size(); i+=2) {
-            stub.putStringState(keyPrefix + setup.get(i), setup.get(i+1));
+            cUtil.putAndGetStringState(stub, setup.get(i), setup.get(i+1));
         }
         return stub;
     }
