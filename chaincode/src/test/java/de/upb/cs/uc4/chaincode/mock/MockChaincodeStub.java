@@ -19,6 +19,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     public MockChaincodeStub() {
         dataCollections = new HashMap<>();
+        dataCollections.put(defaultCollection, new ArrayList<>());
     }
 
     public void setTransient(Map<String, byte[]> transientMap) {
@@ -165,8 +166,9 @@ public final class MockChaincodeStub implements ChaincodeStub {
     }
 
     @Override
-    public QueryResultsIterator<KeyValue> getStateByPartialCompositeKey(CompositeKey compositeKey) {
-        return null;
+    public MockQueryResultsIterator getStateByPartialCompositeKey(CompositeKey compositeKey) {
+        PartialKeyIterator iterator = new PartialKeyIterator(dataCollections.get(defaultCollection).iterator(), compositeKey.toString());
+        return new MockQueryResultsIterator(iterator);
     }
 
     @Override

@@ -7,7 +7,6 @@ import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
@@ -85,7 +84,7 @@ public final class ApprovalContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             String approvals = contract.getApprovals(ctx, contract(input), transaction(input), params(input));
             assertThat(approvals).isEqualTo(compare.get(0));
@@ -98,14 +97,12 @@ public final class ApprovalContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             assertThat(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)))
                     .isEqualTo(compare.get(0));
-            ChaincodeStub stub = ctx.getStub();
             String key = cUtil.getDraftKey(contract(input), transaction(input), params(input));
-            String fullKey = stub.createCompositeKey(cUtil.getKeyPrefix(), key).toString();
-            assertThat(ctx.getStub().getStringState(fullKey))
+            assertThat(cUtil.getStringState(ctx.getStub(), key))
                     .isEqualTo(compare.get(0));
         };
     }
@@ -116,7 +113,7 @@ public final class ApprovalContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil.getKeyPrefix());
+            Context ctx = TestUtil.mockContext(setup, cUtil);
 
             String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
             assertThat(result).isEqualTo(compare.get(0));
