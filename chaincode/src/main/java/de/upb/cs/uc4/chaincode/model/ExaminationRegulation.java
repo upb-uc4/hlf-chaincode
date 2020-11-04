@@ -16,7 +16,7 @@ public class ExaminationRegulation {
   private boolean active = true;
 
   @SerializedName("modules")
-  private List<Module> modules = null;
+  private List<ExaminationRegulationModule> modules = null;
 
   public ExaminationRegulation name(String name) {
     this.name = name;
@@ -46,25 +46,25 @@ public class ExaminationRegulation {
     this.active = active;
   }
 
-  public ExaminationRegulation modules(List<Module> modules) {
+  public ExaminationRegulation modules(List<ExaminationRegulationModule> modules) {
     this.modules = modules;
     return this;
   }
 
-  public ExaminationRegulation addModuleItem(Module module) {
+  public ExaminationRegulation addModuleItem(ExaminationRegulationModule module) {
     if (this.modules == null) {
-      this.modules = new ArrayList<Module>();
+      this.modules = new ArrayList<ExaminationRegulationModule>();
     }
     this.modules.add(module);
     return this;
   }
 
   @ApiModelProperty(value = "")
-  public List<Module> getModules() {
+  public List<ExaminationRegulationModule> getModules() {
     return modules;
   }
 
-  public void setModules(List<Module> modules) {
+  public void setModules(List<ExaminationRegulationModule> modules) {
     this.modules = modules;
   }
 
@@ -112,10 +112,10 @@ public class ExaminationRegulation {
     return o.toString().replace("\n", "\n    ");
   }
 
-  public void addAbsent(ArrayList<Module> modules) {
-    for (Module newItem: modules) {
+  public void addAbsent(ArrayList<ExaminationRegulationModule> modules) {
+    for (ExaminationRegulationModule newItem: modules) {
       boolean exists = false;
-      for (Module item : this.getModules()) {
+      for (ExaminationRegulationModule item : this.getModules()) {
         if (item.getId().equals(newItem.getId())) {
           this.getModules().add(newItem);
           break;

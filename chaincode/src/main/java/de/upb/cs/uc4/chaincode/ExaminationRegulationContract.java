@@ -41,7 +41,7 @@ public class ExaminationRegulationContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableExaminationRegulationParam()));
         }
 
-        HashSet<Module> validModules = new HashSet<>();
+        HashSet<ExaminationRegulationModule> validModules = new HashSet<>();
         List<ExaminationRegulation> regulations;
         try {
             regulations = cUtil.getAllStates(stub);
