@@ -1,5 +1,4 @@
 package de.upb.cs.uc4.chaincode.mock;
-import com.sun.istack.internal.NotNull;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 
