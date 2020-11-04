@@ -5,8 +5,8 @@ import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import java.util.Arrays;
 
 public class MockCompositeKey extends CompositeKey {
-    private String compositeKey;
-    private static String DELIMITER = ":::";
+    private final String compositeKey;
+    private final static String DELIMITER = ":::";
     public MockCompositeKey(String objectType, String... attributes) {
         super(objectType, attributes);
         if (attributes.length == 0) {
