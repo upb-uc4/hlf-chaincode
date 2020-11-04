@@ -25,63 +25,63 @@ public class MatriculationDataContract extends ContractBase {
     /**
      * Adds MatriculationData to the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param newMatriculationData MatriculationData to be added
+     * @param matriculationData MatriculationData to be added
      * @return newMatriculationData on success, serialized error on failure
      */
     @Transaction()
-    public String addMatriculationData(final Context ctx, String newMatriculationData) {
+    public String addMatriculationData(final Context ctx, String matriculationData) {
 
         ChaincodeStub stub = ctx.getStub();
 
-        MatriculationData matriculationData;
+        MatriculationData newMatriculationData;
         try {
-            matriculationData = GsonWrapper.fromJson(newMatriculationData, MatriculationData.class);
+            newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
         } catch(Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(
-                matriculationData, "matriculationData");
+                newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        if (cUtil.keyExists(stub, matriculationData.getEnrollmentId())) {
+        if (cUtil.keyExists(stub, newMatriculationData.getEnrollmentId())) {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        return cUtil.putAndGetStringState(stub, matriculationData.getEnrollmentId(), GsonWrapper.toJson(matriculationData));
+        return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));
     }
 
     /**
      * Updates MatriculationData on the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param updatedMatriculationData json-representation of the new MatriculationData to replace the old with
+     * @param matriculationData json-representation of the new MatriculationData to replace the old with
      * @return updatedMatriculationData on success, serialized error on failure
      */
     @Transaction()
-    public String updateMatriculationData(final Context ctx, String updatedMatriculationData) {
+    public String updateMatriculationData(final Context ctx, String matriculationData) {
 
         ChaincodeStub stub = ctx.getStub();
 
-        MatriculationData matriculationData;
+        MatriculationData newMatriculationData;
         try {
-            matriculationData = GsonWrapper.fromJson(updatedMatriculationData, MatriculationData.class);
+            newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
         } catch(Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(
-                matriculationData, "matriculationData");
+                newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        if (!cUtil.keyExists(stub, matriculationData.getEnrollmentId())) {
+        if (!cUtil.keyExists(stub, newMatriculationData.getEnrollmentId())) {
             return GsonWrapper.toJson(cUtil.getNotFoundError());
         }
 
-        return cUtil.putAndGetStringState(stub, matriculationData.getEnrollmentId(), GsonWrapper.toJson(matriculationData));
+        return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));
     }
 
     /**
