@@ -19,7 +19,7 @@ import java.util.Base64;
 public class ApprovalContractUtil extends ContractUtil {
     private final String thing = "list of approvals";
     private final String identifier = "transaction";
-    private final String HASH_DELIMITER = "::"; //TODO: rework delimiting
+    private static final String HASH_DELIMITER = "::"; //TODO: rework delimiting
 
     public ApprovalContractUtil() {
         keyPrefix = "draft:";
@@ -65,7 +65,7 @@ public class ApprovalContractUtil extends ContractUtil {
      * @param id identity of the submitter
      * @return draftId
      */
-    public String getDraftId(final ClientIdentity id) {
+    public static String getDraftId(final ClientIdentity id) {
         return id.getMSPID() + HASH_DELIMITER + id.getId(); //TODO: rework delimiting
     }
 

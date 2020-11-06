@@ -1,18 +1,22 @@
 package de.upb.cs.uc4.chaincode;
 
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Contract(
         name="UC4.MatriculationData"
@@ -48,6 +52,10 @@ public class MatriculationDataContract extends ContractBase {
 
         if (cUtil.keyExists(stub, newMatriculationData.getEnrollmentId())) {
             return GsonWrapper.toJson(cUtil.getConflictError());
+        }
+
+        if (!cUtil.validateApprovals(ctx, "addMatriculationData", Arrays.asList(matriculationData))) {
+            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
         return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));

@@ -1,5 +1,7 @@
 package de.upb.cs.uc4.chaincode.util;
 
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
@@ -7,8 +9,11 @@ import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
+import org.hyperledger.fabric.contract.Context;
+import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -100,6 +105,28 @@ public class MatriculationDataContractUtil extends ContractUtil {
             throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
         }
         return matriculationData;
+    }
+
+    public boolean validateApprovals(final Context ctx, String transactionName, final List<String> args) {
+        ChaincodeStub stub = ctx.getStub();
+        ArrayList<String> totalArgs = new ArrayList();
+        totalArgs.add("getApprovals");
+        totalArgs.add("UC4.MatriculationData");
+        totalArgs.add(transactionName);
+        totalArgs.addAll(args);
+        Chaincode.Response response = stub.invokeChaincodeWithStringArgs("UC4.Approval", totalArgs);
+        ArrayList<String> approvals;
+        try {
+            Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+            approvals = GsonWrapper.fromJson(response.getMessage(), listType);
+        } catch (JsonSyntaxException e) {
+            return false;
+        }
+        // TODO: validate all necessary identities
+        if (!approvals.contains(ApprovalContractUtil.getDraftId(ctx.getClientIdentity()))) {
+            return false;
+        }
+        return true;
     }
 
     /**

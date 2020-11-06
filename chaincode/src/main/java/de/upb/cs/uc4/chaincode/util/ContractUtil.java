@@ -51,6 +51,12 @@ abstract public class ContractUtil {
                 .title("The state on the ledger does not conform to the specified format");
     }
 
+    public GenericError getInsufficientApprovalsError() {
+        return new GenericError()
+                .type("HLInsufficientApprovals")
+                .title("The approvals present on the ledger do not suffice to execute this transaction");
+    }
+
     public InvalidParameter getEmptyEnrollmentIdParam() {
         return getEmptyEnrollmentIdParam("");
     }
