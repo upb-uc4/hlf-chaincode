@@ -46,4 +46,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: UC4-chaincode
-        path: chaincode/build/install/UC4-chaincode
+        path: UC4-chaincode/build/install/UC4-chaincode
