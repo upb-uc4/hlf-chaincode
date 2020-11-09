@@ -25,6 +25,16 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:2.13.0'
 }
 
+repositories {
+    maven {
+        url 'https://hyperledger.jfrog.io/hyperledger/fabric-maven'
+    }
+    jcenter()
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
 // version config
 apply from: "$rootDir/gradle/versioning.gradle"
 // test and coverage config
