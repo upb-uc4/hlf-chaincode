@@ -53,7 +53,7 @@ group = 'de.upb.cs.uc4'
 
 // packaging config
 application {
-    mainClassName = javaMainClass
+    mainClass.set(javaMainClass)
 }
 shadowJar {
     archiveVersion.set(rootProject.version.toString())
