@@ -9,11 +9,7 @@ plugins {
     id 'java-library-distribution'
     id 'application'
     id 'jacoco'
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'me.qoomon.git-versioning' version '2.1.1'
-    // id 'maven'
-    id 'signing'
-    id 'maven-publish'
 }
 
 dependencies {
@@ -29,23 +25,10 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:2.13.0'
 }
 
-repositories {
-    mavenCentral()
-    maven {
-        url 'https://hyperledger.jfrog.io/hyperledger/fabric-maven'
-    }
-    jcenter()
-    maven {
-        url 'https://jitpack.io'
-    }
-}
-
 // version config
 apply from: "$rootDir/gradle/versioning.gradle"
 // test and coverage config
 apply from: "$rootDir/gradle/test.gradle"
-// release config
-apply from: "$rootDir/gradle/release.gradle"
 
 // variables
 def javaMainClass = 'org.hyperledger.fabric.contract.ContractRouter'
@@ -54,10 +37,4 @@ group = 'de.upb.cs.uc4'
 // packaging config
 application {
     mainClass.set(javaMainClass)
-}
-shadowJar {
-    archiveVersion.set(rootProject.version.toString())
-    manifest {
-        attributes 'Main-Class': javaMainClass
-    }
 }
