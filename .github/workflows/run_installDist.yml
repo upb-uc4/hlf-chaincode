@@ -31,7 +31,7 @@ jobs:
     # run gradle tests
     - name: Run chaincode tests
       run: |
-        pushd ./chaincode
+        pushd ./UC4-chaincode
         echo "##########################"
         echo "starting installation"
         echo "##########################"
@@ -45,5 +45,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v1
       with:
-        name: hlf-chaincode
-        path: chaincode/build/install/hlf-chaincode
+        name: UC4-chaincode
+        path: chaincode/build/install/UC4-chaincode

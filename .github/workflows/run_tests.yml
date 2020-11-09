@@ -31,7 +31,7 @@ jobs:
     # run gradle tests
     - name: Run chaincode tests
       run: |
-        pushd ./chaincode
+        pushd ./UC4-chaincode
         echo "##########################"
         echo "starting chaincode test"
         echo "##########################"
@@ -46,4 +46,4 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: coverage-report
-        path: chaincode/build/jacocoHtml
+        path: UC4-chaincode/build/jacocoHtml
