@@ -46,6 +46,5 @@ jobs:
     - name: Release assets
       uses: fnkr/github-action-ghr@v1
       env:
-        GHR_COMPRESS: zip
-        GHR_PATH: UC4-chaincode/assets/
+        GHR_PATH: UC4-chaincode/assets
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
