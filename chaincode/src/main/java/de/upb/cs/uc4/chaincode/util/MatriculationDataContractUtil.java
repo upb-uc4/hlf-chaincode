@@ -107,7 +107,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
         return matriculationData;
     }
 
-    public boolean validateApprovals(final Context ctx, String transactionName, final List<String> args) {
+    public boolean validateApprovals(final Context ctx, final List<String> requiredApprovals, String transactionName, final List<String> args) {
         ChaincodeStub stub = ctx.getStub();
         ArrayList<String> totalArgs = new ArrayList();
         totalArgs.add("getApprovals");
@@ -122,8 +122,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
         } catch (JsonSyntaxException e) {
             return false;
         }
-        // TODO: validate all necessary identities
-        if (!approvals.contains(ApprovalContractUtil.getDraftId(ctx.getClientIdentity()))) {
+        if (!approvals.containsAll(requiredApprovals)) {
             return false;
         }
         return true;

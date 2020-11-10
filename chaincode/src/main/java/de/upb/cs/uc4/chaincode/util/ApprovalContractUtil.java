@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import org.hyperledger.fabric.contract.ClientIdentity;
@@ -60,24 +61,15 @@ public class ApprovalContractUtil extends ContractUtil {
         return new String(Base64.getEncoder().encode(bytes));
     }
 
-    /**
-     * Returns the draftId, which is obtained by concatenating the submitter's mspId and enrollmentId using "::"
-     * @param id identity of the submitter
-     * @return draftId
-     */
-    public static String getDraftId(final ClientIdentity id) {
-        return id.getMSPID() + HASH_DELIMITER + id.getId(); //TODO: rework delimiting
-    }
-
-    public ArrayList<String> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
+    public ArrayList<Approval> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
         String jsonApprovals;
         jsonApprovals = getStringState(stub, key);
         if (valueUnset(jsonApprovals)) {
             throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
-        ArrayList<String> approvals;
+        ArrayList<Approval> approvals;
         try {
-            Type setType = new TypeToken<ArrayList<String>>(){}.getType();
+            Type setType = new TypeToken<ArrayList<Approval>>(){}.getType();
             approvals = GsonWrapper.fromJson(jsonApprovals, setType);
         } catch(Exception e) {
             throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
@@ -85,8 +77,8 @@ public class ApprovalContractUtil extends ContractUtil {
         return approvals;
     }
 
-    public String addApproval(ChaincodeStub stub, final String key, final String id) {
-        ArrayList<String> approvals;
+    public String addApproval(ChaincodeStub stub, final String key, final Approval approval) {
+        ArrayList<Approval> approvals;
         try{
             approvals = getState(stub, key);
         } catch(LedgerStateNotFoundError e) {
@@ -94,12 +86,10 @@ public class ApprovalContractUtil extends ContractUtil {
         } catch(LedgerAccessError e) {
             return e.getJsonError();
         }
-        if (!approvals.contains(id)) {
-            approvals.add(id);
+        if (!approvals.contains(approval)) {
+            approvals.add(approval);
         }
-        String jsonApprovals = GsonWrapper.toJson(approvals);
-        putAndGetStringState(stub, key, jsonApprovals);
-        return jsonApprovals;
+        return putAndGetStringState(stub, key, GsonWrapper.toJson(approvals));
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {

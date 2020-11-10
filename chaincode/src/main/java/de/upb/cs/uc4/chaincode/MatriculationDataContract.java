@@ -54,7 +54,10 @@ public class MatriculationDataContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        if (!cUtil.validateApprovals(ctx, "addMatriculationData", Arrays.asList(matriculationData))) {
+        ArrayList<String> requiredApprovals = new ArrayList<>();
+        requiredApprovals.add(newMatriculationData.getEnrollmentId());
+
+        if (!cUtil.validateApprovals(ctx, requiredApprovals, "addMatriculationData", Arrays.asList(matriculationData))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
