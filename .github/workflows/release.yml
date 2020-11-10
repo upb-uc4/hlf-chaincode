@@ -35,9 +35,17 @@ jobs:
         popd
         
     # Upload artifact
-    - name: Release
+    - name: Release Jar
       uses: fnkr/github-action-ghr@v1
       env:
         GHR_COMPRESS: gz
         GHR_PATH: UC4-chaincode/build/install
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Upload artifact2
+    - name: Release assets
+      uses: fnkr/github-action-ghr@v1
+      env:
+        GHR_COMPRESS: zip
+        GHR_PATH: UC4-chaincode/assets/
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
