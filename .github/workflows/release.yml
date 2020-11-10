@@ -30,7 +30,7 @@ jobs:
         echo "##########################"
         ./gradlew installDist
         echo "##########################"
-        echo "finish installation""
+        echo "finish installation"
         echo "##########################"
         popd
         
