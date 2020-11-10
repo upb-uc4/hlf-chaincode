@@ -2,6 +2,12 @@
   {
     "name": "approveNewTransaction",
     "type": "approveTransaction_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      }
+    ],
     "setup": [],
     "input": [
       "UC4.Certificate",
@@ -11,7 +17,10 @@
     ],
     "compare": [
       [
-        "testMspId::testId"
+        {
+          "id": "User1",
+          "type": "admin"
+        }
       ]
     ]
   },
@@ -20,11 +29,23 @@
   {
     "name": "approveExistingTransaction",
     "type": "approveTransaction_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "member"
+      }
+    ],
     "setup": [
-      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
+      "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
       [
-        "User1",
-        "User2"
+        {
+          "id": "User2",
+          "type": "admin"
+        },
+        {
+          "id": "User3",
+          "type": "member"
+        }
       ]
     ],
     "input": [
@@ -35,9 +56,18 @@
     ],
     "compare": [
       [
-        "User1",
-        "User2",
-        "testMspId::testId"
+        {
+          "id": "User2",
+          "type": "admin"
+        },
+        {
+          "id": "User3",
+          "type": "member"
+        },
+        {
+          "id": "User1",
+          "type": "member"
+        }
       ]
     ]
   },
@@ -46,11 +76,23 @@
   {
     "name": "approveApprovedTransaction",
     "type": "approveTransaction_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      }
+    ],
     "setup": [
-      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
+      "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
       [
-        "User1",
-        "testMspId::testId"
+        {
+          "id": "User2",
+          "type": "member"
+        },
+        {
+          "id": "User1",
+          "type": "admin"
+        }
       ]
     ],
     "input": [
@@ -61,8 +103,14 @@
     ],
     "compare": [
       [
-        "User1",
-        "testMspId::testId"
+        {
+          "id": "User2",
+          "type": "member"
+        },
+        {
+          "id": "User1",
+          "type": "admin"
+        }
       ]
     ]
   },
@@ -71,6 +119,12 @@
   {
     "name": "approveEmptyContractNameTransaction",
     "type": "approveTransaction_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      }
+    ],
     "setup": [],
     "input": [
       "",

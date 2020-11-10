@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
@@ -96,7 +97,8 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             String certificate = contract.getCertificate(ctx, input.get(0));
             assertThat(certificate).isEqualTo(compare.get(0));
@@ -109,7 +111,8 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addCertificate(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
@@ -124,7 +127,8 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addCertificate(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
@@ -137,7 +141,8 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.updateCertificate(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
@@ -153,7 +158,8 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateCertificate(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));

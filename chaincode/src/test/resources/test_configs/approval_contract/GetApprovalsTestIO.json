@@ -3,10 +3,16 @@
     "name": "queryExistingApprovals",
     "type": "getApprovals",
     "setup": [
-      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
+      "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
       [
-        "User1",
-        "User2"
+        {
+          "id": "User1",
+          "type": "member"
+        },
+        {
+          "id": "User2",
+          "type": "admin"
+        }
       ]
     ],
     "input": [
@@ -17,8 +23,14 @@
     ],
     "compare": [
       [
-        "User1",
-        "User2"
+        {
+          "id": "User1",
+          "type": "member"
+        },
+        {
+          "id": "User2",
+          "type": "admin"
+        }
       ]
     ]
   },

@@ -13,6 +13,9 @@ public class JsonIOTest {
     @SerializedName("type")
     private String type = null;
 
+    @SerializedName("ids")
+    private List<Approval> ids = null;
+
     @SerializedName("setup")
     private List<Dummy> setup = null;
 
@@ -48,6 +51,28 @@ public class JsonIOTest {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public JsonIOTest ids(List<Approval> ids) {
+        this.ids = ids;
+        return this;
+    }
+
+    public JsonIOTest addIdsItem(Approval id) {
+        if (this.ids == null) {
+            this.ids = new ArrayList<Approval>();
+        }
+        this.ids.add(id);
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public List<Approval> getIds() {
+        return ids;
+    }
+
+    public void setIds(List<Approval> ids) {
+        this.ids = ids;
     }
 
     public JsonIOTest setup(List<Dummy> setup) {

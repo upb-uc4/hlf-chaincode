@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
@@ -97,7 +98,8 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             Type listType = new TypeToken<ArrayList<ExaminationRegulation>>(){}.getType();
             ArrayList<ExaminationRegulation> regulations = GsonWrapper.fromJson(
@@ -114,7 +116,8 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addExaminationRegulation(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
@@ -130,7 +133,8 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addExaminationRegulation(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -143,7 +147,8 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.closeExaminationRegulation(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
@@ -160,7 +165,8 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.closeExaminationRegulation(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));

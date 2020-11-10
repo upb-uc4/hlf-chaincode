@@ -1,9 +1,13 @@
 package de.upb.cs.uc4.chaincode.util;
 
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.DetailedError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
+import org.hyperledger.fabric.contract.Context;
+import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
@@ -65,6 +69,30 @@ abstract public class ContractUtil {
         return new InvalidParameter()
                 .name(prefix + "enrollmentId")
                 .reason("ID must not be empty");
+    }
+
+    public boolean validateApprovals(
+            final Context ctx,
+            final List<String> requiredIds,
+            final List<String> requiredTypes,
+            String contractName,
+            String transactionName,
+            final List<String> args) {
+        ChaincodeStub stub = ctx.getStub();
+        ArrayList<String> totalArgs = new ArrayList<>();
+        totalArgs.add("getApprovals");
+        totalArgs.add(contractName);
+        totalArgs.add(transactionName);
+        totalArgs.addAll(args);
+        Chaincode.Response response = stub.invokeChaincodeWithStringArgs("UC4.Approval", totalArgs);
+        ArrayList<Approval> approvals;
+        try {
+            Type listType = new TypeToken<ArrayList<Approval>>() {}.getType();
+            approvals = GsonWrapper.fromJson(response.getMessage(), listType);
+        } catch (JsonSyntaxException e) {
+            return false;
+        }
+        return ApprovalContractUtil.covers(approvals, requiredIds, requiredTypes);
     }
 
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {

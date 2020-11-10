@@ -2,6 +2,8 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
@@ -61,7 +63,7 @@ public final class MatriculationDataContractTest {
                     case "addMatriculationData_SUCCESS":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
-                                addMatriculationDataSuccessTest(setup, input, compare)
+                                addMatriculationDataSuccessTest(setup, input, compare, test.getIds())
                         ));
                         break;
                     case "addMatriculationData_FAILURE":
@@ -108,7 +110,8 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             MatriculationData matriculationData = GsonWrapper.fromJson(
                     contract.getMatriculationData(ctx, input.get(0)),
@@ -121,11 +124,17 @@ public final class MatriculationDataContractTest {
     private Executable addMatriculationDataSuccessTest(
             List<String> setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<Approval> ids
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
-
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            ApprovalContract approvalContract = new ApprovalContract();
+            for (Approval id: ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                approvalContract.approveTransaction(ctx, contract.getContractName(),"addMatriculationData", input.get(0));
+            }
+            Context ctx = TestUtil.mockContext(stub);
             assertThat(contract.addMatriculationData(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
             MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
@@ -140,7 +149,8 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -153,7 +163,8 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.updateMatriculationData(ctx, input.get(0)))
                     .isEqualTo(compare.get(0));
@@ -170,7 +181,8 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -183,7 +195,8 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
@@ -199,7 +212,8 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));

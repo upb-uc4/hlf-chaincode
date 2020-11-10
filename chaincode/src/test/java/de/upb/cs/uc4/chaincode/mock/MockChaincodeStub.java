@@ -1,9 +1,15 @@
 package de.upb.cs.uc4.chaincode.mock;
 
+import de.upb.cs.uc4.chaincode.ApprovalContract;
+import de.upb.cs.uc4.chaincode.model.Approval;
+import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.util.TestUtil;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
 import org.hyperledger.fabric.protos.peer.ProposalPackage;
 import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import org.hyperledger.fabric.shim.ResponseUtils;
 import org.hyperledger.fabric.shim.ledger.*;
 
 import java.time.Instant;
@@ -16,6 +22,11 @@ public final class MockChaincodeStub implements ChaincodeStub {
     private final Map<String, List<MockKeyValue>> dataCollections;
     private final String defaultCollection = "default";
     private Map<String, byte[]> transientMap;
+    private Approval currentId;
+
+    public void setCurrentId(Approval currentId) {
+        this.currentId = currentId;
+    }
 
     public MockChaincodeStub() {
         dataCollections = new HashMap<>();
@@ -118,6 +129,29 @@ public final class MockChaincodeStub implements ChaincodeStub {
     @Override
     public Chaincode.Response invokeChaincode(String chaincodeName, List<byte[]> args, String channel) {
         return null;
+    }
+
+    @Override
+    public Chaincode.Response invokeChaincodeWithStringArgs(String chaincodeName, List<String> args) {
+        String transactionName = args.get(0);
+        switch (transactionName) {
+            case "getApprovals":
+                ApprovalContract contract = new ApprovalContract();
+                ApprovalContractUtil cUtil = new ApprovalContractUtil();
+                Context ctx = TestUtil.mockContext(this, currentId);
+                String contractName = args.get(1);
+                String transName = args.get(2);
+                String[] params = args.size() > 3 ? args.subList(3, args.size()).toArray(new String[0]) : null;
+                String result;
+                try {
+                    result = contract.getApprovals(ctx, contractName, transName, params);
+                } catch (Exception e) {
+                    return ResponseUtils.newErrorResponse();
+                }
+                return ResponseUtils.newSuccessResponse(result); // TODO: assert message is right (not payload?)
+            default:
+                throw new RuntimeException(transactionName + " did not match any callable transaction");
+        }
     }
 
     @Override

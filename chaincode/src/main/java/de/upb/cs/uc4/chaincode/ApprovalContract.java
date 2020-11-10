@@ -44,12 +44,11 @@ public class ApprovalContract extends ContractBase {
         Approval approval = new Approval()
                 .id(ctx.getClientIdentity().getId()) // use simple id for now
                 .type(ctx.getClientIdentity().getAttributeValue("hf.Type"));
-        // TODO store {"id": <id>, "type": <hl.Type>} instead of id only
         return cUtil.addApproval(stub, key, approval);
     }
 
     @Transaction()
-    public String getApprovals(final Context ctx, final String contractName, final String transactionName, final String... params) {
+    public String getApprovals(final Context ctx, final String contractName, final String transactionName, String... params) {
         ChaincodeStub stub = ctx.getStub();
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
@@ -59,6 +58,9 @@ public class ApprovalContract extends ContractBase {
 
         String key;
         try {
+            if (params == null) {
+                params = new String[0];
+            }
             key = cUtil.getDraftKey(contractName, transactionName, params);
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());

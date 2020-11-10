@@ -6,7 +6,7 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 
 
 public abstract class ContractBase implements ContractInterface {
-
+    protected String contractName = "UC4.ContractBase";
     private final String version = "v0.11.5";
 
     /**
@@ -17,5 +17,9 @@ public abstract class ContractBase implements ContractInterface {
     @Transaction()
     public String getVersion(final Context ctx) {
         return version;
+    }
+
+    public String getContractName() {
+        return contractName;
     }
 }

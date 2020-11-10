@@ -30,7 +30,7 @@ public class Approval {
     this.id = id;
   }
 
-  @SerializedName("id")
+  @SerializedName("type")
   private String type = null;
 
   public Approval type(String type) {

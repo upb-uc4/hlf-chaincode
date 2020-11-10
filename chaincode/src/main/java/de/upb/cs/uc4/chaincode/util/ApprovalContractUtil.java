@@ -16,11 +16,14 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
     private final String thing = "list of approvals";
     private final String identifier = "transaction";
-    private static final String HASH_DELIMITER = "::"; //TODO: rework delimiting
+    private static final String HASH_DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
 
     public ApprovalContractUtil() {
         keyPrefix = "draft:";
@@ -90,6 +93,14 @@ public class ApprovalContractUtil extends ContractUtil {
             approvals.add(approval);
         }
         return putAndGetStringState(stub, key, GsonWrapper.toJson(approvals));
+    }
+
+    public static boolean covers(Function<Approval, String> func, List<Approval> approvals, List<String> required) {
+        return approvals.stream().map(func).collect(Collectors.toList()).containsAll(required);
+    }
+
+    public static boolean covers(List<Approval> approvals, List<String> requiredIds, List<String> requiredTypes) {
+        return covers(a -> a.getId(), approvals, requiredIds) && covers(a -> a.getType(), approvals, requiredTypes);
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {

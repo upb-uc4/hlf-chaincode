@@ -1,30 +1,32 @@
 package de.upb.cs.uc4.chaincode;
 
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
-import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Contract(
         name="UC4.MatriculationData"
 )
 @Default
 public class MatriculationDataContract extends ContractBase {
-
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
+
+    MatriculationDataContract() {
+        super();
+        this.contractName = "UC4.MatriculationData";
+    }
 
     /**
      * Adds MatriculationData to the ledger.
@@ -54,10 +56,16 @@ public class MatriculationDataContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        ArrayList<String> requiredApprovals = new ArrayList<>();
-        requiredApprovals.add(newMatriculationData.getEnrollmentId());
+        List<String> requiredIds = Collections.singletonList(newMatriculationData.getEnrollmentId());
+        List<String> requiredTypes = Collections.singletonList("admin");
 
-        if (!cUtil.validateApprovals(ctx, requiredApprovals, "addMatriculationData", Arrays.asList(matriculationData))) {
+        if (!cUtil.validateApprovals(
+                ctx,
+                requiredIds,
+                requiredTypes,
+                contractName,
+                "addMatriculationData",
+                Collections.singletonList(matriculationData))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 

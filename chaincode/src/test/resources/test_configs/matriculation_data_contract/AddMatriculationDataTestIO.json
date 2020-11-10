@@ -2,6 +2,16 @@
   {
     "name": "addNonExistingMatriculationData",
     "type": "addMatriculationData_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
     "setup": [],
     "input": [
       {
@@ -36,6 +46,16 @@
   {
     "name": "addNonExistingMultiFieldOfStudyMatriculationData",
     "type": "addMatriculationData_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
     "setup": [],
     "input": [
       {
@@ -308,6 +328,16 @@
   {
     "name": "addNonExistingXssMatriculationData",
     "type": "addMatriculationData_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "firstName1alert(\\\"XSS\\\");\",",
+        "type": "member"
+      }
+    ],
     "setup": [],
     "input": [
       {
