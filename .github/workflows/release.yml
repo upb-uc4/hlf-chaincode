@@ -39,5 +39,5 @@ jobs:
       uses: fnkr/github-action-ghr@v1
       env:
         GHR_COMPRESS: gz
-        GHR_PATH: UC4-chaincode/build/install/UC4-chaincode
+        GHR_PATH: UC4-chaincode/build/install
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
