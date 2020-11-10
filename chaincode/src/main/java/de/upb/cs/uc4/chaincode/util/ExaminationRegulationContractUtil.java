@@ -1,5 +1,7 @@
 package de.upb.cs.uc4.chaincode.util;
 
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
@@ -91,7 +93,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         return examinationRegulation;
     }
 
-    public ArrayList<ExaminationRegulation> getAllStates(ChaincodeStub stub) throws LedgerAccessError {
+    public ArrayList<ExaminationRegulation> getAllStates(ChaincodeStub stub) {
         QueryResultsIterator<KeyValue> qrIterator;
         qrIterator = getAllRawStates(stub);
         ArrayList<ExaminationRegulation> examinationRegulations = new ArrayList<>();
@@ -99,12 +101,22 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
             ExaminationRegulation examinationRegulation;
             try {
                 examinationRegulation = GsonWrapper.fromJson(item.getStringValue(), ExaminationRegulation.class);
-            } catch(Exception e) {
-                throw new LedgerAccessError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
+                examinationRegulations.add(examinationRegulation);
+            } catch(JsonSyntaxException e) {
+                ; // ignore
             }
-            examinationRegulations.add(examinationRegulation);
         }
         return examinationRegulations;
+    }
+
+    public HashSet<ExaminationRegulationModule> getValidModules(ChaincodeStub stub) {
+        HashSet<ExaminationRegulationModule> validModules = new HashSet<>();
+        List<ExaminationRegulation> regulations;
+        regulations = getAllStates(stub);
+        for (ExaminationRegulation regulation: regulations) {
+            validModules.addAll(regulation.getModules());
+        }
+        return validModules;
     }
 
     public ArrayList<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<ExaminationRegulationModule> validModules) {

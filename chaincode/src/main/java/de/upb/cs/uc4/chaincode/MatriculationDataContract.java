@@ -47,7 +47,7 @@ public class MatriculationDataContract extends ContractBase {
         }
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(
-                newMatriculationData, "matriculationData");
+                stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
@@ -90,8 +90,8 @@ public class MatriculationDataContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(
-                newMatriculationData, "matriculationData");
+        ArrayList<InvalidParameter> invalidParams = null;
+        invalidParams = cUtil.getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
@@ -148,7 +148,7 @@ public class MatriculationDataContract extends ContractBase {
             invalidParams.add(cUtil.getUnparsableMatriculationParam());
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
-        invalidParams.addAll(cUtil.getErrorForSubjectMatriculationList(matriculationStatus, "matriculations"));
+        invalidParams.addAll(cUtil.getErrorForSubjectMatriculationList(stub, matriculationStatus, "matriculations"));
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }

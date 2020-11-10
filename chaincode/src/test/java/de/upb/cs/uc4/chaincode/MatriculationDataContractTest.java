@@ -128,6 +128,7 @@ public final class MatriculationDataContractTest {
             List<Approval> ids
     ) {
         return () -> {
+            // TODO: add ExaminationRegulations to setup (for fieldOfStudy verification)
             MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
             ApprovalContract approvalContract = new ApprovalContract();
             for (Approval id: ids) {
