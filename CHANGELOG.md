@@ -1,3 +1,9 @@
+# [v0.12.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.5...v0.12.0) (2020-11-10)
+
+Release (no changes to previous version)
+
+
+
 # [v0.11.5](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.4...v0.11.5) (2020-11-04)
 
 ## Refactor
