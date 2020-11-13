@@ -1,3 +1,12 @@
+# [v0.12.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.5...v0.12.2) (2020-11-10)
+
+- provide code via release assets when tagging
+- add coverage test and present reports in test runs
+- add installDist-test
+- read version from referenced tag
+- restructure gradle project to include our groupName to distinguish our project from hlf
+- remove obsolete schadowJar from build
+
 # [v0.12.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.5...v0.12.0) (2020-11-10)
 
 Release (no changes to previous version)
