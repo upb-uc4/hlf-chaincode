@@ -3,10 +3,11 @@ package de.upb.cs.uc4.chaincode.util;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.Dummy;
+import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,6 +16,9 @@ import static org.mockito.Mockito.when;
 
 public class TestUtil {
     public static List<String> toStringList(List<Dummy> list) {
+        if (list == null) {
+            return new ArrayList<>();
+        }
         return list.stream().map(Dummy::getContent).collect(Collectors.toList());
     }
 
@@ -34,11 +38,9 @@ public class TestUtil {
         return ctx;
     }
 
-    public static MockChaincodeStub mockStub(List<String> setup, ContractUtil cUtil) {
+    public static MockChaincodeStub mockStub(JsonIOTestSetup setup, ContractUtil cUtil) {
         MockChaincodeStub stub = new MockChaincodeStub();
-        for (int i=0; i<setup.size(); i+=2) {
-            cUtil.putAndGetStringState(stub, setup.get(i), setup.get(i+1));
-        }
+        setup.prepareStub(stub);
         return stub;
     }
 

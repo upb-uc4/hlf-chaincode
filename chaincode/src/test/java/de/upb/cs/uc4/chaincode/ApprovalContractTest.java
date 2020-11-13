@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
+import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
@@ -50,7 +51,7 @@ public final class ApprovalContractTest {
             }
 
             for (JsonIOTest test : testConfig) {
-                List<String> setup = TestUtil.toStringList(test.getSetup());
+                JsonIOTestSetup setup = test.getSetup();
                 List<String> input = TestUtil.toStringList(test.getInput());
                 List<String> compare = TestUtil.toStringList(test.getCompare());
                 switch (test.getType()) {
@@ -81,7 +82,7 @@ public final class ApprovalContractTest {
     }
 
     private Executable getApprovalsTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -95,7 +96,7 @@ public final class ApprovalContractTest {
     }
 
     private Executable approveTransactionSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
             List<Approval> ids
@@ -115,7 +116,7 @@ public final class ApprovalContractTest {
     }
 
     private Executable approveTransactionFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
             List<Approval> ids

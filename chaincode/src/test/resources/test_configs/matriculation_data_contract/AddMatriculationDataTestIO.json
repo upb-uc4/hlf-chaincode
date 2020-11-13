@@ -12,7 +12,16 @@
         "type": "member"
       }
     ],
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -56,7 +65,22 @@
         "type": "member"
       }
     ],
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        },
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -102,20 +126,30 @@
   {
     "name": "addExistingMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -142,7 +176,16 @@
   {
     "name": "addEmptyEnrollmentIdMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "",
@@ -175,7 +218,16 @@
   {
     "name": "addOmittedEnrollmentIdMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "matriculationStatus": [
@@ -207,7 +259,7 @@
   {
     "name": "addEmptyMatriculationStatusMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       {
         "enrollmentId": "0000001",
@@ -233,7 +285,16 @@
   {
     "name": "addEmptySemestersMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -264,7 +325,7 @@
   {
     "name": "addEmptyFieldOfStudyMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       {
         "enrollmentId": "0000001",
@@ -297,7 +358,16 @@
   {
     "name": "addInvalidSemesterMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -338,7 +408,16 @@
         "type": "member"
       }
     ],
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "firstName1<p>alert(\\\"XSS\\\");</p>\",",
@@ -372,7 +451,7 @@
   {
     "name": "addUnprocessableMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       "ladida"
     ],

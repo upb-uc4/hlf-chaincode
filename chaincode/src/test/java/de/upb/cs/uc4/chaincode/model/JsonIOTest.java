@@ -17,7 +17,7 @@ public class JsonIOTest {
     private List<Approval> ids = null;
 
     @SerializedName("setup")
-    private List<Dummy> setup = null;
+    private JsonIOTestSetup setup = null;
 
     @SerializedName("input")
     private List<Dummy> input = null;
@@ -27,6 +27,11 @@ public class JsonIOTest {
 
     public JsonIOTest name(String name) {
         this.name = name;
+        return this;
+    }
+
+    public JsonIOTest setup(JsonIOTestSetup setup) {
+        this.setup = setup;
         return this;
     }
 
@@ -75,25 +80,12 @@ public class JsonIOTest {
         this.ids = ids;
     }
 
-    public JsonIOTest setup(List<Dummy> setup) {
-        this.setup = setup;
-        return this;
-    }
-
-    public JsonIOTest addSetupItem(Dummy setupItem) {
-        if (this.setup == null) {
-            this.setup = new ArrayList<Dummy>();
-        }
-        this.setup.add(setupItem);
-        return this;
-    }
-
     @ApiModelProperty(value = "")
-    public List<Dummy> getSetup() {
+    public JsonIOTestSetup getSetup() {
         return setup;
     }
 
-    public void setSetup(List<Dummy> setup) {
+    public void setSetup(JsonIOTestSetup setup) {
         this.setup = setup;
     }
 

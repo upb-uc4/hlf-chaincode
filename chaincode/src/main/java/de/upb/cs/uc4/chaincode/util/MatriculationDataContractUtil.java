@@ -144,7 +144,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
             invalidParams.add(getEmptyMatriculationStatusParam(prefix));
         } else {
             ArrayList<String> existingFields = new ArrayList<>();
-            List<String> validModuleIds = eUtil.getValidModules(stub).stream().map(ExaminationRegulationModule::getId).collect(Collectors.toList());
+            List<String> validModuleIds = eUtil.getAllStates(stub).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
             for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);

@@ -8,7 +8,7 @@
         "type": "admin"
       }
     ],
-    "setup": [],
+    "setup": {},
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -35,19 +35,21 @@
         "type": "member"
       }
     ],
-    "setup": [
-      "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
-      [
-        {
-          "id": "User2",
-          "type": "admin"
-        },
-        {
-          "id": "User3",
-          "type": "member"
-        }
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        [
+          {
+           "id": "User2",
+           "type": "admin"
+          },
+          {
+            "id": "User3",
+            "type": "member"
+         }
+        ]
       ]
-    ],
+    },
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -82,19 +84,21 @@
         "type": "admin"
       }
     ],
-    "setup": [
-      "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
-      [
-        {
-          "id": "User2",
-          "type": "member"
-        },
-        {
-          "id": "User1",
-          "type": "admin"
-        }
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        [
+          {
+            "id": "User2",
+            "type": "member"
+          },
+          {
+            "id": "User1",
+            "type": "admin"
+          }
+        ]
       ]
-    ],
+    },
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -125,7 +129,7 @@
         "type": "admin"
       }
     ],
-    "setup": [],
+    "setup": {},
     "input": [
       "",
       "addCertificate",
@@ -150,7 +154,7 @@
   {
     "name": "approveEmptyTransactionNameTransaction",
     "type": "approveTransaction_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       "UC4.Certificate",
       "",

@@ -4,6 +4,7 @@ package de.upb.cs.uc4.chaincode;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
+import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
@@ -49,7 +50,7 @@ public final class CertificateContractTest {
             }
 
             for (JsonIOTest test : testConfig) {
-                List<String> setup = TestUtil.toStringList(test.getSetup());
+                JsonIOTestSetup setup = test.getSetup();
                 List<String> input = TestUtil.toStringList(test.getInput());
                 List<String> compare = TestUtil.toStringList(test.getCompare());
                 switch (test.getType()) {
@@ -92,7 +93,7 @@ public final class CertificateContractTest {
     }
 
     private Executable getCertificateTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -106,7 +107,7 @@ public final class CertificateContractTest {
     }
 
     private Executable addCertificateSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -122,7 +123,7 @@ public final class CertificateContractTest {
     }
 
     private Executable addCertificateFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -136,7 +137,7 @@ public final class CertificateContractTest {
     }
 
     private Executable updateCertificateSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -153,7 +154,7 @@ public final class CertificateContractTest {
     }
 
     private Executable updateCertificateFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {

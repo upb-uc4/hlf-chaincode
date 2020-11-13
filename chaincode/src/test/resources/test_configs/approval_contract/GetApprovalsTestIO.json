@@ -2,19 +2,21 @@
   {
     "name": "queryExistingApprovals",
     "type": "getApprovals",
-    "setup": [
-      "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
-      [
-        {
-          "id": "User1",
-          "type": "member"
-        },
-        {
-          "id": "User2",
-          "type": "admin"
-        }
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        [
+          {
+            "id": "User1",
+            "type": "member"
+          },
+          {
+            "id": "User2",
+            "type": "admin"
+          }
+        ]
       ]
-    ],
+    },
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -39,7 +41,7 @@
   {
     "name": "queryNonExistingApprovals",
     "type": "getApprovals",
-    "setup": [],
+    "setup": {},
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -58,7 +60,7 @@
   {
     "name": "queryEmptyContractNameCertificate",
     "type": "getApprovals",
-    "setup": [],
+    "setup": {},
     "input": [
       "",
       "addCertificate",
@@ -83,7 +85,7 @@
   {
     "name": "queryEmptyTransactionNameCertificate",
     "type": "getApprovals",
-    "setup": [],
+    "setup": {},
     "input": [
       "UC4.Certificate",
       "",

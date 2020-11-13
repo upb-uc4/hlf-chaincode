@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
+import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
@@ -50,7 +51,7 @@ public final class MatriculationDataContractTest {
             }
 
             for (JsonIOTest test : testConfig) {
-                List<String> setup = TestUtil.toStringList(test.getSetup());
+                JsonIOTestSetup setup = test.getSetup();
                 List<String> input = TestUtil.toStringList(test.getInput());
                 List<String> compare = TestUtil.toStringList(test.getCompare());
                 switch (test.getType()) {
@@ -105,7 +106,7 @@ public final class MatriculationDataContractTest {
     }
 
     private Executable getMatriculationDataTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -122,7 +123,7 @@ public final class MatriculationDataContractTest {
     }
 
     private Executable addMatriculationDataSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
             List<Approval> ids
@@ -145,7 +146,7 @@ public final class MatriculationDataContractTest {
     }
 
     private Executable addMatriculationDataFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -159,7 +160,7 @@ public final class MatriculationDataContractTest {
     }
 
     private Executable updateMatriculationDataSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -177,7 +178,7 @@ public final class MatriculationDataContractTest {
     }
 
     private Executable updateMatriculationDataFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -191,7 +192,7 @@ public final class MatriculationDataContractTest {
     }
 
     private Executable addEntryToMatriculationDataSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -208,7 +209,7 @@ public final class MatriculationDataContractTest {
     }
 
     private Executable addEntryToMatriculationDataFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {

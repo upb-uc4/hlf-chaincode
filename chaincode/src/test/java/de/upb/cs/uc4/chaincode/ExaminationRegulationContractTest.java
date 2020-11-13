@@ -5,6 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
+import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
@@ -50,7 +51,7 @@ public final class ExaminationRegulationContractTest {
             }
 
             for (JsonIOTest test : testConfig) {
-                List<String> setup = TestUtil.toStringList(test.getSetup());
+                JsonIOTestSetup setup = test.getSetup();
                 List<String> input = TestUtil.toStringList(test.getInput());
                 List<String> compare = TestUtil.toStringList(test.getCompare());
                 switch (test.getType()) {
@@ -93,7 +94,7 @@ public final class ExaminationRegulationContractTest {
     }
 
     private Executable getExaminationRegulationsTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -111,7 +112,7 @@ public final class ExaminationRegulationContractTest {
     }
 
     private Executable addExaminationRegulationSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -128,7 +129,7 @@ public final class ExaminationRegulationContractTest {
     }
 
     private Executable addExaminationRegulationFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -142,7 +143,7 @@ public final class ExaminationRegulationContractTest {
     }
 
     private Executable closeExaminationRegulationSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
@@ -160,7 +161,7 @@ public final class ExaminationRegulationContractTest {
     }
 
     private Executable closeExaminationRegulationFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
