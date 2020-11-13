@@ -29,9 +29,18 @@ ZoltuGitVersioning.versionInfo
 task 'addVersion' {
     File f = file('src/main/resources/project.properties')
     Properties props = new Properties()
-    props.load(new FileInputStream(f))
+
+    // read
+    FileInputStream fis = new FileInputStream(f)
+    props.load(fis)
+    fis.close()
+
+    // adjust
     props.setProperty("rootVersion", "${version}")
-    props.store(new FileOutputStream(f), "")
+
+    FileOutputStream fos = new FileOutputStream(f)
+    props.store(fos, "")
+    fos.close()
 }
 
 // enforce version copy
