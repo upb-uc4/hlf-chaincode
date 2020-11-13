@@ -1,0 +1,50 @@
+name: Publish Artifact to Release
+
+on:
+  # on push tag
+  push:
+    tags: ['*']
+
+jobs:
+  Release:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: check out source repository
+      uses: actions/checkout@v2
+    
+    # Set up JDK
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    # run gradle tests
+    - name: Run installDist
+      run: |
+        pushd ./UC4-chaincode
+        echo "##########################"
+        echo "starting installation"
+        echo "##########################"
+        ./gradlew installDist
+        echo "##########################"
+        echo "finish installation"
+        echo "##########################"
+        popd
+        
+    # Upload artifact
+    - name: Release Jar
+      uses: fnkr/github-action-ghr@v1
+      env:
+        GHR_COMPRESS: gz
+        GHR_PATH: UC4-chaincode/build/install
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Upload artifact2
+    - name: Release assets
+      uses: fnkr/github-action-ghr@v1
+      env:
+        GHR_PATH: UC4-chaincode/assets
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

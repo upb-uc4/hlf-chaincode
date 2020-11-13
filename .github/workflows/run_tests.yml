@@ -1,4 +1,4 @@
-name: Hyperledger Chaincode Test Pipeline
+name: Run Gradlew Test
 
 on:
   push:
@@ -31,12 +31,19 @@ jobs:
     # run gradle tests
     - name: Run chaincode tests
       run: |
-        pushd ./chaincode
+        pushd ./UC4-chaincode
         echo "##########################"
-        echo "# starting chaincode test#"
+        echo "starting chaincode test"
         echo "##########################"
         ./gradlew test
         echo "##########################"
         echo "#  finish chaincode test #"
         echo "##########################"
         popd
+
+    # Upload Coverage Report
+    - name: Upload coverage report
+      uses: actions/upload-artifact@v1
+      with:
+        name: coverage-report
+        path: UC4-chaincode/build/jacocoHtml

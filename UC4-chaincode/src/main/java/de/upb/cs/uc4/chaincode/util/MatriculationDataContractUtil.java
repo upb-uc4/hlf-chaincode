@@ -105,6 +105,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
     /**
      * Returns a list of errors describing everything wrong with the given matriculationData
      * @param matriculationData matriculationData to return errors for
+     * @param prefix prefix used for error information
      * @return a list of all errors found for the given matriculationData
      */
     public ArrayList<InvalidParameter> getErrorForMatriculationData(
