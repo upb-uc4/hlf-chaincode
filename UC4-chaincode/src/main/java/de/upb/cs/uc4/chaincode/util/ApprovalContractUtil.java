@@ -31,16 +31,10 @@ public class ApprovalContractUtil extends ContractUtil {
     }
 
     @Override
-    public GenericError getConflictError() {
-        return null;
-    }
-
-    @Override
     public GenericError getNotFoundError() {
         return super.getNotFoundError(thing, identifier);
     }
 
-    @Generated("exclude from coverage")
     public GenericError getInternalError() {
         return new GenericError()
                 .type("HLInternalError")
@@ -86,10 +80,8 @@ public class ApprovalContractUtil extends ContractUtil {
         ArrayList<Approval> approvals;
         try{
             approvals = getState(stub, key);
-        } catch(LedgerStateNotFoundError e) {
-            approvals = new ArrayList<>();
         } catch(LedgerAccessError e) {
-            return e.getJsonError();
+            approvals = new ArrayList<>();
         }
         if (!approvals.contains(approval)) {
             approvals.add(approval);

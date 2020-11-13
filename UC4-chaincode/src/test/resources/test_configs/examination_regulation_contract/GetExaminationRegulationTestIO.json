@@ -85,5 +85,48 @@
     "compare": [
       []
     ]
+  },
+
+
+  {
+    "name": "queryUnparsableNameListExaminationRegulations",
+    "type": "getExaminationRegulations",
+    "setup": {},
+    "input": [
+      "something invalid"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "names",
+            "reason": "The given parameter cannot be parsed from json"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "queryUnprocessableLedgerStateExaminationRegulations",
+    "type": "getExaminationRegulations",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        "something invalid"
+      ]
+    },
+    "input": [
+      ["Computer Science"]
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
+      }
+    ]
   }
 ]

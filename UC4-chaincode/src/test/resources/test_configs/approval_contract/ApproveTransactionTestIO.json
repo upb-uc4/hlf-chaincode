@@ -173,5 +173,37 @@
         ]
       }
     ]
+  },
+
+
+  {
+    "name": "approveEmptyTransactionNameTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      }
+    ],
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        "something invalid"
+      ]
+    },
+    "input": [
+      "UC4.Certificate",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      [
+        {
+          "id": "User1",
+          "type": "admin"
+        }
+      ]
+    ]
   }
 ]

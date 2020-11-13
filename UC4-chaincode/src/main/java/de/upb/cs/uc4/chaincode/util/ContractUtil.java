@@ -35,7 +35,9 @@ abstract public class ContractUtil {
         return getUnprocessableEntityError(getArrayList(invalidParam));
     }
 
-    public abstract GenericError getConflictError();
+    public GenericError getConflictError() {
+        return null;
+    }
 
     protected GenericError getConflictError(String thing, String identifier) {
         String article = "aeio".contains(Character.toString(thing.charAt(0)).toLowerCase()) ? "an" : "a";
@@ -112,10 +114,6 @@ abstract public class ContractUtil {
     public QueryResultsIterator<KeyValue> getAllRawStates(ChaincodeStub stub) {
         CompositeKey key = stub.createCompositeKey(keyPrefix);
         return stub.getStateByPartialCompositeKey(key);
-    }
-
-    public String getKeyPrefix() {
-        return keyPrefix;
     }
 
     public ArrayList<InvalidParameter> getArrayList(InvalidParameter invalidParam) {

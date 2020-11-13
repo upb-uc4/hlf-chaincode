@@ -102,12 +102,9 @@ public final class ExaminationRegulationContractTest {
             MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
             Context ctx = TestUtil.mockContext(stub);
 
-            Type listType = new TypeToken<ArrayList<ExaminationRegulation>>(){}.getType();
-            ArrayList<ExaminationRegulation> regulations = GsonWrapper.fromJson(
-                    contract.getExaminationRegulations(ctx, input.get(0)),
-                    listType);
+            String regulations = contract.getExaminationRegulations(ctx, input.get(0));
             assertThat(regulations)
-                    .isEqualTo(GsonWrapper.fromJson(compare.get(0), listType));
+                    .isEqualTo(compare.get(0));
         };
     }
 

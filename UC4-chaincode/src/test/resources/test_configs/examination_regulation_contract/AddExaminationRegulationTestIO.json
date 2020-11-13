@@ -2,7 +2,16 @@
   {
     "name": "addNewExaminationRegulation",
     "type": "addExaminationRegulation_SUCCESS",
-    "setup": {},
+    "setup": {
+      "examinationRegulationContract": [
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": "something invalid"
+        }
+      ]
+    },
     "input": [
       {
         "name": "Computer Science v3",
@@ -119,6 +128,28 @@
           {
             "name": "examinationRegulation.modules",
             "reason": "Modules must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addUnparsableExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      "something invalid"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation",
+            "reason": "The given parameter cannot be parsed from json"
           }
         ]
       }
@@ -261,6 +292,41 @@
           {
             "name": "examinationRegulation.modules[1]",
             "reason": "Each module must be consistent with the modules on chain, i.e. if the module.id is equal, then module.name must be too"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addIDuplicateModuleExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      {
+        "name": "Computer Science v4",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01157",
+            "name": "Math 3"
+          },
+          {
+            "id": "M.1275.01157",
+            "name": "Math 3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation.modules[1]",
+            "reason": "Each module must only appear once in examinationRegulation.modules"
           }
         ]
       }

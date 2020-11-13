@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode.model;
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
+import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -86,42 +87,6 @@ public class ExaminationRegulation {
   @Override
   public int hashCode() {
     return Objects.hash(name, modules);
-  }
-
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class ExaminationRegulation {\n");
-    
-    sb.append("    name: ").append(toIndentedString(name)).append("\n");
-    sb.append("    active: ").append(toIndentedString(active)).append("\n");
-    sb.append("    matriculationStatus: ").append(toIndentedString(modules)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
-
-  public void addAbsent(ArrayList<ExaminationRegulationModule> modules) {
-    for (ExaminationRegulationModule newItem: modules) {
-      boolean exists = false;
-      for (ExaminationRegulationModule item : this.getModules()) {
-        if (item.getId().equals(newItem.getId())) {
-          this.getModules().add(newItem);
-          break;
-        }
-      }
-    }
   }
 
 }
