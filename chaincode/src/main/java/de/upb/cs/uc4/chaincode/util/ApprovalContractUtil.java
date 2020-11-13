@@ -10,6 +10,7 @@ import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import javax.annotation.Generated;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -39,10 +40,11 @@ public class ApprovalContractUtil extends ContractUtil {
         return super.getNotFoundError(thing, identifier);
     }
 
+    @Generated("exclude from coverage")
     public GenericError getInternalError() {
         return new GenericError()
                 .type("HLInternalError")
-                .title("SHA-256 appearently does not exist lol...");
+                .title("SHA-256 apparently does not exist lol...");
     }
 
     public InvalidParameter getEmptyContractNameParam() {

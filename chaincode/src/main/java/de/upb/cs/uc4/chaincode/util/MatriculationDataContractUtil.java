@@ -154,7 +154,6 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 } else {
                     if (!validModuleIds.contains(subMat.getFieldOfStudy())) {
                         invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
-                        // TODO: add test (and check test coverage)
                     }
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
                         invalidParams.add(getDuplicateFieldOfStudyParam(prefix, subMatIndex));

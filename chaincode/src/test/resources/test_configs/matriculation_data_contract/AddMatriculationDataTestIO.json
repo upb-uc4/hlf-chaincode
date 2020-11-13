@@ -53,6 +53,49 @@
 
 
   {
+    "name": "addNonExistingInvalidFieldOfStudyMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {},
+    "input": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "matriculationData.matriculationStatus[0].fieldOfStudy",
+            "reason": "Field of study must be one of the specified values"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
     "name": "addNonExistingMultiFieldOfStudyMatriculationData",
     "type": "addMatriculationData_SUCCESS",
     "ids": [
