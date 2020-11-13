@@ -1,0 +1,49 @@
+name: Run Gradlew installDist
+
+on:
+  push:
+    branches:
+      - '**feature**'
+      - '**fix**'
+      - develop
+      - master
+  pull_request:
+    branches: 
+      - develop
+      - master
+
+jobs:
+  TestChaincode:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: check out source repository
+      uses: actions/checkout@v2
+    
+    # Set up JDK
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    # run gradle tests
+    - name: Run chaincode tests
+      run: |
+        pushd ./UC4-chaincode
+        echo "##########################"
+        echo "starting installation"
+        echo "##########################"
+        ./gradlew installDist
+        echo "##########################"
+        echo "#  finish chaincode test #"
+        echo "##########################"
+        popd
+        
+    # Upload artifact
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1
+      with:
+        name: UC4-chaincode
+        path: UC4-chaincode/build/install/UC4-chaincode
