@@ -3,7 +3,6 @@ package de.upb.cs.uc4.chaincode.model;
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.annotation.Generated;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

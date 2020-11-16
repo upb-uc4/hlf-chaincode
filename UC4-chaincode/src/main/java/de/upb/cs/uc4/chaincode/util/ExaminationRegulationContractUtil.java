@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import com.google.gson.JsonParseException;
 import com.google.gson.JsonSyntaxException;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
@@ -103,7 +102,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                 examinationRegulation = GsonWrapper.fromJson(item.getStringValue(), ExaminationRegulation.class);
                 examinationRegulations.add(examinationRegulation);
             } catch(JsonSyntaxException e) {
-                ; // ignore
+                 // ignore
             }
         }
         return examinationRegulations;

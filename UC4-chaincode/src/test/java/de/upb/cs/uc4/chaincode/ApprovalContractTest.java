@@ -87,7 +87,7 @@ public final class ApprovalContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String approvals = contract.getApprovals(ctx, contract(input), transaction(input), params(input));
@@ -102,7 +102,7 @@ public final class ApprovalContractTest {
             List<Approval> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             for (Approval id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
                 assertThat(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)))
@@ -122,11 +122,11 @@ public final class ApprovalContractTest {
             List<Approval> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
-            for (int i=0; i<compare.size(); i++) {
-                Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0)) ;
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            for (String s : compare) {
+                Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
                 String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
-                assertThat(result).isEqualTo(compare.get(i));
+                assertThat(result).isEqualTo(s);
             }
         };
     }

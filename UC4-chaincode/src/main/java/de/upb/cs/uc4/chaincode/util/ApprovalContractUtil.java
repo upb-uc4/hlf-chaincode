@@ -7,10 +7,8 @@ import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
-import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import javax.annotation.Generated;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -94,7 +92,7 @@ public class ApprovalContractUtil extends ContractUtil {
     }
 
     public static boolean covers(List<Approval> approvals, List<String> requiredIds, List<String> requiredTypes) {
-        return covers(a -> a.getId(), approvals, requiredIds) && covers(a -> a.getType(), approvals, requiredTypes);
+        return covers(Approval::getId, approvals, requiredIds) && covers(Approval::getType, approvals, requiredTypes);
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {

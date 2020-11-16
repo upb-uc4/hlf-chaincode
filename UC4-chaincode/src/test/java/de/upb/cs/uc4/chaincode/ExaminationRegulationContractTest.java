@@ -99,7 +99,7 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String regulations = contract.getExaminationRegulations(ctx, input.get(0));
@@ -114,7 +114,7 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addExaminationRegulation(ctx, input.get(0)))
@@ -131,7 +131,7 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addExaminationRegulation(ctx, input.get(0));
@@ -145,7 +145,7 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.closeExaminationRegulation(ctx, input.get(0)))
@@ -163,7 +163,7 @@ public final class ExaminationRegulationContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.closeExaminationRegulation(ctx, input.get(0));

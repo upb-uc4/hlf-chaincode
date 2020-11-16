@@ -111,7 +111,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             MatriculationData matriculationData = GsonWrapper.fromJson(
@@ -129,7 +129,7 @@ public final class MatriculationDataContractTest {
             List<Approval> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             ApprovalContract approvalContract = new ApprovalContract();
             for (Approval id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -150,7 +150,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addMatriculationData(ctx, input.get(0));
@@ -164,7 +164,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.updateMatriculationData(ctx, input.get(0)))
@@ -182,7 +182,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateMatriculationData(ctx, input.get(0));
@@ -196,7 +196,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1)))
@@ -213,7 +213,7 @@ public final class MatriculationDataContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));

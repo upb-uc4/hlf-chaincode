@@ -1,21 +1,16 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.ApprovalContract;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.DetailedError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
-import org.hyperledger.fabric.shim.Chaincode;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
-import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;

@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class Dummy {
     @SerializedName("matriculationId")
-    private String content = null;
+    private String content;
 
     public Dummy(String content) {
         this.content = content;

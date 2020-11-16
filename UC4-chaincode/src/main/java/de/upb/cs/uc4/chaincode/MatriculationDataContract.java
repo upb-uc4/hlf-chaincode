@@ -90,7 +90,7 @@ public class MatriculationDataContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = null;
+        ArrayList<InvalidParameter> invalidParams;
         invalidParams = cUtil.getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));

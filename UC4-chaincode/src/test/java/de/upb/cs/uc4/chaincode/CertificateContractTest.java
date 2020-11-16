@@ -98,7 +98,7 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String certificate = contract.getCertificate(ctx, input.get(0));
@@ -112,7 +112,7 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addCertificate(ctx, input.get(0), input.get(1)))
@@ -128,7 +128,7 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addCertificate(ctx, input.get(0), input.get(1));
@@ -142,7 +142,7 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.updateCertificate(ctx, input.get(0), input.get(1)))
@@ -159,7 +159,7 @@ public final class CertificateContractTest {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateCertificate(ctx, input.get(0), input.get(1));

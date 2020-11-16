@@ -14,7 +14,6 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 @Contract(
         name="UC4.ExaminationRegulation"
