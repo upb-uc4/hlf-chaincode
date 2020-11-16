@@ -33,6 +33,7 @@ jobs:
     # run gradle tests
     - name: Run chaincode tests
       run: |
+        echo "git describe: $(git describe)"
         pushd ./UC4-chaincode
         echo "##########################"
         echo "starting chaincode test"
