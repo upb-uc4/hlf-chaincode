@@ -11,6 +11,7 @@ import java.util.Properties;
 import java.util.jar.Manifest;
 
 public abstract class ContractBase implements ContractInterface {
+    protected String contractName = "UC4.ContractBase";
 
     /**
      * Gets version of the chaincode
