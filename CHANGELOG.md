@@ -6,6 +6,7 @@
 - add tests for proposal validation
 - add tests for fieldOfStudy validation
 - add tests for unprocessable ledger state
+- read version from git-tags
 
 ## Refactor
 - extend test model to allow for specification of client id
