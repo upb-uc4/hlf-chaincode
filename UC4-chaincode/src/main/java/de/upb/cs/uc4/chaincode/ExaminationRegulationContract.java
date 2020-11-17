@@ -14,7 +14,6 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 @Contract(
         name="UC4.ExaminationRegulation"
@@ -41,17 +40,7 @@ public class ExaminationRegulationContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableExaminationRegulationParam()));
         }
 
-        HashSet<ExaminationRegulationModule> validModules = new HashSet<>();
-        List<ExaminationRegulation> regulations;
-        try {
-            regulations = cUtil.getAllStates(stub);
-        } catch (LedgerAccessError e) {
-            return e.getJsonError();
-        }
-        for (ExaminationRegulation regulation: regulations) {
-            validModules.addAll(regulation.getModules());
-        }
-
+        HashSet<ExaminationRegulationModule> validModules = cUtil.getValidModules(stub);
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForExaminationRegulation(newExaminationRegulation, validModules);
 
         if (!invalidParams.isEmpty()) {

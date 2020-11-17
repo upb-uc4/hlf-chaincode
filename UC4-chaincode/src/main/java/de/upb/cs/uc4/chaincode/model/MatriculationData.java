@@ -7,7 +7,6 @@ import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.threeten.bp.LocalDate;
 
 /**
  * MatriculationData

@@ -2,13 +2,21 @@
   {
     "name": "queryExistingApprovals",
     "type": "getApprovals",
-    "setup": [
-      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
-      [
-        "User1",
-        "User2"
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        [
+          {
+            "id": "User1",
+            "type": "member"
+          },
+          {
+            "id": "User2",
+            "type": "admin"
+          }
+        ]
       ]
-    ],
+    },
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -17,8 +25,14 @@
     ],
     "compare": [
       [
-        "User1",
-        "User2"
+        {
+          "id": "User1",
+          "type": "member"
+        },
+        {
+          "id": "User2",
+          "type": "admin"
+        }
       ]
     ]
   },
@@ -27,7 +41,7 @@
   {
     "name": "queryNonExistingApprovals",
     "type": "getApprovals",
-    "setup": [],
+    "setup": {},
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -44,9 +58,33 @@
 
 
   {
+    "name": "queryInvalidLedgerStateApprovals",
+    "type": "getApprovals",
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        "something invalid"
+      ]
+    },
+    "input": [
+      "UC4.Certificate",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
+      }
+    ]
+  },
+
+
+  {
     "name": "queryEmptyContractNameCertificate",
     "type": "getApprovals",
-    "setup": [],
+    "setup": {},
     "input": [
       "",
       "addCertificate",
@@ -71,7 +109,7 @@
   {
     "name": "queryEmptyTransactionNameCertificate",
     "type": "getApprovals",
-    "setup": [],
+    "setup": {},
     "input": [
       "UC4.Certificate",
       "",

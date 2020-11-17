@@ -3,10 +3,8 @@ package de.upb.cs.uc4.chaincode.util;
 import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
-import de.upb.cs.uc4.chaincode.model.GenericError;
-import de.upb.cs.uc4.chaincode.model.InvalidParameter;
-import de.upb.cs.uc4.chaincode.model.MatriculationData;
-import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
+import de.upb.cs.uc4.chaincode.model.*;
+
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
@@ -14,10 +12,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class MatriculationDataContractUtil extends ContractUtil {
     private final String thing = "MatriculationData";
     private final String identifier = "enrollmentId";
+    private final ExaminationRegulationContractUtil eUtil = new ExaminationRegulationContractUtil();
 
     public MatriculationDataContractUtil() {
         keyPrefix = "matriculationData";
@@ -109,6 +109,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
      * @return a list of all errors found for the given matriculationData
      */
     public ArrayList<InvalidParameter> getErrorForMatriculationData(
+            ChaincodeStub stub,
             MatriculationData matriculationData,
             String prefix) {
 
@@ -122,12 +123,14 @@ public class MatriculationDataContractUtil extends ContractUtil {
         }
 
         invalidparams.addAll(getErrorForSubjectMatriculationList(
+                stub,
                 matriculationData.getMatriculationStatus(),
                 prefix+"matriculationStatus"));
         return invalidparams;
     }
 
     public ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
+            ChaincodeStub stub,
             List<SubjectMatriculation> matriculationStatus,
             String prefix) {
 
@@ -137,7 +140,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
             invalidParams.add(getEmptyMatriculationStatusParam(prefix));
         } else {
             ArrayList<String> existingFields = new ArrayList<>();
-
+            List<String> validModuleIds = eUtil.getAllStates(stub).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
             for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
@@ -145,7 +148,9 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 if (valueUnset(subMat.getFieldOfStudy())) {
                     invalidParams.add(getEmptyFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
                 } else {
-                    // TODO: check if fieldOfStudy on ledger (getInvalidFieldOfStudyParam)
+                    if (!validModuleIds.contains(subMat.getFieldOfStudy())) {
+                        invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
+                    }
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
                         invalidParams.add(getDuplicateFieldOfStudyParam(prefix, subMatIndex));
                     } else

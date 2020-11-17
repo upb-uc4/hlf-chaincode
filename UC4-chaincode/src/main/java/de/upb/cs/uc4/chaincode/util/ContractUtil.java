@@ -1,15 +1,17 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.DetailedError;
 import de.upb.cs.uc4.chaincode.model.GenericError;
 import de.upb.cs.uc4.chaincode.model.InvalidParameter;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
-import java.lang.reflect.Type;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,9 @@ abstract public class ContractUtil {
         return getUnprocessableEntityError(getArrayList(invalidParam));
     }
 
-    public abstract GenericError getConflictError();
+    public GenericError getConflictError() {
+        return null;
+    }
 
     protected GenericError getConflictError(String thing, String identifier) {
         String article = "aeio".contains(Character.toString(thing.charAt(0)).toLowerCase()) ? "an" : "a";
@@ -51,6 +55,12 @@ abstract public class ContractUtil {
                 .title("The state on the ledger does not conform to the specified format");
     }
 
+    public GenericError getInsufficientApprovalsError() {
+        return new GenericError()
+                .type("HLInsufficientApprovals")
+                .title("The approvals present on the ledger do not suffice to execute this transaction");
+    }
+
     public InvalidParameter getEmptyEnrollmentIdParam() {
         return getEmptyEnrollmentIdParam("");
     }
@@ -59,6 +69,30 @@ abstract public class ContractUtil {
         return new InvalidParameter()
                 .name(prefix + "enrollmentId")
                 .reason("ID must not be empty");
+    }
+
+    public boolean validateApprovals(
+            final Context ctx,
+            final List<String> requiredIds,
+            final List<String> requiredTypes,
+            String contractName,
+            String transactionName,
+            final List<String> args) {
+        ChaincodeStub stub = ctx.getStub();
+        ApprovalContractUtil aUtil = new ApprovalContractUtil();
+        ArrayList<Approval> approvals;
+        String key;
+        try {
+            key = aUtil.getDraftKey(contractName, transactionName, args.toArray(new String[0]));
+        } catch (NoSuchAlgorithmException e) {
+            return false;
+        }
+        try{
+            approvals = aUtil.getState(stub, key);
+        } catch(LedgerAccessError e) {
+            return false;
+        }
+        return ApprovalContractUtil.covers(approvals, requiredIds, requiredTypes);
     }
 
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {
@@ -75,10 +109,6 @@ abstract public class ContractUtil {
     public QueryResultsIterator<KeyValue> getAllRawStates(ChaincodeStub stub) {
         CompositeKey key = stub.createCompositeKey(keyPrefix);
         return stub.getStateByPartialCompositeKey(key);
-    }
-
-    public String getKeyPrefix() {
-        return keyPrefix;
     }
 
     public ArrayList<InvalidParameter> getArrayList(InvalidParameter invalidParam) {

@@ -3,10 +3,11 @@ package de.upb.cs.uc4.chaincode.mock;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 
 import java.util.Arrays;
+import java.util.stream.Collectors;
 
 public class MockCompositeKey extends CompositeKey {
     private final String compositeKey;
-    private final static String DELIMITER = ":::";
+    private final static String DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
     public MockCompositeKey(String objectType, String... attributes) {
         super(objectType, attributes);
         if (attributes.length == 0) {
@@ -14,7 +15,7 @@ public class MockCompositeKey extends CompositeKey {
         } else if (attributes.length == 1) {
             compositeKey = objectType + DELIMITER + attributes[0] + DELIMITER;
         } else {
-            compositeKey = objectType + DELIMITER + Arrays.stream(attributes).reduce((a, b) -> a + DELIMITER + b).get();
+            compositeKey = objectType + DELIMITER + Arrays.stream(attributes).collect(Collectors.joining(DELIMITER));
         }
     }
 

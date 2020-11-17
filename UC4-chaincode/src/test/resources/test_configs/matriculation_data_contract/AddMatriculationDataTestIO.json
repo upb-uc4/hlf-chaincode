@@ -2,7 +2,26 @@
   {
     "name": "addNonExistingMatriculationData",
     "type": "addMatriculationData_SUCCESS",
-    "setup": [],
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -34,9 +53,77 @@
 
 
   {
+    "name": "addNonExistingInvalidFieldOfStudyMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {},
+    "input": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "matriculationData.matriculationStatus[0].fieldOfStudy",
+            "reason": "Field of study must be one of the specified values"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
     "name": "addNonExistingMultiFieldOfStudyMatriculationData",
     "type": "addMatriculationData_SUCCESS",
-    "setup": [],
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        },
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -82,20 +169,30 @@
   {
     "name": "addExistingMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -122,7 +219,16 @@
   {
     "name": "addEmptyEnrollmentIdMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "",
@@ -155,7 +261,16 @@
   {
     "name": "addOmittedEnrollmentIdMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "matriculationStatus": [
@@ -187,7 +302,7 @@
   {
     "name": "addEmptyMatriculationStatusMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       {
         "enrollmentId": "0000001",
@@ -213,7 +328,16 @@
   {
     "name": "addEmptySemestersMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -244,7 +368,7 @@
   {
     "name": "addEmptyFieldOfStudyMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       {
         "enrollmentId": "0000001",
@@ -277,7 +401,16 @@
   {
     "name": "addInvalidSemesterMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -308,7 +441,26 @@
   {
     "name": "addNonExistingXssMatriculationData",
     "type": "addMatriculationData_SUCCESS",
-    "setup": [],
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "firstName1alert(\\\"XSS\\\");\",",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "firstName1<p>alert(\\\"XSS\\\");</p>\",",
@@ -342,7 +494,7 @@
   {
     "name": "addUnprocessableMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       "ladida"
     ],
@@ -356,6 +508,47 @@
             "reason": "The given parameter cannot be parsed from json"
           }
         ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addNonExistingInsufficientApprovalsMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "ids": [
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
       }
     ]
   }
