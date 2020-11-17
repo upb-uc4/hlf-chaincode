@@ -15,10 +15,12 @@ ZoltuGitVersioning {
                 tags: matcher.group('tags') ]
     }
     customVersionToString { versionInfo ->
-        if(versionInfo.commitCount != 0){
+        if(versionInfo.commitCount.equals("0")){
+            return "${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}"
+        }
+        else {
             return "${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}-${versionInfo.commitCount}"
         }
-        return "${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}"
     }
 }
 
