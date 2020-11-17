@@ -1,3 +1,18 @@
+# [v0.12.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.12.2...v0.12.3) (2020-11-13)
+
+## Feature
+- add proposal validation to addMatriculationData transaction
+- add fieldOfStudy validation to MatriculationData transactions
+- add tests for proposal validation
+- add tests for fieldOfStudy validation
+- add tests for unprocessable ledger state
+
+## Refactor
+- extend test model to allow for specification of client id
+- extend test setup model to allow for specification of contract for initial ledger entries
+
+
+
 # [v0.12.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.5...v0.12.2) (2020-11-10)
 
 - provide code via release assets when tagging

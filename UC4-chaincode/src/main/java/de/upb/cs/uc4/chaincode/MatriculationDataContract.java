@@ -13,14 +13,20 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Contract(
         name="UC4.MatriculationData"
 )
 @Default
 public class MatriculationDataContract extends ContractBase {
-
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
+
+    MatriculationDataContract() {
+        super();
+        this.contractName = "UC4.MatriculationData";
+    }
 
     /**
      * Adds MatriculationData to the ledger.
@@ -41,13 +47,26 @@ public class MatriculationDataContract extends ContractBase {
         }
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(
-                newMatriculationData, "matriculationData");
+                stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
         if (cUtil.keyExists(stub, newMatriculationData.getEnrollmentId())) {
             return GsonWrapper.toJson(cUtil.getConflictError());
+        }
+
+        List<String> requiredIds = Collections.singletonList(newMatriculationData.getEnrollmentId());
+        List<String> requiredTypes = Collections.singletonList("admin");
+
+        if (!cUtil.validateApprovals(
+                ctx,
+                requiredIds,
+                requiredTypes,
+                contractName,
+                "addMatriculationData",
+                Collections.singletonList(matriculationData))) {
+            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
         return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));
@@ -71,8 +90,8 @@ public class MatriculationDataContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(
-                newMatriculationData, "matriculationData");
+        ArrayList<InvalidParameter> invalidParams;
+        invalidParams = cUtil.getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
@@ -129,7 +148,7 @@ public class MatriculationDataContract extends ContractBase {
             invalidParams.add(cUtil.getUnparsableMatriculationParam());
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
-        invalidParams.addAll(cUtil.getErrorForSubjectMatriculationList(matriculationStatus, "matriculations"));
+        invalidParams.addAll(cUtil.getErrorForSubjectMatriculationList(stub, matriculationStatus, "matriculations"));
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }

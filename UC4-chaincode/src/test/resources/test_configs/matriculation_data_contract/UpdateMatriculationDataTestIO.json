@@ -2,20 +2,30 @@
   {
     "name": "updateMatriculationData",
     "type": "updateMatriculationData_SUCCESS",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -47,20 +57,36 @@
   {
     "name": "updateMultiFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_SUCCESS",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup":{
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        },
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -104,20 +130,30 @@
   {
     "name": "updateNonExistingMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup":{
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000002",
@@ -144,20 +180,30 @@
   {
     "name": "updateEmptyMatriculationStatusMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup":{
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -183,20 +229,30 @@
   {
     "name": "updateEmptySemestersMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -227,20 +283,30 @@
   {
     "name": "updateEmptyFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -274,20 +340,36 @@
   {
     "name": "updateInvalidSemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        },
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -303,7 +385,6 @@
             "fieldOfStudy": "Philosophy",
             "semesters": [
               "WWS2018/19", "SSS2020"
-
             ]
           }
         ]
@@ -339,20 +420,30 @@
   {
     "name": "updateInvalidYearSemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -385,20 +476,30 @@
   {
     "name": "updateDuplicateFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2020"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -437,20 +538,30 @@
   {
     "name": "updateDuplicateSemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2019"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -484,20 +595,30 @@
   {
     "name": "updateEmptyEnrollmentIdMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2019"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "",
@@ -530,20 +651,30 @@
   {
     "name": "updateEmptySemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2019"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract":[
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       {
         "enrollmentId": "0000001",
@@ -576,20 +707,30 @@
   {
     "name": "updateUnprocessableMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup": [
-      "0000001",
-      {
-        "enrollmentId": "0000001",
-        "matriculationStatus": [
-          {
-            "fieldOfStudy": "Computer Science",
-            "semesters": [
-              "WS2018/19", "SS2019"
-            ]
-          }
-        ]
-      }
-    ],
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19", "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
     "input": [
       "ladida"
     ],

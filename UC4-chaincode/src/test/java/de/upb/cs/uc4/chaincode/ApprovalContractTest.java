@@ -2,7 +2,10 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
+import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
@@ -48,7 +51,7 @@ public final class ApprovalContractTest {
             }
 
             for (JsonIOTest test : testConfig) {
-                List<String> setup = TestUtil.toStringList(test.getSetup());
+                JsonIOTestSetup setup = test.getSetup();
                 List<String> input = TestUtil.toStringList(test.getInput());
                 List<String> compare = TestUtil.toStringList(test.getCompare());
                 switch (test.getType()) {
@@ -61,13 +64,13 @@ public final class ApprovalContractTest {
                     case "approveTransaction_SUCCESS":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
-                                approveTransactionSuccessTest(setup, input, compare)
+                                approveTransactionSuccessTest(setup, input, compare, test.getIds())
                         ));
                         break;
                     case "approveTransaction_FAILURE":
                         tests.add(DynamicTest.dynamicTest(
                                 test.getName(),
-                                approveTransactionFailureTest(setup, input, compare)
+                                approveTransactionFailureTest(setup, input, compare, test.getIds())
                         ));
                         break;
                     default:
@@ -79,12 +82,13 @@ public final class ApprovalContractTest {
     }
 
     private Executable getApprovalsTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            Context ctx = TestUtil.mockContext(stub);
 
             String approvals = contract.getApprovals(ctx, contract(input), transaction(input), params(input));
             assertThat(approvals).isEqualTo(compare.get(0));
@@ -92,15 +96,19 @@ public final class ApprovalContractTest {
     }
 
     private Executable approveTransactionSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<Approval> ids
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
-
-            assertThat(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)))
-                    .isEqualTo(compare.get(0));
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            for (Approval id: ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                assertThat(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)))
+                        .isEqualTo(compare.get(0));
+            }
+            Context ctx = TestUtil.mockContext(stub);
             String key = cUtil.getDraftKey(contract(input), transaction(input), params(input));
             assertThat(cUtil.getStringState(ctx.getStub(), key))
                     .isEqualTo(compare.get(0));
@@ -108,15 +116,18 @@ public final class ApprovalContractTest {
     }
 
     private Executable approveTransactionFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<Approval> ids
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
-
-            String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
-            assertThat(result).isEqualTo(compare.get(0));
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            for (String s : compare) {
+                Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
+                String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
+                assertThat(result).isEqualTo(s);
+            }
         };
     }
 
