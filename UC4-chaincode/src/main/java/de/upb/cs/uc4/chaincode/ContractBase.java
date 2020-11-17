@@ -28,4 +28,8 @@ public abstract class ContractBase implements ContractInterface {
 
         return v1;
     }
+
+    public String getContractName() {
+        return contractName;
+    }
 }
