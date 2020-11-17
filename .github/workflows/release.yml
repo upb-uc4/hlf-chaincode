@@ -14,6 +14,8 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: check out source repository
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     
     # Set up JDK
     - name: Set up JDK 1.8
@@ -21,9 +23,14 @@ jobs:
       with:
         java-version: 1.8
 
+    # prepare version tag
+    - name: prepare version tag
+      run: export VERSIONING_GIT_TAG="${GITHUB_REF#refs/tags/}"
+
     # run gradle tests
     - name: Run installDist
       run: |
+        echo "git describe: $(git describe)"
         pushd ./UC4-chaincode
         echo "##########################"
         echo "starting installation"
