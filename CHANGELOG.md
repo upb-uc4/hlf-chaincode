@@ -12,6 +12,8 @@
 - extend test model to allow for specification of client id
 - extend test setup model to allow for specification of contract for initial ledger entries
 
+## Bugfix
+- getExaminationRegulations("[[]]") now correctly returns the full list of existing Examination Regulations.
 
 
 # [v0.12.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.5...v0.12.2) (2020-11-10)
