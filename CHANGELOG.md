@@ -1,9 +1,3 @@
-# [v0.12.4](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.12.3...v0.12.4) (2020-11-13)
-
-## Feature
-- add proposal validation to addMatriculationData transaction
-- add tests for proposal validation
-
 # [v0.12.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.12.2...v0.12.3) (2020-11-23)
 
 ## Feature
