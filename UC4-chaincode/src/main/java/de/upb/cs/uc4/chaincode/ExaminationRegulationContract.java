@@ -75,17 +75,23 @@ public class ExaminationRegulationContract extends ContractBase {
         }
 
         ArrayList<ExaminationRegulation> regulations = new ArrayList<>();
-        for (String name: nameList) {
-            if (!cUtil.valueUnset(name)) {
-                ExaminationRegulation regulation;
-                try {
-                    regulation = cUtil.getState(stub, name);
-                } catch (LedgerStateNotFoundError e) {
-                    continue;
-                } catch (LedgerAccessError e) {
-                    return e.getJsonError();
+        if(nameList.isEmpty()){
+            // read all existing information
+            regulations = cUtil.getAllStates(stub);
+        } else {
+            // read information for names
+            for (String name: nameList) {
+                if (!cUtil.valueUnset(name)) {
+                    ExaminationRegulation regulation;
+                    try {
+                        regulation = cUtil.getState(stub, name);
+                    } catch (LedgerStateNotFoundError e) {
+                        continue;
+                    } catch (LedgerAccessError e) {
+                        return e.getJsonError();
+                    }
+                    regulations.add(regulation);
                 }
-                regulations.add(regulation);
             }
         }
         return GsonWrapper.toJson(regulations);
