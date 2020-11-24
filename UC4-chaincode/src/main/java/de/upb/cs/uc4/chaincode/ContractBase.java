@@ -20,7 +20,7 @@ public abstract class ContractBase implements ContractInterface {
      */
     @Transaction()
     public String getVersion(final Context ctx) throws IOException {
-        return "0.12.3";
+        return "0.13.0";
 
         /*
         URLClassLoader cl = (URLClassLoader) getClass().getClassLoader();
