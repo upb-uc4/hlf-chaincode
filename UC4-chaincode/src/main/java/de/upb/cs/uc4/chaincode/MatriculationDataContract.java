@@ -23,10 +23,7 @@ import java.util.List;
 public class MatriculationDataContract extends ContractBase {
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
-    MatriculationDataContract() {
-        super();
-        this.contractName = "UC4.MatriculationData";
-    }
+    protected String contractName = "UC4.MatriculationData";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -63,7 +60,7 @@ public class MatriculationDataContract extends ContractBase {
                 ctx,
                 requiredIds,
                 requiredTypes,
-                contractName,
+                getContractName(),
                 "addMatriculationData",
                 Collections.singletonList(matriculationData))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
