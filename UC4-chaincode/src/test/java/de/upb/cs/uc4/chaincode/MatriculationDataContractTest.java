@@ -133,7 +133,7 @@ public final class MatriculationDataContractTest {
             ApprovalContract approvalContract = new ApprovalContract();
             for (Approval id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.getContractName(),"addMatriculationData", input.get(0));
+                approvalContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", input.get(0));
             }
             Context ctx = TestUtil.mockContext(stub);
             assertThat(contract.addMatriculationData(ctx, input.get(0)))
