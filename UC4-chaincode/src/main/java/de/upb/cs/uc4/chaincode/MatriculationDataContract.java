@@ -60,7 +60,7 @@ public class MatriculationDataContract extends ContractBase {
                 ctx,
                 requiredIds,
                 requiredTypes,
-                getContractName(),
+                this.contractName,
                 "addMatriculationData",
                 Collections.singletonList(matriculationData))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
