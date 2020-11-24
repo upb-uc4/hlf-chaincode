@@ -20,16 +20,15 @@ public abstract class ContractBase implements ContractInterface {
      */
     @Transaction()
     public String getVersion(final Context ctx) throws IOException {
+        return "0.13.0";
+
+        /*
         URLClassLoader cl = (URLClassLoader) getClass().getClassLoader();
 
         Properties properties = new Properties();
         properties.load(cl.findResource("project.properties").openStream());
         String v1 = properties.getProperty("rootVersion");
 
-        return v1;
-    }
-
-    public String getContractName() {
-        return contractName;
+        return v1;*/
     }
 }
