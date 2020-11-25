@@ -1,17 +1,12 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.model.Approval;
-import de.upb.cs.uc4.chaincode.model.DetailedError;
-import de.upb.cs.uc4.chaincode.model.GenericError;
-import de.upb.cs.uc4.chaincode.model.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.*;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +19,13 @@ abstract public class ContractUtil {
                 .type("HLUnprocessableEntity")
                 .title("The following parameters do not conform to the specified format")
                 .invalidParams(invalidParams);
+    }
+
+    public SemanticError getInvalidActionError(ArrayList<ValidationRule> ruleViolations) {
+        return new SemanticError()
+                .type("HLSemanticError")
+                .title("The transaction could not be performed. The following rules were violated:")
+                .validationRules(ruleViolations);
     }
 
     public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
@@ -61,14 +63,22 @@ abstract public class ContractUtil {
                 .title("The approvals present on the ledger do not suffice to execute this transaction");
     }
 
+    public InvalidParameter getEmptyParameterError(String parameterName) {
+        return new InvalidParameter()
+                .name(parameterName)
+                .reason("The given parameter must not be empty.");
+    }
+
     public InvalidParameter getEmptyEnrollmentIdParam() {
         return getEmptyEnrollmentIdParam("");
     }
 
     public InvalidParameter getEmptyEnrollmentIdParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix + "enrollmentId")
-                .reason("ID must not be empty");
+        return getEmptyParameterError(prefix + "enrollmentId");
+    }
+
+    public InvalidParameter getEmptyAdmissionIdParam() {
+        return getEmptyParameterError("admissionId");
     }
 
     public boolean validateApprovals(
