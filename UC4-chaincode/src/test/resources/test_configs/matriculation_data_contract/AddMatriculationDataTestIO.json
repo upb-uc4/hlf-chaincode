@@ -249,7 +249,7 @@
         "invalidParams": [
           {
             "name": "matriculationData.enrollmentId",
-            "reason": "ID must not be empty"
+            "reason": "The given parameter must not be empty."
           }
         ]
       }
@@ -290,7 +290,7 @@
         "invalidParams": [
           {
             "name": "matriculationData.enrollmentId",
-            "reason": "ID must not be empty"
+            "reason": "The given parameter must not be empty."
           }
         ]
       }

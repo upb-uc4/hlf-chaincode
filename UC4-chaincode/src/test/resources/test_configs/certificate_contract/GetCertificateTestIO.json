@@ -47,7 +47,7 @@
         "invalidParams": [
           {
             "name": "enrollmentId",
-            "reason": "ID must not be empty"
+            "reason": "The given parameter must not be empty."
           }
         ]
       }
