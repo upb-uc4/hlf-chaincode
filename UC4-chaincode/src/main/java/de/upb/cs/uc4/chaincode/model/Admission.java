@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 public class Admission {
+  private static String DELIMITER = ":";
+
   @SerializedName("admissionId")
   private String admissionId;
 
@@ -25,7 +27,7 @@ public class Admission {
     this.courseId = courseId;
     this.moduleId = moduleId;
     this.timestamp = timestamp;
-    this.admissionId = enrollmentId+":"+courseId;
+    this.admissionId = enrollmentId + Admission.DELIMITER + courseId;
   }
 
   /**

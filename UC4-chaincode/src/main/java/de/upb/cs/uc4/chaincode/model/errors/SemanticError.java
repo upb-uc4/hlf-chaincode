@@ -1,8 +1,10 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.errors;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -12,19 +14,17 @@ import java.util.Objects;
 
 
 
-public class GenericError {
+public class SemanticError {
   @SerializedName("type")
   private String type = null;
 
   @SerializedName("title")
   private String title = null;
 
-  public GenericError type(String type) {
-    this.type = type;
-    return this;
-  }
+  @SerializedName("validationRuleViolations")
+  private List<ValidationRuleViolation> validationRuleViolations = null;
 
-   /**
+  /**
    * Get type
    * @return type
   **/
@@ -37,8 +37,8 @@ public class GenericError {
     this.type = type;
   }
 
-  public GenericError title(String title) {
-    this.title = title;
+  public SemanticError type(String type) {
+    this.type = type;
     return this;
   }
 
@@ -55,6 +55,37 @@ public class GenericError {
     this.title = title;
   }
 
+  public SemanticError title(String title) {
+    this.title = title;
+    return this;
+  }
+
+   /**
+   * Get invalidParams
+   * @return invalidParams
+  **/
+  @ApiModelProperty(value = "")
+  public List<ValidationRuleViolation> getValidationRules() {
+    return validationRuleViolations;
+  }
+
+  public void setValidationRules(List<ValidationRuleViolation> validationRuleViolations) {
+    this.validationRuleViolations = validationRuleViolations;
+  }
+
+  public SemanticError validationRules(List<ValidationRuleViolation> validationRuleViolations) {
+    this.validationRuleViolations = validationRuleViolations;
+    return this;
+  }
+
+  public SemanticError addValidationRuleItem(ValidationRuleViolation validationRuleViolationItem) {
+    if (this.validationRuleViolations == null) {
+      this.validationRuleViolations = new ArrayList<ValidationRuleViolation>();
+    }
+    this.validationRuleViolations.add(validationRuleViolationItem);
+    return this;
+  }
+
 
   @Override
   public boolean equals(Object o) {
@@ -64,14 +95,15 @@ public class GenericError {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    GenericError detailedError = (GenericError) o;
+    SemanticError detailedError = (SemanticError) o;
     return Objects.equals(this.type, detailedError.type) &&
-        Objects.equals(this.title, detailedError.title);
+        Objects.equals(this.title, detailedError.title) &&
+        Objects.equals(this.validationRuleViolations, detailedError.validationRuleViolations);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(type, title);
+    return Objects.hash(type, title, validationRuleViolations);
   }
 
 
@@ -82,6 +114,7 @@ public class GenericError {
     
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    title: ").append(toIndentedString(title)).append("\n");
+    sb.append("    invalidParams: ").append(toIndentedString(validationRuleViolations)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -1,10 +1,13 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import com.google.gson.JsonSyntaxException;
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.GenericError;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.errors.ValidationRuleViolation;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
@@ -20,8 +23,6 @@ public class AdmissionContractUtil extends ContractUtil {
     private final String thing = "Admission";
     private final String prefix = thing.toLowerCase();
     private final String identifier = "admissionId";
-    private final ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
-    private final MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
 
     public AdmissionContractUtil() {
         keyPrefix = "admission";
@@ -43,8 +44,8 @@ public class AdmissionContractUtil extends ContractUtil {
                 .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}_\\d{2}:\\d{2}\", e.g. \"2020-12-31_23:59\"");
     }
 
-    public ValidationRule getRuleViolationModuleAvailable() {
-        return new ValidationRule()
+    public ValidationRuleViolation ruleViolationModuleAvailable() {
+        return new ValidationRuleViolation()
                 .name(prefix + ".ModuleAccess")
                 .reason("The student is not matriculated in an examinationRegulation, that contains the module he is trying to enroll in.");
     }
@@ -107,22 +108,22 @@ public class AdmissionContractUtil extends ContractUtil {
      * @param admission admission to return errors for
      * @return a list of all errors found for the given matriculationData
      */
-    public ArrayList<ValidationRule> getSemanticErrorsForAdmission(
+    public ArrayList<ValidationRuleViolation> getSemanticErrorsForAdmission(
             ChaincodeStub stub,
             Admission admission) {
 
-        ArrayList<ValidationRule> validationRules = new ArrayList<>();
+        ArrayList<ValidationRuleViolation> validationRuleViolations = new ArrayList<>();
 
         if(checkModuleAvailable(stub, admission)) {
-            validationRules.add(getRuleViolationModuleAvailable());
+            validationRuleViolations.add(ruleViolationModuleAvailable());
         }
 
-        return validationRules;
+        return validationRuleViolations;
     }
 
-    private boolean checkModuleAvailable(
-            ChaincodeStub stub,
-            Admission admission) {
+    private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) {
+        ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
+        MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
 
         AtomicBoolean foundMatch = new AtomicBoolean(false);
 
@@ -141,12 +142,14 @@ public class AdmissionContractUtil extends ContractUtil {
                             foundMatch.set(true);
                         }
                     });
-                } catch (Exception e){
-                    //TODO: something went horribly wrong
+                } catch (LedgerAccessError e){
+                    //TODO: something went horribly wrong:
+                    // the examinationRegulation referenced in a subjectMatriculation of the student could not be read.
                 }
             });
-        } catch (Exception e){
-            //TODO: something went horribly wrong
+        } catch (LedgerAccessError e){
+            //TODO: something went horribly wrong:
+            // no matriculation for the given enrollmentId could be read.
         }
 
         return foundMatch.get();
@@ -175,7 +178,7 @@ public class AdmissionContractUtil extends ContractUtil {
             invalidparams.add(getEmptyParameterError(prefix+".timestamp"));
         }
 
-        if(!dateTimeFormatValid(admission.getTimestamp())){
+        if(!checkTimestampFormatValid(admission.getTimestamp())){
             invalidparams.add(getInvalidTimestampParam());
         }
 
@@ -187,7 +190,7 @@ public class AdmissionContractUtil extends ContractUtil {
      * @param timestamp timestamp string to check for validity
      * @return true if input is a valid description of a timestamp, false otherwise
      */
-    public boolean dateTimeFormatValid(String timestamp) {
+    public boolean checkTimestampFormatValid(String timestamp) {
         Pattern pattern = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2}_\\d{2}:\\d{2})");
         Matcher matcher = pattern.matcher(timestamp);
         return matcher.matches();

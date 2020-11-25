@@ -1,12 +1,12 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.Approval;
-import de.upb.cs.uc4.chaincode.model.GenericError;
-import de.upb.cs.uc4.chaincode.model.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.errors.GenericError;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;

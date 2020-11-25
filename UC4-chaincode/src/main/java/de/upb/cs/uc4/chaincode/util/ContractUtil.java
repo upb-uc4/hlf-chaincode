@@ -1,6 +1,6 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.*;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
@@ -21,7 +21,7 @@ abstract public class ContractUtil {
                 .invalidParams(invalidParams);
     }
 
-    public SemanticError getInvalidActionError(ArrayList<ValidationRule> ruleViolations) {
+    public SemanticError getInvalidActionError(ArrayList<ValidationRuleViolation> ruleViolations) {
         return new SemanticError()
                 .type("HLSemanticError")
                 .title("The transaction could not be performed. The following rules were violated:")

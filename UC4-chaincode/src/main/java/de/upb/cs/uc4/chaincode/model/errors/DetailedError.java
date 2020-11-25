@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.errors;
 
 import java.util.Objects;
 import com.google.gson.annotations.SerializedName;

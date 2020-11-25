@@ -1,7 +1,9 @@
 package de.upb.cs.uc4.chaincode;
 
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.errors.ValidationRuleViolation;
 import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -10,8 +12,8 @@ import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Contract(
         name="UC4.Admission"
@@ -48,27 +50,26 @@ public class AdmissionContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        ArrayList<ValidationRule> validatedRules = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
+        ArrayList<ValidationRuleViolation> validatedRules = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
         if (!validatedRules.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getInvalidActionError(validatedRules));
         }
 
-        /* TODO: add approval Check
         List<String> requiredIds = Collections.singletonList(newAdmission.getEnrollmentId());
         List<String> requiredTypes = Collections.singletonList("admin");
 
+        // TODO: approval Check!! I DO NOT KNOW IF I CAN JUST BUILD THE PARAMETER LIST LIKE THAT
         if (!cUtil.validateApprovals(
                 ctx,
                 requiredIds,
                 requiredTypes,
                 this.contractName,
                 "addAdmission",
-                Collections.singletonList(enrollmentId, courseId, moduleId, timestamp))) {
+                Arrays.stream(new String[]{enrollmentId, courseId, moduleId, timestamp}).collect(Collectors.toList()))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
-        */
 
-        // TODO: add approval Check
+        // TODO: can we create a composite key of all inputs to improve reading performance for get...forUser/Module/Course
         return cUtil.putAndGetStringState(stub, newAdmission.getAdmissionId(), GsonWrapper.toJson(newAdmission));
     }
 
@@ -82,13 +83,35 @@ public class AdmissionContract extends ContractBase {
     public String dropAdmission(final Context ctx, String admissionId) {
         ChaincodeStub stub = ctx.getStub();
 
-        // TODO: approval check
+        // check empty
+        Admission admission;
+        try {
+            admission = cUtil.getState(stub, admissionId);
+        } catch(LedgerAccessError e) {
+            return e.getJsonError();
+        }
 
+        // check approval
+        List<String> requiredIds = Collections.singletonList(admission.getEnrollmentId());
+        List<String> requiredTypes = Collections.singletonList("admin");
+        if (!cUtil.validateApprovals(
+                ctx,
+                requiredIds,
+                requiredTypes,
+                this.contractName,
+                "dropAdmission",
+                Collections.singletonList(admissionId))) {
+            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
+        }
+
+        // perform delete
         try {
             cUtil.delState(stub, admissionId);
         } catch(LedgerAccessError e) {
             return e.getJsonError();
         }
+
+        // success
         return "";
     }
 

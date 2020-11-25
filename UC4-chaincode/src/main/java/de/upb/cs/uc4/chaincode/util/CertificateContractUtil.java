@@ -1,7 +1,7 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import de.upb.cs.uc4.chaincode.model.GenericError;
-import de.upb.cs.uc4.chaincode.model.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.errors.GenericError;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 
 public class CertificateContractUtil extends ContractUtil {
     private final String thing = "certificate";

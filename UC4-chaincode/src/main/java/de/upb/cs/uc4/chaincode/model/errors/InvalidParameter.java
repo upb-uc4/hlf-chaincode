@@ -1,16 +1,27 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.errors;
 
+import java.util.Objects;
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.Objects;
+/**
+ * InvalidParameter
+ */
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.JavaClientCodegen", date = "2020-07-26T19:00:46.792+02:00")
 
-public class ValidationRule {
+
+
+public class InvalidParameter {
   @SerializedName("name")
   private String name = null;
 
   @SerializedName("reason")
   private String reason = null;
+
+  public InvalidParameter name(String name) {
+    this.name = name;
+    return this;
+  }
 
    /**
    * Get name
@@ -25,8 +36,8 @@ public class ValidationRule {
     this.name = name;
   }
 
-  public ValidationRule name(String name) {
-    this.name = name;
+  public InvalidParameter reason(String reason) {
+    this.reason = reason;
     return this;
   }
 
@@ -43,11 +54,6 @@ public class ValidationRule {
     this.reason = reason;
   }
 
-  public ValidationRule reason(String reason) {
-    this.reason = reason;
-    return this;
-  }
-
 
   @Override
   public boolean equals(Object o) {
@@ -57,7 +63,7 @@ public class ValidationRule {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    ValidationRule invalidParameter = (ValidationRule) o;
+    InvalidParameter invalidParameter = (InvalidParameter) o;
     return Objects.equals(this.name, invalidParameter.name) &&
         Objects.equals(this.reason, invalidParameter.reason);
   }
@@ -67,12 +73,16 @@ public class ValidationRule {
     return Objects.hash(name, reason);
   }
 
+
   @Override
   public String toString() {
-    return "class ValidationRule {\n" +
-            "    name: " + toIndentedString(name) + "\n" +
-            "    reason: " + toIndentedString(reason) + "\n" +
-            "}";
+    StringBuilder sb = new StringBuilder();
+    sb.append("class InvalidParameter {\n");
+    
+    sb.append("    name: ").append(toIndentedString(name)).append("\n");
+    sb.append("    reason: ").append(toIndentedString(reason)).append("\n");
+    sb.append("}");
+    return sb.toString();
   }
 
   /**
