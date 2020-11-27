@@ -62,7 +62,7 @@ public class AdmissionContractUtil extends ContractUtil {
 
         ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
-        if (this.checkModuleAvailable(stub, admission)) {
+        if (!this.checkModuleAvailable(stub, admission)) {
             invalidParameters.add(getInvalidModuleAvailable("enrollmentId"));
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
@@ -128,7 +128,7 @@ public class AdmissionContractUtil extends ContractUtil {
      * @return true if input is a valid description of a timestamp, false otherwise
      */
     public boolean checkTimestampFormatValid(String timestamp) {
-        Pattern pattern = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2}_\\d{2}:\\d{2})");
+        Pattern pattern = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2})");
         Matcher matcher = pattern.matcher(timestamp);
         return matcher.matches();
     }
