@@ -72,7 +72,7 @@
         "invalidParams": [
           {
             "name": "certificate",
-            "reason": "Certificate must not be empty"
+            "reason": "The given parameter must not be empty."
           }
         ]
       }
@@ -99,7 +99,7 @@
           },
           {
             "name": "certificate",
-            "reason": "Certificate must not be empty"
+            "reason": "The given parameter must not be empty."
           }
         ]
       }

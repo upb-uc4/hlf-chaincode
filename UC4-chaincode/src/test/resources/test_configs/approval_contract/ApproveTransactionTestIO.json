@@ -143,7 +143,7 @@
         "invalidParams": [
           {
             "name": "contractName",
-            "reason": "Contract name must not be empty"
+            "reason": "The given parameter must not be empty."
           }
         ]
       }
@@ -168,7 +168,7 @@
         "invalidParams": [
           {
             "name": "transactionName",
-            "reason": "Transaction name must not be empty"
+            "reason": "The given parameter must not be empty."
           }
         ]
       }
