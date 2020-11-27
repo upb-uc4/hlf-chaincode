@@ -7,7 +7,6 @@ import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.model.errors.ValidationRuleViolation;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
@@ -41,66 +40,20 @@ public class AdmissionContractUtil extends ContractUtil {
     public InvalidParameter getInvalidTimestampParam() {
         return new InvalidParameter()
                 .name(prefix + ".timestamp")
-                .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}_\\d{2}:\\d{2}\", e.g. \"2020-12-31_23:59\"");
+                .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
     }
 
-    public ValidationRuleViolation ruleViolationModuleAvailable() {
-        return new ValidationRuleViolation()
-                .name(prefix + ".ModuleAccess")
-                .reason("The student is not matriculated in an examinationRegulation, that contains the module he is trying to enroll in.");
+    public InvalidParameter getInvalidModuleAvailable(String parameterName) {
+        return new InvalidParameter()
+                .name(prefix + "." + parameterName)
+                .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in.");
     }
 
-
-    public Admission getState(ChaincodeStub stub, String key) throws LedgerAccessError {
-        String jsonAdmission;
-        jsonAdmission = getStringState(stub, key);
-        if (valueUnset(jsonAdmission)) {
-            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
-        }
-        Admission admission;
-        try {
-            admission = GsonWrapper.fromJson(jsonAdmission, Admission.class);
-        } catch(Exception e) {
-            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
-        }
-        return admission;
-    }
-
-    public void delState(ChaincodeStub stub, String key) throws LedgerAccessError {
-        String jsonAdmission;
-        jsonAdmission = getStringState(stub, key);
-        if (valueUnset(jsonAdmission)) {
-            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
-        }
-        stub.delState(key);
-    }
-
-    public List<Admission> getAdmissionsForUser(ChaincodeStub stub, String enrollmentId){
-        return getAllStates(stub).stream()
-                .filter(item -> item.getEnrollmentId().equals(enrollmentId)).collect(Collectors.toList());
-    }
-    public List<Admission> getAdmissionsForCourse(ChaincodeStub stub, String courseId){
-        return getAllStates(stub).stream()
-                .filter(item -> item.getCourseId().equals(courseId)).collect(Collectors.toList());
-    }
-    public List<Admission> getAdmissionsForModule(ChaincodeStub stub, String moduleId){
-        return getAllStates(stub).stream()
-                .filter(item -> item.getModuleId().equals(moduleId)).collect(Collectors.toList());
-    }
-    private ArrayList<Admission> getAllStates(ChaincodeStub stub) {
-        QueryResultsIterator<KeyValue> qrIterator;
-        qrIterator = getAllRawStates(stub);
-        ArrayList<Admission> admissions = new ArrayList<>();
-        for (KeyValue item: qrIterator) {
-            Admission admission;
-            try {
-                admission = GsonWrapper.fromJson(item.getStringValue(), Admission.class);
-                admissions.add(admission);
-            } catch(JsonSyntaxException e) {
-                // ignore
-            }
-        }
-        return admissions;
+    public List<Admission> getAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) throws UnprocessableLedgerStateError {
+        return getAllStates(stub, Admission.class).stream()
+                .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
+                .filter(item -> courseId.isEmpty() || item.getCourseId().equals(courseId))
+                .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId)).collect(Collectors.toList());
     }
 
     /**
@@ -108,17 +61,18 @@ public class AdmissionContractUtil extends ContractUtil {
      * @param admission admission to return errors for
      * @return a list of all errors found for the given matriculationData
      */
-    public ArrayList<ValidationRuleViolation> getSemanticErrorsForAdmission(
+    public ArrayList<InvalidParameter> getSemanticErrorsForAdmission(
             ChaincodeStub stub,
             Admission admission) {
 
-        ArrayList<ValidationRuleViolation> validationRuleViolations = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
         if(checkModuleAvailable(stub, admission)) {
-            validationRuleViolations.add(ruleViolationModuleAvailable());
+            invalidParameters.add(getInvalidModuleAvailable("enrollmentId"));
+            invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
-        return validationRuleViolations;
+        return invalidParameters;
     }
 
     private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) {

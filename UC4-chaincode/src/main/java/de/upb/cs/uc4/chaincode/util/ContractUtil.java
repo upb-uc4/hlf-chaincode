@@ -1,5 +1,8 @@
 package de.upb.cs.uc4.chaincode.util;
 
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.errors.*;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -14,6 +17,10 @@ abstract public class ContractUtil {
 
     protected String keyPrefix = "";
 
+
+    public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
+        return getUnprocessableEntityError(getArrayList(invalidParam));
+    }
     public DetailedError getUnprocessableEntityError(ArrayList<InvalidParameter> invalidParams) {
         return new DetailedError()
                 .type("HLUnprocessableEntity")
@@ -21,21 +28,16 @@ abstract public class ContractUtil {
                 .invalidParams(invalidParams);
     }
 
-    public SemanticError getInvalidActionError(ArrayList<ValidationRuleViolation> ruleViolations) {
-        return new SemanticError()
-                .type("HLSemanticError")
-                .title("The transaction could not be performed. The following rules were violated:")
-                .validationRules(ruleViolations);
-    }
-
-    public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
-        return getUnprocessableEntityError(getArrayList(invalidParam));
+    public DetailedError getInvalidActionError(ArrayList<InvalidParameter> invalidParams) {
+        return new DetailedError()
+                .type("HLInvalidEntity")
+                .title("The following parameters produced some semantic error")
+                .invalidParams(invalidParams);
     }
 
     public GenericError getConflictError() {
         return null;
     }
-
     protected GenericError getConflictError(String thing, String identifier) {
         String article = "aeio".contains(Character.toString(thing.charAt(0)).toLowerCase()) ? "an" : "a";
         return new GenericError()
@@ -44,7 +46,6 @@ abstract public class ContractUtil {
     }
 
     public abstract GenericError getNotFoundError();
-
     protected GenericError getNotFoundError(String thing, String identifier) {
         return new GenericError()
                 .type("HLNotFound")
@@ -72,7 +73,6 @@ abstract public class ContractUtil {
     public InvalidParameter getEmptyEnrollmentIdParam() {
         return getEmptyEnrollmentIdParam("");
     }
-
     public InvalidParameter getEmptyEnrollmentIdParam(String prefix) {
         return getEmptyParameterError(prefix + "enrollmentId");
     }
@@ -142,5 +142,53 @@ abstract public class ContractUtil {
 
     public <T> boolean valueUnset(List<T> value) {
         return value == null || value.isEmpty();
+    }
+
+
+    public <T> T getState(ChaincodeStub stub, String key, Class<T> c) throws LedgerAccessError {
+        // read key
+        String jsonValue = getJsonState(stub, key);
+
+        // convert type with GSON
+        return convertJsonToType(jsonValue, c);
+    }
+
+    private String getJsonState(ChaincodeStub stub, String key) throws LedgerAccessError {
+        // read key
+        String jsonValue = getStringState(stub, key);
+        if (valueUnset(jsonValue)) {
+            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
+        }
+
+        return jsonValue;
+    }
+    private <T> T convertJsonToType(String jsonValue, Class<T> c) throws UnprocessableLedgerStateError {
+        T dataItem;
+        try {
+            dataItem = GsonWrapper.fromJson(jsonValue, c);
+        } catch(Exception e) {
+            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
+        }
+        return dataItem;
+    }
+
+    public void delState(ChaincodeStub stub, String key) throws LedgerAccessError {
+        String jsonValue = getStringState(stub, key);
+        if (valueUnset(jsonValue)) {
+            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
+        }
+
+        stub.delState(key);
+    }
+
+    public <T> ArrayList<T> getAllStates(ChaincodeStub stub, Class<T> c) throws UnprocessableLedgerStateError {
+        QueryResultsIterator<KeyValue> qrIterator;
+        qrIterator = getAllRawStates(stub);
+        ArrayList<T> resultItems = new ArrayList<>();
+        for (KeyValue item: qrIterator) {
+            String jsonValue = item.getStringValue();
+            resultItems.add(convertJsonToType(jsonValue, c));
+        }
+        return resultItems;
     }
 }

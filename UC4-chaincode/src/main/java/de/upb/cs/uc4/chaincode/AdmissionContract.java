@@ -1,9 +1,9 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.model.errors.ValidationRuleViolation;
 import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -50,9 +50,9 @@ public class AdmissionContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        ArrayList<ValidationRuleViolation> validatedRules = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
-        if (!validatedRules.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getInvalidActionError(validatedRules));
+        ArrayList<InvalidParameter> invalidParameters = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
+        if (!invalidParameters.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getInvalidActionError(invalidParameters));
         }
 
         List<String> requiredIds = Collections.singletonList(newAdmission.getEnrollmentId());
@@ -86,7 +86,7 @@ public class AdmissionContract extends ContractBase {
         // check empty
         Admission admission;
         try {
-            admission = cUtil.getState(stub, admissionId);
+            admission = cUtil.getState(stub, admissionId, Admission.class);
         } catch(LedgerAccessError e) {
             return e.getJsonError();
         }
@@ -122,50 +122,15 @@ public class AdmissionContract extends ContractBase {
      * @return Serialized List of Matching Admissions on success, serialized error on failure
      */
     @Transaction()
-    public String getAdmissionForUser(final Context ctx, final String enrollmentId) {
+    public String getAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
         ChaincodeStub stub = ctx.getStub();
 
-        // TODO: check empty parameter
-
-        List<Admission> admissions = cUtil.getAdmissionsForUser(stub, enrollmentId);
-
-        // TODO: can I just pass lists to GsonWrapper??
-        return GsonWrapper.toJson(admissions);
-    }
-
-    /**
-     * Gets AdmissionList from the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param courseId course to find admissions for
-     * @return Serialized List of Matching Admissions on success, serialized error on failure
-     */
-    @Transaction()
-    public String getAdmissionForCourse(final Context ctx, final String courseId) {
-        ChaincodeStub stub = ctx.getStub();
-
-        // TODO: check empty parameter
-
-        List<Admission> admissions = cUtil.getAdmissionsForCourse(stub, courseId);
-
-        // TODO: can I just pass lists to GsonWrapper??
-        return GsonWrapper.toJson(admissions);
-    }
-
-    /**
-     * Gets AdmissionList from the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param moduleId module to find admissions for
-     * @return Serialized List of Matching Admissions on success, serialized error on failure
-     */
-    @Transaction()
-    public String getAdmissionForModule(final Context ctx, final String moduleId) {
-        ChaincodeStub stub = ctx.getStub();
-
-        // TODO: check empty parameter
-
-        List<Admission> admissions = cUtil.getAdmissionsForModule(stub, moduleId);
-
-        // TODO: can I just pass lists to GsonWrapper??
-        return GsonWrapper.toJson(admissions);
+        try {
+            List<Admission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
+            // TODO: can I just pass lists to GsonWrapper??
+            return GsonWrapper.toJson(admissions);
+        } catch (UnprocessableLedgerStateError e) {
+            return e.getJsonError();
+        }
     }
 }
