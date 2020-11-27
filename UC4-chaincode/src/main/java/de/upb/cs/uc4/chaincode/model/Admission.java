@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import java.util.Objects;
 
 public class Admission {
-  private static String DELIMITER = ":";
+  private static final String DELIMITER = ":";
 
   @SerializedName("admissionId")
   private String admissionId;
@@ -104,12 +104,16 @@ public class Admission {
       return false;
     }
     Admission other = (Admission) o;
-    return Objects.equals(this.hashCode(), other.hashCode());
+    return Objects.equals(this.admissionId, other.admissionId)
+            || Objects.equals(this.enrollmentId, other.enrollmentId)
+            || Objects.equals(this.courseId, other.courseId)
+            || Objects.equals(this.moduleId, other.moduleId)
+            || Objects.equals(this.timestamp, other.timestamp);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.enrollmentId, this.courseId, this.moduleId, this.timestamp);
+    return Objects.hash(this.admissionId, this.enrollmentId, this.courseId, this.moduleId, this.timestamp);
   }
 
 
@@ -117,6 +121,7 @@ public class Admission {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class Admission {\n");
+    sb.append("    admissionId: ").append(toIndentedString(this.admissionId)).append("\n");
     sb.append("    enrollmentId: ").append(toIndentedString(this.enrollmentId)).append("\n");
     sb.append("    courseId: ").append(toIndentedString(this.courseId)).append("\n");
     sb.append("    moduleId: ").append(toIndentedString(this.moduleId)).append("\n");
