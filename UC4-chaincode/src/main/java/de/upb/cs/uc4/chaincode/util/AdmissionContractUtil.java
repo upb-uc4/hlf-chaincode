@@ -1,19 +1,13 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import com.google.gson.JsonSyntaxException;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.ledger.KeyValue;
-import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -49,8 +43,8 @@ public class AdmissionContractUtil extends ContractUtil {
                 .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in.");
     }
 
-    public List<Admission> getAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) throws UnprocessableLedgerStateError {
-        return getAllStates(stub, Admission.class).stream()
+    public List<Admission> getAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
+        return this.getAllStates(stub, Admission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> courseId.isEmpty() || item.getCourseId().equals(courseId))
                 .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId)).collect(Collectors.toList());
@@ -58,16 +52,17 @@ public class AdmissionContractUtil extends ContractUtil {
 
     /**
      * Returns a list of errors describing everything wrong with the given admission parameters
+     *
      * @param admission admission to return errors for
      * @return a list of all errors found for the given matriculationData
      */
     public ArrayList<InvalidParameter> getSemanticErrorsForAdmission(
             ChaincodeStub stub,
-            Admission admission) {
+            Admission admission) throws LedgerAccessError {
 
         ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
-        if(checkModuleAvailable(stub, admission)) {
+        if (this.checkModuleAvailable(stub, admission)) {
             invalidParameters.add(getInvalidModuleAvailable("enrollmentId"));
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
@@ -75,42 +70,29 @@ public class AdmissionContractUtil extends ContractUtil {
         return invalidParameters;
     }
 
-    private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) {
+    private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) throws LedgerAccessError {
         ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
         MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
 
-        AtomicBoolean foundMatch = new AtomicBoolean(false);
-
-        MatriculationData matriculationData;
-        try{
-            matriculationData = matUtil.getState(stub, admission.getEnrollmentId());
-            List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
-            matriculations.forEach(matriculation -> {
-                String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
-                ExaminationRegulation examinationRegulation;
-                try {
-                    examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier);
-                    List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
-                    modules.forEach(module -> {
-                        if(module.getId().equals(admission.getModuleId())){
-                            foundMatch.set(true);
-                        }
-                    });
-                } catch (LedgerAccessError e){
-                    //TODO: something went horribly wrong:
-                    // the examinationRegulation referenced in a subjectMatriculation of the student could not be read.
+        MatriculationData matriculationData = matUtil.getState(stub, admission.getEnrollmentId(), MatriculationData.class);
+        List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
+        for (SubjectMatriculation matriculation : matriculations) {
+            String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
+            ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
+            List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
+            for(ExaminationRegulationModule module : modules){
+                if (module.getId().equals(admission.getModuleId())) {
+                    return true;
                 }
-            });
-        } catch (LedgerAccessError e){
-            //TODO: something went horribly wrong:
-            // no matriculation for the given enrollmentId could be read.
+            }
         }
 
-        return foundMatch.get();
+        return false;
     }
 
     /**
      * Returns a list of errors describing everything wrong with the given admission parameters
+     *
      * @param admission admission to return errors for
      * @return a list of all errors found for the given matriculationData
      */
@@ -119,20 +101,20 @@ public class AdmissionContractUtil extends ContractUtil {
 
         ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
 
-        if(valueUnset(admission.getEnrollmentId())) {
-            invalidparams.add(getEmptyEnrollmentIdParam(prefix+"."));
+        if (valueUnset(admission.getEnrollmentId())) {
+            invalidparams.add(getEmptyEnrollmentIdParam(prefix + "."));
         }
-        if(valueUnset(admission.getCourseId())) {
-            invalidparams.add(getEmptyParameterError(prefix+".courseId"));
+        if (valueUnset(admission.getCourseId())) {
+            invalidparams.add(getEmptyParameterError(prefix + ".courseId"));
         }
-        if(valueUnset(admission.getModuleId())) {
-            invalidparams.add(getEmptyParameterError(prefix+".moduleId"));
+        if (valueUnset(admission.getModuleId())) {
+            invalidparams.add(getEmptyParameterError(prefix + ".moduleId"));
         }
-        if(valueUnset(admission.getTimestamp())) {
-            invalidparams.add(getEmptyParameterError(prefix+".timestamp"));
+        if (valueUnset(admission.getTimestamp())) {
+            invalidparams.add(getEmptyParameterError(prefix + ".timestamp"));
         }
 
-        if(!checkTimestampFormatValid(admission.getTimestamp())){
+        if (!checkTimestampFormatValid(admission.getTimestamp())) {
             invalidparams.add(getInvalidTimestampParam());
         }
 
@@ -141,6 +123,7 @@ public class AdmissionContractUtil extends ContractUtil {
 
     /**
      * Checks the given semester string for validity.
+     *
      * @param timestamp timestamp string to check for validity
      * @return true if input is a valid description of a timestamp, false otherwise
      */

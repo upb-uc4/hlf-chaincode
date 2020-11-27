@@ -109,7 +109,7 @@ public class CertificateContract extends ContractBase {
     private ArrayList<InvalidParameter> getErrorForCertificate(final String certificate) {
         ArrayList<InvalidParameter> list = new ArrayList<>();
         if (certificate == null || certificate.equals("")) {
-            list.add(cUtil.getEmptyCertificateParam());
+            list.add(cUtil.getEmptyParameterError("certificate"));
         }
         return list;
     }

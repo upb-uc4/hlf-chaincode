@@ -50,9 +50,14 @@ public class AdmissionContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        ArrayList<InvalidParameter> invalidParameters = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
-        if (!invalidParameters.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getInvalidActionError(invalidParameters));
+        // check for semantic errors
+        try {
+            ArrayList<InvalidParameter> invalidParameters = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
+            if (!invalidParameters.isEmpty()) {
+                return GsonWrapper.toJson(cUtil.getInvalidActionError(invalidParameters));
+            }
+        } catch (LedgerAccessError e) {
+            return e.getJsonError();
         }
 
         List<String> requiredIds = Collections.singletonList(newAdmission.getEnrollmentId());
@@ -86,7 +91,7 @@ public class AdmissionContract extends ContractBase {
         // check empty
         Admission admission;
         try {
-            admission = cUtil.getState(stub, admissionId, Admission.class);
+            admission = cUtil.<Admission>getState(stub, admissionId, Admission.class);
         } catch(LedgerAccessError e) {
             return e.getJsonError();
         }
@@ -125,12 +130,7 @@ public class AdmissionContract extends ContractBase {
     public String getAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
         ChaincodeStub stub = ctx.getStub();
 
-        try {
-            List<Admission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
-            // TODO: can I just pass lists to GsonWrapper??
-            return GsonWrapper.toJson(admissions);
-        } catch (UnprocessableLedgerStateError e) {
-            return e.getJsonError();
-        }
+        List<Admission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
+        return GsonWrapper.toJson(admissions);
     }
 }

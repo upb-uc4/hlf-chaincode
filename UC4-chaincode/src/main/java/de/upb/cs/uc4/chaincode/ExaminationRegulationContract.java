@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
@@ -80,7 +81,7 @@ public class ExaminationRegulationContract extends ContractBase {
             if (!cUtil.valueUnset(name)) {
                 ExaminationRegulation regulation;
                 try {
-                    regulation = cUtil.getState(stub, name);
+                    regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
                 } catch (LedgerStateNotFoundError e) {
                     continue;
                 } catch (LedgerAccessError e) {
@@ -105,7 +106,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ExaminationRegulation regulation;
         try {
-            regulation = cUtil.getState(stub, name);
+            regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }

@@ -1,8 +1,5 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
@@ -19,7 +16,6 @@ import java.util.stream.Collectors;
 public class MatriculationDataContractUtil extends ContractUtil {
     private final String thing = "MatriculationData";
     private final String identifier = "enrollmentId";
-    private final ExaminationRegulationContractUtil eUtil = new ExaminationRegulationContractUtil();
 
     public MatriculationDataContractUtil() {
         keyPrefix = "matriculationData";
@@ -47,34 +43,16 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 .reason("The given parameter cannot be parsed from json");
     }
 
-    public InvalidParameter getEmptyMatriculationStatusParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix)
-                .reason("Matriculation status must not be empty");
-    }
-
     public InvalidParameter getInvalidFieldOfStudyParam(String prefix) {
         return new InvalidParameter()
                 .name(prefix+"fieldOfStudy")
                 .reason("Field of study must be one of the specified values");
     }
 
-    public InvalidParameter getEmptyFieldOfStudyParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix+"fieldOfStudy")
-                .reason("Field of study must not be empty");
-    }
-
     public InvalidParameter getDuplicateFieldOfStudyParam(String prefix, int index) {
         return new InvalidParameter()
                 .name(prefix+"[" + index + "].fieldOfStudy")
                 .reason("Each field of study must only appear in one matriculationStatus");
-    }
-
-    public InvalidParameter getEmptySemestersParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix + "semesters")
-                .reason("Semesters must not be empty");
     }
 
     public InvalidParameter getDuplicateSemesterParam(String prefix, int index) {
@@ -87,21 +65,6 @@ public class MatriculationDataContractUtil extends ContractUtil {
         return new InvalidParameter()
                 .name(prefix + "[" + index + "]")
                 .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\"");
-    }
-
-    public MatriculationData getState(ChaincodeStub stub, String key) throws LedgerAccessError {
-        String jsonMatriculationData;
-        jsonMatriculationData = getStringState(stub, key);
-        if (valueUnset(jsonMatriculationData)) {
-            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
-        }
-        MatriculationData matriculationData;
-        try {
-            matriculationData = GsonWrapper.fromJson(jsonMatriculationData, MatriculationData.class);
-        } catch(Exception e) {
-            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
-        }
-        return matriculationData;
     }
 
     /**
@@ -135,22 +98,24 @@ public class MatriculationDataContractUtil extends ContractUtil {
             ChaincodeStub stub,
             List<SubjectMatriculation> matriculationStatus,
             String prefix) {
+        ExaminationRegulationContractUtil eUtil = new ExaminationRegulationContractUtil();
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(matriculationStatus)) {
-            invalidParams.add(getEmptyMatriculationStatusParam(prefix));
+            invalidParams.add(getEmptyParameterError(prefix));
         } else {
             ArrayList<String> existingFields = new ArrayList<>();
-            List<String> validModuleIds = eUtil.getAllStates(stub).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
+
+            List<String> validErIds = eUtil.getAllStates(stub, ExaminationRegulation.class).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
             for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
                 if (valueUnset(subMat.getFieldOfStudy())) {
-                    invalidParams.add(getEmptyFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
+                    invalidParams.add(getEmptyParameterError(prefix + "[" + subMatIndex + "].fieldOfStudy"));
                 } else {
-                    if (!validModuleIds.contains(subMat.getFieldOfStudy())) {
+                    if (!validErIds.contains(subMat.getFieldOfStudy())) {
                         invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
                     }
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
@@ -161,7 +126,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
                 List<String> semesters = subMat.getSemesters();
                 if (valueUnset(semesters)) {
-                    invalidParams.add(getEmptySemestersParam(prefix + "[" + subMatIndex + "]."));
+                    invalidParams.add(getEmptyParameterError(prefix + "[" + subMatIndex + "].semesters"));
                 }
 
                 ArrayList<String> existingSemesters = new ArrayList<>();

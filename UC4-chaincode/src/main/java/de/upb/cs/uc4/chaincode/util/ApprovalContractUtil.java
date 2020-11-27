@@ -39,18 +39,6 @@ public class ApprovalContractUtil extends ContractUtil {
                 .title("SHA-256 apparently does not exist lol...");
     }
 
-    public InvalidParameter getEmptyContractNameParam() {
-        return new InvalidParameter()
-                .name("contractName")
-                .reason("Contract name must not be empty");
-    }
-
-    public InvalidParameter getEmptyTransactionNameParam() {
-        return new InvalidParameter()
-                .name("transactionName")
-                .reason("Transaction name must not be empty");
-    }
-
     public String getDraftKey(final String contractName, final String transactionName, final String... params) throws NoSuchAlgorithmException {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + String.join(HASH_DELIMITER, params);
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -98,10 +86,10 @@ public class ApprovalContractUtil extends ContractUtil {
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         if (valueUnset(contractName)) {
-            invalidParams.add(getEmptyContractNameParam());
+            invalidParams.add(getEmptyParameterError("contractName"));
         }
         if (valueUnset(transactionName)) {
-            invalidParams.add(getEmptyTransactionNameParam());
+            invalidParams.add(getEmptyParameterError("transactionName"));
         }
         return invalidParams;
     }

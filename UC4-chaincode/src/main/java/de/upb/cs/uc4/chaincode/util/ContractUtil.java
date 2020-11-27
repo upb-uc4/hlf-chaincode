@@ -17,7 +17,6 @@ abstract public class ContractUtil {
 
     protected String keyPrefix = "";
 
-
     public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
         return getUnprocessableEntityError(getArrayList(invalidParam));
     }
@@ -150,7 +149,7 @@ abstract public class ContractUtil {
         String jsonValue = getJsonState(stub, key);
 
         // convert type with GSON
-        return convertJsonToType(jsonValue, c);
+        return ledgerJsonToType(jsonValue, c);
     }
 
     private String getJsonState(ChaincodeStub stub, String key) throws LedgerAccessError {
@@ -162,7 +161,7 @@ abstract public class ContractUtil {
 
         return jsonValue;
     }
-    private <T> T convertJsonToType(String jsonValue, Class<T> c) throws UnprocessableLedgerStateError {
+    private <T> T ledgerJsonToType(String jsonValue, Class<T> c) throws UnprocessableLedgerStateError {
         T dataItem;
         try {
             dataItem = GsonWrapper.fromJson(jsonValue, c);
@@ -181,13 +180,18 @@ abstract public class ContractUtil {
         stub.delState(key);
     }
 
-    public <T> ArrayList<T> getAllStates(ChaincodeStub stub, Class<T> c) throws UnprocessableLedgerStateError {
+    public <T> ArrayList<T> getAllStates(ChaincodeStub stub, Class<T> c) {
         QueryResultsIterator<KeyValue> qrIterator;
         qrIterator = getAllRawStates(stub);
         ArrayList<T> resultItems = new ArrayList<>();
         for (KeyValue item: qrIterator) {
             String jsonValue = item.getStringValue();
-            resultItems.add(convertJsonToType(jsonValue, c));
+            try {
+                T dataObject = ledgerJsonToType(jsonValue, c);
+                resultItems.add(dataObject);
+            } catch (UnprocessableLedgerStateError unprocessableLedgerStateError) {
+                // ignore errors, just get all valid states
+            }
         }
         return resultItems;
     }

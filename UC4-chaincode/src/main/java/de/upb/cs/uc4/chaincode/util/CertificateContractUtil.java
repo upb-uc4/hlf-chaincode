@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 
 public class CertificateContractUtil extends ContractUtil {
     private final String thing = "certificate";
@@ -19,11 +18,5 @@ public class CertificateContractUtil extends ContractUtil {
     @Override
     public GenericError getNotFoundError() {
         return super.getNotFoundError(thing, identifier);
-    }
-
-    public InvalidParameter getEmptyCertificateParam() {
-        return new InvalidParameter()
-                .name("certificate")
-                .reason("Certificate must not be empty");
     }
 }
