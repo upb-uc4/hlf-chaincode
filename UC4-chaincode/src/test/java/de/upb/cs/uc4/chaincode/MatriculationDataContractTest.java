@@ -63,11 +63,10 @@ public final class MatriculationDataContractTest extends TestCreationBase{
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
-            MatriculationData matriculationData = GsonWrapper.fromJson(
-                    contract.getMatriculationData(ctx, input.get(0)),
-                    MatriculationData.class);
-            assertThat(matriculationData)
-                    .isEqualTo(GsonWrapper.fromJson(compare.get(0), MatriculationData.class));
+            MatriculationData compareMatriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
+            MatriculationData ledgerMatriculationData = GsonWrapper.fromJson(
+                    contract.getMatriculationData(ctx, input.get(0)), MatriculationData.class);
+            assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
         };
     }
 
@@ -85,11 +84,14 @@ public final class MatriculationDataContractTest extends TestCreationBase{
                 approvalContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", input.get(0));
             }
             Context ctx = TestUtil.mockContext(stub);
-            assertThat(contract.addMatriculationData(ctx, input.get(0)))
-                    .isEqualTo(compare.get(0));
-            MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
-                    .isEqualTo(compare.get(0));
+
+            String result = contract.addMatriculationData(ctx, input.get(0));
+            assertThat(result).isEqualTo(compare.get(0));
+
+            MatriculationData compareMatriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
+            MatriculationData ledgerMatriculationData =
+                    cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
+            assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
         };
     }
 
@@ -116,11 +118,13 @@ public final class MatriculationDataContractTest extends TestCreationBase{
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
-            assertThat(contract.updateMatriculationData(ctx, input.get(0)))
-                    .isEqualTo(compare.get(0));
-            MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
-                    .isEqualTo(compare.get(0));
+            String result = contract.updateMatriculationData(ctx, input.get(0));
+            assertThat(result).isEqualTo(compare.get(0));
+
+            MatriculationData compareMatriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
+            MatriculationData ledgerMatriculationData =
+                    cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
+            assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
         };
 
     }
@@ -148,11 +152,13 @@ public final class MatriculationDataContractTest extends TestCreationBase{
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
-            assertThat(contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1)))
-                    .isEqualTo(compare.get(0));
-            MatriculationData matriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            assertThat(cUtil.getStringState(ctx.getStub(), matriculationData.getEnrollmentId()))
-                    .isEqualTo(compare.get(0));
+            String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
+            assertThat(result).isEqualTo(compare.get(0));
+
+            MatriculationData compareMatriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
+            MatriculationData ledgerMatriculationData =
+                    cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
+            assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
         };
     }
 

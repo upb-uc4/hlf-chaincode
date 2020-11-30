@@ -60,8 +60,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             Context ctx = TestUtil.mockContext(stub);
 
             String regulations = contract.getExaminationRegulations(ctx, input.get(0));
-            assertThat(regulations)
-                    .isEqualTo(compare.get(0));
+            assertThat(regulations).isEqualTo(compare.get(0));
         };
     }
 
@@ -74,11 +73,12 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
-            assertThat(contract.addExaminationRegulation(ctx, input.get(0)))
-                    .isEqualTo(compare.get(0));
-            ExaminationRegulation regulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
-            assertThat(cUtil.getStringState(ctx.getStub(), regulation.getName()))
-                    .isEqualTo(compare.get(0));
+            String result = contract.addExaminationRegulation(ctx, input.get(0));
+            assertThat(result).isEqualTo(compare.get(0));
+
+            ExaminationRegulation compareRegulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
+            ExaminationRegulation ledgerRegulation = cUtil.getState(ctx.getStub(), compareRegulation.getName(), ExaminationRegulation.class);
+            assertThat(ledgerRegulation).isEqualTo(compareRegulation);
         };
     }
 
@@ -105,11 +105,12 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
-            assertThat(contract.closeExaminationRegulation(ctx, input.get(0)))
-                    .isEqualTo(compare.get(0));
-            ExaminationRegulation regulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
-            assertThat(cUtil.getStringState(ctx.getStub(), regulation.getName()))
-                    .isEqualTo(compare.get(0));
+            String result = contract.closeExaminationRegulation(ctx, input.get(0));
+            assertThat(result).isEqualTo(compare.get(0));
+
+            ExaminationRegulation compareRegulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
+            ExaminationRegulation ledgerRegulation = cUtil.getState(ctx.getStub(), compareRegulation.getName(), ExaminationRegulation.class);
+            assertThat(ledgerRegulation).isEqualTo(compareRegulation);
         };
 
     }
