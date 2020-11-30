@@ -18,9 +18,11 @@ public abstract class TestCreationBase {
 
     abstract DynamicTest CreateTest(JsonIOTest test);
 
+    abstract String GetTestConfigDir();
+
     @TestFactory
     List<DynamicTest> createTests() {
-        String testConfigDir = "src/test/resources/test_configs/admission_contract";
+        String testConfigDir = GetTestConfigDir();
         File dir = new File(testConfigDir);
         File[] testConfigs = dir.listFiles();
 

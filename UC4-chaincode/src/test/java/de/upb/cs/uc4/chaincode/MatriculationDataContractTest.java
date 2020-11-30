@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
@@ -12,97 +11,47 @@ import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.lang.reflect.Type;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class MatriculationDataContractTest {
+public final class MatriculationDataContractTest extends TestCreationBase{
 
     private final MatriculationDataContract contract = new MatriculationDataContract();
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
-    @TestFactory
-    List<DynamicTest> createTests() {
-        String testConfigDir = "src/test/resources/test_configs/matriculation_data_contract";
-        File dir = new File(testConfigDir);
-        File[] testConfigs = dir.listFiles();
 
-        List<JsonIOTest> testConfig;
-        Type type = new TypeToken<List<JsonIOTest>>() {}.getType();
-        ArrayList<DynamicTest> tests = new ArrayList<>();
+    String GetTestConfigDir() {
+        return "src/test/resources/test_configs/matriculation_data_contract";
+    }
 
-        if (testConfigs == null) {
-            throw new RuntimeException("No test configurations found.");
+    DynamicTest CreateTest(JsonIOTest test) {
+        String testType = test.getType();
+        String testName = test.getName();
+        JsonIOTestSetup setup = test.getSetup();
+        List<String> input = TestUtil.toStringList(test.getInput());
+        List<String> compare = TestUtil.toStringList(test.getCompare());
+        List<Approval> ids = test.getIds();
+
+        switch (testType) {
+            case "getMatriculationData":
+                return DynamicTest.dynamicTest(testName, getMatriculationDataTest(setup, input, compare));
+            case "addMatriculationData_SUCCESS":
+                return DynamicTest.dynamicTest(testName, addMatriculationDataSuccessTest(setup, input, compare, ids));
+            case "addMatriculationData_FAILURE":
+                return DynamicTest.dynamicTest(testName, addMatriculationDataFailureTest(setup, input, compare));
+            case "updateMatriculationData_SUCCESS":
+                return DynamicTest.dynamicTest(testName, updateMatriculationDataSuccessTest(setup, input, compare));
+            case "updateMatriculationData_FAILURE":
+                return DynamicTest.dynamicTest(testName, updateMatriculationDataFailureTest(setup, input, compare));
+            case "addEntryToMatriculationData_SUCCESS":
+                return DynamicTest.dynamicTest(testName, addEntryToMatriculationDataSuccessTest(setup, input, compare));
+            case "addEntryToMatriculationData_FAILURE":
+                return DynamicTest.dynamicTest(testName, addEntryToMatriculationDataFailureTest(setup, input, compare));
+            default:
+                throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
-
-        for (File file: testConfigs) {
-            try {
-                testConfig = GsonWrapper.fromJson(new FileReader(file.getPath()), type);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            for (JsonIOTest test : testConfig) {
-                JsonIOTestSetup setup = test.getSetup();
-                List<String> input = TestUtil.toStringList(test.getInput());
-                List<String> compare = TestUtil.toStringList(test.getCompare());
-                switch (test.getType()) {
-                    case "getMatriculationData":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                getMatriculationDataTest(setup, input, compare)
-                        ));
-                        break;
-                    case "addMatriculationData_SUCCESS":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                addMatriculationDataSuccessTest(setup, input, compare, test.getIds())
-                        ));
-                        break;
-                    case "addMatriculationData_FAILURE":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                addMatriculationDataFailureTest(setup, input, compare)
-                        ));
-                        break;
-                    case "updateMatriculationData_SUCCESS":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                updateMatriculationDataSuccessTest(setup, input, compare)
-                        ));
-                        break;
-                    case "updateMatriculationData_FAILURE":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                updateMatriculationDataFailureTest(setup, input, compare)
-                        ));
-                        break;
-                    case "addEntryToMatriculationData_SUCCESS":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                addEntryToMatriculationDataSuccessTest(setup, input, compare)
-                        ));
-                        break;
-                    case "addEntryToMatriculationData_FAILURE":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                addEntryToMatriculationDataFailureTest(setup, input, compare)
-                        ));
-                        break;
-                    default:
-                        throw new RuntimeException("Test " + test.getName() + " of type " + test.getType() + " could not be matched.");
-                }
-            }
-        }
-        return tests;
     }
 
     private Executable getMatriculationDataTest(

@@ -17,6 +17,10 @@ public final class AdmissionContractTest extends TestCreationBase {
     private final AdmissionContract contract = new AdmissionContract();
     private final AdmissionContractUtil cUtil = new AdmissionContractUtil();
 
+    String GetTestConfigDir(){
+        return "src/test/resources/test_configs/admission_contract";
+    }
+
     DynamicTest CreateTest(JsonIOTest test){
         String testType = test.getType();
         String testName = test.getName();

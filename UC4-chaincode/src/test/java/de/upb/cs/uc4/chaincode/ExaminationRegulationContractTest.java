@@ -1,8 +1,8 @@
 package de.upb.cs.uc4.chaincode;
 
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
@@ -11,86 +11,43 @@ import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class ExaminationRegulationContractTest {
+public final class ExaminationRegulationContractTest extends TestCreationBase {
 
     private final ExaminationRegulationContract contract = new ExaminationRegulationContract();
     private final ExaminationRegulationContractUtil cUtil = new ExaminationRegulationContractUtil();
 
-    @TestFactory
-    List<DynamicTest> createTests() {
-        String testConfigDir = "src/test/resources/test_configs/examination_regulation_contract";
-        File dir = new File(testConfigDir);
-        File[] testConfigs = dir.listFiles();
+    String GetTestConfigDir() {
+        return "src/test/resources/test_configs/examination_regulation_contract";
+    }
 
-        List<JsonIOTest> testConfig;
-        Type type = new TypeToken<List<JsonIOTest>>() {}.getType();
-        ArrayList<DynamicTest> tests = new ArrayList<>();
+    DynamicTest CreateTest(JsonIOTest test) {
+        String testType = test.getType();
+        String testName = test.getName();
+        JsonIOTestSetup setup = test.getSetup();
+        List<String> input = TestUtil.toStringList(test.getInput());
+        List<String> compare = TestUtil.toStringList(test.getCompare());
+        List<Approval> ids = test.getIds();
 
-        if (testConfigs == null) {
-            throw new RuntimeException("No test configurations found.");
+        switch (testType) {
+            case "getExaminationRegulations":
+                return DynamicTest.dynamicTest(testName, getExaminationRegulationsTest(setup, input, compare));
+            case "addExaminationRegulation_SUCCESS":
+                return DynamicTest.dynamicTest(testName, addExaminationRegulationSuccessTest(setup, input, compare));
+            case "addExaminationRegulation_FAILURE":
+                return DynamicTest.dynamicTest(testName, addExaminationRegulationFailureTest(setup, input, compare));
+            case "closeExaminationRegulation_SUCCESS":
+                return DynamicTest.dynamicTest(testName, closeExaminationRegulationSuccessTest(setup, input, compare));
+            case "closeExaminationRegulation_FAILURE":
+                return DynamicTest.dynamicTest(testName, closeExaminationRegulationFailureTest(setup, input, compare));
+            default:
+                throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
-
-        for (File file: testConfigs) {
-            try {
-                testConfig = GsonWrapper.fromJson(new FileReader(file.getPath()), type);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            for (JsonIOTest test : testConfig) {
-                JsonIOTestSetup setup = test.getSetup();
-                List<String> input = TestUtil.toStringList(test.getInput());
-                List<String> compare = TestUtil.toStringList(test.getCompare());
-                switch (test.getType()) {
-                    case "getExaminationRegulations":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                getExaminationRegulationsTest(setup, input, compare)
-                        ));
-                        break;
-                    case "addExaminationRegulation_SUCCESS":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                addExaminationRegulationSuccessTest(setup, input, compare)
-                        ));
-                        break;
-                    case "addExaminationRegulation_FAILURE":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                addExaminationRegulationFailureTest(setup, input, compare)
-                        ));
-                        break;
-                    case "closeExaminationRegulation_SUCCESS":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                closeExaminationRegulationSuccessTest(setup, input, compare)
-                        ));
-                        break;
-                    case "closeExaminationRegulation_FAILURE":
-                        tests.add(DynamicTest.dynamicTest(
-                                test.getName(),
-                                closeExaminationRegulationFailureTest(setup, input, compare)
-                        ));
-                        break;
-                    default:
-                        throw new RuntimeException("Test " + test.getName() + " of type " + test.getType() + " could not be matched.");
-                }
-            }
-        }
-        return tests;
     }
 
     private Executable getExaminationRegulationsTest(
