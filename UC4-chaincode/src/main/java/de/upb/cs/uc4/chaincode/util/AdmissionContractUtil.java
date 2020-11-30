@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -58,7 +59,7 @@ public class AdmissionContractUtil extends ContractUtil {
      */
     public ArrayList<InvalidParameter> getSemanticErrorsForAdmission(
             ChaincodeStub stub,
-            Admission admission) throws LedgerAccessError {
+            Admission admission) {
 
         ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
@@ -70,21 +71,25 @@ public class AdmissionContractUtil extends ContractUtil {
         return invalidParameters;
     }
 
-    private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) throws LedgerAccessError {
+    private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) {
         ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
         MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
 
-        MatriculationData matriculationData = matUtil.getState(stub, admission.getEnrollmentId(), MatriculationData.class);
-        List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
-        for (SubjectMatriculation matriculation : matriculations) {
-            String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
-            ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
-            List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
-            for(ExaminationRegulationModule module : modules){
-                if (module.getId().equals(admission.getModuleId())) {
-                    return true;
+        try{
+            MatriculationData matriculationData = matUtil.getState(stub, admission.getEnrollmentId(), MatriculationData.class);
+            List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
+            for (SubjectMatriculation matriculation : matriculations) {
+                String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
+                ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
+                List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
+                for(ExaminationRegulationModule module : modules){
+                    if (module.getId().equals(admission.getModuleId())) {
+                        return true;
+                    }
                 }
             }
+        } catch (LedgerAccessError e){
+            return false;
         }
 
         return false;
