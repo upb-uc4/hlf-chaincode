@@ -46,10 +46,13 @@
       ]
     },
     "input": [
-      "0000001",
-      "C.1",
-      "M.1",
-      "2020-12-31T23:59:59"
+      {
+        "admissionId": "",
+        "enrollmentId": "0000001",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59"
+      }
     ],
     "compare": [
       {
@@ -63,8 +66,71 @@
   },
 
   {
+    "name": "addNonExistingAdmission_JsonParseError",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000010",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000010",
+        {
+          "enrollmentId": "0000010",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "Whatever - legit string"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission",
+            "reason": "The given parameter cannot be parsed from json"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
     "name": "addNonExistingAdmission_EmptyParam_EnrollmentId",
-    "type": "addAdmission_Failure",
+    "type": "addAdmission_FAILURE",
     "ids": [
       {
         "id": "User1",
@@ -109,10 +175,13 @@
       ]
     },
     "input": [
-      "",
-      "C.1",
-      "M.1",
-      "2020-12-31T23:59:59"
+      {
+        "admissionId": "",
+        "enrollmentId": "",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59"
+      }
     ],
     "compare": [
       {
@@ -121,7 +190,7 @@
         "invalidParams": [
           {
             "name": "admission.enrollmentId",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -130,7 +199,7 @@
 
   {
     "name": "addNonExistingAdmission_EmptyParam_CourseId",
-    "type": "addAdmission_Failure",
+    "type": "addAdmission_FAILURE",
     "ids": [
       {
         "id": "User1",
@@ -175,10 +244,13 @@
       ]
     },
     "input": [
-      "0000003",
-      "",
-      "M.1",
-      "2020-12-31T23:59:59"
+      {
+        "admissionId": "",
+        "enrollmentId": "0000003",
+        "courseId": "",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59"
+      }
     ],
     "compare": [
       {
@@ -187,7 +259,7 @@
         "invalidParams": [
           {
             "name": "admission.courseId",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -196,7 +268,7 @@
 
   {
     "name": "addNonExistingAdmission_EmptyParam_ModuleId",
-    "type": "addAdmission_Failure",
+    "type": "addAdmission_FAILURE",
     "ids": [
       {
         "id": "User1",
@@ -241,10 +313,13 @@
       ]
     },
     "input": [
-      "0000004",
-      "C.1",
-      "",
-      "2020-12-31T23:59:59"
+      {
+        "admissionId": "",
+        "enrollmentId": "0000004",
+        "courseId": "C.1",
+        "moduleId": "",
+        "timestamp": "2020-12-31T23:59:59"
+      }
     ],
     "compare": [
       {
@@ -253,7 +328,7 @@
         "invalidParams": [
           {
             "name": "admission.moduleId",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -262,7 +337,7 @@
 
   {
     "name": "addNonExistingAdmission_EmptyParam_Timestamp",
-    "type": "addAdmission_Failure",
+    "type": "addAdmission_FAILURE",
     "ids": [
       {
         "id": "User1",
@@ -307,20 +382,19 @@
       ]
     },
     "input": [
-      "0000005",
-      "C.1",
-      "M1",
-      ""
+      {
+        "admissionId": "",
+        "enrollmentId": "0000005",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": ""
+      }
     ],
     "compare": [
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
-          {
-            "name": "admission.timestamp",
-            "reason": "The given parameter must not be empty."
-          },
           {
             "name": "admission.timestamp",
             "reason": "Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
@@ -331,8 +405,8 @@
   },
 
   {
-    "name": "addNonExistingAdmission_EmptyParam_Timestamp",
-    "type": "addAdmission_Failure",
+    "name": "addNonExistingAdmission_WrongFormatParam_Timestamp",
+    "type": "addAdmission_FAILURE",
     "ids": [
       {
         "id": "User1",
@@ -377,10 +451,13 @@
       ]
     },
     "input": [
-      "0000006",
-      "C.1",
-      "M1",
-      "2020-12-31-12:59:59"
+      {
+        "admissionId": "",
+        "enrollmentId": "0000006",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31-23:59:59"
+      }
     ],
     "compare": [
       {
@@ -398,7 +475,7 @@
 
   {
     "name": "addNonExistingAdmission_InvalidModules",
-    "type": "addAdmission_Failure",
+    "type": "addAdmission_FAILURE",
     "ids": [
       {
         "id": "User1",
@@ -443,10 +520,13 @@
       ]
     },
     "input": [
-      "0000007",
-      "C.1",
-      "M1",
-      "2020-12-31T12:59:59"
+      {
+        "admissionId": "",
+        "enrollmentId": "0000007",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T12:59:59"
+      }
     ],
     "compare": [
       {
@@ -455,11 +535,11 @@
         "invalidParams": [
           {
             "name": "admission.enrollmentId",
-            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in."
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
           },
           {
             "name": "admission.moduleId",
-            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in."
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
           }
         ]
       }

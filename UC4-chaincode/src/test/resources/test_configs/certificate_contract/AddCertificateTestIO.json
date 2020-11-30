@@ -49,7 +49,7 @@
         "invalidParams": [
           {
             "name": "enrollmentId",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -72,7 +72,7 @@
         "invalidParams": [
           {
             "name": "certificate",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -95,11 +95,11 @@
         "invalidParams": [
           {
             "name": "enrollmentId",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           },
           {
             "name": "certificate",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }

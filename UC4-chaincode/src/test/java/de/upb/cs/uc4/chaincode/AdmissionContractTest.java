@@ -32,7 +32,7 @@ public final class AdmissionContractTest extends TestCreationBase {
         switch (testType) {
             case "addAdmission_SUCCESS":
                 return DynamicTest.dynamicTest(testName, addAdmissionSuccessTest(setup, input, compare, ids));
-            case "addAdmission_Failure":
+            case "addAdmission_FAILURE":
                 return DynamicTest.dynamicTest(testName, addAdmissionFailureTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
@@ -54,7 +54,7 @@ public final class AdmissionContractTest extends TestCreationBase {
                 approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
             }*/
             Context ctx = TestUtil.mockContext(stub);
-            String addResult = contract.addAdmission(ctx, input.get(0), input.get(1), input.get(2), input.get(3));
+            String addResult = contract.addAdmission(ctx, input.get(0));
             assertThat(addResult).isEqualTo(compare.get(0));
 
             Admission compareAdmission = GsonWrapper.fromJson(compare.get(0), Admission.class);
@@ -78,7 +78,7 @@ public final class AdmissionContractTest extends TestCreationBase {
                 approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
             }*/
             Context ctx = TestUtil.mockContext(stub);
-            String result =  contract.addAdmission(ctx, input.get(0), input.get(1), input.get(2), input.get(3));
+            String result =  contract.addAdmission(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
         };
     }

@@ -2,6 +2,8 @@ package de.upb.cs.uc4.chaincode.model;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Admission {
@@ -20,15 +22,7 @@ public class Admission {
   private String moduleId;
 
   @SerializedName("timestamp")
-  private String timestamp;
-
-  public Admission(String enrollmentId, String courseId, String moduleId, String timestamp) {
-    this.enrollmentId = enrollmentId;
-    this.courseId = courseId;
-    this.moduleId = moduleId;
-    this.timestamp = timestamp;
-    this.admissionId = enrollmentId + Admission.DELIMITER + courseId;
-  }
+  private LocalDateTime timestamp;
 
   /**
    * Get admissionId
@@ -39,8 +33,8 @@ public class Admission {
     return this.admissionId;
   }
 
-  public void setAdmissionId(String admissionId) {
-    this.admissionId = admissionId;
+  public void resetAdmissionId() {
+    this.admissionId = this.enrollmentId + Admission.DELIMITER + this.courseId;
   }
 
   /**
@@ -54,6 +48,7 @@ public class Admission {
 
   public void setEnrollmentId(String enrollmentId) {
     this.enrollmentId = enrollmentId;
+    resetAdmissionId();
   }
 
   /**
@@ -67,6 +62,7 @@ public class Admission {
 
   public void setCourseId(String courseId) {
     this.courseId = courseId;
+    resetAdmissionId();
   }
 
   /**
@@ -80,6 +76,7 @@ public class Admission {
 
   public void setModuleId(String moduleId) {
     this.moduleId = moduleId;
+    resetAdmissionId();
   }
 
   /**
@@ -87,12 +84,13 @@ public class Admission {
    * @return timestamp
    **/
   @ApiModelProperty()
-  public String getTimestamp() {
+  public LocalDateTime getTimestamp() {
     return this.timestamp;
   }
 
-  public void setTimestamp(String timestamp) {
+  public void setTimestamp(LocalDateTime timestamp) {
     this.timestamp = timestamp;
+    resetAdmissionId();
   }
 
   @Override
@@ -105,10 +103,10 @@ public class Admission {
     }
     Admission other = (Admission) o;
     return Objects.equals(this.admissionId, other.admissionId)
-            || Objects.equals(this.enrollmentId, other.enrollmentId)
-            || Objects.equals(this.courseId, other.courseId)
-            || Objects.equals(this.moduleId, other.moduleId)
-            || Objects.equals(this.timestamp, other.timestamp);
+            && Objects.equals(this.enrollmentId, other.enrollmentId)
+            && Objects.equals(this.courseId, other.courseId)
+            && Objects.equals(this.moduleId, other.moduleId)
+            && Objects.equals(this.timestamp, other.timestamp);
   }
 
   @Override

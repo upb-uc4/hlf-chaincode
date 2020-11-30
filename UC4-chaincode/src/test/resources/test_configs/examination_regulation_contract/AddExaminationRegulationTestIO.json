@@ -101,7 +101,7 @@
         "invalidParams": [
           {
             "name": "examinationRegulation.name",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -127,7 +127,7 @@
         "invalidParams": [
           {
             "name": "examinationRegulation.modules",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -184,7 +184,7 @@
         "invalidParams": [
           {
             "name": "examinationRegulation.modules[0].id",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -219,7 +219,7 @@
         "invalidParams": [
           {
             "name": "examinationRegulation.modules[1].name",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }

@@ -63,7 +63,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if(valueUnset(examinationRegulation.getName())) {
-            invalidParams.add(getEmptyParameterError(this.prefix+".name"));
+            invalidParams.add(getEmptyInvalidParameter(this.prefix+".name"));
         }
 
         invalidParams.addAll(getErrorForModuleList(
@@ -77,7 +77,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(modules)) {
-            invalidParams.add(getEmptyParameterError(errorName));
+            invalidParams.add(getEmptyInvalidParameter(errorName));
         } else {
             ArrayList<String> existingModules = new ArrayList<>();
 
@@ -86,7 +86,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                 ExaminationRegulationModule module = modules.get(moduleIndex);
 
                 if (valueUnset(module.getId())) {
-                    invalidParams.add(getEmptyParameterError(prefix + ".modules[" + moduleIndex + "].id"));
+                    invalidParams.add(getEmptyInvalidParameter(prefix + ".modules[" + moduleIndex + "].id"));
                 } else {
                     if (existingModules.contains(module.getId())) {
                         invalidParams.add(getDuplicateModuleParam(prefix + ".modules[" + moduleIndex + "]"));
@@ -94,7 +94,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                         existingModules.add(module.getId());
                 }
                 if (valueUnset(module.getName())) {
-                    invalidParams.add(getEmptyParameterError(prefix + ".modules[" + moduleIndex + "].name"));
+                    invalidParams.add(getEmptyInvalidParameter(prefix + ".modules[" + moduleIndex + "].name"));
                 }
                 for (ExaminationRegulationModule validModule: validModules) {
                     if (module.getId().equals(validModule.getId()) && !module.equals(validModule)) {

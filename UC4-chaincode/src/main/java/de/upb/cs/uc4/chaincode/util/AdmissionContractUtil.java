@@ -1,12 +1,12 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -41,7 +41,7 @@ public class AdmissionContractUtil extends ContractUtil {
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
         return new InvalidParameter()
                 .name(prefix + "." + parameterName)
-                .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in.");
+                .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
     }
 
     public List<Admission> getAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
@@ -110,31 +110,15 @@ public class AdmissionContractUtil extends ContractUtil {
             invalidparams.add(getEmptyEnrollmentIdParam(prefix + "."));
         }
         if (valueUnset(admission.getCourseId())) {
-            invalidparams.add(getEmptyParameterError(prefix + ".courseId"));
+            invalidparams.add(getEmptyInvalidParameter(prefix + ".courseId"));
         }
         if (valueUnset(admission.getModuleId())) {
-            invalidparams.add(getEmptyParameterError(prefix + ".moduleId"));
+            invalidparams.add(getEmptyInvalidParameter(prefix + ".moduleId"));
         }
         if (valueUnset(admission.getTimestamp())) {
-            invalidparams.add(getEmptyParameterError(prefix + ".timestamp"));
-        }
-
-        if (!checkTimestampFormatValid(admission.getTimestamp())) {
             invalidparams.add(getInvalidTimestampParam());
         }
 
         return invalidparams;
-    }
-
-    /**
-     * Checks the given semester string for validity.
-     *
-     * @param timestamp timestamp string to check for validity
-     * @return true if input is a valid description of a timestamp, false otherwise
-     */
-    public boolean checkTimestampFormatValid(String timestamp) {
-        Pattern pattern = Pattern.compile("^(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2})");
-        Matcher matcher = pattern.matcher(timestamp);
-        return matcher.matches();
     }
 }

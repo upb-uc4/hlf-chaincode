@@ -27,21 +27,24 @@ public class AdmissionContract extends ContractBase {
     /**
      * Adds MatriculationData to the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param enrollmentId student to submit admission for
-     * @param courseId course to submit admission for
-     * @param moduleId module to submit admission for
-     * @param timestamp timestamp to submit admission for
-     * @return newMatriculationData on success, serialized error on failure
+     * @param admissionJson json representation of new Admission to add.
+     * @return newAdmission on success, serialized error on failure
      */
     @Transaction()
-    public String addAdmission(final Context ctx, String enrollmentId, String courseId, String moduleId, String timestamp) {
+    public String addAdmission(final Context ctx, String admissionJson) {
 
         ChaincodeStub stub = ctx.getStub();
 
-        Admission newAdmission = new Admission(enrollmentId, courseId, moduleId, timestamp);
+
+        Admission newAdmission;
+        try {
+            newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
+            newAdmission.resetAdmissionId();
+        } catch (Exception e) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("admission")));
+        }
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForAdmission(newAdmission);
-
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
@@ -66,7 +69,7 @@ public class AdmissionContract extends ContractBase {
                 requiredTypes,
                 this.contractName,
                 "addAdmission",
-                Arrays.stream(new String[]{enrollmentId, courseId, moduleId, timestamp}).collect(Collectors.toList()))) {
+                Arrays.stream(new String[]{admissionJson}).collect(Collectors.toList()))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 

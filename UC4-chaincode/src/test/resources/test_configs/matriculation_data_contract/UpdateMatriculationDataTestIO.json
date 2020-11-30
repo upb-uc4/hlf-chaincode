@@ -218,7 +218,7 @@
         "invalidParams":[
           {
             "name": "matriculationData.matriculationStatus",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -272,7 +272,7 @@
         "invalidParams":[
           {
             "name": "matriculationData.matriculationStatus[0].semesters",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -328,7 +328,7 @@
         "invalidParams":[
           {
             "name": "matriculationData.matriculationStatus[0].fieldOfStudy",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -639,7 +639,7 @@
         "invalidParams":[
           {
             "name": "matriculationData.enrollmentId",
-            "reason": "The given parameter must not be empty."
+            "reason": "The given parameter must not be empty"
           }
         ]
       }

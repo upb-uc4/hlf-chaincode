@@ -32,15 +32,11 @@ public class MatriculationDataContractUtil extends ContractUtil {
     }
 
     public InvalidParameter getUnparsableMatriculationDataParam() {
-        return new InvalidParameter()
-                .name("matriculationData")
-                .reason("The given parameter cannot be parsed from json");
+        return super.getUnparsableParam("matriculationData");
     }
 
     public InvalidParameter getUnparsableMatriculationParam() {
-        return new InvalidParameter()
-                .name("matriculations")
-                .reason("The given parameter cannot be parsed from json");
+        return super.getUnparsableParam("matriculations");
     }
 
     public InvalidParameter getInvalidFieldOfStudyParam(String prefix) {
@@ -103,7 +99,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(matriculationStatus)) {
-            invalidParams.add(getEmptyParameterError(prefix));
+            invalidParams.add(getEmptyInvalidParameter(prefix));
         } else {
             ArrayList<String> existingFields = new ArrayList<>();
 
@@ -113,7 +109,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
                 if (valueUnset(subMat.getFieldOfStudy())) {
-                    invalidParams.add(getEmptyParameterError(prefix + "[" + subMatIndex + "].fieldOfStudy"));
+                    invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].fieldOfStudy"));
                 } else {
                     if (!validErIds.contains(subMat.getFieldOfStudy())) {
                         invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
@@ -126,7 +122,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
                 List<String> semesters = subMat.getSemesters();
                 if (valueUnset(semesters)) {
-                    invalidParams.add(getEmptyParameterError(prefix + "[" + subMatIndex + "].semesters"));
+                    invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].semesters"));
                 }
 
                 ArrayList<String> existingSemesters = new ArrayList<>();

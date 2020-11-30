@@ -86,10 +86,10 @@ public class ApprovalContractUtil extends ContractUtil {
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         if (valueUnset(contractName)) {
-            invalidParams.add(getEmptyParameterError("contractName"));
+            invalidParams.add(getEmptyInvalidParameter("contractName"));
         }
         if (valueUnset(transactionName)) {
-            invalidParams.add(getEmptyParameterError("transactionName"));
+            invalidParams.add(getEmptyInvalidParameter("transactionName"));
         }
         return invalidParams;
     }

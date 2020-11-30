@@ -63,21 +63,27 @@ abstract public class ContractUtil {
                 .title("The approvals present on the ledger do not suffice to execute this transaction");
     }
 
-    public InvalidParameter getEmptyParameterError(String parameterName) {
+    public InvalidParameter getUnparsableParam(String parameterName) {
         return new InvalidParameter()
                 .name(parameterName)
-                .reason("The given parameter must not be empty.");
+                .reason("The given parameter cannot be parsed from json");
+    }
+
+    public InvalidParameter getEmptyInvalidParameter(String parameterName) {
+        return new InvalidParameter()
+                .name(parameterName)
+                .reason("The given parameter must not be empty");
     }
 
     public InvalidParameter getEmptyEnrollmentIdParam() {
         return getEmptyEnrollmentIdParam("");
     }
     public InvalidParameter getEmptyEnrollmentIdParam(String prefix) {
-        return getEmptyParameterError(prefix + "enrollmentId");
+        return getEmptyInvalidParameter(prefix + "enrollmentId");
     }
 
     public InvalidParameter getEmptyAdmissionIdParam() {
-        return getEmptyParameterError("admissionId");
+        return getEmptyInvalidParameter("admissionId");
     }
 
     public boolean validateApprovals(
@@ -136,11 +142,15 @@ abstract public class ContractUtil {
     }
 
     public boolean valueUnset(String value) {
-        return value == null || value.equals("");
+        return valueUnset((Object)value) || value.equals("");
+    }
+
+    public boolean valueUnset(Object value) {
+        return value == null;
     }
 
     public <T> boolean valueUnset(List<T> value) {
-        return value == null || value.isEmpty();
+        return valueUnset((Object)value) || value.isEmpty();
     }
 
 
