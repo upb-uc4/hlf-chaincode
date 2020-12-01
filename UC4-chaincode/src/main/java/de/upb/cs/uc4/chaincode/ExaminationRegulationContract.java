@@ -3,7 +3,6 @@ package de.upb.cs.uc4.chaincode;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
@@ -77,17 +76,23 @@ public class ExaminationRegulationContract extends ContractBase {
         }
 
         ArrayList<ExaminationRegulation> regulations = new ArrayList<>();
-        for (String name: nameList) {
-            if (!cUtil.valueUnset(name)) {
-                ExaminationRegulation regulation;
-                try {
-                    regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
-                } catch (LedgerStateNotFoundError e) {
-                    continue;
-                } catch (LedgerAccessError e) {
-                    return e.getJsonError();
+        if(nameList.isEmpty()){
+            // read all existing information
+            regulations = cUtil.getAllStates(stub, ExaminationRegulation.class);
+        } else {
+            // read information for names
+            for (String name: nameList) {
+                if (!cUtil.valueUnset(name)) {
+                    ExaminationRegulation regulation;
+                    try {
+                        regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
+                    } catch (LedgerStateNotFoundError e) {
+                        continue;
+                    } catch (LedgerAccessError e) {
+                        return e.getJsonError();
+                    }
+                    regulations.add(regulation);
                 }
-                regulations.add(regulation);
             }
         }
         return GsonWrapper.toJson(regulations);
