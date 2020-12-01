@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
@@ -32,9 +31,7 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
-
         ChaincodeStub stub = ctx.getStub();
-
 
         Admission newAdmission;
         try {
@@ -42,6 +39,10 @@ public class AdmissionContract extends ContractBase {
             newAdmission.resetAdmissionId();
         } catch (Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("admission")));
+        }
+
+        if (cUtil.keyExists(stub, newAdmission.getAdmissionId())) {
+            return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForAdmission(newAdmission);

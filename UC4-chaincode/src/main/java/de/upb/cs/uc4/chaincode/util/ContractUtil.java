@@ -34,9 +34,7 @@ abstract public class ContractUtil {
                 .invalidParams(invalidParams);
     }
 
-    public GenericError getConflictError() {
-        return null;
-    }
+    public abstract GenericError getConflictError();
     protected GenericError getConflictError(String thing, String identifier) {
         String article = "aeio".contains(Character.toString(thing.charAt(0)).toLowerCase()) ? "an" : "a";
         return new GenericError()

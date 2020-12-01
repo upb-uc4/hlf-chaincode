@@ -33,6 +33,11 @@ public class ApprovalContractUtil extends ContractUtil {
         return super.getNotFoundError(thing, identifier);
     }
 
+    @Override
+    public GenericError getConflictError() {
+        return super.getConflictError(thing, identifier);
+    }
+
     public GenericError getInternalError() {
         return new GenericError()
                 .type("HLInternalError")

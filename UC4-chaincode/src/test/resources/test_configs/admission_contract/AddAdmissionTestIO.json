@@ -544,5 +544,151 @@
         ]
       }
     ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_InvalidModules_2",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000009",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000009",
+        {
+          "enrollmentId": "0000009",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000009",
+        "courseId": "C.1",
+        "moduleId": "M.3",
+        "timestamp": "2020-12-31T12:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLInvalidEntity",
+        "title": "The following parameters produced some semantic error",
+        "invalidParams": [
+          {
+            "name": "admission.enrollmentId",
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          },
+          {
+            "name": "admission.moduleId",
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addExistingAdmission_ConflictError",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000008",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000008",
+        {
+          "enrollmentId": "0000008",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000008:C.1",
+        {
+          "admissionId": "0000008:C.1",
+          "enrollmentId": "0000008",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T12:59:59"
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000008",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T12:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLConflict",
+        "title": "There is already an Admission for the given admissionId"
+      }
+    ]
   }
 ]
