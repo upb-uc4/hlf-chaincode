@@ -125,6 +125,11 @@ abstract public class ContractUtil {
         return stub.getStringState(fullKey);
     }
 
+    public void deleteStringState(ChaincodeStub stub, String key) {
+        String fullKey = stub.createCompositeKey(keyPrefix, key).toString();
+        stub.delState(fullKey);
+    }
+
     public QueryResultsIterator<KeyValue> getAllRawStates(ChaincodeStub stub) {
         CompositeKey key = stub.createCompositeKey(keyPrefix);
         return stub.getStateByPartialCompositeKey(key);
@@ -187,7 +192,7 @@ abstract public class ContractUtil {
             throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
 
-        stub.delState(key);
+        deleteStringState(stub, key);
     }
 
     public <T> ArrayList<T> getAllStates(ChaincodeStub stub, Class<T> c) {

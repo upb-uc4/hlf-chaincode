@@ -1,0 +1,106 @@
+[
+  {
+    "name": "getExistingAdmissions",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+                {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "0000001", "", ""
+    ],
+    "compare": [
+      [{
+        "admissionId": "0000001:C.1",
+        "enrollmentId": "0000001",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59"
+      }]
+    ]
+  }
+]

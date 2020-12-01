@@ -8,6 +8,8 @@ import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -34,6 +36,12 @@ public final class AdmissionContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(testName, addAdmissionSuccessTest(setup, input, compare, ids));
             case "addAdmission_FAILURE":
                 return DynamicTest.dynamicTest(testName, addAdmissionFailureTest(setup, input, compare, ids));
+            case "dropAdmission_SUCCESS":
+                return DynamicTest.dynamicTest(testName, dropAdmissionSuccessTest(setup, input, compare, ids));
+            case "dropAdmission_FAILURE":
+                return DynamicTest.dynamicTest(testName, dropAdmissionFailureTest(setup, input, compare, ids));
+            case "getAdmissions_SUCCESS":
+                return DynamicTest.dynamicTest(testName, getAdmissionsSuccessTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -80,6 +88,70 @@ public final class AdmissionContractTest extends TestCreationBase {
             Context ctx = TestUtil.mockContext(stub);
             String result =  contract.addAdmission(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
+        };
+    }
+
+    private Executable dropAdmissionSuccessTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<Approval> ids
+    ) {
+        return () -> {
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            /* TODO: approval handling
+            ApprovalContract approvalContract = new ApprovalContract();
+            for (Approval id: ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
+            }*/
+            Context ctx = TestUtil.mockContext(stub);
+            String dropResult = contract.dropAdmission(ctx, input.get(0));
+            assertThat(dropResult).isEqualTo(compare.get(0));
+
+            List<Admission> ledgerState = cUtil.getAllStates(stub, Admission.class);
+            assertThat(ledgerState).allMatch(item -> !(item.getAdmissionId().equals(input.get(0))));
+            // additionally check ledger state?
+        };
+    }
+
+    private Executable dropAdmissionFailureTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<Approval> ids
+    ) {
+        return () -> {
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            /* TODO: approval handling
+            ApprovalContract approvalContract = new ApprovalContract();
+            for (Approval id: ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
+            }*/
+            Context ctx = TestUtil.mockContext(stub);
+            String result =  contract.dropAdmission(ctx, input.get(0));
+            assertThat(result).isEqualTo(compare.get(0));
+        };
+    }
+
+    private Executable getAdmissionsSuccessTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<Approval> ids
+    ) {
+        return () -> {
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            /* TODO: approval handling
+            ApprovalContract approvalContract = new ApprovalContract();
+            for (Approval id: ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
+            }*/
+            Context ctx = TestUtil.mockContext(stub);
+            String getResult = contract.getAdmissions(ctx, input.get(0), input.get(1), input.get(2));
+            assertThat(getResult).isEqualTo(compare.get(0));
         };
     }
 }
