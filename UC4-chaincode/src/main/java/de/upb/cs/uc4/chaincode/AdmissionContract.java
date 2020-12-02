@@ -7,7 +7,6 @@ import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
-import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -17,7 +16,6 @@ import java.util.stream.Collectors;
 @Contract(
         name="UC4.Admission"
 )
-@Default
 public class AdmissionContract extends ContractBase {
     private final AdmissionContractUtil cUtil = new AdmissionContractUtil();
 
