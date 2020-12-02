@@ -1,7 +1,17 @@
 # [v0.13.1 (WIP)](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.0...v0.13.1) (TBD)
 
+## Feature
+- add admission Contract
+
 ## Bugfix
 - add getAllExaminationRegulations functionality
+
+## Refactor
+- centralize Test Creation in base Class
+- remove duplicate code (EmptyParameterError)
+
+## Usability
+- adjust github workflows to always upload TestCoverage Report, even when not meeting the 70% criterion
 
 # [v0.13.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.12.3...v0.13.0) (2020-11-24)
 
