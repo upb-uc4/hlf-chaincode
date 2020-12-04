@@ -80,9 +80,6 @@ abstract public class ContractUtil {
         return getEmptyInvalidParameter(prefix + "enrollmentId");
     }
 
-    public InvalidParameter getEmptyAdmissionIdParam() {
-        return getEmptyInvalidParameter("admissionId");
-    }
 
     public boolean validateApprovals(
             final Context ctx,
