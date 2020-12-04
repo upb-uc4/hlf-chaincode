@@ -1,9 +1,10 @@
 package de.upb.cs.uc4.chaincode;
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -77,14 +78,14 @@ public class ExaminationRegulationContract extends ContractBase {
         ArrayList<ExaminationRegulation> regulations = new ArrayList<>();
         if(nameList.isEmpty()){
             // read all existing information
-            regulations = cUtil.getAllStates(stub);
+            regulations = cUtil.getAllStates(stub, ExaminationRegulation.class);
         } else {
             // read information for names
             for (String name: nameList) {
                 if (!cUtil.valueUnset(name)) {
                     ExaminationRegulation regulation;
                     try {
-                        regulation = cUtil.getState(stub, name);
+                        regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
                     } catch (LedgerStateNotFoundError e) {
                         continue;
                     } catch (LedgerAccessError e) {
@@ -110,7 +111,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ExaminationRegulation regulation;
         try {
-            regulation = cUtil.getState(stub, name);
+            regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }

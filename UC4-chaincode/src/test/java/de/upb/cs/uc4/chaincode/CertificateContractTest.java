@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
@@ -22,10 +23,38 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class CertificateContractTest {
+public final class CertificateContractTest extends TestCreationBase {
 
     private final CertificateContract contract = new CertificateContract();
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
+
+    String getTestConfigDir() {
+        return "src/test/resources/test_configs/certificate_contract";
+    }
+
+    DynamicTest CreateTest(JsonIOTest test) {
+        String testType = test.getType();
+        String testName = test.getName();
+        JsonIOTestSetup setup = test.getSetup();
+        List<String> input = TestUtil.toStringList(test.getInput());
+        List<String> compare = TestUtil.toStringList(test.getCompare());
+        List<Approval> ids = test.getIds();
+
+        switch (testType) {
+            case "getCertificate":
+                return DynamicTest.dynamicTest(testName, getCertificateTest(setup, input, compare));
+            case "addCertificate_SUCCESS":
+                return DynamicTest.dynamicTest(testName, addCertificateSuccessTest(setup, input, compare));
+            case "addCertificate_FAILURE":
+                return DynamicTest.dynamicTest(testName, addCertificateFailureTest(setup, input, compare));
+            case "updateCertificate_SUCCESS":
+                return DynamicTest.dynamicTest(testName, updateCertificateSuccessTest(setup, input, compare));
+            case "updateCertificate_FAILURE":
+                return DynamicTest.dynamicTest(testName, updateCertificateFailureTest(setup, input, compare));
+            default:
+                throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
+        }
+    }
 
     @TestFactory
     List<DynamicTest> createTests() {

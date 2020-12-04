@@ -1,8 +1,9 @@
 package de.upb.cs.uc4.chaincode;
 
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
+import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.Approval;
-import de.upb.cs.uc4.chaincode.model.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;

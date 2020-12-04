@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.error;
+package de.upb.cs.uc4.chaincode.exceptions;
 
 public class LedgerAccessError extends Exception {
     private final String jsonError;

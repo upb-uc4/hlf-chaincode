@@ -4,29 +4,29 @@ import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.format.DateTimeFormatter;
-import org.threeten.bp.format.DateTimeParseException;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class GsonWrapper {
 
     private static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(
-                    LocalDate.class,
-                    (JsonDeserializer<LocalDate>) (json, type, jsonDeserializationContext) -> {
+                    LocalDateTime.class,
+                    (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> {
                         try {
-                            return LocalDate.parse(json.getAsJsonPrimitive().getAsString());
+                            return LocalDateTime.parse(json.getAsJsonPrimitive().getAsString());
                         } catch (DateTimeParseException e) {
                             return null;
                         }
                     })
             .registerTypeAdapter(
-                    LocalDate.class,
-                    (JsonSerializer<LocalDate>) (date, typeOfSrc, context) -> {
-                        return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE)); // "yyyy-mm-dd"
+                    LocalDateTime.class,
+                    (JsonSerializer<LocalDateTime>) (date, typeOfSrc, context) -> {
+                        return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)); // "YYYY-MM-DDThh:mm:ss"
                     })
             .registerTypeAdapter(
                     Integer.class,

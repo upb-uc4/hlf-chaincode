@@ -18,6 +18,31 @@ import java.util.Objects;
 
 public class JsonIOTestSetup {
 
+  @SerializedName("admissionContract")
+  private List<Dummy> admissionContract = null;
+
+  public JsonIOTestSetup admissionContract(List<Dummy> admissionContract) {
+    this.admissionContract = admissionContract;
+    return this;
+  }
+
+  public JsonIOTestSetup addAdmissionContractItem(Dummy admissionContractItem) {
+    if (this.admissionContract == null) {
+      this.admissionContract = new ArrayList<Dummy>();
+    }
+    this.admissionContract.add(admissionContractItem);
+    return this;
+  }
+
+  @ApiModelProperty(value = "")
+  public List<Dummy> getAdmissionContract() {
+    return admissionContract;
+  }
+
+  public void setAdmissionContract(List<Dummy> admissionContract) {
+    this.admissionContract = admissionContract;
+  }
+
   @SerializedName("approvalContract")
   private List<Dummy> approvalContract = null;
 
@@ -185,6 +210,12 @@ public class JsonIOTestSetup {
 
     cUtil = new MatriculationDataContractUtil();
     setup = TestUtil.toStringList(this.matriculationDataContract);
+    for (int i=0; i<setup.size(); i+=2) {
+      cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i+1));
+    }
+
+    cUtil = new AdmissionContractUtil();
+    setup = TestUtil.toStringList(this.admissionContract);
     for (int i=0; i<setup.size(); i+=2) {
       cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i+1));
     }

@@ -1,37 +1,23 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import com.google.gson.JsonSyntaxException;
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import org.hyperledger.fabric.shim.ledger.KeyValue;
-import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import java.util.*;
 
 public class ExaminationRegulationContractUtil extends ContractUtil {
-    private final String thing = "examination regulation";
-    private final String identifier = "name";
+    private final String prefix = "examinationRegulation";
 
     public ExaminationRegulationContractUtil() {
         keyPrefix = "examination-regulation";
-    }
-
-    @Override
-    public GenericError getConflictError() {
-        return super.getConflictError(thing, identifier);
-    }
-
-    @Override
-    public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing, identifier);
+        thing = "examination regulation";
+        identifier = "name";
     }
 
     public InvalidParameter getUnparsableExaminationRegulationParam() {
         return new InvalidParameter()
-                .name("examinationRegulation")
+                .name(prefix)
                 .reason("The given parameter cannot be parsed from json");
     }
 
@@ -41,77 +27,21 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                 .reason("The given parameter cannot be parsed from json");
     }
 
-    private InvalidParameter getEmptyNameParam() {
+    public InvalidParameter getDuplicateModuleParam(String parameterName) {
         return new InvalidParameter()
-                .name("examinationRegulation.name")
-                .reason("Name must not be empty");
-    }
-
-    public InvalidParameter getEmptyModulesParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix)
-                .reason("Modules must not be empty");
-    }
-
-    public InvalidParameter getEmptyModuleIdParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix + "id")
-                .reason("Module id must not be empty");
-    }
-
-    public InvalidParameter getEmptyModuleNameParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix + "name")
-                .reason("Module name must not be empty");
-    }
-
-    public InvalidParameter getDuplicateModuleParam(String prefix, int index) {
-        return new InvalidParameter()
-                .name(prefix + "[" + index + "]")
+                .name(parameterName)
                 .reason("Each module must only appear once in examinationRegulation.modules");
     }
 
-    public InvalidParameter getInconsistentModuleParam(String prefix) {
+    public InvalidParameter getInconsistentModuleParam(String parameterName) {
         return new InvalidParameter()
-                .name(prefix)
+                .name(parameterName)
                 .reason("Each module must be consistent with the modules on chain, i.e. if the module.id is equal, then module.name must be too");
-    }
-
-    public ExaminationRegulation getState(ChaincodeStub stub, String key) throws LedgerAccessError {
-        String jsonExaminationRegulation;
-        jsonExaminationRegulation = getStringState(stub, key);
-        if (valueUnset(jsonExaminationRegulation)) {
-            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
-        }
-        ExaminationRegulation examinationRegulation;
-        try {
-            examinationRegulation = GsonWrapper.fromJson(jsonExaminationRegulation, ExaminationRegulation.class);
-        } catch(Exception e) {
-            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
-        }
-        return examinationRegulation;
-    }
-
-    public ArrayList<ExaminationRegulation> getAllStates(ChaincodeStub stub) {
-        QueryResultsIterator<KeyValue> qrIterator;
-        qrIterator = getAllRawStates(stub);
-        ArrayList<ExaminationRegulation> examinationRegulations = new ArrayList<>();
-        for (KeyValue item: qrIterator) {
-            ExaminationRegulation examinationRegulation;
-            try {
-                examinationRegulation = GsonWrapper.fromJson(item.getStringValue(), ExaminationRegulation.class);
-                examinationRegulations.add(examinationRegulation);
-            } catch(JsonSyntaxException e) {
-                 // ignore
-            }
-        }
-        return examinationRegulations;
     }
 
     public HashSet<ExaminationRegulationModule> getValidModules(ChaincodeStub stub) {
         HashSet<ExaminationRegulationModule> validModules = new HashSet<>();
-        List<ExaminationRegulation> regulations;
-        regulations = getAllStates(stub);
+        List<ExaminationRegulation> regulations = getAllStates(stub, ExaminationRegulation.class);
         for (ExaminationRegulation regulation: regulations) {
             validModules.addAll(regulation.getModules());
         }
@@ -122,21 +52,21 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if(valueUnset(examinationRegulation.getName())) {
-            invalidParams.add(getEmptyNameParam());
+            invalidParams.add(getEmptyInvalidParameter(this.prefix+".name"));
         }
 
         invalidParams.addAll(getErrorForModuleList(
                 examinationRegulation.getModules(),
-                "examinationRegulation.modules",
+                this.prefix+".modules",
                 validModules));
         return invalidParams;
     }
 
-    public ArrayList<InvalidParameter> getErrorForModuleList(List<ExaminationRegulationModule> modules, String prefix, Set<ExaminationRegulationModule> validModules) {
+    public ArrayList<InvalidParameter> getErrorForModuleList(List<ExaminationRegulationModule> modules, String errorName, Set<ExaminationRegulationModule> validModules) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(modules)) {
-            invalidParams.add(getEmptyModulesParam(prefix));
+            invalidParams.add(getEmptyInvalidParameter(errorName));
         } else {
             ArrayList<String> existingModules = new ArrayList<>();
 
@@ -145,19 +75,19 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                 ExaminationRegulationModule module = modules.get(moduleIndex);
 
                 if (valueUnset(module.getId())) {
-                    invalidParams.add(getEmptyModuleIdParam(prefix + "[" + moduleIndex + "]."));
+                    invalidParams.add(getEmptyInvalidParameter(prefix + ".modules[" + moduleIndex + "].id"));
                 } else {
                     if (existingModules.contains(module.getId())) {
-                        invalidParams.add(getDuplicateModuleParam(prefix, moduleIndex));
+                        invalidParams.add(getDuplicateModuleParam(prefix + ".modules[" + moduleIndex + "]"));
                     } else
                         existingModules.add(module.getId());
                 }
                 if (valueUnset(module.getName())) {
-                    invalidParams.add(getEmptyModuleNameParam(prefix + "[" + moduleIndex + "]."));
+                    invalidParams.add(getEmptyInvalidParameter(prefix + ".modules[" + moduleIndex + "].name"));
                 }
                 for (ExaminationRegulationModule validModule: validModules) {
                     if (module.getId().equals(validModule.getId()) && !module.equals(validModule)) {
-                        invalidParams.add(getInconsistentModuleParam(prefix + "[" + moduleIndex + "]"));
+                        invalidParams.add(getInconsistentModuleParam(prefix + ".modules[" + moduleIndex + "]"));
                         break;
                     }
                 }

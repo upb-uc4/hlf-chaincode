@@ -1,10 +1,8 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.*;
 
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
@@ -15,40 +13,18 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class MatriculationDataContractUtil extends ContractUtil {
-    private final String thing = "MatriculationData";
-    private final String identifier = "enrollmentId";
-    private final ExaminationRegulationContractUtil eUtil = new ExaminationRegulationContractUtil();
-
     public MatriculationDataContractUtil() {
         keyPrefix = "matriculationData";
-    }
-
-    @Override
-    public GenericError getConflictError() {
-        return super.getConflictError(thing, identifier);
-    }
-
-    @Override
-    public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing, identifier);
+        thing = "MatriculationData";
+        identifier = "enrollmentId";
     }
 
     public InvalidParameter getUnparsableMatriculationDataParam() {
-        return new InvalidParameter()
-                .name("matriculationData")
-                .reason("The given parameter cannot be parsed from json");
+        return super.getUnparsableParam("matriculationData");
     }
 
     public InvalidParameter getUnparsableMatriculationParam() {
-        return new InvalidParameter()
-                .name("matriculations")
-                .reason("The given parameter cannot be parsed from json");
-    }
-
-    public InvalidParameter getEmptyMatriculationStatusParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix)
-                .reason("Matriculation status must not be empty");
+        return super.getUnparsableParam("matriculations");
     }
 
     public InvalidParameter getInvalidFieldOfStudyParam(String prefix) {
@@ -57,22 +33,10 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 .reason("Field of study must be one of the specified values");
     }
 
-    public InvalidParameter getEmptyFieldOfStudyParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix+"fieldOfStudy")
-                .reason("Field of study must not be empty");
-    }
-
     public InvalidParameter getDuplicateFieldOfStudyParam(String prefix, int index) {
         return new InvalidParameter()
                 .name(prefix+"[" + index + "].fieldOfStudy")
                 .reason("Each field of study must only appear in one matriculationStatus");
-    }
-
-    public InvalidParameter getEmptySemestersParam(String prefix) {
-        return new InvalidParameter()
-                .name(prefix + "semesters")
-                .reason("Semesters must not be empty");
     }
 
     public InvalidParameter getDuplicateSemesterParam(String prefix, int index) {
@@ -85,21 +49,6 @@ public class MatriculationDataContractUtil extends ContractUtil {
         return new InvalidParameter()
                 .name(prefix + "[" + index + "]")
                 .reason("Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\"");
-    }
-
-    public MatriculationData getState(ChaincodeStub stub, String key) throws LedgerAccessError {
-        String jsonMatriculationData;
-        jsonMatriculationData = getStringState(stub, key);
-        if (valueUnset(jsonMatriculationData)) {
-            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
-        }
-        MatriculationData matriculationData;
-        try {
-            matriculationData = GsonWrapper.fromJson(jsonMatriculationData, MatriculationData.class);
-        } catch(Exception e) {
-            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
-        }
-        return matriculationData;
     }
 
     /**
@@ -133,22 +82,24 @@ public class MatriculationDataContractUtil extends ContractUtil {
             ChaincodeStub stub,
             List<SubjectMatriculation> matriculationStatus,
             String prefix) {
+        ExaminationRegulationContractUtil eUtil = new ExaminationRegulationContractUtil();
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(matriculationStatus)) {
-            invalidParams.add(getEmptyMatriculationStatusParam(prefix));
+            invalidParams.add(getEmptyInvalidParameter(prefix));
         } else {
             ArrayList<String> existingFields = new ArrayList<>();
-            List<String> validModuleIds = eUtil.getAllStates(stub).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
+
+            List<String> validErIds = eUtil.getAllStates(stub, ExaminationRegulation.class).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
             for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
                 if (valueUnset(subMat.getFieldOfStudy())) {
-                    invalidParams.add(getEmptyFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
+                    invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].fieldOfStudy"));
                 } else {
-                    if (!validModuleIds.contains(subMat.getFieldOfStudy())) {
+                    if (!validErIds.contains(subMat.getFieldOfStudy())) {
                         invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
                     }
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
@@ -159,7 +110,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
                 List<String> semesters = subMat.getSemesters();
                 if (valueUnset(semesters)) {
-                    invalidParams.add(getEmptySemestersParam(prefix + "[" + subMatIndex + "]."));
+                    invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].semesters"));
                 }
 
                 ArrayList<String> existingSemesters = new ArrayList<>();
