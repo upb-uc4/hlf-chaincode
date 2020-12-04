@@ -16,6 +16,9 @@ import java.util.List;
 abstract public class ContractUtil {
 
     protected String keyPrefix = "";
+    protected String errorPrefix = "";
+    protected String thing = "";
+    protected String identifier = "";
 
     public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
         return getUnprocessableEntityError(getArrayList(invalidParam));
@@ -34,7 +37,9 @@ abstract public class ContractUtil {
                 .invalidParams(invalidParams);
     }
 
-    public abstract GenericError getConflictError();
+    public GenericError getConflictError() {
+        return getConflictError(thing, identifier);
+    }
     protected GenericError getConflictError(String thing, String identifier) {
         String article = "aeio".contains(Character.toString(thing.charAt(0)).toLowerCase()) ? "an" : "a";
         return new GenericError()
@@ -42,7 +47,9 @@ abstract public class ContractUtil {
                 .title("There is already " + article + " " + thing + " for the given " + identifier);
     }
 
-    public abstract GenericError getNotFoundError();
+    public GenericError getNotFoundError() {
+        return getNotFoundError(thing, identifier);
+    }
     protected GenericError getNotFoundError(String thing, String identifier) {
         return new GenericError()
                 .type("HLNotFound")

@@ -22,7 +22,7 @@ public abstract class TestCreationBase {
 
     @TestFactory
     List<DynamicTest> createTests() {
-        String testConfigDir = GetTestConfigDir();
+        String testConfigDir = getTestConfigDir();
         File dir = new File(testConfigDir);
         File[] testConfigs = dir.listFiles();
 

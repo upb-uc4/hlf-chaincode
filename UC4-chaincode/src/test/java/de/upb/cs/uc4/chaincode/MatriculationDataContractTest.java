@@ -22,7 +22,7 @@ public final class MatriculationDataContractTest extends TestCreationBase{
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
 
-    String GetTestConfigDir() {
+    String getTestConfigDir() {
         return "src/test/resources/test_configs/matriculation_data_contract";
     }
 

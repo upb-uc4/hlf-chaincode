@@ -1,29 +1,18 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.*;
 
 public class ExaminationRegulationContractUtil extends ContractUtil {
-    private final String thing = "examination regulation";
-    private final String identifier = "name";
     private final String prefix = "examinationRegulation";
 
     public ExaminationRegulationContractUtil() {
         keyPrefix = "examination-regulation";
-    }
-
-    @Override
-    public GenericError getConflictError() {
-        return super.getConflictError(thing, identifier);
-    }
-
-    @Override
-    public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing, identifier);
+        thing = "examination regulation";
+        identifier = "name";
     }
 
     public InvalidParameter getUnparsableExaminationRegulationParam() {

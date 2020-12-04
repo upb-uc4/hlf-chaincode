@@ -2,7 +2,6 @@ package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -11,33 +10,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class AdmissionContractUtil extends ContractUtil {
-    private final String thing = "Admission";
-    private final String prefix = thing.toLowerCase();
-    private final String identifier = "admissionId";
-
     public AdmissionContractUtil() {
         keyPrefix = "admission";
-    }
-
-    @Override
-    public GenericError getConflictError() {
-        return super.getConflictError(thing, identifier);
-    }
-
-    @Override
-    public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing, identifier);
+        errorPrefix = "admission";
+        thing = "Admission";
+        identifier = "admissionId";
     }
 
     public InvalidParameter getInvalidTimestampParam() {
         return new InvalidParameter()
-                .name(prefix + ".timestamp")
+                .name(errorPrefix + ".timestamp")
                 .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
     }
 
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
         return new InvalidParameter()
-                .name(prefix + "." + parameterName)
+                .name(errorPrefix + "." + parameterName)
                 .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
     }
 
@@ -104,13 +92,13 @@ public class AdmissionContractUtil extends ContractUtil {
         ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
 
         if (valueUnset(admission.getEnrollmentId())) {
-            invalidparams.add(getEmptyEnrollmentIdParam(prefix + "."));
+            invalidparams.add(getEmptyEnrollmentIdParam(errorPrefix + "."));
         }
         if (valueUnset(admission.getCourseId())) {
-            invalidparams.add(getEmptyInvalidParameter(prefix + ".courseId"));
+            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".courseId"));
         }
         if (valueUnset(admission.getModuleId())) {
-            invalidparams.add(getEmptyInvalidParameter(prefix + ".moduleId"));
+            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
         }
         if (valueUnset(admission.getTimestamp())) {
             invalidparams.add(getInvalidTimestampParam());

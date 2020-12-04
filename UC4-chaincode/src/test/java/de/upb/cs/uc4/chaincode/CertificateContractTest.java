@@ -28,7 +28,7 @@ public final class CertificateContractTest extends TestCreationBase {
     private final CertificateContract contract = new CertificateContract();
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
 
-    String GetTestConfigDir() {
+    String getTestConfigDir() {
         return "src/test/resources/test_configs/certificate_contract";
     }
 

@@ -22,7 +22,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private final ExaminationRegulationContract contract = new ExaminationRegulationContract();
     private final ExaminationRegulationContractUtil cUtil = new ExaminationRegulationContractUtil();
 
-    String GetTestConfigDir() {
+    String getTestConfigDir() {
         return "src/test/resources/test_configs/examination_regulation_contract";
     }
 

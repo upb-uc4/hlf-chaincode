@@ -20,7 +20,7 @@ public final class ApprovalContractTest extends TestCreationBase {
     private final ApprovalContract contract = new ApprovalContract();
     private final ApprovalContractUtil cUtil = new ApprovalContractUtil();
 
-    String GetTestConfigDir() {
+    String getTestConfigDir() {
         return "src/test/resources/test_configs/approval_contract";
     }
 

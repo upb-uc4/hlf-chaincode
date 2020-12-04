@@ -20,22 +20,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
-    private final String thing = "list of approvals";
-    private final String identifier = "transaction";
     private static final String HASH_DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
 
     public ApprovalContractUtil() {
         keyPrefix = "draft:";
-    }
-
-    @Override
-    public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing, identifier);
-    }
-
-    @Override
-    public GenericError getConflictError() {
-        return super.getConflictError(thing, identifier);
+        thing = "list of approvals";
+        identifier = "transaction";
     }
 
     public GenericError getInternalError() {

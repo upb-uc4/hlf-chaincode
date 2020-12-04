@@ -2,7 +2,6 @@ package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.model.*;
 
-import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -14,21 +13,10 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class MatriculationDataContractUtil extends ContractUtil {
-    private final String thing = "MatriculationData";
-    private final String identifier = "enrollmentId";
-
     public MatriculationDataContractUtil() {
         keyPrefix = "matriculationData";
-    }
-
-    @Override
-    public GenericError getConflictError() {
-        return super.getConflictError(thing, identifier);
-    }
-
-    @Override
-    public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing, identifier);
+        thing = "MatriculationData";
+        identifier = "enrollmentId";
     }
 
     public InvalidParameter getUnparsableMatriculationDataParam() {

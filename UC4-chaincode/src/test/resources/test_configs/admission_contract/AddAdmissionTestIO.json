@@ -530,7 +530,7 @@
     ],
     "compare": [
       {
-        "type": "HLInvalidEntity",
+        "type": "HLUnprocessibleEntity",
         "title": "The following parameters produced some semantic error",
         "invalidParams": [
           {
@@ -603,7 +603,7 @@
     ],
     "compare": [
       {
-        "type": "HLInvalidEntity",
+        "type": "HLUnprocessibleEntity",
         "title": "The following parameters produced some semantic error",
         "invalidParams": [
           {
