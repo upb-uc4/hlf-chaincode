@@ -29,7 +29,7 @@ abstract public class ContractUtil {
 
     public DetailedError getInvalidActionError(ArrayList<InvalidParameter> invalidParams) {
         return new DetailedError()
-                .type("HLInvalidEntity")
+                .type("HLUnprocessibleEntity")
                 .title("The following parameters produced some semantic error")
                 .invalidParams(invalidParams);
     }
