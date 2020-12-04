@@ -531,7 +531,7 @@
     "compare": [
       {
         "type": "HLUnprocessibleEntity",
-        "title": "The following parameters produced some semantic error",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name": "admission.enrollmentId",
@@ -604,7 +604,7 @@
     "compare": [
       {
         "type": "HLUnprocessibleEntity",
-        "title": "The following parameters produced some semantic error",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
             "name": "admission.enrollmentId",

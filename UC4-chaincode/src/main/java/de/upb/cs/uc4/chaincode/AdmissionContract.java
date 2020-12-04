@@ -51,7 +51,7 @@ public class AdmissionContract extends ContractBase {
         // check for semantic errors
         ArrayList<InvalidParameter> invalidParameters = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
         if (!invalidParameters.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getInvalidActionError(invalidParameters));
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParameters));
         }
 
         List<String> requiredIds = Collections.singletonList(newAdmission.getEnrollmentId());

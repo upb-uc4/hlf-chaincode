@@ -30,13 +30,6 @@ abstract public class ContractUtil {
                 .invalidParams(invalidParams);
     }
 
-    public DetailedError getInvalidActionError(ArrayList<InvalidParameter> invalidParams) {
-        return new DetailedError()
-                .type("HLUnprocessibleEntity")
-                .title("The following parameters produced some semantic error")
-                .invalidParams(invalidParams);
-    }
-
     public GenericError getConflictError() {
         return getConflictError(thing, identifier);
     }
