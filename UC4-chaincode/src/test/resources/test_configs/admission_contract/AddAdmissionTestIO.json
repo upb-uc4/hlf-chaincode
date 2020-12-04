@@ -530,7 +530,7 @@
     ],
     "compare": [
       {
-        "type": "HLUnprocessibleEntity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
@@ -603,7 +603,7 @@
     ],
     "compare": [
       {
-        "type": "HLUnprocessibleEntity",
+        "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
