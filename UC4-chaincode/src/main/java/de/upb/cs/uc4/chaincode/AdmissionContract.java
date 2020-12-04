@@ -50,9 +50,6 @@ public class AdmissionContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        if (cUtil.keyExists(stub, newAdmission.getAdmissionId())) {
-            return GsonWrapper.toJson(cUtil.getConflictError());
-        }
 
         // check for semantic errors
         ArrayList<InvalidParameter> invalidParameters = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
