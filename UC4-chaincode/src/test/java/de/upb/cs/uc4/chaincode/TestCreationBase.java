@@ -18,7 +18,7 @@ public abstract class TestCreationBase {
 
     abstract DynamicTest CreateTest(JsonIOTest test);
 
-    abstract String GetTestConfigDir();
+    abstract String getTestConfigDir();
 
     @TestFactory
     List<DynamicTest> createTests() {
