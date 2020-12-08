@@ -1,7 +1,7 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
-import de.upb.cs.uc4.chaincode.model.Approval;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import org.hyperledger.fabric.contract.ClientIdentity;
@@ -23,11 +23,11 @@ public class TestUtil {
     }
 
     public static Context mockContext(MockChaincodeStub stub) {
-        Approval id = new Approval().id("testId").type("admin");
+        ApprovalList id = new ApprovalList().id("testId").type("admin");
         return mockContext(stub, id);
     }
 
-    public static Context mockContext(MockChaincodeStub stub, Approval id) {
+    public static Context mockContext(MockChaincodeStub stub, ApprovalList id) {
         Context ctx = mock(Context.class);
         when(ctx.getStub()).thenReturn(stub);
         stub.setCurrentId(id);

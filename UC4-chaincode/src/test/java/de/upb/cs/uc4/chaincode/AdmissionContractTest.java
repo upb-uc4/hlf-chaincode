@@ -3,13 +3,12 @@ package de.upb.cs.uc4.chaincode;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
-import de.upb.cs.uc4.chaincode.util.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -29,7 +28,7 @@ public final class AdmissionContractTest extends TestCreationBase {
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
-        List<Approval> ids = test.getIds();
+        List<ApprovalList> ids = test.getIds();
 
         switch (testType) {
             case "addAdmission_SUCCESS":
@@ -51,7 +50,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<Approval> ids
+            List<ApprovalList> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -75,7 +74,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<Approval> ids
+            List<ApprovalList> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -95,7 +94,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<Approval> ids
+            List<ApprovalList> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -119,7 +118,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<Approval> ids
+            List<ApprovalList> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -139,7 +138,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<Approval> ids
+            List<ApprovalList> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);

@@ -1,11 +1,12 @@
 package de.upb.cs.uc4.chaincode;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.model.Approval;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.SubmissionResult;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
-import de.upb.cs.uc4.chaincode.util.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -27,10 +28,8 @@ public class ApprovalContract extends ContractBase {
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
-    public String approveTransaction(final Context ctx, final String contractName, final String transactionName, final String... params) {
-        ChaincodeStub stub = ctx.getStub();
-
-        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
+    public String approveTransaction(final Context ctx, final String contractName, final String transactionName, final String params) {
+ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
@@ -41,15 +40,17 @@ public class ApprovalContract extends ContractBase {
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
-
-        Approval approval = new Approval()
-                .id(ctx.getClientIdentity().getId()) // use simple id for now
-                .type(ctx.getClientIdentity().getAttributeValue("hf.Type"));
-        return cUtil.addApproval(stub, key, approval);
+        ApprovalList existingApprovals = cUtil.addApproval(ctx, key);
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
+        ApprovalList missingApprovals = ApprovalContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
+        SubmissionResult result = new SubmissionResult()
+                .existingApprovals(existingApprovals)
+                .missingApprovals(missingApprovals);
+        return GsonWrapper.toJson(result);
     }
 
     @Transaction()
-    public String getApprovals(final Context ctx, final String contractName, final String transactionName, String... params) {
+    public String getApprovals(final Context ctx, final String contractName, final String transactionName, String params) {
         ChaincodeStub stub = ctx.getStub();
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
@@ -59,20 +60,22 @@ public class ApprovalContract extends ContractBase {
 
         String key;
         try {
-            if (params == null) {
-                params = new String[0];
-            }
             key = cUtil.getDraftKey(contractName, transactionName, params);
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
 
-        ArrayList<Approval> approvals;
+        ApprovalList existingApprovals;
         try{
-            approvals = cUtil.getState(stub, key);
+            existingApprovals = cUtil.getState(stub, key, ApprovalList.class);
         } catch(LedgerAccessError e) {
             return e.getJsonError();
         }
-        return GsonWrapper.toJson(approvals);
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
+        ApprovalList missingApprovals = ApprovalContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
+        SubmissionResult result = new SubmissionResult()
+                .existingApprovals(existingApprovals)
+                .missingApprovals(missingApprovals);
+        return GsonWrapper.toJson(result);
     }
 }

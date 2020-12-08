@@ -2,11 +2,12 @@ package de.upb.cs.uc4.chaincode;
 
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
-import de.upb.cs.uc4.chaincode.model.Approval;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
@@ -30,7 +31,7 @@ public final class ApprovalContractTest extends TestCreationBase {
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
-        List<Approval> ids = test.getIds();
+        List<ApprovalList> ids = test.getIds();
 
         switch (testType) {
             case "getApprovals":
@@ -62,11 +63,11 @@ public final class ApprovalContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<Approval> ids
+            List<ApprovalList> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            for (Approval id : ids) {
+            for (ApprovalList id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
                 assertThat(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)))
                         .isEqualTo(compare.get(0));
@@ -82,7 +83,7 @@ public final class ApprovalContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<Approval> ids
+            List<ApprovalList> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -102,10 +103,8 @@ public final class ApprovalContractTest extends TestCreationBase {
         return input.get(1);
     }
 
-    private String[] params(List<String> input) {
+    private String params(List<String> input) {
         List<String> paramList = input.subList(2, input.size());
-        String[] params = new String[paramList.size()];
-        paramList.toArray(params);
-        return params;
+        return GsonWrapper.toJson(paramList);
     }
 }

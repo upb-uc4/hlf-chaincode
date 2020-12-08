@@ -1,22 +1,18 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
-import de.upb.cs.uc4.chaincode.model.Approval;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
+import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.function.Function;
+import java.security.*;
+import java.security.cert.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
@@ -41,41 +37,35 @@ public class ApprovalContractUtil extends ContractUtil {
         return new String(Base64.getEncoder().encode(bytes));
     }
 
-    public ArrayList<Approval> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
-        String jsonApprovals;
-        jsonApprovals = getStringState(stub, key);
-        if (valueUnset(jsonApprovals)) {
-            throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
-        }
-        ArrayList<Approval> approvals;
-        try {
-            Type setType = new TypeToken<ArrayList<Approval>>(){}.getType();
-            approvals = GsonWrapper.fromJson(jsonApprovals, setType);
-        } catch(Exception e) {
-            throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
-        }
-        return approvals;
-    }
-
-    public String addApproval(ChaincodeStub stub, final String key, final Approval approval) {
-        ArrayList<Approval> approvals;
+    public ApprovalList addApproval(Context ctx, final String key) {
+        ChaincodeStub stub = ctx.getStub();
+        ApprovalList approvalList;
         try{
-            approvals = getState(stub, key);
+            approvalList = getState(stub, key, ApprovalList.class);
         } catch(LedgerAccessError e) {
-            approvals = new ArrayList<>();
+            approvalList = new ApprovalList();
         }
-        if (!approvals.contains(approval)) {
-            approvals.add(approval);
+        String clientId = ctx.getClientIdentity().getId();
+        String clientGroup = null; // TODO read from group contract for clientId
+        if (!approvalList.getUsers().contains(clientId)) {
+            approvalList.addUsersItem(clientId);
         }
-        return putAndGetStringState(stub, key, GsonWrapper.toJson(approvals));
+        if (!approvalList.getGroups().contains(clientGroup)) {
+            approvalList.addGroupsItem(clientGroup);
+        }
+        putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
+        return approvalList;
     }
 
-    public static boolean covers(Function<Approval, String> func, List<Approval> approvals, List<String> required) {
-        return approvals.stream().map(func).collect(Collectors.toList()).containsAll(required);
+    public static boolean covers(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
+        return getMissingApprovalList(requiredApprovals, existingApprovals).isEmpty();
     }
 
-    public static boolean covers(List<Approval> approvals, List<String> requiredIds, List<String> requiredTypes) {
-        return covers(Approval::getId, approvals, requiredIds) && covers(Approval::getType, approvals, requiredTypes);
+    public static ApprovalList getMissingApprovalList(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
+        ApprovalList missingApprovals = new ApprovalList();
+        missingApprovals.setUsers(requiredApprovals.getUsers().stream().filter(user -> !existingApprovals.getUsers().contains(user)).collect(Collectors.toList()));
+        missingApprovals.setGroups(requiredApprovals.getGroups().stream().filter(group -> !existingApprovals.getGroups().contains(group)).collect(Collectors.toList()));
+        return missingApprovals;
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
@@ -87,5 +77,12 @@ public class ApprovalContractUtil extends ContractUtil {
             invalidParams.add(getEmptyInvalidParameter("transactionName"));
         }
         return invalidParams;
+    }
+
+    public String getEnrollmentId(byte[] identity) throws CertificateException {
+        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+        ByteArrayInputStream identityStream = new ByteArrayInputStream(identity);
+        X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(identityStream);
+        return certificate.getSubjectDN().getName();
     }
 }
