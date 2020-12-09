@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 public class Group {
@@ -33,7 +34,7 @@ public class Group {
    * @return userList
    **/
   @ApiModelProperty()
-  public String getUserList() {
+  public List<String> getUserList() {
     return this.userList;
   }
 
@@ -50,7 +51,7 @@ public class Group {
       return false;
     }
     Group other = (Group) o;
-    return Objects.equals(this.groupId, other.groupId)
+    return Objects.equals(this.groupId, other.groupId);
   }
 
   @Override

@@ -3,7 +3,7 @@ package de.upb.cs.uc4.chaincode;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.util.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -22,44 +22,33 @@ public class GroupContract extends ContractBase {
     private final GroupContractUtil cUtil = new GroupContractUtil();
 
     protected String contractName = "UC4.Group";
-<
+
     /**
      * Adds user to group.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param enrollmentId
-     * @param groupId
+     * @param enrollmentId enrollmentId to add to group
+     * @param groupId groupId to which the user is added
      * @return userList on success, including the newly added user
      */
     @Transaction()
-    public List<String> addUserToGroup(final Context ctx, String enrollmentId, String groupId) {
+    public String addUserToGroup(final Context ctx, String enrollmentId, String groupId) {
         ChaincodeStub stub = ctx.getStub();
 
-        Group group;
-        List<String> userList;
-        try {
-            userList = GsonWrapper.fromJson(groupJson, Group.class);
-        } catch (Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("group")));
-        }
-
-        if (cUtil.keyExists(stub, userList.getUserId())) {
-            return GsonWrapper.toJson(cUtil.getConflictError());
-        }
-
-        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForGroup(group);
+        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(enrollmentId);
+        invalidParams.addAll(cUtil.getParameterErrorsForGroupId(groupId));
+        invalidParams.addAll(cUtil.getSemanticErrorsForUserInGroup(stub, enrollmentId));
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        if (cUtil.keyExists(stub, group.getGroupId())) {
-            return GsonWrapper.toJson(cUtil.getConflictError());
+        Group group;
+        try {
+            group = cUtil.getState(stub, groupId, Group.class);
+        } catch (LedgerAccessError e) {
+            return e.getJsonError();
         }
 
-        // check for semantic errors
-        ArrayList<InvalidParameter> invalidParameters = cUtil.getSemanticErrorsForGroup(stub, group);
-        if (!invalidParameters.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getInvalidActionError(invalidParameters));
-        }
+        group.getUserList().add(enrollmentId);
 
         List<String> requiredIds = Collections.singletonList(enrollmentId);
         List<String> requiredTypes = Collections.singletonList("admin");
@@ -71,11 +60,11 @@ public class GroupContract extends ContractBase {
                 requiredTypes,
                 this.contractName,
                 "addUserToGroup",
-                Arrays.stream(new String[]{groupJson}).collect(Collectors.toList()))) {
+                Arrays.stream(new String[]{enrollmentId, groupId}).collect(Collectors.toList()))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
-        return userList;
+        return cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
     }
 
     /**
@@ -86,18 +75,23 @@ public class GroupContract extends ContractBase {
      * @return userList list of users left in the group
      */
     @Transaction()
-    public List<String> removeUserFromGroup(final Context ctx, String enrollmentId, String groupId) {
+    public String removeUserFromGroup(final Context ctx, String enrollmentId, String groupId) {
         ChaincodeStub stub = ctx.getStub();
 
-        List<String> userList;
+        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(enrollmentId);
+        invalidParams.addAll(cUtil.getParameterErrorsForGroupId(groupId));
+        if (!invalidParams.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        }
 
-        // check empty
         Group group;
         try {
-            group = cUtil.<Group>getState(stub, groupId, Group.class);
-        } catch(LedgerAccessError e) {
+            group = cUtil.getState(stub, groupId, Group.class);
+        } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
+
+        group.getUserList().remove(enrollmentId);
 
         // check approval
         List<String> requiredIds = Collections.singletonList(enrollmentId);
@@ -112,15 +106,8 @@ public class GroupContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
-        // perform delete
-        try {
-            cUtil.delState(stub, enrollmentId);
-        } catch(LedgerAccessError e) {
-            return e.getJsonError();
-        }
-
         // success
-        return userList;
+        return cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
     }
 
     /**
@@ -133,14 +120,9 @@ public class GroupContract extends ContractBase {
     public String removeUserFromAllGroups(final Context ctx, String enrollmentId) {
         ChaincodeStub stub = ctx.getStub();
 
-        List<Group> groupList;
-
-        // check empty
-        Group group;
-        try {
-            group = cUtil.<Group>getState(stub, groupId, Group.class);
-        } catch(LedgerAccessError e) {
-            return e.getJsonError();
+        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(enrollmentId);
+        if (!invalidParams.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
         // check approval
@@ -152,17 +134,14 @@ public class GroupContract extends ContractBase {
                 requiredTypes,
                 this.contractName,
                 "removeUserFromAllGroups",
-                Collections.singletonList(groupId))) {
+                Collections.singletonList(enrollmentId))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
-        // perform delete
-        // do I need to traverse groupList?
-        try {
-            cUtil.delState(stub, enrollmentId);
-        } catch(LedgerAccessError e) {
-            return e.getJsonError();
-        }
+        cUtil.getGroupsForUser(stub, enrollmentId).forEach(item ->{
+            item.getUserList().remove(enrollmentId);
+            cUtil.putAndGetStringState(stub, item.getGroupId(),GsonWrapper.toJson(item));
+        });
 
         // success
         return "";
@@ -174,11 +153,11 @@ public class GroupContract extends ContractBase {
      * @return Serialized List of Matching Groups on success, serialized error on failure
      */
     @Transaction()
-    public List<Group> getAllGroups(final Context ctx) {
+    public String getAllGroups(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
 
-        List<Group> groupList = cUtil.getGroups(stub);
-        groupList.add(this.getAllStates(stub, Group.class).stream())
+
+        List<Group> groupList = cUtil.getAllGroups(stub);
 
         return GsonWrapper.toJson(groupList);
     }
@@ -189,34 +168,42 @@ public class GroupContract extends ContractBase {
      * @return Serialized List of Matching Groups on success, serialized error on failure
      */
     @Transaction()
-    public List<String> getUsersForGroup(final Context ctx), String groupId) {
+    public String getUsersForGroup(final Context ctx, String groupId) {
         ChaincodeStub stub = ctx.getStub();
+
+        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(groupId);
+        if (!invalidParams.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        }
 
         List<String> userList;
 
-        userList.add(this.getAllStates(stub, Group.class).stream()
-                .filter(item -> groupId.isEmpty() || item.getGroupId().equals(groupId))
+        try {
+            userList = cUtil.getUsersForGroup(stub, groupId);
+        } catch (LedgerAccessError e) {
+            return e.getJsonError();
+        }
 
-        return userList;
+        return GsonWrapper.toJson(userList);
     }
 
     /**
      * Gets GroupList for a specific user from the ledger.
      * @param ctx transaction context providing access to ChaincodeStub etc.
-     * @param enrollmentId
+     * @param enrollmentId enrollmentId to filter groups for
      * @return Serialized List of Matching Groups on success, serialized error on failure
      */
     @Transaction()
-    public List<String> getGroupsForUser(final Context ctx), String enrollmentId) {
+    public String getGroupsForUser(final Context ctx, String enrollmentId) {
         ChaincodeStub stub = ctx.getStub();
 
-        List<String> groupList;
+        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(enrollmentId);
+        if (!invalidParams.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        }
 
-        // TODO
-        groupList.add(this.getAllGroups()
-                .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(entollmentId))
+        List<String> groupList = cUtil.getGroupNamesForUser(stub, enrollmentId);
 
-
-        return groupList;
+        return GsonWrapper.toJson(groupList);
     }
 }
