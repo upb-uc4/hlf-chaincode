@@ -1,0 +1,313 @@
+[
+  {
+    "name": "addNonExistingUserToGroup",
+    "type": "addUserToGroup_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      "0123"
+    ],
+    "compare": [
+      {
+        "groupId": "0123",
+        "userList": [
+          "0000001"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addDuplicateUsersToOneGroup",
+    "type": "addUserToGroup_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      "0123"
+    ],
+    "compare": [
+      {
+        "groupId": "0123",
+        "userList": [
+          "0000001"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addSecondUserToGroup",
+    "type": "addUserToGroup_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000002",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001"]
+        }
+      ],
+      "certificateContract": [
+        "0000002",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000002",
+      "0123"
+    ],
+    "compare": [
+      {
+        "groupId": "0123",
+        "userList": [
+          "0000001",
+          "0000002"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addUserToTwoGroups",
+    "type": "addUserToGroup_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001"]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      "0124"
+    ],
+    "compare": [
+      {
+        "groupId": "0124",
+        "userList": [
+          "0000001"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addNotRegisteredUserToGroup",
+    "type": "addUserToGroup_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "certificateContract": [
+        "0000002",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      "0123"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "group.enrollmentId",
+            "reason": "The user you are trying to add to a group is not registered in the system."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addNonExistingUserToEmptyGroup",
+    "type": "addUserToGroup_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "group.groupId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addNotRegisteredUserToEmptyGroup",
+    "type": "addUserToGroup_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "certificateContract": [
+        "0000002",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "group.groupId",
+            "reason": "The given parameter must not be empty"
+          },
+          {
+            "name": "group.enrollmentId",
+            "reason": "The user you are trying to add to a group is not registered in the system."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addEmptyUserToEmptyGroup",
+    "type": "addUserToGroup_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "certificateContract": [
+        "0000002",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "group.enrollmentId",
+            "reason": "The given parameter must not be empty"
+          },
+          {
+            "name": "group.groupId",
+            "reason": "The given parameter must not be empty"
+          },
+          {
+            "name": "group.enrollmentId",
+            "reason": "The user you are trying to add to a group is not registered in the system."
+          }
+        ]
+      }
+    ]
+  }
+]

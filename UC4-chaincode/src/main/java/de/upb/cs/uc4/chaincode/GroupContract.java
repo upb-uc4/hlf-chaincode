@@ -45,10 +45,13 @@ public class GroupContract extends ContractBase {
         try {
             group = cUtil.getState(stub, groupId, Group.class);
         } catch (LedgerAccessError e) {
-            return e.getJsonError();
+            group = new Group();
+            group.setGroupId(groupId);
         }
 
-        group.getUserList().add(enrollmentId);
+        if(!(group.getUserList().contains(enrollmentId))){
+            group.getUserList().add(enrollmentId);
+        }
 
         List<String> requiredIds = Collections.singletonList(enrollmentId);
         List<String> requiredTypes = Collections.singletonList("admin");
@@ -63,6 +66,8 @@ public class GroupContract extends ContractBase {
                 Arrays.stream(new String[]{enrollmentId, groupId}).collect(Collectors.toList()))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
+
+        cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
 
         return "";
     }
@@ -91,7 +96,10 @@ public class GroupContract extends ContractBase {
             return e.getJsonError();
         }
 
-        group.getUserList().remove(enrollmentId);
+        if(!(group.getUserList().contains(enrollmentId))){
+            return GsonWrapper.toJson(cUtil.getUserNoRemoveError(enrollmentId, groupId));
+        }
+            group.getUserList().remove(enrollmentId);
 
         // check approval
         List<String> requiredIds = Collections.singletonList(enrollmentId);
@@ -105,6 +113,8 @@ public class GroupContract extends ContractBase {
                 Collections.singletonList(groupId))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
+
+        cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
 
         // success
         return "";
@@ -171,7 +181,7 @@ public class GroupContract extends ContractBase {
     public String getUsersForGroup(final Context ctx, String groupId) {
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(groupId);
+        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForGroupId(groupId);
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }

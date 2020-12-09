@@ -26,6 +26,12 @@ public class GroupContractUtil extends ContractUtil {
                 .reason("The user you are trying to add to a group is not registered in the system.");
     }
 
+    public GenericError getUserNoRemoveError(String enrollmentId, String groupId) {
+        return new GenericError()
+                .type("HLNotFound")
+                .title("There is no user with enrollmentId " + enrollmentId + " in the group " + groupId);
+    }
+
     /**
      * Returns a list of errors describing everything wrong with the given group parameters
      *

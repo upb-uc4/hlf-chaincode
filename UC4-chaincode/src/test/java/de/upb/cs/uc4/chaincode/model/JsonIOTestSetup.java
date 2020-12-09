@@ -118,6 +118,31 @@ public class JsonIOTestSetup {
     this.examinationRegulationContract = examinationRegulationContract;
   }
 
+  @SerializedName("groupContract")
+  private List<Dummy> groupContract = null;
+
+  public JsonIOTestSetup groupContract(List<Dummy> groupContract) {
+    this.groupContract = groupContract;
+    return this;
+  }
+
+  public JsonIOTestSetup addGroupContractItem(Dummy groupContractItem) {
+    if (this.groupContract == null) {
+      this.groupContract = new ArrayList<Dummy>();
+    }
+    this.groupContract.add(groupContractItem);
+    return this;
+  }
+
+  @ApiModelProperty(value = "")
+  public List<Dummy> getGroupContract() {
+    return groupContract;
+  }
+
+  public void setGroupContract(List<Dummy> groupContract) {
+    this.groupContract = groupContract;
+  }
+
   @SerializedName("matriculationDataContract")
   private List<Dummy> matriculationDataContract = null;
 
@@ -142,6 +167,7 @@ public class JsonIOTestSetup {
   public void setMatriculationDataContract(List<Dummy> matriculationDataContract) {
     this.matriculationDataContract = matriculationDataContract;
   }
+
 
 
   @Override
@@ -216,6 +242,12 @@ public class JsonIOTestSetup {
 
     cUtil = new AdmissionContractUtil();
     setup = TestUtil.toStringList(this.admissionContract);
+    for (int i=0; i<setup.size(); i+=2) {
+      cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i+1));
+    }
+
+    cUtil = new GroupContractUtil();
+    setup = TestUtil.toStringList(this.groupContract);
     for (int i=0; i<setup.size(); i+=2) {
       cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i+1));
     }

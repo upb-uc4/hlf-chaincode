@@ -4,17 +4,17 @@ import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Group {
-  private static final String DELIMITER = ":";
 
   @SerializedName("groupId")
   private String groupId;
 
   @SerializedName("userList")
-  private List<String> userList;
+  private List<String> userList = new ArrayList<String>();
 
   /**
    * Get groupId
@@ -25,8 +25,8 @@ public class Group {
     return this.groupId;
   }
 
-  public void resetGroupId() {
-    this.groupId = null;
+  public void setGroupId(String value) {
+    this.groupId = value;
   }
 
   /**
@@ -51,7 +51,7 @@ public class Group {
       return false;
     }
     Group other = (Group) o;
-    return Objects.equals(this.groupId, other.groupId);
+    return Objects.equals(this.groupId, other.groupId) && Objects.equals(this.userList, other.userList);
   }
 
   @Override
@@ -64,6 +64,7 @@ public class Group {
     StringBuilder sb = new StringBuilder();
     sb.append("class Group {\n");
     sb.append("    groupId: ").append(toIndentedString(this.groupId)).append("\n");
+    sb.append("    userList: ").append(toIndentedString(this.userList)).append("\n");
     sb.append("}");
     return sb.toString();
   }
