@@ -64,7 +64,7 @@ public class GroupContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
-        return cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
+        return "";
     }
 
     /**
@@ -107,7 +107,7 @@ public class GroupContract extends ContractBase {
         }
 
         // success
-        return cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
+        return "";
     }
 
     /**
@@ -157,9 +157,9 @@ public class GroupContract extends ContractBase {
         ChaincodeStub stub = ctx.getStub();
 
 
-        List<Group> groupList = cUtil.getAllGroups(stub);
+        List<Group> groupIdList = cUtil.getAllGroups(stub);
 
-        return GsonWrapper.toJson(groupList);
+        return GsonWrapper.toJson(groupIdList);
     }
 
     /**
@@ -202,8 +202,8 @@ public class GroupContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
-        List<String> groupList = cUtil.getGroupNamesForUser(stub, enrollmentId);
+        List<String> groupIdList = cUtil.getGroupNamesForUser(stub, enrollmentId);
 
-        return GsonWrapper.toJson(groupList);
+        return GsonWrapper.toJson(groupIdList);
     }
 }
