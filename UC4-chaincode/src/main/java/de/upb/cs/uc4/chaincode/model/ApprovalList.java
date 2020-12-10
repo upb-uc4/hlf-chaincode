@@ -15,6 +15,7 @@ import java.util.Objects;
 
 
 public class ApprovalList {
+
   @SerializedName("users")
   private List<String> users = null;
 
@@ -27,7 +28,9 @@ public class ApprovalList {
     if (this.users == null) {
       this.users = new ArrayList<String>();
     }
-    this.users.add(usersItem);
+    if (!this.users.contains(usersItem)) {
+      this.users.add(usersItem);
+    }
     return this;
   }
 
@@ -52,11 +55,13 @@ public class ApprovalList {
     return this;
   }
 
-  public ApprovalList addGroupsItem(String groups) {
+  public ApprovalList addGroupsItem(String groupsItem) {
     if (this.groups == null) {
       this.groups = new ArrayList<String>();
     }
-    this.groups.add(groups);
+    if (!this.groups.contains(groupsItem)) {
+      this.groups.add(groupsItem);
+    }
     return this;
   }
 

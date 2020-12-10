@@ -11,6 +11,7 @@ import java.util.List;
 
 public class AccessManager {
     static final String ADMIN = "admin";
+    static final String TODO = "TODO"; // TODO remove this group once group contract is merged
 
     public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) {
         Type listType = new TypeToken<ArrayList<Dummy>>(){}.getType();
@@ -34,6 +35,6 @@ public class AccessManager {
         MatriculationData matriculationData = GsonWrapper.fromJson(params.get(0).getContent(), MatriculationData.class);
         return new ApprovalList()
                 .addUsersItem(matriculationData.getEnrollmentId())
-                .addGroupsItem(ADMIN);
+                .addGroupsItem(TODO);
     }
 }

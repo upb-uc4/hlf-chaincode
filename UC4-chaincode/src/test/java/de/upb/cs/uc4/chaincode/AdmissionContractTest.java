@@ -28,7 +28,7 @@ public final class AdmissionContractTest extends TestCreationBase {
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
-        List<ApprovalList> ids = test.getIds();
+        List<String> ids = test.getIds();
 
         switch (testType) {
             case "addAdmission_SUCCESS":
@@ -50,7 +50,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<ApprovalList> ids
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -74,7 +74,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<ApprovalList> ids
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -94,7 +94,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<ApprovalList> ids
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -118,7 +118,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<ApprovalList> ids
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -138,7 +138,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<ApprovalList> ids
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);

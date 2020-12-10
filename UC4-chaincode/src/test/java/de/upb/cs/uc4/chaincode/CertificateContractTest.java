@@ -38,7 +38,7 @@ public final class CertificateContractTest extends TestCreationBase {
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
-        List<ApprovalList> ids = test.getIds();
+        List<String> ids = test.getIds();
 
         switch (testType) {
             case "getCertificate":

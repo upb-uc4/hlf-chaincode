@@ -23,17 +23,15 @@ public class TestUtil {
     }
 
     public static Context mockContext(MockChaincodeStub stub) {
-        ApprovalList id = new ApprovalList().id("testId").type("admin");
-        return mockContext(stub, id);
+        return mockContext(stub, "testId");
     }
 
-    public static Context mockContext(MockChaincodeStub stub, ApprovalList id) {
+    public static Context mockContext(MockChaincodeStub stub, String clientId) {
         Context ctx = mock(Context.class);
         when(ctx.getStub()).thenReturn(stub);
-        stub.setCurrentId(id);
+        stub.setCurrentId(clientId);
         ClientIdentity testId = mock(ClientIdentity.class);
-        when(testId.getId()).thenReturn(id.getId());
-        when(testId.getAttributeValue("hf.Type")).thenReturn(id.getType());
+        when(testId.getId()).thenReturn(clientId);
         when(ctx.getClientIdentity()).thenReturn(testId);
         return ctx;
     }

@@ -9,6 +9,24 @@ import java.util.Objects;
 
 
 public class SubmissionResult {
+  @SerializedName("operationId")
+  private String operationId = null;
+
+  public SubmissionResult operationId(String operationId) {
+    this.operationId = operationId;
+    return this;
+  }
+
+  @ApiModelProperty(value = "")
+  public String getOperationId() {
+    return operationId;
+  }
+
+  public void setOperationId(String operationId) {
+    this.operationId = operationId;
+  }
+
+
   @SerializedName("existingApprovals")
   private ApprovalList existingApprovals = null;
 

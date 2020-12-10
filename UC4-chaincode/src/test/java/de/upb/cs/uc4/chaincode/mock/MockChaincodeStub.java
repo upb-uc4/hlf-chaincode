@@ -23,9 +23,9 @@ public final class MockChaincodeStub implements ChaincodeStub {
     private final Map<String, List<MockKeyValue>> dataCollections;
     private final String defaultCollection = "default";
     private Map<String, byte[]> transientMap;
-    private ApprovalList currentId;
+    private String currentId;
 
-    public void setCurrentId(ApprovalList currentId) {
+    public void setCurrentId(String currentId) {
         this.currentId = currentId;
     }
 

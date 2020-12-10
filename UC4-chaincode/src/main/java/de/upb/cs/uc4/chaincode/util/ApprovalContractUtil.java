@@ -39,20 +39,16 @@ public class ApprovalContractUtil extends ContractUtil {
 
     public ApprovalList addApproval(Context ctx, final String key) {
         ChaincodeStub stub = ctx.getStub();
+        String clientId = ctx.getClientIdentity().getId();
+        String clientGroup = "TODO"; // TODO read from group contract for clientId
         ApprovalList approvalList;
         try{
             approvalList = getState(stub, key, ApprovalList.class);
         } catch(LedgerAccessError e) {
             approvalList = new ApprovalList();
         }
-        String clientId = ctx.getClientIdentity().getId();
-        String clientGroup = null; // TODO read from group contract for clientId
-        if (!approvalList.getUsers().contains(clientId)) {
-            approvalList.addUsersItem(clientId);
-        }
-        if (!approvalList.getGroups().contains(clientGroup)) {
-            approvalList.addGroupsItem(clientGroup);
-        }
+        approvalList.addUsersItem(clientId);
+        approvalList.addGroupsItem(clientGroup);
         putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
         return approvalList;
     }

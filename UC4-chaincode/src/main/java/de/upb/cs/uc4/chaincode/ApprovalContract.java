@@ -44,6 +44,7 @@ ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName,
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
         ApprovalList missingApprovals = ApprovalContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
         SubmissionResult result = new SubmissionResult()
+                .operationId(key)
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
         return GsonWrapper.toJson(result);
@@ -74,6 +75,7 @@ ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName,
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
         ApprovalList missingApprovals = ApprovalContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
         SubmissionResult result = new SubmissionResult()
+                .operationId(key)
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
         return GsonWrapper.toJson(result);

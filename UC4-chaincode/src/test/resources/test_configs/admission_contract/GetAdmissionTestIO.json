@@ -3,14 +3,8 @@
     "name": "getExistingAdmissions",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -161,14 +155,8 @@
     "name": "getExistingAdmissions_Multiple",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000002",
-        "type": "member"
-      }
+      "User1",
+      "0000002"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -326,14 +314,8 @@
     "name": "getExistingAdmissions_Empty",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -476,14 +458,8 @@
     "name": "getExistingAdmissions_CourseId",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -642,14 +618,8 @@
     "name": "getExistingAdmissions_CourseId_2",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -801,14 +771,8 @@
     "name": "getExistingAdmissions_CourseId_Empty",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -952,14 +916,8 @@
     "name": "getExistingAdmissions_ModuleId",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -1132,14 +1090,8 @@
     "name": "getExistingAdmissions_ModuleId_CourseId",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -1305,14 +1257,8 @@
     "name": "getExistingAdmissions_ModuleId_EnrollmentId",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -1478,14 +1424,8 @@
     "name": "getExistingAdmissions_CourseId_EnrollmentId",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -1651,14 +1591,8 @@
     "name": "getExistingAdmissions_NoFilter",
     "type": "getAdmissions_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [

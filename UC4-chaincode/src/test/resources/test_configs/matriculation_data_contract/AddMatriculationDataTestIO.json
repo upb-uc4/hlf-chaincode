@@ -3,14 +3,8 @@
     "name": "addNonExistingMatriculationData",
     "type": "addMatriculationData_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -56,14 +50,8 @@
     "name": "addNonExistingInvalidFieldOfStudyMatriculationData",
     "type": "addMatriculationData_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {},
     "input": [
@@ -99,14 +87,8 @@
     "name": "addNonExistingMultiFieldOfStudyMatriculationData",
     "type": "addMatriculationData_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -442,14 +424,8 @@
     "name": "addNonExistingXssMatriculationData",
     "type": "addMatriculationData_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "firstName1alert(\\\"XSS\\\");\",",
-        "type": "member"
-      }
+      "User1",
+      "firstName1alert(\\\"XSS\\\");\","
     ],
     "setup": {
       "examinationRegulationContract": [

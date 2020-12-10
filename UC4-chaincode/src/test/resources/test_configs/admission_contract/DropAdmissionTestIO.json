@@ -3,14 +3,8 @@
     "name": "dropExistingAdmission",
     "type": "dropAdmission_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -66,14 +60,8 @@
     "name": "dropNonExistingAdmission",
     "type": "dropAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -132,14 +120,8 @@
     "name": "dropEmptyAdmission",
     "type": "dropAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [

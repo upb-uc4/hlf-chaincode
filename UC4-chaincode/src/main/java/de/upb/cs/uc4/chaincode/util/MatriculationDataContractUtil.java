@@ -99,7 +99,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 if (valueUnset(subMat.getFieldOfStudy())) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].fieldOfStudy"));
                 } else {
-                    if (!validErIds.contains(subMat.getFieldOfStudy())) {
+                    if (!validErIds.contains(subMat.getFieldOfStudy())) { // TODO check if examination regulation exists for the given semester
                         invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
                     }
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
