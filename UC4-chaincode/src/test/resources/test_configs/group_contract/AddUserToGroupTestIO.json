@@ -191,7 +191,7 @@
     ]
   },
   {
-    "name": "addNonExistingUserToEmptyGroup",
+    "name": "addUserToEmptyGroup",
     "type": "addUserToGroup_FAILURE",
     "ids": [
       {
