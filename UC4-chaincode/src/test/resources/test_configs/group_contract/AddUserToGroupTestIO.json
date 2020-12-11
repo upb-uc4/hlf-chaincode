@@ -111,7 +111,7 @@
     ]
   },
   {
-    "name": "addUserToTwoGroups",
+    "name": "addDuplicateUserToTwoGroups",
     "type": "addUserToGroup_SUCCESS",
     "ids": [
       {
