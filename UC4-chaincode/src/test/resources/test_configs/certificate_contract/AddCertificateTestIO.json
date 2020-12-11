@@ -2,7 +2,7 @@
   {
     "name": "addNonExistingCertificate",
     "type": "addCertificate_SUCCESS",
-    "setup": [],
+    "setup": {},
     "input": [
       "0000001",
       "legit certificate"
@@ -12,14 +12,15 @@
     ]
   },
 
-
   {
     "name": "addExistingCertificate",
     "type": "addCertificate_FAILURE",
-    "setup": [
-      "0000001",
-      "legit certificate"
-    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
     "input": [
       "0000001",
       "another legit certificate"
@@ -36,7 +37,7 @@
   {
     "name": "addEmptyEnrollmentIdCertificate",
     "type": "addCertificate_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       "",
       "legit certificate"
@@ -48,7 +49,7 @@
         "invalidParams": [
           {
             "name": "enrollmentId",
-            "reason": "ID must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -59,7 +60,7 @@
   {
     "name": "addEmptyEnrollmentIdCertificate",
     "type": "addCertificate_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       "0000001",
       ""
@@ -71,7 +72,7 @@
         "invalidParams": [
           {
             "name": "certificate",
-            "reason": "Certificate must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -82,7 +83,7 @@
   {
     "name": "addEmptyEnrollmentIdCertificate",
     "type": "addCertificate_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       "",
       ""
@@ -94,11 +95,11 @@
         "invalidParams": [
           {
             "name": "enrollmentId",
-            "reason": "ID must not be empty"
+            "reason": "The given parameter must not be empty"
           },
           {
             "name": "certificate",
-            "reason": "Certificate must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }

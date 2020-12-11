@@ -1,9 +1,10 @@
 package de.upb.cs.uc4.chaincode;
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -14,7 +15,6 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 @Contract(
         name="UC4.ExaminationRegulation"
@@ -41,17 +41,7 @@ public class ExaminationRegulationContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableExaminationRegulationParam()));
         }
 
-        HashSet<ExaminationRegulationModule> validModules = new HashSet<>();
-        List<ExaminationRegulation> regulations;
-        try {
-            regulations = cUtil.getAllStates(stub);
-        } catch (LedgerAccessError e) {
-            return e.getJsonError();
-        }
-        for (ExaminationRegulation regulation: regulations) {
-            validModules.addAll(regulation.getModules());
-        }
-
+        HashSet<ExaminationRegulationModule> validModules = cUtil.getValidModules(stub);
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForExaminationRegulation(newExaminationRegulation, validModules);
 
         if (!invalidParams.isEmpty()) {
@@ -86,17 +76,23 @@ public class ExaminationRegulationContract extends ContractBase {
         }
 
         ArrayList<ExaminationRegulation> regulations = new ArrayList<>();
-        for (String name: nameList) {
-            if (!cUtil.valueUnset(name)) {
-                ExaminationRegulation regulation;
-                try {
-                    regulation = cUtil.getState(stub, name);
-                } catch (LedgerStateNotFoundError e) {
-                    continue;
-                } catch (LedgerAccessError e) {
-                    return e.getJsonError();
+        if(nameList.isEmpty()){
+            // read all existing information
+            regulations = cUtil.getAllStates(stub, ExaminationRegulation.class);
+        } else {
+            // read information for names
+            for (String name: nameList) {
+                if (!cUtil.valueUnset(name)) {
+                    ExaminationRegulation regulation;
+                    try {
+                        regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
+                    } catch (LedgerStateNotFoundError e) {
+                        continue;
+                    } catch (LedgerAccessError e) {
+                        return e.getJsonError();
+                    }
+                    regulations.add(regulation);
                 }
-                regulations.add(regulation);
             }
         }
         return GsonWrapper.toJson(regulations);
@@ -115,7 +111,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ExaminationRegulation regulation;
         try {
-            regulation = cUtil.getState(stub, name);
+            regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }

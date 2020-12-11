@@ -7,10 +7,10 @@ test {
     testLogging {
         events "passed", "skipped", "failed"
     }
-    finalizedBy(jacocoTestReport)
+    finalizedBy(jacocoTestReport, jacocoTestCoverageVerification)
 }
 jacocoTestReport {
-    dependsOn jacocoTestCoverageVerification
+    dependsOn test
     reports {
         html.destination file("${buildDir}/jacocoHtml")
     }

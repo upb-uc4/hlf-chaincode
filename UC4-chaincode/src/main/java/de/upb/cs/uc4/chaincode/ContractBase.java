@@ -12,10 +12,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.Properties;
+import java.util.jar.Manifest;
 
 public abstract class ContractBase implements ContractInterface {
-
-    private final String version = "v0.11.5";
+    protected String contractName = "UC4.ContractBase";
 
     /**
      * Gets version of the chaincode
@@ -23,8 +27,17 @@ public abstract class ContractBase implements ContractInterface {
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
-    public String getVersion(final Context ctx) {
-        return version;
+    public String getVersion(final Context ctx) throws IOException {
+        return "0.13.1";
+
+        /*
+        URLClassLoader cl = (URLClassLoader) getClass().getClassLoader();
+
+        Properties properties = new Properties();
+        properties.load(cl.findResource("project.properties").openStream());
+        String v1 = properties.getProperty("rootVersion");
+
+        return v1;*/
     }
 
     @Transaction()

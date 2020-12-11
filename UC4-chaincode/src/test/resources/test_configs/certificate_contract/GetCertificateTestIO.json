@@ -2,10 +2,12 @@
   {
     "name": "queryExistingCertificate",
     "type": "getCertificate",
-    "setup": [
-      "0000001",
-      "legit certificate"
-    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
     "input": [
       "0000001"
     ],
@@ -18,7 +20,7 @@
   {
     "name": "queryNonExistingCertificate",
     "type": "getCertificate",
-    "setup": [],
+    "setup": {},
     "input": [
       "0000001"
     ],
@@ -34,7 +36,7 @@
   {
     "name": "queryEmptyEnrollmentIdCertificate",
     "type": "getCertificate",
-    "setup": [],
+    "setup": {},
     "input": [
       ""
     ],
@@ -45,7 +47,7 @@
         "invalidParams": [
           {
             "name": "enrollmentId",
-            "reason": "ID must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }

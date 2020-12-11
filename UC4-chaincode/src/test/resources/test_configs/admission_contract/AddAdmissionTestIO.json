@@ -1,0 +1,694 @@
+[
+  {
+    "name": "addNonExistingAdmission",
+    "type": "addAdmission_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000001",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "admissionId": "0000001:C.1",
+        "enrollmentId": "0000001",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59"
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_JsonParseError",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000010",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000010",
+        {
+          "enrollmentId": "0000010",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "Whatever - legit string"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission",
+            "reason": "The given parameter cannot be parsed from json"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_EmptyParam_EnrollmentId",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000002",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.enrollmentId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_EmptyParam_CourseId",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000003",
+        {
+          "enrollmentId": "0000003",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000003",
+        "courseId": "",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.courseId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_EmptyParam_ModuleId",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000004",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000004",
+        {
+          "enrollmentId": "0000004",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000004",
+        "courseId": "C.1",
+        "moduleId": "",
+        "timestamp": "2020-12-31T23:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.moduleId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_EmptyParam_Timestamp",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000005",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000005",
+        {
+          "enrollmentId": "0000005",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000005",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": ""
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.timestamp",
+            "reason": "Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_WrongFormatParam_Timestamp",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000006",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000006",
+        {
+          "enrollmentId": "0000006",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000006",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31-23:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.timestamp",
+            "reason": "Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_InvalidModules",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000007",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000006",
+        {
+          "enrollmentId": "0000006",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000007",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T12:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.enrollmentId",
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          },
+          {
+            "name": "admission.moduleId",
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addNonExistingAdmission_InvalidModules_2",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000009",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000009",
+        {
+          "enrollmentId": "0000009",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000009",
+        "courseId": "C.1",
+        "moduleId": "M.3",
+        "timestamp": "2020-12-31T12:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.enrollmentId",
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          },
+          {
+            "name": "admission.moduleId",
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addExistingAdmission_ConflictError",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000008",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000008",
+        {
+          "enrollmentId": "0000008",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000008:C.1",
+        {
+          "admissionId": "0000008:C.1",
+          "enrollmentId": "0000008",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T12:59:59"
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000008",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T12:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLConflict",
+        "title": "There is already an Admission for the given admissionId"
+      }
+    ]
+  }
+]

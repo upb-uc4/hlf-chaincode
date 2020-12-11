@@ -2,10 +2,12 @@
   {
     "name": "updateCertificateData",
     "type": "updateCertificate_SUCCESS",
-    "setup": [
-      "0000001",
-      "legit certificate"
-    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
     "input": [
       "0000001",
       "new legit certificate"
@@ -19,10 +21,12 @@
   {
     "name": "updateNonExistingCertificate",
     "type": "updateCertificate_FAILURE",
-    "setup": [
-      "0000001",
-      "legit certificate"
-    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
     "input": [
       "0000002",
       "new legit certificate"
@@ -39,10 +43,12 @@
   {
     "name": "updateEmptyEnrollmentIdCertificate",
     "type": "updateCertificate_FAILURE",
-    "setup": [
-      "0000001",
-      "legit certificate"
-    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
     "input": [
       "",
       "new legit certificate"
@@ -54,7 +60,7 @@
         "invalidParams":[
           {
             "name": "enrollmentId",
-            "reason": "ID must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -65,10 +71,12 @@
   {
     "name": "updateEmptyCertificateCertificate",
     "type": "updateCertificate_FAILURE",
-    "setup": [
-      "0000001",
-      "legit certificate"
-    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
     "input": [
       "0000001",
       ""
@@ -80,7 +88,7 @@
         "invalidParams":[
           {
             "name": "certificate",
-            "reason": "Certificate must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -91,10 +99,12 @@
   {
     "name": "updateEmptyCertificateCertificate",
     "type": "updateCertificate_FAILURE",
-    "setup": [
-      "0000001",
-      "legit certificate"
-    ],
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
     "input": [
       "",
       ""
@@ -106,11 +116,11 @@
         "invalidParams":[
           {
             "name": "enrollmentId",
-            "reason": "ID must not be empty"
+            "reason": "The given parameter must not be empty"
           },
           {
             "name": "certificate",
-            "reason": "Certificate must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }

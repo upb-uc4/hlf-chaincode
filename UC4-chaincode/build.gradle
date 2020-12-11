@@ -9,7 +9,7 @@ plugins {
     id 'java-library-distribution'
     id 'application'
     id 'jacoco'
-    id 'me.qoomon.git-versioning' version '2.1.1'
+    id "com.zoltu.git-versioning" version "3.0.3"
 }
 
 dependencies {
@@ -47,4 +47,7 @@ group = 'de.upb.cs.uc4'
 // packaging config
 application {
     mainClass.set(javaMainClass)
+    manifest {
+        attributes.putAt("version",version)
+    }
 }

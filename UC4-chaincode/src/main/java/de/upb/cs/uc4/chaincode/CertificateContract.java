@@ -1,6 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -109,7 +109,7 @@ public class CertificateContract extends ContractBase {
     private ArrayList<InvalidParameter> getErrorForCertificate(final String certificate) {
         ArrayList<InvalidParameter> list = new ArrayList<>();
         if (certificate == null || certificate.equals("")) {
-            list.add(cUtil.getEmptyCertificateParam());
+            list.add(cUtil.getEmptyInvalidParameter("certificate"));
         }
         return list;
     }

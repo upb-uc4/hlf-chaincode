@@ -2,7 +2,10 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
+import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
@@ -20,10 +23,38 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class CertificateContractTest {
+public final class CertificateContractTest extends TestCreationBase {
 
     private final CertificateContract contract = new CertificateContract();
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
+
+    String getTestConfigDir() {
+        return "src/test/resources/test_configs/certificate_contract";
+    }
+
+    DynamicTest CreateTest(JsonIOTest test) {
+        String testType = test.getType();
+        String testName = test.getName();
+        JsonIOTestSetup setup = test.getSetup();
+        List<String> input = TestUtil.toStringList(test.getInput());
+        List<String> compare = TestUtil.toStringList(test.getCompare());
+        List<Approval> ids = test.getIds();
+
+        switch (testType) {
+            case "getCertificate":
+                return DynamicTest.dynamicTest(testName, getCertificateTest(setup, input, compare));
+            case "addCertificate_SUCCESS":
+                return DynamicTest.dynamicTest(testName, addCertificateSuccessTest(setup, input, compare));
+            case "addCertificate_FAILURE":
+                return DynamicTest.dynamicTest(testName, addCertificateFailureTest(setup, input, compare));
+            case "updateCertificate_SUCCESS":
+                return DynamicTest.dynamicTest(testName, updateCertificateSuccessTest(setup, input, compare));
+            case "updateCertificate_FAILURE":
+                return DynamicTest.dynamicTest(testName, updateCertificateFailureTest(setup, input, compare));
+            default:
+                throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
+        }
+    }
 
     @TestFactory
     List<DynamicTest> createTests() {
@@ -48,7 +79,7 @@ public final class CertificateContractTest {
             }
 
             for (JsonIOTest test : testConfig) {
-                List<String> setup = TestUtil.toStringList(test.getSetup());
+                JsonIOTestSetup setup = test.getSetup();
                 List<String> input = TestUtil.toStringList(test.getInput());
                 List<String> compare = TestUtil.toStringList(test.getCompare());
                 switch (test.getType()) {
@@ -91,12 +122,13 @@ public final class CertificateContractTest {
     }
 
     private Executable getCertificateTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            Context ctx = TestUtil.mockContext(stub);
 
             String certificate = contract.getCertificate(ctx, input.get(0));
             assertThat(certificate).isEqualTo(compare.get(0));
@@ -104,12 +136,13 @@ public final class CertificateContractTest {
     }
 
     private Executable addCertificateSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addCertificate(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
@@ -119,12 +152,13 @@ public final class CertificateContractTest {
     }
 
     private Executable addCertificateFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addCertificate(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
@@ -132,12 +166,13 @@ public final class CertificateContractTest {
     }
 
     private Executable updateCertificateSuccessTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.updateCertificate(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
@@ -148,12 +183,13 @@ public final class CertificateContractTest {
     }
 
     private Executable updateCertificateFailureTest(
-            List<String> setup,
+            JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            Context ctx = TestUtil.mockContext(setup, cUtil);
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateCertificate(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));

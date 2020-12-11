@@ -1,3 +1,41 @@
+# [v0.13.1 (WIP)](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.0...v0.13.1) (TBD)
+
+## Feature
+- add admission Contract
+
+## Bugfix
+- add getAllExaminationRegulations functionality
+
+## Refactor
+- centralize Test Creation in base Class
+- remove duplicate code (EmptyParameterError)
+
+## Usability
+- adjust github workflows to always upload TestCoverage Report, even when not meeting the 70% criterion
+
+# [v0.13.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.12.3...v0.13.0) (2020-11-24)
+
+## Bugfix
+- fix general Matriculation Contract Error
+- hotfix version error by replacing resource version with hardcoded string
+
+
+# [v0.12.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.12.2...v0.12.3) (2020-11-23)
+
+## Feature
+- add fieldOfStudy validation to MatriculationData transactions
+- add tests for fieldOfStudy validation
+- add tests for unprocessable ledger state
+- read version from git-tags
+
+## Refactor
+- extend test model to allow for specification of client id
+- extend test setup model to allow for specification of contract for initial ledger entries
+
+## Bugfix
+- getExaminationRegulations("[[]]") now correctly returns the full list of existing Examination Regulations.
+
+
 # [v0.12.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.5...v0.12.2) (2020-11-10)
 
 - provide code via release assets when tagging

@@ -2,7 +2,13 @@
   {
     "name": "approveNewTransaction",
     "type": "approveTransaction_SUCCESS",
-    "setup": [],
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      }
+    ],
+    "setup": {},
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -11,7 +17,10 @@
     ],
     "compare": [
       [
-        "testMspId::testId"
+        {
+          "id": "User1",
+          "type": "admin"
+        }
       ]
     ]
   },
@@ -20,13 +29,27 @@
   {
     "name": "approveExistingTransaction",
     "type": "approveTransaction_SUCCESS",
-    "setup": [
-      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
-      [
-        "User1",
-        "User2"
-      ]
+    "ids": [
+      {
+        "id": "User1",
+        "type": "member"
+      }
     ],
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        [
+          {
+           "id": "User2",
+           "type": "admin"
+          },
+          {
+            "id": "User3",
+            "type": "member"
+         }
+        ]
+      ]
+    },
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -35,9 +58,18 @@
     ],
     "compare": [
       [
-        "User1",
-        "User2",
-        "testMspId::testId"
+        {
+          "id": "User2",
+          "type": "admin"
+        },
+        {
+          "id": "User3",
+          "type": "member"
+        },
+        {
+          "id": "User1",
+          "type": "member"
+        }
       ]
     ]
   },
@@ -46,13 +78,27 @@
   {
     "name": "approveApprovedTransaction",
     "type": "approveTransaction_SUCCESS",
-    "setup": [
-      "cuuX9DSlgtmUyYZkUDe5pK1ce/VfebH1kO4BRS8fQuI=",
-      [
-        "User1",
-        "testMspId::testId"
-      ]
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      }
     ],
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        [
+          {
+            "id": "User2",
+            "type": "member"
+          },
+          {
+            "id": "User1",
+            "type": "admin"
+          }
+        ]
+      ]
+    },
     "input": [
       "UC4.Certificate",
       "addCertificate",
@@ -61,8 +107,14 @@
     ],
     "compare": [
       [
-        "User1",
-        "testMspId::testId"
+        {
+          "id": "User2",
+          "type": "member"
+        },
+        {
+          "id": "User1",
+          "type": "admin"
+        }
       ]
     ]
   },
@@ -71,7 +123,13 @@
   {
     "name": "approveEmptyContractNameTransaction",
     "type": "approveTransaction_FAILURE",
-    "setup": [],
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      }
+    ],
+    "setup": {},
     "input": [
       "",
       "addCertificate",
@@ -85,7 +143,7 @@
         "invalidParams": [
           {
             "name": "contractName",
-            "reason": "Contract name must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
@@ -96,7 +154,7 @@
   {
     "name": "approveEmptyTransactionNameTransaction",
     "type": "approveTransaction_FAILURE",
-    "setup": [],
+    "setup": {},
     "input": [
       "UC4.Certificate",
       "",
@@ -110,10 +168,42 @@
         "invalidParams": [
           {
             "name": "transactionName",
-            "reason": "Transaction name must not be empty"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
+    ]
+  },
+
+
+  {
+    "name": "approveEmptyTransactionNameTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      }
+    ],
+    "setup": {
+      "approvalContract": [
+        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        "something invalid"
+      ]
+    },
+    "input": [
+      "UC4.Certificate",
+      "addCertificate",
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      [
+        {
+          "id": "User1",
+          "type": "admin"
+        }
+      ]
     ]
   }
 ]

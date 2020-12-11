@@ -1,7 +1,9 @@
 package de.upb.cs.uc4.chaincode;
 
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.model.InvalidParameter;
+import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.model.Approval;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -40,12 +42,14 @@ public class ApprovalContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
 
-        String id = cUtil.getDraftId(ctx.getClientIdentity());
-        return cUtil.addApproval(stub, key, id);
+        Approval approval = new Approval()
+                .id(ctx.getClientIdentity().getId()) // use simple id for now
+                .type(ctx.getClientIdentity().getAttributeValue("hf.Type"));
+        return cUtil.addApproval(stub, key, approval);
     }
 
     @Transaction()
-    public String getApprovals(final Context ctx, final String contractName, final String transactionName, final String... params) {
+    public String getApprovals(final Context ctx, final String contractName, final String transactionName, String... params) {
         ChaincodeStub stub = ctx.getStub();
 
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
@@ -55,12 +59,15 @@ public class ApprovalContract extends ContractBase {
 
         String key;
         try {
+            if (params == null) {
+                params = new String[0];
+            }
             key = cUtil.getDraftKey(contractName, transactionName, params);
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
 
-        ArrayList<String> approvals;
+        ArrayList<Approval> approvals;
         try{
             approvals = cUtil.getState(stub, key);
         } catch(LedgerAccessError e) {

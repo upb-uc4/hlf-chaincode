@@ -1,10 +1,13 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
+import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.Dummy;
+import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import org.hyperledger.fabric.contract.ClientIdentity;
 import org.hyperledger.fabric.contract.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,24 +16,31 @@ import static org.mockito.Mockito.when;
 
 public class TestUtil {
     public static List<String> toStringList(List<Dummy> list) {
+        if (list == null) {
+            return new ArrayList<>();
+        }
         return list.stream().map(Dummy::getContent).collect(Collectors.toList());
     }
 
-    public static Context mockContext(List<String> setup, ContractUtil cUtil) {
+    public static Context mockContext(MockChaincodeStub stub) {
+        Approval id = new Approval().id("testId").type("admin");
+        return mockContext(stub, id);
+    }
+
+    public static Context mockContext(MockChaincodeStub stub, Approval id) {
         Context ctx = mock(Context.class);
-        when(ctx.getStub()).thenReturn(mockStub(setup, cUtil));
+        when(ctx.getStub()).thenReturn(stub);
+        stub.setCurrentId(id);
         ClientIdentity testId = mock(ClientIdentity.class);
-        when(testId.getMSPID()).thenReturn("testMspId");
-        when(testId.getId()).thenReturn("testId");
+        when(testId.getId()).thenReturn(id.getId());
+        when(testId.getAttributeValue("hf.Type")).thenReturn(id.getType());
         when(ctx.getClientIdentity()).thenReturn(testId);
         return ctx;
     }
 
-    private static MockChaincodeStub mockStub(List<String> setup, ContractUtil cUtil) {
+    public static MockChaincodeStub mockStub(JsonIOTestSetup setup) {
         MockChaincodeStub stub = new MockChaincodeStub();
-        for (int i=0; i<setup.size(); i+=2) {
-            cUtil.putAndGetStringState(stub, setup.get(i), setup.get(i+1));
-        }
+        setup.prepareStub(stub);
         return stub;
     }
 

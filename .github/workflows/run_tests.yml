@@ -21,6 +21,8 @@ jobs:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - name: check out source repository
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     
     # Set up JDK
     - name: Set up JDK 1.8
@@ -31,6 +33,7 @@ jobs:
     # run gradle tests
     - name: Run chaincode tests
       run: |
+        echo "git describe: $(git describe)"
         pushd ./UC4-chaincode
         echo "##########################"
         echo "starting chaincode test"
@@ -43,6 +46,7 @@ jobs:
 
     # Upload Coverage Report
     - name: Upload coverage report
+      if: ${{ always() }}
       uses: actions/upload-artifact@v1
       with:
         name: coverage-report

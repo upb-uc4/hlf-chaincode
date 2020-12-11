@@ -1,0 +1,1822 @@
+[
+  {
+    "name": "getExistingAdmissions",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      "",
+      ""
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "getExistingAdmissions_Multiple",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000002",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "0000002",
+      "",
+      ""
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "getExistingAdmissions_Empty",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "0000003",
+      "",
+      ""
+    ],
+    "compare": [
+      []
+    ]
+  },
+  {
+    "name": "getExistingAdmissions_CourseId",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "",
+      "C.1",
+      ""
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  },
+
+  {
+    "name": "getExistingAdmissions_CourseId_2",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "",
+      "C.2",
+      ""
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  },
+
+  {
+    "name": "getExistingAdmissions_CourseId_Empty",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "",
+      "C.3",
+      ""
+    ],
+    "compare": [
+      [      ]
+    ]
+  },
+
+  {
+    "name": "getExistingAdmissions_ModuleId",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            },
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.3",
+        {
+          "admissionId": "0000002:C.3",
+          "enrollmentId": "0000002",
+          "courseId": "C.3",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "",
+      "",
+      "M.1"
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        {
+          "admissionId": "0000002:C.3",
+          "enrollmentId": "0000002",
+          "courseId": "C.3",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  },
+
+  {
+    "name": "getExistingAdmissions_ModuleId_CourseId",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            },
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.3",
+        {
+          "admissionId": "0000002:C.3",
+          "enrollmentId": "0000002",
+          "courseId": "C.3",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "",
+      "C.3",
+      "M.1"
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000002:C.3",
+          "enrollmentId": "0000002",
+          "courseId": "C.3",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  },
+
+  {
+    "name": "getExistingAdmissions_ModuleId_EnrollmentId",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            },
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.3",
+        {
+          "admissionId": "0000002:C.3",
+          "enrollmentId": "0000002",
+          "courseId": "C.3",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      "",
+      "M.1"
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  },
+
+  {
+    "name": "getExistingAdmissions_CourseId_EnrollmentId",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            },
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.3",
+        {
+          "admissionId": "0000002:C.3",
+          "enrollmentId": "0000002",
+          "courseId": "C.3",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      "C.1",
+      ""
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  },
+
+  {
+    "name": "getExistingAdmissions_NoFilter",
+    "type": "getAdmissions_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000003",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Chemical Science",
+        {
+          "name": "Chemical Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "F.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "F.2",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Physics",
+        {
+          "name": "Physics",
+          "active": true,
+          "modules": [
+            {
+              "id": "P.1",
+              "name": "physics 1"
+            },
+            {
+              "id": "P.2",
+              "name": "Physics 2"
+            }
+          ]
+        },
+        "Maths",
+        {
+          "name": "Maths",
+          "active": true,
+          "modules": [
+            {
+              "id": "MM.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "MM.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Physics",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        },
+        "0000002",
+        {
+          "enrollmentId": "0000002",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Chemical Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Maths",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.1",
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        "0000002:C.2",
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    },
+    "input": [
+      "",
+      "",
+      ""
+    ],
+    "compare": [
+      [
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        {
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "courseId": "C.1",
+          "moduleId": "F.1",
+          "timestamp": "2020-12-31T23:59:59"
+        },
+        {
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "courseId": "C.2",
+          "moduleId": "MM.1",
+          "timestamp": "2020-12-31T23:59:59"
+        }
+      ]
+    ]
+  }
+]

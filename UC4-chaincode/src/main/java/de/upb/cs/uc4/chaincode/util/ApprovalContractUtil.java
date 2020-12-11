@@ -1,12 +1,12 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.error.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.error.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.error.UnprocessableLedgerStateError;
-import de.upb.cs.uc4.chaincode.model.GenericError;
-import de.upb.cs.uc4.chaincode.model.InvalidParameter;
-import org.hyperledger.fabric.contract.ClientIdentity;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
+import de.upb.cs.uc4.chaincode.model.Approval;
+import de.upb.cs.uc4.chaincode.model.errors.GenericError;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
@@ -15,42 +15,23 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
-    private final String thing = "list of approvals";
-    private final String identifier = "transaction";
-    private final String HASH_DELIMITER = "::"; //TODO: rework delimiting
+    private static final String HASH_DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
 
     public ApprovalContractUtil() {
         keyPrefix = "draft:";
-    }
-
-    @Override
-    public GenericError getConflictError() {
-        return null;
-    }
-
-    @Override
-    public GenericError getNotFoundError() {
-        return super.getNotFoundError(thing, identifier);
+        thing = "list of approvals";
+        identifier = "transaction";
     }
 
     public GenericError getInternalError() {
         return new GenericError()
                 .type("HLInternalError")
-                .title("SHA-256 appearently does not exist lol...");
-    }
-
-    public InvalidParameter getEmptyContractNameParam() {
-        return new InvalidParameter()
-                .name("contractName")
-                .reason("Contract name must not be empty");
-    }
-
-    public InvalidParameter getEmptyTransactionNameParam() {
-        return new InvalidParameter()
-                .name("transactionName")
-                .reason("Transaction name must not be empty");
+                .title("SHA-256 apparently does not exist lol...");
     }
 
     public String getDraftKey(final String contractName, final String transactionName, final String... params) throws NoSuchAlgorithmException {
@@ -60,24 +41,15 @@ public class ApprovalContractUtil extends ContractUtil {
         return new String(Base64.getEncoder().encode(bytes));
     }
 
-    /**
-     * Returns the draftId, which is obtained by concatenating the submitter's mspId and enrollmentId using "::"
-     * @param id identity of the submitter
-     * @return draftId
-     */
-    public String getDraftId(final ClientIdentity id) {
-        return id.getMSPID() + HASH_DELIMITER + id.getId(); //TODO: rework delimiting
-    }
-
-    public ArrayList<String> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
+    public ArrayList<Approval> getState(ChaincodeStub stub, String key) throws LedgerAccessError {
         String jsonApprovals;
         jsonApprovals = getStringState(stub, key);
         if (valueUnset(jsonApprovals)) {
             throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
-        ArrayList<String> approvals;
+        ArrayList<Approval> approvals;
         try {
-            Type setType = new TypeToken<ArrayList<String>>(){}.getType();
+            Type setType = new TypeToken<ArrayList<Approval>>(){}.getType();
             approvals = GsonWrapper.fromJson(jsonApprovals, setType);
         } catch(Exception e) {
             throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
@@ -85,30 +57,34 @@ public class ApprovalContractUtil extends ContractUtil {
         return approvals;
     }
 
-    public String addApproval(ChaincodeStub stub, final String key, final String id) {
-        ArrayList<String> approvals;
+    public String addApproval(ChaincodeStub stub, final String key, final Approval approval) {
+        ArrayList<Approval> approvals;
         try{
             approvals = getState(stub, key);
-        } catch(LedgerStateNotFoundError e) {
-            approvals = new ArrayList<>();
         } catch(LedgerAccessError e) {
-            return e.getJsonError();
+            approvals = new ArrayList<>();
         }
-        if (!approvals.contains(id)) {
-            approvals.add(id);
+        if (!approvals.contains(approval)) {
+            approvals.add(approval);
         }
-        String jsonApprovals = GsonWrapper.toJson(approvals);
-        putAndGetStringState(stub, key, jsonApprovals);
-        return jsonApprovals;
+        return putAndGetStringState(stub, key, GsonWrapper.toJson(approvals));
+    }
+
+    public static boolean covers(Function<Approval, String> func, List<Approval> approvals, List<String> required) {
+        return approvals.stream().map(func).collect(Collectors.toList()).containsAll(required);
+    }
+
+    public static boolean covers(List<Approval> approvals, List<String> requiredIds, List<String> requiredTypes) {
+        return covers(Approval::getId, approvals, requiredIds) && covers(Approval::getType, approvals, requiredTypes);
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         if (valueUnset(contractName)) {
-            invalidParams.add(getEmptyContractNameParam());
+            invalidParams.add(getEmptyInvalidParameter("contractName"));
         }
         if (valueUnset(transactionName)) {
-            invalidParams.add(getEmptyTransactionNameParam());
+            invalidParams.add(getEmptyInvalidParameter("transactionName"));
         }
         return invalidParams;
     }
