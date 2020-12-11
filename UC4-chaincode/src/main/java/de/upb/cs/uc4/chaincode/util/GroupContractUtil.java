@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 
 public class GroupContractUtil extends ContractUtil {
 
-
     public GroupContractUtil() {
         keyPrefix = "group";
         thing = "Group";
@@ -44,11 +43,11 @@ public class GroupContractUtil extends ContractUtil {
 
         CertificateContractUtil certificateUtil = new CertificateContractUtil();
 
-       ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
-       if(!(certificateUtil.keyExists(stub, enrollmentId))){
-           invalidParameters.add(getInvalidUserNotRegistered());
-       }
+        if (!(certificateUtil.keyExists(stub, enrollmentId))) {
+            invalidParameters.add(getInvalidUserNotRegistered());
+        }
 
         return invalidParameters;
     }
@@ -62,7 +61,7 @@ public class GroupContractUtil extends ContractUtil {
     public ArrayList<InvalidParameter> getParameterErrorsForEnrollmentId(
             String enrollmentId) {
 
-       ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
 
         if (valueUnset(enrollmentId)) {
             invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".enrollmentId"));
@@ -83,11 +82,11 @@ public class GroupContractUtil extends ContractUtil {
         return invalidparams;
     }
 
-    public List<Group> getAllGroups(ChaincodeStub stub){
+    public List<Group> getAllGroups(ChaincodeStub stub) {
         return this.getAllStates(stub, Group.class);
     }
 
-    public List<Group> getGroupsForUser(ChaincodeStub stub, String enrollmentId){
+    public List<Group> getGroupsForUser(ChaincodeStub stub, String enrollmentId) {
 
         return this.getAllGroups(stub).stream().filter(item -> item.getUserList().contains(enrollmentId)).collect(Collectors.toList());
     }

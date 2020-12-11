@@ -1,7 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
@@ -11,11 +11,14 @@ import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Contract(
-        name="UC4.Group"
+        name = "UC4.Group"
 )
 @Default
 public class GroupContract extends ContractBase {
@@ -25,9 +28,10 @@ public class GroupContract extends ContractBase {
 
     /**
      * Adds user to group.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId enrollmentId to add to group
-     * @param groupId groupId to which the user is added
+     * @param groupId      groupId to which the user is added
      * @return userList on success, including the newly added user
      */
     @Transaction()
@@ -49,7 +53,7 @@ public class GroupContract extends ContractBase {
             group.setGroupId(groupId);
         }
 
-        if(!(group.getUserList().contains(enrollmentId))){
+        if (!(group.getUserList().contains(enrollmentId))) {
             group.getUserList().add(enrollmentId);
         }
 
@@ -74,9 +78,10 @@ public class GroupContract extends ContractBase {
 
     /**
      * Removes a user from a group
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId identifier of user to remove
-     * @param groupId identifier of a group to remove user from
+     * @param groupId      identifier of a group to remove user from
      * @return userList list of users left in the group
      */
     @Transaction()
@@ -96,10 +101,10 @@ public class GroupContract extends ContractBase {
             return e.getJsonError();
         }
 
-        if(!(group.getUserList().contains(enrollmentId))){
+        if (!(group.getUserList().contains(enrollmentId))) {
             return GsonWrapper.toJson(cUtil.getUserNoRemoveError(enrollmentId, groupId));
         }
-            group.getUserList().remove(enrollmentId);
+        group.getUserList().remove(enrollmentId);
 
         // check approval
         List<String> requiredIds = Collections.singletonList(enrollmentId);
@@ -122,7 +127,8 @@ public class GroupContract extends ContractBase {
 
     /**
      * Removes a user from all groups
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId identifier of user to remove
      * @return empty string on success, serialized error on failure
      */
@@ -148,9 +154,9 @@ public class GroupContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
-        cUtil.getGroupsForUser(stub, enrollmentId).forEach(item ->{
+        cUtil.getGroupsForUser(stub, enrollmentId).forEach(item -> {
             item.getUserList().remove(enrollmentId);
-            cUtil.putAndGetStringState(stub, item.getGroupId(),GsonWrapper.toJson(item));
+            cUtil.putAndGetStringState(stub, item.getGroupId(), GsonWrapper.toJson(item));
         });
 
         // success
@@ -159,6 +165,7 @@ public class GroupContract extends ContractBase {
 
     /**
      * Gets GroupList from the ledger.
+     *
      * @param ctx transaction context providing access to ChaincodeStub etc.
      * @return Serialized List of Matching Groups on success, serialized error on failure
      */
@@ -166,14 +173,14 @@ public class GroupContract extends ContractBase {
     public String getAllGroups(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
 
-
         List<Group> groupList = cUtil.getAllGroups(stub);
 
-        return GsonWrapper.toJson(groupList );
+        return GsonWrapper.toJson(groupList);
     }
 
     /**
      * Gets GroupList from the ledger.
+     *
      * @param ctx transaction context providing access to ChaincodeStub etc.
      * @return Serialized List of Matching Groups on success, serialized error on failure
      */
@@ -199,7 +206,8 @@ public class GroupContract extends ContractBase {
 
     /**
      * Gets GroupList for a specific user from the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId enrollmentId to filter groups for
      * @return Serialized List of Matching Groups on success, serialized error on failure
      */

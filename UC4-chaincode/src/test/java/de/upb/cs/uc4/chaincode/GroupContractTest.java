@@ -3,7 +3,6 @@ package de.upb.cs.uc4.chaincode;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
-import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.util.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
@@ -14,7 +13,6 @@ import org.junit.jupiter.api.function.Executable;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public final class GroupContractTest extends TestCreationBase {
 
