@@ -169,7 +169,7 @@ public class GroupContract extends ContractBase {
 
         List<Group> groupList = cUtil.getAllGroups(stub);
 
-        return GsonWrapper.toJson(groupIdList);
+        return GsonWrapper.toJson(groupList );
     }
 
     /**
