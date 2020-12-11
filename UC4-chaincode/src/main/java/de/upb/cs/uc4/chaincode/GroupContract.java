@@ -167,7 +167,7 @@ public class GroupContract extends ContractBase {
         ChaincodeStub stub = ctx.getStub();
 
 
-        List<Group> groupIdList = cUtil.getAllGroups(stub);
+        List<Group> groupList = cUtil.getAllGroups(stub);
 
         return GsonWrapper.toJson(groupIdList);
     }
