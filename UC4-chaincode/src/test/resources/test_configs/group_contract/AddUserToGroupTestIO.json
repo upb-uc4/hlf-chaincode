@@ -3,14 +3,8 @@
     "name": "addNonExistingUserToGroup",
     "type": "addUserToGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "certificateContract": [
@@ -35,14 +29,8 @@
     "name": "addDuplicateUsersToOneGroup",
     "type": "addUserToGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -74,14 +62,8 @@
     "name": "addSecondUserToGroup",
     "type": "addUserToGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000002",
-        "type": "member"
-      }
+      "User1",
+      "0000002"
     ],
     "setup": {
       "groupContract": [
@@ -114,14 +96,8 @@
     "name": "addDuplicateUserToTwoGroups",
     "type": "addUserToGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -158,14 +134,8 @@
     "name": "addNotRegisteredUserToGroup",
     "type": "addUserToGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "certificateContract": [
@@ -194,14 +164,8 @@
     "name": "addUserToEmptyGroup",
     "type": "addUserToGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "certificateContract": [
@@ -230,14 +194,8 @@
     "name": "addNotRegisteredUserToEmptyGroup",
     "type": "addUserToGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "certificateContract": [
@@ -270,14 +228,8 @@
     "name": "addEmptyUserToEmptyGroup",
     "type": "addUserToGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "certificateContract": [
