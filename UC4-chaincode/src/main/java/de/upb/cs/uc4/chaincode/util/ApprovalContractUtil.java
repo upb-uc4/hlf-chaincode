@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
     private static final String HASH_DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
+    private static final GroupContractUtil groupContractUtil = new GroupContractUtil();
 
     public ApprovalContractUtil() {
         keyPrefix = "draft:";
@@ -40,7 +41,7 @@ public class ApprovalContractUtil extends ContractUtil {
     public ApprovalList addApproval(Context ctx, final String key) {
         ChaincodeStub stub = ctx.getStub();
         String clientId = ctx.getClientIdentity().getId();
-        String clientGroup = "TODO"; // TODO read from group contract for clientId
+        List<String> clientGroups = groupContractUtil.getGroupNamesForUser(stub, clientId);
         ApprovalList approvalList;
         try{
             approvalList = getState(stub, key, ApprovalList.class);
@@ -48,7 +49,9 @@ public class ApprovalContractUtil extends ContractUtil {
             approvalList = new ApprovalList();
         }
         approvalList.addUsersItem(clientId);
-        approvalList.addGroupsItem(clientGroup);
+        for(String group : clientGroups){
+            approvalList.addGroupsItem(group);
+        }
         putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
         return approvalList;
     }
