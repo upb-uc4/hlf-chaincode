@@ -68,6 +68,7 @@ public class ApprovalContractUtil extends ContractUtil {
         for (String group : clientGroups) {
             approvalList.addGroupsItem(group);
         }
+        approvalList.addGroupsItem("TODO");
         putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
         return approvalList;
     }
