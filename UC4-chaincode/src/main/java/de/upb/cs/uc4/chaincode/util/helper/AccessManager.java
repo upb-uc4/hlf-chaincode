@@ -14,7 +14,8 @@ public class AccessManager {
     static final String TODO = "TODO"; // TODO remove this group once group contract is merged
 
     public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) {
-        Type listType = new TypeToken<ArrayList<Dummy>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<Dummy>>() {
+        }.getType();
         List<Dummy> paramList = GsonWrapper.fromJson(params, listType);
         switch (contractName) {
             case "UC4.MatriculationData":

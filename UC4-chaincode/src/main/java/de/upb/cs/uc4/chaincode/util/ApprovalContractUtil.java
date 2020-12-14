@@ -10,9 +10,14 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
-import java.security.*;
-import java.security.cert.*;
-import java.util.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class ApprovalContractUtil extends ContractUtil {
@@ -23,6 +28,17 @@ public class ApprovalContractUtil extends ContractUtil {
         keyPrefix = "draft:";
         thing = "list of approvals";
         identifier = "transaction";
+    }
+
+    public static boolean covers(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
+        return getMissingApprovalList(requiredApprovals, existingApprovals).isEmpty();
+    }
+
+    public static ApprovalList getMissingApprovalList(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
+        ApprovalList missingApprovals = new ApprovalList();
+        missingApprovals.setUsers(requiredApprovals.getUsers().stream().filter(user -> !existingApprovals.getUsers().contains(user)).collect(Collectors.toList()));
+        missingApprovals.setGroups(requiredApprovals.getGroups().stream().filter(group -> !existingApprovals.getGroups().contains(group)).collect(Collectors.toList()));
+        return missingApprovals;
     }
 
     public GenericError getInternalError() {
@@ -43,28 +59,17 @@ public class ApprovalContractUtil extends ContractUtil {
         String clientId = ctx.getClientIdentity().getId();
         List<String> clientGroups = groupContractUtil.getGroupNamesForUser(stub, clientId);
         ApprovalList approvalList;
-        try{
+        try {
             approvalList = getState(stub, key, ApprovalList.class);
-        } catch(LedgerAccessError e) {
+        } catch (LedgerAccessError e) {
             approvalList = new ApprovalList();
         }
         approvalList.addUsersItem(clientId);
-        for(String group : clientGroups){
+        for (String group : clientGroups) {
             approvalList.addGroupsItem(group);
         }
         putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
         return approvalList;
-    }
-
-    public static boolean covers(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
-        return getMissingApprovalList(requiredApprovals, existingApprovals).isEmpty();
-    }
-
-    public static ApprovalList getMissingApprovalList(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
-        ApprovalList missingApprovals = new ApprovalList();
-        missingApprovals.setUsers(requiredApprovals.getUsers().stream().filter(user -> !existingApprovals.getUsers().contains(user)).collect(Collectors.toList()));
-        missingApprovals.setGroups(requiredApprovals.getGroups().stream().filter(group -> !existingApprovals.getGroups().contains(group)).collect(Collectors.toList()));
-        return missingApprovals;
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {

@@ -1,7 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.Admission;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
@@ -10,11 +10,14 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Contract(
-        name="UC4.Admission"
+        name = "UC4.Admission"
 )
 public class AdmissionContract extends ContractBase {
     private final AdmissionContractUtil cUtil = new AdmissionContractUtil();
@@ -23,7 +26,8 @@ public class AdmissionContract extends ContractBase {
 
     /**
      * Adds MatriculationData to the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx           transaction context providing access to ChaincodeStub etc.
      * @param admissionJson json representation of new Admission to add.
      * @return newAdmission on success, serialized error on failure
      */
@@ -74,7 +78,8 @@ public class AdmissionContract extends ContractBase {
 
     /**
      * Drops an existing admission from the ledger
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx         transaction context providing access to ChaincodeStub etc.
      * @param admissionId identifier of admission to drop
      * @return empty string on success, serialized error on failure
      */
@@ -86,7 +91,7 @@ public class AdmissionContract extends ContractBase {
         Admission admission;
         try {
             admission = cUtil.<Admission>getState(stub, admissionId, Admission.class);
-        } catch(LedgerAccessError e) {
+        } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
 
@@ -106,7 +111,7 @@ public class AdmissionContract extends ContractBase {
         // perform delete
         try {
             cUtil.delState(stub, admissionId);
-        } catch(LedgerAccessError e) {
+        } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
 
@@ -116,7 +121,8 @@ public class AdmissionContract extends ContractBase {
 
     /**
      * Gets AdmissionList from the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId enrollment to find admissions for
      * @return Serialized List of Matching Admissions on success, serialized error on failure
      */

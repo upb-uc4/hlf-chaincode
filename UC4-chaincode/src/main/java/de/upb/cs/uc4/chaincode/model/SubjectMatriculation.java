@@ -11,19 +11,19 @@ public class SubjectMatriculation {
 
     @SerializedName("fieldOfStudy")
     private String fieldOfStudy = null;
+    @SerializedName("semesters")
+    private List<String> semesters = null;
 
     public SubjectMatriculation fieldOfStudy(String fieldOfStudy) {
         this.fieldOfStudy = fieldOfStudy;
         return this;
     }
 
-    @SerializedName("semesters")
-    private List<String> semesters = null;
-
     /**
      * Get fieldOfStudy
      * @return fieldOfStudy
      **/
+
     /**
      * Get name
      *

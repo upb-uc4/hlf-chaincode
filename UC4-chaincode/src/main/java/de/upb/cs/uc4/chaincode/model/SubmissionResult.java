@@ -8,6 +8,10 @@ import java.util.Objects;
 public class SubmissionResult {
     @SerializedName("operationId")
     private String operationId = null;
+    @SerializedName("existingApprovals")
+    private ApprovalList existingApprovals = null;
+    @SerializedName("missingApprovals")
+    private ApprovalList missingApprovals = null;
 
     public SubmissionResult operationId(String operationId) {
         this.operationId = operationId;
@@ -23,10 +27,6 @@ public class SubmissionResult {
         this.operationId = operationId;
     }
 
-
-    @SerializedName("existingApprovals")
-    private ApprovalList existingApprovals = null;
-
     public SubmissionResult existingApprovals(ApprovalList existingApprovals) {
         this.existingApprovals = existingApprovals;
         return this;
@@ -40,9 +40,6 @@ public class SubmissionResult {
     public void setExistingApprovals(ApprovalList existingApprovals) {
         this.existingApprovals = existingApprovals;
     }
-
-    @SerializedName("missingApprovals")
-    private ApprovalList missingApprovals = null;
 
     public SubmissionResult missingApprovals(ApprovalList missingApprovals) {
         this.missingApprovals = missingApprovals;

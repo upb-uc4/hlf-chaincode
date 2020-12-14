@@ -10,7 +10,9 @@ import java.util.Objects;
 public class ApprovalList {
 
     @SerializedName("users")
-    private List<String> users = null;
+    private List<String> users = new ArrayList<>();
+    @SerializedName("groups")
+    private List<String> groups = new ArrayList<>();
 
     public ApprovalList users(List<String> users) {
         this.users = users;
@@ -40,9 +42,6 @@ public class ApprovalList {
     public void setUsers(List<String> users) {
         this.users = users;
     }
-
-    @SerializedName("groups")
-    private List<String> groups = null;
 
     public ApprovalList groups(List<String> groups) {
         this.groups = groups;

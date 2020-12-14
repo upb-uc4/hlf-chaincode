@@ -48,7 +48,7 @@ public class GsonWrapper {
                         try {
                             String s = json.toString();
                             if (s.charAt(0) == '"') {
-                                s = s.substring(1, s.length()-1);
+                                s = s.substring(1, s.length() - 1);
                             }
                             return new Dummy(s);
                         } catch (RuntimeException e) {

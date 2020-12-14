@@ -3,7 +3,8 @@ package de.upb.cs.uc4.chaincode;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulationModule;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 @Contract(
-        name="UC4.ExaminationRegulation"
+        name = "UC4.ExaminationRegulation"
 )
 public class ExaminationRegulationContract extends ContractBase {
 
@@ -25,7 +26,8 @@ public class ExaminationRegulationContract extends ContractBase {
 
     /**
      * Adds an examination regulation to the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx                   transaction context providing access to ChaincodeStub etc.
      * @param examinationRegulation examination regulation to be added
      * @return examination regulation on success, serialized error on failure
      */
@@ -37,7 +39,7 @@ public class ExaminationRegulationContract extends ContractBase {
         ExaminationRegulation newExaminationRegulation;
         try {
             newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableExaminationRegulationParam()));
         }
 
@@ -58,7 +60,8 @@ public class ExaminationRegulationContract extends ContractBase {
 
     /**
      * Gets examination regulations from the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx   transaction context providing access to ChaincodeStub etc.
      * @param names names of the examination regulations to be returned
      * @return examination regulations on success, serialized error on failure
      */
@@ -68,20 +71,21 @@ public class ExaminationRegulationContract extends ContractBase {
         ChaincodeStub stub = ctx.getStub();
 
         ArrayList<String> nameList;
-        Type listType = new TypeToken<ArrayList<String>>(){}.getType();
+        Type listType = new TypeToken<ArrayList<String>>() {
+        }.getType();
         try {
             nameList = GsonWrapper.fromJson(names, listType);
-        } catch(Exception e) {
+        } catch (Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableNameListParam()));
         }
 
         ArrayList<ExaminationRegulation> regulations = new ArrayList<>();
-        if(nameList.isEmpty()){
+        if (nameList.isEmpty()) {
             // read all existing information
             regulations = cUtil.getAllStates(stub, ExaminationRegulation.class);
         } else {
             // read information for names
-            for (String name: nameList) {
+            for (String name : nameList) {
                 if (!cUtil.valueUnset(name)) {
                     ExaminationRegulation regulation;
                     try {
@@ -100,7 +104,8 @@ public class ExaminationRegulationContract extends ContractBase {
 
     /**
      * Closes the specified examination regulation (i.e. sets the active flag to false).
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx  transaction context providing access to ChaincodeStub etc.
      * @param name name of the examination regulation to be closed
      * @return examination regulation on success, serialized error on failure
      */

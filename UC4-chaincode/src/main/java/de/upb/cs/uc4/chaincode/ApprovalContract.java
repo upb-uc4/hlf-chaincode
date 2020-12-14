@@ -16,7 +16,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 @Contract(
-        name="UC4.Approval"
+        name = "UC4.Approval"
 )
 public class ApprovalContract extends ContractBase {
 
@@ -24,12 +24,13 @@ public class ApprovalContract extends ContractBase {
 
     /**
      * Submits a draft to the ledger.
+     *
      * @param ctx transaction context providing access to ChaincodeStub etc.
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
     public String approveTransaction(final Context ctx, final String contractName, final String transactionName, final String params) {
-ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
+        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
@@ -67,9 +68,9 @@ ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName,
         }
 
         ApprovalList existingApprovals;
-        try{
+        try {
             existingApprovals = cUtil.getState(stub, key, ApprovalList.class);
-        } catch(LedgerAccessError e) {
+        } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);

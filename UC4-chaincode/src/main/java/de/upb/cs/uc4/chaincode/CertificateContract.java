@@ -11,7 +11,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import java.util.ArrayList;
 
 @Contract(
-        name="UC4.Certificate"
+        name = "UC4.Certificate"
 )
 public class CertificateContract extends ContractBase {
 
@@ -19,9 +19,10 @@ public class CertificateContract extends ContractBase {
 
     /**
      * Adds a certificate to the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId enrollmentId for the certificate to be added
-     * @param certificate certificate to be set for the given enrollmentId
+     * @param certificate  certificate to be set for the given enrollmentId
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
@@ -47,9 +48,10 @@ public class CertificateContract extends ContractBase {
 
     /**
      * Updates certificate on the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId enrollmentId for the certificate to be updated
-     * @param certificate certificate to be set for the given enrollmentId
+     * @param certificate  certificate to be set for the given enrollmentId
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
@@ -76,7 +78,8 @@ public class CertificateContract extends ContractBase {
 
     /**
      * Gets certificate from the ledger.
-     * @param ctx transaction context providing access to ChaincodeStub etc.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
      * @param enrollmentId enrollmentId of the certificate to be returned
      * @return certificate on success, serialized error on failure
      */
@@ -85,7 +88,7 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<> (getErrorForEnrollmentId(enrollmentId));
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>(getErrorForEnrollmentId(enrollmentId));
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
