@@ -2,6 +2,8 @@
 
 ## Feature
 - add group Contract
+- reenable approval Checks for transactions
+- support group-approvals
 
 ## Bugfix
 - 
