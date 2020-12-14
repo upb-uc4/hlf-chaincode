@@ -1,0 +1,190 @@
+[
+  {
+    "name": "removeExistingUserFromAllGroups",
+    "type": "removeUserFromAllGroups_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "groupContract": [
+      "0123",
+      {
+        "groupId": "0123",
+        "userList": ["0000001"]
+      }
+    ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001"
+    ],
+    "compare": [
+      {
+        "groupId": "0123",
+        "userList": [
+
+        ]
+      }
+    ]
+  },
+  {
+    "name": "removeInTwoGroupsExistingUserFromAllGroups",
+    "type": "removeUserFromAllGroups_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001"]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001"
+    ],
+    "compare": [
+      {
+        "groupId": "0123",
+        "userList": [
+
+        ]
+      },
+      {
+        "groupId": "0124",
+        "userList": [
+        ]
+      }
+    ]
+  },
+  {
+    "name": "removeExistingUserFromAllGroupsKeepOthers",
+    "type": "removeUserFromAllGroups_SUCCESS",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": [
+            "0000001",
+            "0000002"
+          ]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001", "0000002"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0000001"
+    ],
+    "compare": [
+      {
+        "groupId": "0123",
+        "userList": [
+          "0000002"
+        ]
+      },
+      {
+        "groupId": "0124",
+        "userList": [
+          "0000002"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "removeEmptyUserFromAllGroupsKeepOthers",
+    "type": "removeUserFromAllGroups_FAILURE",
+    "ids": [
+      {
+        "id": "User1",
+        "type": "admin"
+      },
+      {
+        "id": "0000001",
+        "type": "member"
+      }
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": [
+            "0000001",
+            "0000002"
+          ]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001", "0000002"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "group.enrollmentId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  }
+]
