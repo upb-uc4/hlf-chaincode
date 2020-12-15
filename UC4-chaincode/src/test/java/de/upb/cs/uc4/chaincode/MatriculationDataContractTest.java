@@ -77,7 +77,7 @@ public final class MatriculationDataContractTest extends TestCreationBase{
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            ApprovalContract approvalContract = new ApprovalContract();
+            OperationContract operationContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
                 approvalContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));

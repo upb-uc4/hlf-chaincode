@@ -98,7 +98,7 @@ abstract public class ContractUtil {
         String jsonArgs = GsonWrapper.toJson(args);
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
 
-        ApprovalContractUtil aUtil = new ApprovalContractUtil();
+        OperationContractUtil aUtil = new OperationContractUtil();
         ApprovalList approvals;
         String key;
         try {
@@ -111,7 +111,7 @@ abstract public class ContractUtil {
         } catch(LedgerAccessError e) {
             return false;
         }
-        return ApprovalContractUtil.covers(requiredApprovals, approvals);
+        return OperationContractUtil.covers(approvals, requiredApprovals);
 
     }
 

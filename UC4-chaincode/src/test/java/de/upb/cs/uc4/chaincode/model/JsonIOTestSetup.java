@@ -216,7 +216,7 @@ public class JsonIOTestSetup {
   }
 
   public void prepareStub(ChaincodeStub stub) {
-    ContractUtil cUtil = new ApprovalContractUtil();
+    ContractUtil cUtil = new OperationContractUtil();
     List<String> setup = TestUtil.toStringList(this.approvalContract);
     for (int i=0; i<setup.size(); i+=2) {
       cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i+1));
