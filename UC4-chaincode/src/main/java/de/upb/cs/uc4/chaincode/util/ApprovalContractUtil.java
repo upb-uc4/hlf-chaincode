@@ -47,8 +47,8 @@ public class ApprovalContractUtil extends ContractUtil {
                 .title("SHA-256 apparently does not exist lol...");
     }
 
-    public String getDraftKey(final String contractName, final String transactionName, final String... params) throws NoSuchAlgorithmException {
-        String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + String.join(HASH_DELIMITER, params);
+    public String getDraftKey(final String contractName, final String transactionName, final String params) throws NoSuchAlgorithmException {
+        String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params;
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
         return new String(Base64.getEncoder().encode(bytes));
@@ -68,7 +68,6 @@ public class ApprovalContractUtil extends ContractUtil {
         for (String group : clientGroups) {
             approvalList.addGroupsItem(group);
         }
-        approvalList.addGroupsItem("TODO");
         putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
         return approvalList;
     }

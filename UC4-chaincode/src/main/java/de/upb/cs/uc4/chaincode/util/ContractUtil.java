@@ -3,9 +3,11 @@ package de.upb.cs.uc4.chaincode.util;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -13,7 +15,9 @@ import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 abstract public class ContractUtil {
@@ -89,31 +93,28 @@ abstract public class ContractUtil {
 
 
     public boolean validateApprovals(
-            final Context ctx,
-            final List<String> requiredIds,
-            final List<String> requiredTypes,
+            final ChaincodeStub stub,
             String contractName,
             String transactionName,
-            final List<String> args) {
-        // replace approval checking until we get third Party signing fixed.
-        return true;
-        /*
-        ChaincodeStub stub = ctx.getStub();
+            final List<Object> args) {
+        String jsonArgs = GsonWrapper.toJson(args);
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
+
         ApprovalContractUtil aUtil = new ApprovalContractUtil();
-        ArrayList<Approval> approvals;
+        ApprovalList approvals;
         String key;
         try {
-            key = aUtil.getDraftKey(contractName, transactionName, args.toArray(new String[0]));
+            key = aUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
             return false;
         }
         try{
-            approvals = aUtil.getState(stub, key);
+            approvals = aUtil.getState(stub, key, ApprovalList.class);
         } catch(LedgerAccessError e) {
             return false;
         }
-        return ApprovalContractUtil.covers(approvals, requiredIds, requiredTypes);
-        */
+        return ApprovalContractUtil.covers(approvals, requiredApprovals);
+
     }
 
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {

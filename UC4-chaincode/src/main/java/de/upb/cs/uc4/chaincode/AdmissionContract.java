@@ -2,8 +2,10 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.Admission;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -58,17 +60,11 @@ public class AdmissionContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParameters));
         }
 
-        List<String> requiredIds = Collections.singletonList(newAdmission.getEnrollmentId());
-        List<String> requiredTypes = Collections.singletonList("admin");
-
-        // TODO: approval Check!! I DO NOT KNOW IF I CAN JUST BUILD THE PARAMETER LIST LIKE THAT
         if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+                stub,
                 this.contractName,
                 "addAdmission",
-                Arrays.stream(new String[]{admissionJson}).collect(Collectors.toList()))) {
+                Collections.singletonList(newAdmission))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 

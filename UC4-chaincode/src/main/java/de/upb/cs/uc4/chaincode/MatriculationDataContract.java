@@ -2,10 +2,12 @@ package de.upb.cs.uc4.chaincode;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
+import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -53,16 +55,11 @@ public class MatriculationDataContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        List<String> requiredIds = Collections.singletonList(newMatriculationData.getEnrollmentId());
-        List<String> requiredTypes = Collections.singletonList("admin");
-
         if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+                stub,
                 this.contractName,
                 "addMatriculationData",
-                Collections.singletonList(matriculationData))) {
+                Collections.singletonList(newMatriculationData))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 
