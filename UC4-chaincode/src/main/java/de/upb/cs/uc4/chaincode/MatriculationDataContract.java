@@ -59,7 +59,7 @@ public class MatriculationDataContract extends ContractBase {
                 stub,
                 this.contractName,
                 "addMatriculationData",
-                Collections.singletonList(newMatriculationData))) {
+                Collections.singletonList(matriculationData))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
         }
 

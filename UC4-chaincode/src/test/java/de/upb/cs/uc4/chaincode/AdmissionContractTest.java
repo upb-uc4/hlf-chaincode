@@ -54,12 +54,11 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String addResult = contract.addAdmission(ctx, input.get(0));
             assertThat(addResult).isEqualTo(compare.get(0));
@@ -78,12 +77,11 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String result =  contract.addAdmission(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -98,12 +96,11 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"dropAdmission", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.dropAdmission(ctx, input.get(0));
             assertThat(dropResult).isEqualTo(compare.get(0));
@@ -122,12 +119,11 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"dropAdmission", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String result =  contract.dropAdmission(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -142,12 +138,6 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
-            ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
-                Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
             Context ctx = TestUtil.mockContext(stub);
             String getResult = contract.getAdmissions(ctx, input.get(0), input.get(1), input.get(2));
             assertThat(getResult).isEqualTo(compare.get(0));

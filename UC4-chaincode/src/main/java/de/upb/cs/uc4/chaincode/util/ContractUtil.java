@@ -96,7 +96,7 @@ abstract public class ContractUtil {
             final ChaincodeStub stub,
             String contractName,
             String transactionName,
-            final List<Object> args) {
+            final List<String> args) {
         String jsonArgs = GsonWrapper.toJson(args);
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
 
@@ -113,7 +113,7 @@ abstract public class ContractUtil {
         } catch(LedgerAccessError e) {
             return false;
         }
-        return ApprovalContractUtil.covers(approvals, requiredApprovals);
+        return ApprovalContractUtil.covers(requiredApprovals, approvals);
 
     }
 

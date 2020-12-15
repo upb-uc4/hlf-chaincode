@@ -48,10 +48,4 @@ public abstract class TestCreationBase {
         }
         return tests;
     }
-
-    //
-    String jsonListParams(List<String> params) {
-        // TODO utilize gson for this
-        return "[" + params.stream().reduce((s1, s2) -> s1 + "," + s2).orElse("") + "]";
-    }
 }

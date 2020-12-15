@@ -14,6 +14,13 @@
           "active": true,
           "modules": []
         }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
+        }
       ]
     },
     "input": [
@@ -103,6 +110,13 @@
           "name": "Philosophy",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
         }
       ]
     },
@@ -434,6 +448,13 @@
           "name": "Computer Science",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
         }
       ]
     },

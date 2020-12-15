@@ -13,6 +13,13 @@
           "active": true,
           "modules": []
         }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
+        }
       ]
     },
     "input": [
@@ -32,13 +39,13 @@
     ],
     "compare": [
       {
-        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "existingApprovals": {
           "users": [
             "User1"
           ],
           "groups": [
-            "TODO"
+            "admin"
           ]
         },
         "missingApprovals": {
@@ -58,15 +65,22 @@
     ],
     "setup": {
       "approvalContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
           "users": [
             "User2",
             "User3"
           ],
           "groups": [
-            "TODO"
+            "some-group"
           ]
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
         }
       ]
     },
@@ -87,7 +101,7 @@
     ],
     "compare": [
       {
-        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "existingApprovals": {
           "users": [
             "User2",
@@ -95,7 +109,8 @@
             "User1"
           ],
           "groups": [
-            "TODO"
+            "some-group",
+            "admin"
           ]
         },
         "missingApprovals": {
@@ -115,15 +130,22 @@
     ],
     "setup": {
       "approvalContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
           "users": [
             "User1",
             "User2"
           ],
           "groups": [
-            "TODO"
+            "admin"
           ]
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
         }
       ]
     },
@@ -144,14 +166,14 @@
     ],
     "compare": [
       {
-        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "existingApprovals": {
           "users": [
             "User1",
             "User2"
           ],
           "groups": [
-            "TODO"
+            "admin"
           ]
         },
         "missingApprovals": {
@@ -235,14 +257,14 @@
 
 
   {
-    "name": "approveEmptyTransactionNameTransaction",
+    "name": "approveInvalidLedgerStateTransaction",
     "type": "approveTransaction_FAILURE",
     "ids": [
       "User1"
     ],
     "setup": {
       "approvalContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "something invalid"
       ]
     },
@@ -263,18 +285,18 @@
     ],
     "compare": [
       {
-        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "existingApprovals": {
           "users": [
             "User1"
           ],
-          "groups": [
-            "TODO"
-          ]
+          "groups": []
         },
         "missingApprovals": {
           "users": [],
-          "groups": []
+          "groups": [
+            "admin"
+          ]
         }
       }
     ]

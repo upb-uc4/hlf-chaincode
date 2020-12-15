@@ -37,6 +37,13 @@
             }
           ]
         }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
+        }
       ]
     },
     "input": [

@@ -60,13 +60,14 @@ public class AdmissionContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParameters));
         }
 
-        if (!cUtil.validateApprovals(
+        // TODO re-enable approval validation
+        /*if (!cUtil.validateApprovals(
                 stub,
                 this.contractName,
                 "addAdmission",
-                Collections.singletonList(newAdmission))) {
+                Collections.singletonList(admissionJson))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
-        }
+        }*/
 
         // TODO: can we create a composite key of all inputs to improve reading performance for get...forUser/Module/Course
         return cUtil.putAndGetStringState(stub, newAdmission.getAdmissionId(), GsonWrapper.toJson(newAdmission));
@@ -92,17 +93,14 @@ public class AdmissionContract extends ContractBase {
         }
 
         // check approval
-        List<String> requiredIds = Collections.singletonList(admission.getEnrollmentId());
-        List<String> requiredTypes = Collections.singletonList("admin");
-        if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+        // TODO re-enable approval validation
+        /*if (!cUtil.validateApprovals(
+                stub,
                 this.contractName,
                 "dropAdmission",
                 Collections.singletonList(admissionId))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
-        }
+        }*/
 
         // perform delete
         try {

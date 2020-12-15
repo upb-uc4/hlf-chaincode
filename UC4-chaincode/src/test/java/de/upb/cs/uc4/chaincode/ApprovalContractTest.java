@@ -105,6 +105,6 @@ public final class ApprovalContractTest extends TestCreationBase {
     }
 
     private String params(List<String> input) {
-        return jsonListParams(input.subList(2, input.size()));
+        return GsonWrapper.toJson(input.subList(2, input.size()));
     }
 }

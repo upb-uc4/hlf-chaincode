@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.SubmissionResult;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -30,6 +31,7 @@ public class ApprovalContract extends ContractBase {
      */
     @Transaction()
     public String approveTransaction(final Context ctx, final String contractName, final String transactionName, final String params) {
+        // TODO check if params is json list of params
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
@@ -43,6 +45,7 @@ public class ApprovalContract extends ContractBase {
         }
         ApprovalList existingApprovals = cUtil.addApproval(ctx, key);
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
+
         ApprovalList missingApprovals = ApprovalContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
         SubmissionResult result = new SubmissionResult()
                 .operationId(key)

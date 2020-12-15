@@ -4,14 +4,14 @@
     "type": "getApprovals",
     "setup": {
       "approvalContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
             "users": [
               "User1",
               "User2"
             ],
             "groups": [
-              "TODO"
+              "admin"
             ]
         }
       ]
@@ -33,14 +33,14 @@
     ],
     "compare": [
       {
-        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "existingApprovals": {
           "users": [
             "User1",
             "User2"
           ],
           "groups": [
-            "TODO"
+            "admin"
           ]
         },
         "missingApprovals": {
@@ -85,7 +85,7 @@
     "type": "getApprovals",
     "setup": {
       "approvalContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "something invalid"
       ]
     },

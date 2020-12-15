@@ -47,6 +47,13 @@
           "moduleId": "M.1",
           "timestamp": "2020-12-31T23:59:59"
         }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
+        }
       ]
     },
     "input": [
@@ -56,6 +63,8 @@
       ""
     ]
   },
+
+
   {
     "name": "dropNonExistingAdmission",
     "type": "dropAdmission_FAILURE",
