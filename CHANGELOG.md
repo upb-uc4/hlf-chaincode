@@ -1,7 +1,6 @@
-# [v0.14.0 (WIP)](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.1...develop) (TBD)
+# [v0.15.0 (WIP)](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.0...develop) (TBD)
 
 ## Feature
-- add group Contract
 - reenable approval Checks for transactions
 - support group-approvals
 
@@ -12,9 +11,23 @@
 - 
 
 ## Usability
+- 
+
+# [v0.14.1 (WIP)](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.1...v0.14.1) (2020-12-15)
+
+## Feature
+- add group Contract
+
+## Bugfix
+- 
+
+## Refactor
+- 
+
+## Usability
 - Increase Test Code Coverage Threshold
 
-# [v0.13.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.0...v0.13.1) (04.12.2020)
+# [v0.13.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.0...v0.13.1) (2020-12-04)
 
 ## Feature
 - add admission Contract
