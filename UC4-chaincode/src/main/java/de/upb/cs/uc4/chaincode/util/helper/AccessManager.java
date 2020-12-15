@@ -2,11 +2,8 @@ package de.upb.cs.uc4.chaincode.util.helper;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.MissingAccessRightsError;
-import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
-import de.upb.cs.uc4.chaincode.model.Admission;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
-import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

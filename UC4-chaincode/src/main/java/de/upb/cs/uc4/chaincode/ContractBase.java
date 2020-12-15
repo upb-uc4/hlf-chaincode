@@ -16,7 +16,7 @@ public abstract class ContractBase implements ContractInterface {
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
-    public String getVersion(final Context ctx) throws IOException {
+    public String getVersion(final Context ctx) {
         return "0.13.1";
 
         /*

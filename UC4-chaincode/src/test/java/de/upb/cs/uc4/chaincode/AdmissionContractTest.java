@@ -40,7 +40,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             case "dropAdmission_FAILURE":
                 return DynamicTest.dynamicTest(testName, dropAdmissionFailureTest(setup, input, compare, ids));
             case "getAdmissions_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getAdmissionsSuccessTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, getAdmissionsSuccessTest(setup, input, compare));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -133,8 +133,7 @@ public final class AdmissionContractTest extends TestCreationBase {
     private Executable getAdmissionsSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<String> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);

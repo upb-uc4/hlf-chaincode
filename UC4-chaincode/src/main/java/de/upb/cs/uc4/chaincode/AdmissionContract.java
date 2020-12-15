@@ -2,10 +2,8 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.Admission;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
-import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -13,10 +11,7 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Contract(
         name = "UC4.Admission"
@@ -24,7 +19,7 @@ import java.util.stream.Collectors;
 public class AdmissionContract extends ContractBase {
     private final AdmissionContractUtil cUtil = new AdmissionContractUtil();
 
-    protected String contractName = "UC4.Admission";
+    protected final String contractName = "UC4.Admission";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -85,9 +80,8 @@ public class AdmissionContract extends ContractBase {
         ChaincodeStub stub = ctx.getStub();
 
         // check empty
-        Admission admission;
         try {
-            admission = cUtil.<Admission>getState(stub, admissionId, Admission.class);
+            cUtil.getState(stub, admissionId, Admission.class);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }

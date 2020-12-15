@@ -3,7 +3,6 @@ package de.upb.cs.uc4.chaincode;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;

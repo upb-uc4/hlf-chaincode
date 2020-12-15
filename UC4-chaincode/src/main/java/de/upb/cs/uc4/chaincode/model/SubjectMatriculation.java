@@ -23,12 +23,6 @@ public class SubjectMatriculation {
      * Get fieldOfStudy
      * @return fieldOfStudy
      **/
-
-    /**
-     * Get name
-     *
-     * @return name
-     **/
     @ApiModelProperty(value = "")
     public String getFieldOfStudy() {
         return fieldOfStudy;

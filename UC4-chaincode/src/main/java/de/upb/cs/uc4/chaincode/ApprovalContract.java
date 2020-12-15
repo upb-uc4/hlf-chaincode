@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.SubmissionResult;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;

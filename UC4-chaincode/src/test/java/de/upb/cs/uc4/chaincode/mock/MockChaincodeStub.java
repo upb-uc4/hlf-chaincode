@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode.mock;
 
 import de.upb.cs.uc4.chaincode.ApprovalContract;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;

@@ -1,8 +1,8 @@
 package de.upb.cs.uc4.chaincode.exceptions;
 
 public class MissingAccessRightsError extends RuntimeException {
-    private String contractName;
-    private String transactionName;
+    private final String contractName;
+    private final String transactionName;
 
     public MissingAccessRightsError(String contractName, String transactionName) {
         this.contractName = contractName;

@@ -8,13 +8,9 @@ import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateFactory;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -81,12 +77,5 @@ public class ApprovalContractUtil extends ContractUtil {
             invalidParams.add(getEmptyInvalidParameter("transactionName"));
         }
         return invalidParams;
-    }
-
-    public String getEnrollmentId(byte[] identity) throws CertificateException {
-        CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-        ByteArrayInputStream identityStream = new ByteArrayInputStream(identity);
-        X509Certificate certificate = (X509Certificate) certificateFactory.generateCertificate(identityStream);
-        return certificate.getSubjectDN().getName();
     }
 }

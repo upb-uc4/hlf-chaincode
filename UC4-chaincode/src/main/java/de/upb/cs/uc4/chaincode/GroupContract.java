@@ -12,10 +12,8 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Contract(
         name = "UC4.Group"
@@ -134,8 +132,6 @@ public class GroupContract extends ContractBase {
         }
 
         // check approval
-        List<String> requiredIds = Collections.singletonList(enrollmentId);
-        List<String> requiredTypes = Collections.singletonList("admin");
         // TODO re-enable approval validation
         /*if (!cUtil.validateApprovals(
                 stub,

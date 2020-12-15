@@ -2,7 +2,6 @@ package de.upb.cs.uc4.chaincode;
 
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
@@ -32,7 +31,6 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
-        List<String> ids = test.getIds();
 
         switch (testType) {
             case "getExaminationRegulations":

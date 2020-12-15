@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import org.hyperledger.fabric.contract.ClientIdentity;
