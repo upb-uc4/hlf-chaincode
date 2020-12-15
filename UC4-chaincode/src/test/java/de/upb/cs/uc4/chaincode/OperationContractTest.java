@@ -3,22 +3,22 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.util.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class ApprovalContractTest extends TestCreationBase {
+public final class OperationContractTest extends TestCreationBase {
 
-    private final ApprovalContract contract = new ApprovalContract();
-    private final ApprovalContractUtil cUtil = new ApprovalContractUtil();
+    private final OperationContract contract = new OperationContract();
+    private final OperationContractUtil cUtil = new OperationContractUtil();
 
     String getTestConfigDir() {
         return "src/test/resources/test_configs/approval_contract";
@@ -34,7 +34,7 @@ public final class ApprovalContractTest extends TestCreationBase {
 
         switch (testType) {
             case "getApprovals":
-                return DynamicTest.dynamicTest(testName, getApprovalsTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getOperationDataTest(setup, input, compare));
             case "approveTransaction_SUCCESS":
                 return DynamicTest.dynamicTest(test.getName(), approveTransactionSuccessTest(setup, input, compare, ids));
             case "approveTransaction_FAILURE":
@@ -44,7 +44,7 @@ public final class ApprovalContractTest extends TestCreationBase {
         }
     }
 
-    private Executable getApprovalsTest(
+    private Executable getOperationDataTest(
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
@@ -53,7 +53,7 @@ public final class ApprovalContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
-            String approvals = contract.getApprovals(ctx, contract(input), transaction(input), params(input));
+            String approvals = contract.getOperationData(ctx, operationId(input));
             assertThat(approvals).isEqualTo(compare.get(0));
         };
     }
@@ -68,13 +68,13 @@ public final class ApprovalContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             for (int i=0; i< ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
-                SubmissionResult compareResult = GsonWrapper.fromJson(compare.get(i), SubmissionResult.class);
-                SubmissionResult transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)), SubmissionResult.class);
+                OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
+                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)), OperationData.class);
                 assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
             }
             Context ctx = TestUtil.mockContext(stub);
             String key = cUtil.getDraftKey(contract(input), transaction(input), params(input));
-            ApprovalList compareApproval = GsonWrapper.fromJson(compare.get(compare.size()-1), SubmissionResult.class).getExistingApprovals();
+            ApprovalList compareApproval = GsonWrapper.fromJson(compare.get(compare.size()-1), OperationData.class).getExistingApprovals();
             ApprovalList ledgerApproval = cUtil.getState(ctx.getStub(), key, ApprovalList.class);
             assertThat(GsonWrapper.toJson(compareApproval)).isEqualTo(GsonWrapper.toJson(ledgerApproval)); // TODO remove serialization
         };
@@ -106,5 +106,9 @@ public final class ApprovalContractTest extends TestCreationBase {
 
     private String params(List<String> input) {
         return jsonListParams(input.subList(2, input.size()));
+    }
+
+    private String operationId(List<String> input) throws NoSuchAlgorithmException {
+        return OperationContractUtil.getDraftKey(contract(input), transaction(input), params(input));
     }
 }

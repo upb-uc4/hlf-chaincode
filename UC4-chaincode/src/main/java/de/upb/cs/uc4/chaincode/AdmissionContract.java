@@ -92,12 +92,8 @@ public class AdmissionContract extends ContractBase {
         }
 
         // check approval
-        List<String> requiredIds = Collections.singletonList(admission.getEnrollmentId());
-        List<String> requiredTypes = Collections.singletonList("admin");
         if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+                stub,
                 this.contractName,
                 "dropAdmission",
                 Collections.singletonList(admissionId))) {

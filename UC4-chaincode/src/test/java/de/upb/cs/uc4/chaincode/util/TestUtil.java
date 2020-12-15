@@ -49,4 +49,9 @@ public class TestUtil {
                                 entry -> String.valueOf(input.indexOf(entry)),
                                 entry -> entry.getContent().getBytes())));
     }
+
+    public static String jsonListParams(List<String> params) {
+        // TODO utilize gson for this
+        return "[" + params.stream().reduce((s1, s2) -> s1 + "," + s2).orElse("") + "]";
+    }
 }

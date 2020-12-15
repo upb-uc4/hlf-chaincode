@@ -57,14 +57,9 @@ public class GroupContract extends ContractBase {
             group.getUserList().add(enrollmentId);
         }
 
-        List<String> requiredIds = Collections.singletonList(enrollmentId);
-        List<String> requiredTypes = Collections.singletonList("admin");
-
         // TODO: approval Check!! I DO NOT KNOW IF I CAN JUST BUILD THE PARAMETER LIST LIKE THAT
         if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+                stub,
                 this.contractName,
                 "addUserToGroup",
                 Arrays.stream(new String[]{enrollmentId, groupId}).collect(Collectors.toList()))) {
@@ -107,12 +102,8 @@ public class GroupContract extends ContractBase {
         group.getUserList().remove(enrollmentId);
 
         // check approval
-        List<String> requiredIds = Collections.singletonList(enrollmentId);
-        List<String> requiredTypes = Collections.singletonList("admin");
         if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+                stub,
                 this.contractName,
                 "removeUserFromGroup",
                 Collections.singletonList(groupId))) {
@@ -142,12 +133,8 @@ public class GroupContract extends ContractBase {
         }
 
         // check approval
-        List<String> requiredIds = Collections.singletonList(enrollmentId);
-        List<String> requiredTypes = Collections.singletonList("admin");
         if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+                stub,
                 this.contractName,
                 "removeUserFromAllGroups",
                 Collections.singletonList(enrollmentId))) {

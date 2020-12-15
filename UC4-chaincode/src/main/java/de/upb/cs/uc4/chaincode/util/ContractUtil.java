@@ -9,7 +9,6 @@ import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
-import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
@@ -17,7 +16,6 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 abstract public class ContractUtil {
@@ -100,7 +98,7 @@ abstract public class ContractUtil {
         String jsonArgs = GsonWrapper.toJson(args);
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
 
-        ApprovalContractUtil aUtil = new ApprovalContractUtil();
+        OperationContractUtil aUtil = new OperationContractUtil();
         ApprovalList approvals;
         String key;
         try {
@@ -113,7 +111,7 @@ abstract public class ContractUtil {
         } catch(LedgerAccessError e) {
             return false;
         }
-        return ApprovalContractUtil.covers(approvals, requiredApprovals);
+        return OperationContractUtil.covers(approvals, requiredApprovals);
 
     }
 
