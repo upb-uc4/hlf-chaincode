@@ -83,7 +83,6 @@ public class SubjectMatriculation {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SubjectImmatriculationInterval {\n");
-
         sb.append("    fieldOfStudy: ").append(toIndentedString(fieldOfStudy)).append("\n");
         sb.append("    semesters: ").append(toIndentedString(semesters)).append("\n");
         sb.append("}");
@@ -102,4 +101,3 @@ public class SubjectMatriculation {
     }
 
 }
-
