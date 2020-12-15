@@ -13,6 +13,23 @@
 ## Usability
 - 
 
+# [v0.14.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.1...v0.14.2) (2020-12-15)
+
+## Feature
+- addMatriculationData now checks approvals
+- add groups to approvals
+- add submission result
+
+
+## Bugfix
+- 
+
+## Refactor
+- 
+
+## Usability
+- 
+
 # [v0.14.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.1...v0.14.1) (2020-12-15)
 
 ## Feature
