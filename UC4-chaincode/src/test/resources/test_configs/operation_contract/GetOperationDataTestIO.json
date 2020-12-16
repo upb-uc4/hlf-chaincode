@@ -1,0 +1,173 @@
+[
+  {
+    "name": "getOperationDataApproval",
+    "type": "getOperationData_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "admin"
+            ],
+            "groups": []
+          }
+        }
+      ]
+    },
+    "input": [
+      "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+    ],
+    "compare": [
+      {
+        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "transactionInfo": {
+          "contractName": "UC4.Certificate",
+          "transactionName": "addCertificate",
+          "parameters": "[\"0000001\",\"cert\"]"
+        },
+        "state": "FINISHED",
+        "reason": "",
+        "existingApprovals": {
+          "users": [],
+          "groups": []
+        },
+        "missingApprovals": {
+          "users": [
+            "admin"
+          ],
+          "groups": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "getOperationDataRejection",
+    "type": "getOperationData_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "state": "REJECTED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "admin"
+            ],
+            "groups": []
+          }
+        }
+      ]
+    },
+    "input": [
+      "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+    ],
+    "compare": [
+      {
+        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "transactionInfo": {
+          "contractName": "UC4.Certificate",
+          "transactionName": "addCertificate",
+          "parameters": "[\"0000001\",\"cert\"]"
+        },
+        "state": "REJECTED",
+        "reason": "",
+        "existingApprovals": {
+          "users": [],
+          "groups": []
+        },
+        "missingApprovals": {
+          "users": [
+            "admin"
+          ],
+          "groups": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "getOperationDataPending",
+    "type": "getOperationData_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "admin"
+            ],
+            "groups": []
+          }
+        }
+      ]
+    },
+    "input": [
+      "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+    ],
+    "compare": [
+      {
+        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "transactionInfo": {
+          "contractName": "UC4.Certificate",
+          "transactionName": "addCertificate",
+          "parameters": "[\"0000001\",\"cert\"]"
+        },
+        "state": "PENDING",
+        "reason": "",
+        "existingApprovals": {
+          "users": [],
+          "groups": []
+        },
+        "missingApprovals": {
+          "users": [
+            "admin"
+          ],
+          "groups": []
+        }
+      }
+    ]
+  }
+]

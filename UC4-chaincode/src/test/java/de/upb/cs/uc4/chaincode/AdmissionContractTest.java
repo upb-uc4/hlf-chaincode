@@ -107,7 +107,6 @@ public final class AdmissionContractTest extends TestCreationBase {
 
             List<Admission> ledgerState = cUtil.getAllStates(stub, Admission.class);
             assertThat(ledgerState).allMatch(item -> !(item.getAdmissionId().equals(input.get(0))));
-            // additionally check ledger state?
         };
     }
 

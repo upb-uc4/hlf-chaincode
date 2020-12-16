@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 
+import com.google.gson.Gson;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.util.OperationContractUtil;
@@ -21,7 +22,7 @@ public final class OperationContractTest extends TestCreationBase {
     private final OperationContractUtil cUtil = new OperationContractUtil();
 
     String getTestConfigDir() {
-        return "src/test/resources/test_configs/approval_contract";
+        return "src/test/resources/test_configs/operation_contract";
     }
 
     DynamicTest CreateTest(JsonIOTest test) {
@@ -33,18 +34,24 @@ public final class OperationContractTest extends TestCreationBase {
         List<String> ids = test.getIds();
 
         switch (testType) {
-            case "getApprovals":
-                return DynamicTest.dynamicTest(testName, getOperationDataTest(setup, input, compare));
+            case "getOperations":
+                return DynamicTest.dynamicTest(testName, getOperationsTest(setup, input, compare));
             case "approveTransaction_SUCCESS":
                 return DynamicTest.dynamicTest(test.getName(), approveTransactionSuccessTest(setup, input, compare, ids));
             case "approveTransaction_FAILURE":
                 return DynamicTest.dynamicTest(test.getName(), approveTransactionFailureTest(setup, input, compare, ids));
+            case "rejectTransaction_SUCCESS":
+                return DynamicTest.dynamicTest(test.getName(), rejectTransactionSuccessTest(setup, input, compare, ids));
+            case "rejectTransaction_FAILURE":
+                return DynamicTest.dynamicTest(test.getName(), rejectTransactionFailureTest(setup, input, compare, ids));
+            case "getOperationData_SUCCESS":
+                return DynamicTest.dynamicTest(test.getName(), getOperationDataSuccessTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
     }
 
-    private Executable getOperationDataTest(
+    private Executable getOperationsTest(
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
@@ -53,8 +60,8 @@ public final class OperationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
-            String approvals = contract.getOperationData(ctx, operationId(input));
-            assertThat(approvals).isEqualTo(compare.get(0));
+            String operations = contract.getOperations(ctx, input.get(0), input.get(1));
+            assertThat(operations).isEqualTo(compare.get(0));
         };
     }
 
@@ -93,6 +100,66 @@ public final class OperationContractTest extends TestCreationBase {
                 String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
                 assertThat(result).isEqualTo(s);
             }
+        };
+    }
+
+    private Executable rejectTransactionSuccessTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<String> ids
+    ) {
+        return () -> {
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            /*for (int i=0; i< ids.size(); i++) {
+                Context ctx = TestUtil.mockContext(stub, ids.get(i));
+                OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
+                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)), OperationData.class);
+                assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
+            }*/
+            Context ctx = TestUtil.mockContext(stub);
+            String rejectResult = contract.rejectTransaction(ctx, input.get(0), input.get(1));
+            String expectedState = OperationDataState.REJECTED.toString();
+            OperationData compareOperationData = GsonWrapper.fromJson(compare.get(compare.size()-1), OperationData.class);
+            OperationData ledgerOperationData = cUtil.getState(ctx.getStub(), compareOperationData.getOperationId(), OperationData.class);
+            assertThat(GsonWrapper.toJson(compareOperationData)).isEqualTo(GsonWrapper.toJson(ledgerOperationData));
+
+            assertThat(compareOperationData).isEqualTo(ledgerOperationData);
+            assertThat(GsonWrapper.toJson(compareOperationData)).isEqualTo(rejectResult);
+        };
+    }
+
+    private Executable rejectTransactionFailureTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<String> ids
+    ) {
+        return () -> {
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            /*for (String s : compare) {
+                Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
+                String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
+                assertThat(result).isEqualTo(s);
+            }*/
+            Context ctx = TestUtil.mockContext(stub);
+            String result = contract.rejectTransaction(ctx, input.get(0), input.get(1));
+            assertThat(result).isEqualTo(compare.get(0));
+        };
+    }
+
+    private Executable getOperationDataSuccessTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<String> ids
+    ) {
+        return () -> {
+            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            Context ctx = TestUtil.mockContext(stub);
+            String getResult = contract.getOperationData(ctx, input.get(0));
+            assertThat(getResult).isEqualTo(compare.get(0));
+            assertThat(GsonWrapper.fromJson(getResult, OperationData.class)).isEqualTo(GsonWrapper.fromJson(compare.get(0), OperationData.class));
         };
     }
 

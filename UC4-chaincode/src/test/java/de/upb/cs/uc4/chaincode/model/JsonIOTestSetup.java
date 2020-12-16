@@ -43,29 +43,29 @@ public class JsonIOTestSetup {
     this.admissionContract = admissionContract;
   }
 
-  @SerializedName("approvalContract")
-  private List<Dummy> approvalContract = null;
+  @SerializedName("operationContract")
+  private List<Dummy> operationContract = null;
 
-  public JsonIOTestSetup approvalContract(List<Dummy> approvalContract) {
-    this.approvalContract = approvalContract;
+  public JsonIOTestSetup operationContract(List<Dummy> operationContract) {
+    this.operationContract = operationContract;
     return this;
   }
 
-  public JsonIOTestSetup addApprovalContractItem(Dummy approvalContractItem) {
-    if (this.approvalContract == null) {
-      this.approvalContract = new ArrayList<Dummy>();
+  public JsonIOTestSetup addOperationContractItem(Dummy operationContractItem) {
+    if (this.operationContract == null) {
+      this.operationContract = new ArrayList<Dummy>();
     }
-    this.approvalContract.add(approvalContractItem);
+    this.operationContract.add(operationContractItem);
     return this;
   }
 
   @ApiModelProperty(value = "")
-  public List<Dummy> getApprovalContract() {
-    return approvalContract;
+  public List<Dummy> getOperationContract() {
+    return operationContract;
   }
 
-  public void setApprovalContract(List<Dummy> approvalContract) {
-    this.approvalContract = approvalContract;
+  public void setOperationContract(List<Dummy> operationContract) {
+    this.operationContract = operationContract;
   }
 
   @SerializedName("certificateContract")
@@ -179,7 +179,7 @@ public class JsonIOTestSetup {
       return false;
     }
     JsonIOTestSetup matriculationData = (JsonIOTestSetup) o;
-    return Objects.equals(this.approvalContract, matriculationData.approvalContract) &&
+    return Objects.equals(this.operationContract, matriculationData.operationContract) &&
             Objects.equals(this.certificateContract, matriculationData.certificateContract) &&
             Objects.equals(this.examinationRegulationContract, matriculationData.examinationRegulationContract) &&
             Objects.equals(this.matriculationDataContract, matriculationData.matriculationDataContract);
@@ -187,7 +187,7 @@ public class JsonIOTestSetup {
 
   @Override
   public int hashCode() {
-    return Objects.hash(approvalContract, certificateContract, examinationRegulationContract, matriculationDataContract);
+    return Objects.hash(operationContract, certificateContract, examinationRegulationContract, matriculationDataContract);
   }
 
 
@@ -196,7 +196,7 @@ public class JsonIOTestSetup {
     StringBuilder sb = new StringBuilder();
     sb.append("class JsonIOTestSetup {\n");
     
-    sb.append("    approvalContract: ").append(toIndentedString(approvalContract)).append("\n");
+    sb.append("    operationContract: ").append(toIndentedString(operationContract)).append("\n");
     sb.append("    certificateContract: ").append(toIndentedString(certificateContract)).append("\n");
     sb.append("    examinationRegulationContract: ").append(toIndentedString(examinationRegulationContract)).append("\n");
     sb.append("    matriculationDataContract: ").append(toIndentedString(matriculationDataContract)).append("\n");
@@ -217,7 +217,7 @@ public class JsonIOTestSetup {
 
   public void prepareStub(ChaincodeStub stub) {
     ContractUtil cUtil = new OperationContractUtil();
-    List<String> setup = TestUtil.toStringList(this.approvalContract);
+    List<String> setup = TestUtil.toStringList(this.operationContract);
     for (int i=0; i<setup.size(); i+=2) {
       cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i+1));
     }
