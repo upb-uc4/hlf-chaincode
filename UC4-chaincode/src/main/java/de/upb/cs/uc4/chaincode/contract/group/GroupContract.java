@@ -21,7 +21,7 @@ import java.util.List;
 public class GroupContract extends ContractBase {
     private final GroupContractUtil cUtil = new GroupContractUtil();
 
-    protected String contractName = "UC4.Group";
+    public String contractName = "UC4.Group";
 
     /**
      * Adds user to group.

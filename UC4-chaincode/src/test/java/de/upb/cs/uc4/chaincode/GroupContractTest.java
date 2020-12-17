@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
@@ -34,27 +35,27 @@ public final class GroupContractTest extends TestCreationBase {
 
         switch (testType) {
             case "addUserToGroup_SUCCESS":
-                return DynamicTest.dynamicTest(testName, addUserToGroupSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addUserToGroupSuccessTest(setup, input, compare, ids));
             case "addUserToGroup_FAILURE":
-                return DynamicTest.dynamicTest(testName, addUserToGroupFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addUserToGroupFailureTest(setup, input, compare, ids));
             case "removeUserFromGroup_SUCCESS":
-                return DynamicTest.dynamicTest(testName, removeUserFromGroupSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, removeUserFromGroupSuccessTest(setup, input, compare, ids));
             case "removeUserFromGroup_FAILURE":
-                return DynamicTest.dynamicTest(testName, removeUserFromGroupFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, removeUserFromGroupFailureTest(setup, input, compare, ids));
             case "removeUserFromAllGroups_SUCCESS":
-                return DynamicTest.dynamicTest(testName, removeUserFromAllGroupsSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, removeUserFromAllGroupsSuccessTest(setup, input, compare, ids));
             case "removeUserFromAllGroups_FAILURE":
-                return DynamicTest.dynamicTest(testName, removeUserFromAllGroupsFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, removeUserFromAllGroupsFailureTest(setup, input, compare, ids));
             case "getAllGroups_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getAllGroupsSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getAllGroupsSuccessTest(setup, input, compare, ids));
             case "getUsersForGroup_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getUsersForGroupSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getUsersForGroupSuccessTest(setup, input, compare, ids));
             case "getUsersForGroup_FAILURE":
-                return DynamicTest.dynamicTest(testName, getUsersForGroupFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getUsersForGroupFailureTest(setup, input, compare, ids));
             case "getGroupsForUser_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getGroupsForUserSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getGroupsForUserSuccessTest(setup, input, compare, ids));
             case "getGroupsForUser_FAILURE":
-                return DynamicTest.dynamicTest(testName, getGroupsForUserFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getGroupsForUserFailureTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -63,16 +64,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable addUserToGroupSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"addUserToGroup", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String addResult = contract.addUserToGroup(ctx, input.get(0), input.get(1));
             assertThat(addResult).isEqualTo("");
@@ -86,16 +87,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable addUserToGroupFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"addUserToGroup", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String result =  contract.addUserToGroup(ctx, input.get(0), input.get(1));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
@@ -107,16 +108,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable removeUserFromGroupSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"removeUserFromGroup", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
             assertThat(dropResult).isEqualTo("");
@@ -134,16 +135,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable removeUserFromGroupFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"removeUserFromGroup", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String result =  contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
@@ -154,16 +155,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable removeUserFromAllGroupsSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"removeUserFromAllGroups", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.removeUserFromAllGroups(ctx, input.get(0));
             assertThat(dropResult).isEqualTo("");
@@ -181,16 +182,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable removeUserFromAllGroupsFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"removeUserFromAllGroups", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String result =  contract.removeUserFromAllGroups(ctx, input.get(0));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
@@ -204,16 +205,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getAllGroupsSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"getAllGroups", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.getAllGroups(ctx);
             assertThat(dropResult).isEqualTo(compare.get(0));
@@ -224,16 +225,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getUsersForGroupSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"getUsersForGroup", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.getUsersForGroup(ctx, input.get(0));
             assertThat(dropResult).isEqualTo(compare.get(0));
@@ -244,16 +245,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getUsersForGroupFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"getUsersForGroup", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.getUsersForGroup(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -263,16 +264,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getGroupsForUserSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"getGroupsForUser", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.getGroupsForUser(ctx, input.get(0));
             assertThat(dropResult).isEqualTo(compare.get(0));
@@ -283,16 +284,16 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getGroupsForUserFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            /* TODO: approval handling
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
-            }*/
+                approvalContract.approveTransaction(ctx, contract.contractName,"getGroupsForUser", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String result =  contract.getGroupsForUser(ctx, input.get(0));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
