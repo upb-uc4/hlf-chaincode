@@ -1,8 +1,8 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
 import de.upb.cs.uc4.chaincode.model.Group;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -11,8 +11,6 @@ import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Contract(
@@ -35,12 +33,10 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String addUserToGroup(final Context ctx, String enrollmentId, String groupId) {
         ChaincodeStub stub = ctx.getStub();
-
-        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(enrollmentId);
-        invalidParams.addAll(cUtil.getParameterErrorsForGroupId(groupId));
-        invalidParams.addAll(cUtil.getSemanticErrorsForUserInGroup(stub, enrollmentId));
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        try {
+            cUtil.checkParamsAddUserToGroup(ctx, enrollmentId, groupId);
+        } catch (ParameterError e) {
+            return e.getJsonError();
         }
 
         Group group;
@@ -80,22 +76,17 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String removeUserFromGroup(final Context ctx, String enrollmentId, String groupId) {
         ChaincodeStub stub = ctx.getStub();
-
-        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(enrollmentId);
-        invalidParams.addAll(cUtil.getParameterErrorsForGroupId(groupId));
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        try {
+            cUtil.checkParamsRemoveUserFromGroup(ctx, enrollmentId, groupId);
+        } catch (ParameterError e) {
+            return e.getJsonError();
         }
 
-        Group group;
+        Group group = null;
         try {
             group = cUtil.getState(stub, groupId, Group.class);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
-        }
-
-        if (!(group.getUserList().contains(enrollmentId))) {
-            return GsonWrapper.toJson(cUtil.getUserNoRemoveError(enrollmentId, groupId));
         }
         group.getUserList().remove(enrollmentId);
 
@@ -126,9 +117,10 @@ public class GroupContract extends ContractBase {
     public String removeUserFromAllGroups(final Context ctx, String enrollmentId) {
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(enrollmentId);
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        try {
+            cUtil.checkParamsRemoveUserFromAllGroups(enrollmentId);
+        } catch (ParameterError e) {
+            return e.getJsonError();
         }
 
         // check approval
@@ -159,9 +151,7 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String getAllGroups(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
-
         List<Group> groupList = cUtil.getAllGroups(stub);
-
         return GsonWrapper.toJson(groupList);
     }
 
@@ -175,13 +165,13 @@ public class GroupContract extends ContractBase {
     public String getUsersForGroup(final Context ctx, String groupId) {
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForGroupId(groupId);
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        try {
+            cUtil.checkParamsGetUsersForGroup(ctx, groupId);
+        } catch (ParameterError e) {
+            return e.getJsonError();
         }
 
         List<String> userList;
-
         try {
             userList = cUtil.getUsersForGroup(stub, groupId);
         } catch (LedgerAccessError e) {
@@ -201,10 +191,10 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String getGroupsForUser(final Context ctx, String enrollmentId) {
         ChaincodeStub stub = ctx.getStub();
-
-        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForEnrollmentId(enrollmentId);
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        try {
+            cUtil.checkParamsGetGroupsForUser(enrollmentId);
+        } catch (ParameterError e) {
+            return e.getJsonError();
         }
 
         List<String> groupIdList = cUtil.getGroupNamesForUser(stub, enrollmentId);

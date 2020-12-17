@@ -1,10 +1,16 @@
 package de.upb.cs.uc4.chaincode.util;
 
+import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulationModule;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -98,5 +104,42 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
             }
         }
         return invalidParams;
+    }
+
+    public void checkParamsAddExaminationRegulation(Context ctx, String examinationRegulation) throws ParameterError {
+        ChaincodeStub stub = ctx.getStub();
+
+        ExaminationRegulation newExaminationRegulation;
+        try {
+            newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
+        } catch (Exception e) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableExaminationRegulationParam())));
+        }
+
+        HashSet<ExaminationRegulationModule> validModules = getValidModules(stub);
+        ArrayList<InvalidParameter> invalidParams = getErrorForExaminationRegulation(newExaminationRegulation, validModules);
+
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
+
+        String result = getStringState(stub, newExaminationRegulation.getName());
+        if (result != null && !result.equals("")) {
+            throw new ParameterError(GsonWrapper.toJson(getConflictError()));
+        }
+    }
+
+    public void checkParamsGetExaminationRegulations(String names) throws ParameterError {
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+        try {
+            GsonWrapper.fromJson(names, listType);
+        } catch (Exception e) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableNameListParam())));
+        }
+    }
+
+    public void checkParamsCloseExaminationRegulation(Context ctx, String name) throws LedgerAccessError {
+        ChaincodeStub stub = ctx.getStub();
+        getState(stub, name, ExaminationRegulation.class);
     }
 }

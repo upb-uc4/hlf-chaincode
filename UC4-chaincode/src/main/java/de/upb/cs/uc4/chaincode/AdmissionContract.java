@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
 import de.upb.cs.uc4.chaincode.model.Admission;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
@@ -31,29 +32,13 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
         ChaincodeStub stub = ctx.getStub();
-
-        Admission newAdmission;
         try {
-            newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
-            newAdmission.resetAdmissionId();
-        } catch (Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("admission")));
+            cUtil.checkParamsAddAdmission(ctx, admissionJson);
+        } catch (ParameterError e) {
+            return e.getJsonError();
         }
-
-        if (cUtil.keyExists(stub, newAdmission.getAdmissionId())) {
-            return GsonWrapper.toJson(cUtil.getConflictError());
-        }
-
-        ArrayList<InvalidParameter> invalidParams = cUtil.getParameterErrorsForAdmission(newAdmission);
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
-        }
-
-        // check for semantic errors
-        ArrayList<InvalidParameter> invalidParameters = cUtil.getSemanticErrorsForAdmission(stub, newAdmission);
-        if (!invalidParameters.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParameters));
-        }
+        Admission newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
+        newAdmission.resetAdmissionId();
 
         // TODO re-enable approval validation
         /*if (!cUtil.validateApprovals(
@@ -78,10 +63,8 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String dropAdmission(final Context ctx, String admissionId) {
         ChaincodeStub stub = ctx.getStub();
-
-        // check empty
         try {
-            cUtil.getState(stub, admissionId, Admission.class);
+            cUtil.checkParamsDropAdmission(ctx, admissionId);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
@@ -102,7 +85,6 @@ public class AdmissionContract extends ContractBase {
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
-
         // success
         return "";
     }

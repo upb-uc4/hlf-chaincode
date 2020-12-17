@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulationModule;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -33,28 +34,13 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String addExaminationRegulation(final Context ctx, final String examinationRegulation) {
-
         ChaincodeStub stub = ctx.getStub();
-
-        ExaminationRegulation newExaminationRegulation;
         try {
-            newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
-        } catch (Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableExaminationRegulationParam()));
+            cUtil.checkParamsAddExaminationRegulation(ctx, examinationRegulation);
+        } catch (ParameterError e) {
+            return e.getJsonError();
         }
-
-        HashSet<ExaminationRegulationModule> validModules = cUtil.getValidModules(stub);
-        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForExaminationRegulation(newExaminationRegulation, validModules);
-
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
-        }
-
-        String result = cUtil.getStringState(stub, newExaminationRegulation.getName());
-        if (result != null && !result.equals("")) {
-            return GsonWrapper.toJson(cUtil.getConflictError());
-        }
-
+        ExaminationRegulation newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
         return cUtil.putAndGetStringState(stub, newExaminationRegulation.getName(), GsonWrapper.toJson(newExaminationRegulation));
     }
 
@@ -67,12 +53,14 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String getExaminationRegulations(final Context ctx, final String names) {
-
         ChaincodeStub stub = ctx.getStub();
-
+        try {
+            cUtil.checkParamsGetExaminationRegulations(names);
+        } catch (ParameterError e) {
+            return e.getJsonError();
+        }
         ArrayList<String> nameList;
-        Type listType = new TypeToken<ArrayList<String>>() {
-        }.getType();
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         try {
             nameList = GsonWrapper.fromJson(names, listType);
         } catch (Exception e) {
@@ -111,9 +99,12 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String closeExaminationRegulation(final Context ctx, final String name) {
-
         ChaincodeStub stub = ctx.getStub();
-
+        try {
+            cUtil.checkParamsCloseExaminationRegulation(ctx, name);
+        } catch (LedgerAccessError e) {
+            return e.getJsonError();
+        }
         ExaminationRegulation regulation;
         try {
             regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
