@@ -1,9 +1,8 @@
 package de.upb.cs.uc4.chaincode.contract.approval;
 
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.MissingTransactionError;
-import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;

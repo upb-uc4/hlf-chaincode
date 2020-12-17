@@ -1,6 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract.certificate;
 
-import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;

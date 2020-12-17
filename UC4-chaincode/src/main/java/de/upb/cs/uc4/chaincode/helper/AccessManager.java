@@ -2,7 +2,7 @@ package de.upb.cs.uc4.chaincode.helper;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
-import de.upb.cs.uc4.chaincode.exceptions.MissingTransactionError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 

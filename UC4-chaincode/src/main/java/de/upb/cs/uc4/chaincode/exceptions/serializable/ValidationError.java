@@ -1,4 +1,6 @@
-package de.upb.cs.uc4.chaincode.exceptions;
+package de.upb.cs.uc4.chaincode.exceptions.serializable;
+
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 
 public class ValidationError extends SerializableError {
 

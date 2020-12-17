@@ -1,4 +1,6 @@
-package de.upb.cs.uc4.chaincode.exceptions;
+package de.upb.cs.uc4.chaincode.exceptions.serializable.parameter;
+
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 
 public class MissingTransactionError extends ParameterError {
 
