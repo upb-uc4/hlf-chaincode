@@ -12,6 +12,7 @@ import org.hyperledger.fabric.contract.annotation.Default;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Contract(
@@ -53,12 +54,10 @@ public class GroupContract extends ContractBase {
         }
 
         // TODO re-enable approval validation
-        /*if (!cUtil.validateApprovals(
-                stub,
-                this.contractName,
-                "addUserToGroup",
-                new ArrayList<String>() {{add(enrollmentId);add(groupId);}})) {
-            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
+        /*try {
+            cUtil.validateApprovals(stub, this.contractName, "addUserToGroup", new ArrayList<String>() {{add(enrollmentId);add(groupId);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }*/
 
         cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
@@ -93,12 +92,10 @@ public class GroupContract extends ContractBase {
 
         // check approval
         // TODO re-enable approval validation
-        /*if (!cUtil.validateApprovals(
-                stub,
-                this.contractName,
-                "removeUserFromGroup",
-                new ArrayList<String>() {{add(enrollmentId);add(groupId);}})) {
-            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
+        /*try {
+            cUtil.validateApprovals(stub, this.contractName, "removeUserFromGroup", new ArrayList<String>() {{add(enrollmentId);add(groupId);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }*/
 
         cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
@@ -125,12 +122,10 @@ public class GroupContract extends ContractBase {
         ChaincodeStub stub = ctx.getStub();
         // check approval
         // TODO re-enable approval validation
-        /*if (!cUtil.validateApprovals(
-                stub,
-                this.contractName,
-                "removeUserFromAllGroups",
-                Collections.singletonList(enrollmentId))) {
-            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
+        /*try {
+            cUtil.validateApprovals(stub, this.contractName, "removeUserFromAllGroups", new ArrayList<String>() {{add(enrollmentId);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }*/
 
         cUtil.getGroupsForUser(stub, enrollmentId).forEach(item -> {

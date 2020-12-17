@@ -36,7 +36,7 @@ public class AccessManager {
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
-            case "Uc4.Goup":
+            case "UC4.Group":
                 switch (transactionName) {
                     case "addUserToGroup":
                         return getRequiredApprovalsForAddUserToGroup(paramList);
