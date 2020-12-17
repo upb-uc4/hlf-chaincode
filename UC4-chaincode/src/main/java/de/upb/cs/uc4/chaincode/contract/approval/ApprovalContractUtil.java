@@ -1,10 +1,13 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode.contract.approval;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
+import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -37,12 +40,6 @@ public class ApprovalContractUtil extends ContractUtil {
         return missingApprovals;
     }
 
-    public GenericError getInternalError() {
-        return new GenericError()
-                .type("HLInternalError")
-                .title("SHA-256 apparently does not exist lol...");
-    }
-
     public String getDraftKey(final String contractName, final String transactionName, final String params) throws NoSuchAlgorithmException {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params;
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -66,6 +63,18 @@ public class ApprovalContractUtil extends ContractUtil {
         }
         putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
         return approvalList;
+    }
+
+    public DetailedError getContractUnprocessableError(String parameterName) {
+        return getUnprocessableEntityError(new InvalidParameter()
+                .name("contractName")
+                .reason("The given contract does not exist"));
+    }
+
+    public DetailedError getTransactionUnprocessableError(String parameterName) {
+        return getUnprocessableEntityError(new InvalidParameter()
+                .name("transactionName")
+                .reason("The given transaction does not exist"));
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {

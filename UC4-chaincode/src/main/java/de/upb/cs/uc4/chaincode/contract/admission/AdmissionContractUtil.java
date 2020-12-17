@@ -1,10 +1,13 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode.contract.admission;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
+import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 

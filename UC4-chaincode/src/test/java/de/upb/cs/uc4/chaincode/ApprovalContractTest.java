@@ -1,11 +1,12 @@
 package de.upb.cs.uc4.chaincode;
 
 
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;

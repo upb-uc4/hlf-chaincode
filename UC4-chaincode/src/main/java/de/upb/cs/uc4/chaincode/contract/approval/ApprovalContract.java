@@ -1,12 +1,16 @@
-package de.upb.cs.uc4.chaincode;
+package de.upb.cs.uc4.chaincode.contract.approval;
 
+import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.MissingTransactionError;
+import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.SubmissionResult;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
-import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.AccessManager;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -30,10 +34,10 @@ public class ApprovalContract extends ContractBase {
      */
     @Transaction()
     public String approveTransaction(final Context ctx, final String contractName, final String transactionName, final String params) {
-        // TODO check if params is json list of params
-        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+        try {
+            ValidationManager.validateParams(ctx, contractName, transactionName, params);
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }
 
         String key;
@@ -43,7 +47,12 @@ public class ApprovalContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
         ApprovalList existingApprovals = cUtil.addApproval(ctx, key);
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
+        ApprovalList requiredApprovals = null;
+        try {
+            requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
+        } catch (MissingTransactionError e) {
+            return e.getJsonError();
+        }
 
         ApprovalList missingApprovals = ApprovalContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
         SubmissionResult result = new SubmissionResult()
@@ -75,7 +84,12 @@ public class ApprovalContract extends ContractBase {
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
+        ApprovalList requiredApprovals = null;
+        try {
+            requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
+        } catch (MissingTransactionError e) {
+            return e.getJsonError();
+        }
         ApprovalList missingApprovals = ApprovalContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
         SubmissionResult result = new SubmissionResult()
                 .operationId(key)

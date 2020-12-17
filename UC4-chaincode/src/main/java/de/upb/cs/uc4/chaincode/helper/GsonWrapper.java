@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.util.helper;
+package de.upb.cs.uc4.chaincode.helper;
 
 import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Dummy;

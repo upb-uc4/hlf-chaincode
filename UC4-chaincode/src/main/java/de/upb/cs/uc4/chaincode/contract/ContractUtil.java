@@ -1,14 +1,13 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode.contract;
 
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
-import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.exceptions.*;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.AccessManager;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
@@ -89,14 +88,20 @@ abstract public class ContractUtil {
         return getEmptyInvalidParameter(prefix + "enrollmentId");
     }
 
+    public GenericError getInternalError() {
+        return new GenericError()
+                .type("HLInternalError")
+                .title("SHA-256 apparently does not exist lol...");
+    }
 
-    public boolean validateApprovals(
+
+    public void validateApprovals(
             final ChaincodeStub stub,
             String contractName,
             String transactionName,
-            final List<String> args) {
+            final List<String> args) throws SerializableError {
         String jsonArgs = GsonWrapper.toJson(args);
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
+        ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
 
         ApprovalContractUtil aUtil = new ApprovalContractUtil();
         ApprovalList approvals;
@@ -104,14 +109,12 @@ abstract public class ContractUtil {
         try {
             key = aUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
-            return false;
+            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
-        try{
-            approvals = aUtil.getState(stub, key, ApprovalList.class);
-        } catch(LedgerAccessError e) {
-            return false;
+        approvals = aUtil.getState(stub, key, ApprovalList.class);
+        if (!ApprovalContractUtil.covers(requiredApprovals, approvals)) {
+            throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
-        return ApprovalContractUtil.covers(requiredApprovals, approvals);
 
     }
 

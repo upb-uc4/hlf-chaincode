@@ -1,7 +1,8 @@
-package de.upb.cs.uc4.chaincode.util.helper;
+package de.upb.cs.uc4.chaincode.helper;
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.exceptions.MissingAccessRightsError;
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.exceptions.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 
@@ -10,9 +11,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccessManager {
+    private static ApprovalContractUtil approvalUtil = new ApprovalContractUtil();
+
     static final String ADMIN = "admin";
 
-    public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) {
+    public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) throws MissingTransactionError {
         Type listType = new TypeToken<ArrayList<String>>() {
         }.getType();
         List<String> paramList = GsonWrapper.fromJson(params, listType);
@@ -22,7 +25,7 @@ public class AccessManager {
                     case "addMatriculationData":
                         return getRequiredApprovalsForAddMatriculationData(paramList);
                     default:
-                        throw new MissingAccessRightsError(contractName, transactionName);
+                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
             case "UC4.Admission":
                 switch (transactionName) {
@@ -31,7 +34,7 @@ public class AccessManager {
                     case "dropAdmission":
                         return getRequiredApprovalsForDropAdmission(paramList);
                     default:
-                        throw new MissingAccessRightsError(contractName, transactionName);
+                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
             case "Uc4.Goup":
                 switch (transactionName) {
@@ -42,10 +45,10 @@ public class AccessManager {
                     case "removeUserFromAllGroups":
                         return getRequiredApprovalsForRemoveUserFromAllGroups(paramList);
                     default:
-                        throw new MissingAccessRightsError(contractName, transactionName);
+                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
             default:
-                throw new MissingAccessRightsError(contractName, "");
+                throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(contractName)));
         }
     }
 

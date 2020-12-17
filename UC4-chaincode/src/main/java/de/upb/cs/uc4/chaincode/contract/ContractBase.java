@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode;
+package de.upb.cs.uc4.chaincode.contract;
 
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.ContractInterface;

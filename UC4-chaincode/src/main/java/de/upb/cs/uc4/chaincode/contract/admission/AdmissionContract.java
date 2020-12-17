@@ -1,17 +1,15 @@
-package de.upb.cs.uc4.chaincode;
+package de.upb.cs.uc4.chaincode.contract.admission;
 
+import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.ParameterError;
 import de.upb.cs.uc4.chaincode.model.Admission;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Contract(
@@ -20,7 +18,7 @@ import java.util.List;
 public class AdmissionContract extends ContractBase {
     private final AdmissionContractUtil cUtil = new AdmissionContractUtil();
 
-    protected final String contractName = "UC4.Admission";
+    public final String contractName = "UC4.Admission";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -31,12 +29,13 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
-        ChaincodeStub stub = ctx.getStub();
         try {
             cUtil.checkParamsAddAdmission(ctx, admissionJson);
         } catch (ParameterError e) {
             return e.getJsonError();
         }
+
+        ChaincodeStub stub = ctx.getStub();
         Admission newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
         newAdmission.resetAdmissionId();
 
@@ -62,13 +61,13 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String dropAdmission(final Context ctx, String admissionId) {
-        ChaincodeStub stub = ctx.getStub();
         try {
             cUtil.checkParamsDropAdmission(ctx, admissionId);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
 
+        ChaincodeStub stub = ctx.getStub();
         // check approval
         // TODO re-enable approval validation
         /*if (!cUtil.validateApprovals(
@@ -99,7 +98,6 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String getAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
         ChaincodeStub stub = ctx.getStub();
-
         List<Admission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
         return GsonWrapper.toJson(admissions);
     }
