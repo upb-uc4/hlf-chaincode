@@ -46,7 +46,7 @@ public class ApprovalContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
         ApprovalList existingApprovals = cUtil.addApproval(ctx, key);
-        ApprovalList requiredApprovals = null;
+        ApprovalList requiredApprovals;
         try {
             requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
         } catch (MissingTransactionError e) {

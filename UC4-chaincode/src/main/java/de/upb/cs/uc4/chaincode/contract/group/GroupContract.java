@@ -13,6 +13,7 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Contract(
@@ -53,12 +54,11 @@ public class GroupContract extends ContractBase {
             group.getUserList().add(enrollmentId);
         }
 
-        // TODO re-enable approval validation
-        /*try {
+        try {
             cUtil.validateApprovals(stub, this.contractName, "addUserToGroup", new ArrayList<String>() {{add(enrollmentId);add(groupId);}});
         } catch (SerializableError e) {
             return e.getJsonError();
-        }*/
+        }
 
         cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
 
@@ -90,13 +90,11 @@ public class GroupContract extends ContractBase {
         }
         group.getUserList().remove(enrollmentId);
 
-        // check approval
-        // TODO re-enable approval validation
-        /*try {
+        try {
             cUtil.validateApprovals(stub, this.contractName, "removeUserFromGroup", new ArrayList<String>() {{add(enrollmentId);add(groupId);}});
         } catch (SerializableError e) {
             return e.getJsonError();
-        }*/
+        }
 
         cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
 
@@ -120,13 +118,11 @@ public class GroupContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
-        // check approval
-        // TODO re-enable approval validation
-        /*try {
-            cUtil.validateApprovals(stub, this.contractName, "removeUserFromAllGroups", new ArrayList<String>() {{add(enrollmentId);}});
+        try {
+            cUtil.validateApprovals(stub, this.contractName, "removeUserFromAllGroups", Collections.singletonList(enrollmentId));
         } catch (SerializableError e) {
             return e.getJsonError();
-        }*/
+        }
 
         cUtil.getGroupsForUser(stub, enrollmentId).forEach(item -> {
             item.getUserList().remove(enrollmentId);
@@ -146,6 +142,11 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String getAllGroups(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName, "getAllGroups", new ArrayList<>());
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         List<Group> groupList = cUtil.getAllGroups(stub);
         return GsonWrapper.toJson(groupList);
     }
@@ -165,6 +166,11 @@ public class GroupContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName, "getUsersForGroup", Collections.singletonList(groupId));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         List<String> userList;
         try {
             userList = cUtil.getUsersForGroup(stub, groupId);
@@ -191,6 +197,11 @@ public class GroupContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName, "getGroupsForUser", Collections.singletonList(enrollmentId));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         List<String> groupIdList = cUtil.getGroupNamesForUser(stub, enrollmentId);
 
         return GsonWrapper.toJson(groupIdList);

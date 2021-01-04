@@ -24,6 +24,12 @@ public class AccessManager {
                 switch (transactionName) {
                     case "addMatriculationData":
                         return getRequiredApprovalsForAddMatriculationData(paramList);
+                    case "updateMatriculationData":
+                        return getRequiredApprovalsForUpdateMatriculationData(paramList);
+                    case "getMatriculationData":
+                        return getRequiredApprovalsForGetMatriculationData(paramList);
+                    case "addEntriesToMatriculationData":
+                        return getRequiredApprovalsForAddEntriesToMatriculationData(paramList);
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -33,6 +39,8 @@ public class AccessManager {
                         return getRequiredApprovalsForAddAdmission(paramList);
                     case "dropAdmission":
                         return getRequiredApprovalsForDropAdmission(paramList);
+                    case "getAdmissions":
+                        return getRequiredApprovalsForGetAdmissions(paramList);
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -44,6 +52,34 @@ public class AccessManager {
                         return getRequiredApprovalsForRemoveUserFromGroup(paramList);
                     case "removeUserFromAllGroups":
                         return getRequiredApprovalsForRemoveUserFromAllGroups(paramList);
+                    case "getAllGroups":
+                        return getRequiredApprovalsForGetAllGroups(paramList);
+                    case "getUsersForGroup":
+                        return getRequiredApprovalsForGetUsersForGroup(paramList);
+                    case "getGroupsForUser":
+                        return getRequiredApprovalsForGetGroupsForUser(paramList);
+                    default:
+                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                }
+            case "UC4.Certificate":
+                switch (transactionName) {
+                    case "addCertificate":
+                        return getRequiredApprovalsForAddCertificate(paramList);
+                    case "updateCertificate":
+                        return getRequiredApprovalsForUpdateCertificate(paramList);
+                    case "getCertificate":
+                        return getRequiredApprovalsForGetCertificate(paramList);
+                    default:
+                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                }
+            case "ExaminationRegulation":
+                switch (transactionName) {
+                    case "addExaminationRegulation":
+                        return getRequiredApprovalsForAddExaminationRegulation(paramList);
+                    case "getExaminationRegulations":
+                        return getRequiredApprovalsForGetExaminationRegulations(paramList);
+                    case "closeExaminationRegulation":
+                        return getRequiredApprovalsForCloseExaminationRegulation(paramList);
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -57,6 +93,21 @@ public class AccessManager {
         return new ApprovalList()
                 .addUsersItem(matriculationData.getEnrollmentId())
                 .addGroupsItem(ADMIN);
+    }
+
+    private static ApprovalList getRequiredApprovalsForUpdateMatriculationData(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetMatriculationData(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForAddEntriesToMatriculationData(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
     }
 
     private static ApprovalList getRequiredApprovalsForAddAdmission(List<String> params) {
@@ -74,6 +125,11 @@ public class AccessManager {
         // TODO only check admin?
         /*return new ApprovalList()
                 .addGroupsItem(ADMIN);*/
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetAdmissions(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
     }
 
     private static ApprovalList getRequiredApprovalsForAddUserToGroup(List<String> params) {
@@ -97,5 +153,50 @@ public class AccessManager {
         // TODO only check admin?
         /*return new ApprovalList()
                 .addGroupsItem(ADMIN);*/
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetAllGroups(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetUsersForGroup(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetGroupsForUser(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForAddCertificate(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForUpdateCertificate(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetCertificate(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForAddExaminationRegulation(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetExaminationRegulations(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
+    }
+
+    private static ApprovalList getRequiredApprovalsForCloseExaminationRegulation(List<String> params) {
+        // TODO fill with required approvals
+        return new ApprovalList();
     }
 }

@@ -67,6 +67,11 @@ public class MatriculationDataContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "updateMatriculationData", Collections.singletonList(matriculationData));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         MatriculationData newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
         return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));
     }
@@ -87,7 +92,12 @@ public class MatriculationDataContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
-        MatriculationData matriculationData = null;
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "getMatriculationData", Collections.singletonList(enrollmentId));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+        MatriculationData matriculationData;
         try {
             matriculationData = cUtil.getState(stub, enrollmentId, MatriculationData.class);
         } catch (LedgerAccessError e) {
@@ -116,6 +126,11 @@ public class MatriculationDataContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "addEntriesToMatriculationData", new ArrayList<String>() {{add(enrollmentId); add(matriculations);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         Type listType = new TypeToken<ArrayList<SubjectMatriculation>>() {}.getType();
         ArrayList<SubjectMatriculation> matriculationStatus;
         matriculationStatus = GsonWrapper.fromJson(matriculations, listType);

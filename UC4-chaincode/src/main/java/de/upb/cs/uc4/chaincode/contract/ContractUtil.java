@@ -106,16 +106,18 @@ abstract public class ContractUtil {
             final List<String> args) throws SerializableError {
         String jsonArgs = GsonWrapper.toJson(args);
         ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
+        if (requiredApprovals.isEmpty()) {
+            return;
+        }
 
         ApprovalContractUtil aUtil = new ApprovalContractUtil();
-        ApprovalList approvals;
         String key;
         try {
             key = aUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
             throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
-        approvals = aUtil.getState(stub, key, ApprovalList.class);
+        ApprovalList approvals = aUtil.getState(stub, key, ApprovalList.class);
         if (!ApprovalContractUtil.covers(requiredApprovals, approvals)) {
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }

@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode.contract.admission;
 
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.Admission;
@@ -10,6 +11,8 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Contract(
@@ -39,14 +42,11 @@ public class AdmissionContract extends ContractBase {
         Admission newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
         newAdmission.resetAdmissionId();
 
-        // TODO re-enable approval validation
-        /*if (!cUtil.validateApprovals(
-                stub,
-                this.contractName,
-                "addAdmission",
-                Collections.singletonList(admissionJson))) {
-            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
-        }*/
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "addAdmission", Collections.singletonList(admissionJson));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
 
         // TODO: can we create a composite key of all inputs to improve reading performance for get...forUser/Module/Course
         return cUtil.putAndGetStringState(stub, newAdmission.getAdmissionId(), GsonWrapper.toJson(newAdmission));
@@ -68,15 +68,11 @@ public class AdmissionContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
-        // check approval
-        // TODO re-enable approval validation
-        /*if (!cUtil.validateApprovals(
-                stub,
-                this.contractName,
-                "dropAdmission",
-                Collections.singletonList(admissionId))) {
-            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
-        }*/
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "dropAdmission", Collections.singletonList(admissionId));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
 
         // perform delete
         try {
@@ -98,6 +94,11 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String getAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "getAdmissions", new ArrayList<String>() {{add(enrollmentId);add(courseId);add(moduleId);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         List<Admission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
         return GsonWrapper.toJson(admissions);
     }
