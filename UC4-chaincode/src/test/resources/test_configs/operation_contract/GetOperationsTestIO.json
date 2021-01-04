@@ -18,7 +18,7 @@
           "state": "FINISHED",
           "reason": "",
           "existingApprovals": {
-            "users": [],
+            "users": ["User1"],
             "groups": []
           },
           "missingApprovals": {
@@ -31,10 +31,10 @@
       ]
     },
     "input": [
-      "0000001",
+      "User1",
       "FINISHED"
     ],
-    "compare": [
+    "compare": [[
       {
         "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         "transactionInfo": {
@@ -45,7 +45,7 @@
         "state": "FINISHED",
         "reason": "",
         "existingApprovals": {
-          "users": ["admin"],
+          "users": ["User1"],
           "groups": []
         },
         "missingApprovals": {
@@ -55,6 +55,6 @@
           "groups": []
         }
       }
-    ]
+    ]]
   }
 ]

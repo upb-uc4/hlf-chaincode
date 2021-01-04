@@ -79,11 +79,6 @@ public final class OperationContractTest extends TestCreationBase {
                 OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)), OperationData.class);
                 assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
             }
-            Context ctx = TestUtil.mockContext(stub);
-            String key = cUtil.getDraftKey(contract(input), transaction(input), params(input));
-            ApprovalList compareApproval = GsonWrapper.fromJson(compare.get(compare.size()-1), OperationData.class).getExistingApprovals();
-            ApprovalList ledgerApproval = cUtil.getState(ctx.getStub(), key, ApprovalList.class);
-            assertThat(GsonWrapper.toJson(compareApproval)).isEqualTo(GsonWrapper.toJson(ledgerApproval)); // TODO remove serialization
         };
     }
 

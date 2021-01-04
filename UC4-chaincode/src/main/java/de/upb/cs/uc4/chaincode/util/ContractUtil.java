@@ -111,7 +111,7 @@ abstract public class ContractUtil {
         } catch(LedgerAccessError e) {
             return false;
         }
-        return OperationContractUtil.covers(approvals, requiredApprovals);
+        return OperationContractUtil.covers(requiredApprovals, approvals);
 
     }
 

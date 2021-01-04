@@ -28,6 +28,7 @@ public final class MatriculationDataContractTest extends TestCreationBase{
     DynamicTest CreateTest(JsonIOTest test) {
         String testType = test.getType();
         String testName = test.getName();
+        System.out.println(testName);
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
@@ -80,7 +81,7 @@ public final class MatriculationDataContractTest extends TestCreationBase{
             OperationContract operationContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
+                operationContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
 

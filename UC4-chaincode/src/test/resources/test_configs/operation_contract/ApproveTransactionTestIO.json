@@ -40,6 +40,13 @@
     "compare": [
       {
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "state": "PENDING",
+        "reason": "",
         "existingApprovals": {
           "users": [
             "User1"
@@ -64,16 +71,25 @@
       "User1"
     ],
     "setup": {
-      "approvalContract": [
+      "operationContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
-          "users": [
-            "User2",
-            "User3"
-          ],
-          "groups": [
-            "some-group"
-          ]
+          "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": ["User2", "User3"],
+            "groups": ["some-group"]
+          },
+          "missingApprovals": {
+            "users": [            ],
+            "groups": []
+          }
         }
       ],
       "groupContract": [
@@ -102,6 +118,13 @@
     "compare": [
       {
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "state": "PENDING",
+        "reason": "",
         "existingApprovals": {
           "users": [
             "User2",
@@ -129,16 +152,25 @@
       "User1"
     ],
     "setup": {
-      "approvalContract": [
+      "operationContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
-          "users": [
-            "User1",
-            "User2"
-          ],
-          "groups": [
-            "admin"
-          ]
+          "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": ["User1", "User2"],
+            "groups": ["admin"]
+          },
+          "missingApprovals": {
+            "users": [            ],
+            "groups": []
+          }
         }
       ],
       "groupContract": [
@@ -167,6 +199,13 @@
     "compare": [
       {
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "state": "PENDING",
+        "reason": "",
         "existingApprovals": {
           "users": [
             "User1",
@@ -286,6 +325,13 @@
     "compare": [
       {
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "state": "PENDING",
+        "reason": "",
         "existingApprovals": {
           "users": [
             "User1"

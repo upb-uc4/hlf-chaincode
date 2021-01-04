@@ -77,7 +77,7 @@ public class OperationContractUtil extends ContractUtil {
         List<String> clientGroups = groupContractUtil.getGroupNamesForUser(stub, clientId);
         ApprovalList approvalList;
         try {
-            approvalList = getState(stub, key, ApprovalList.class);
+            approvalList = getState(stub, key, OperationData.class).getExistingApprovals();
         } catch (LedgerAccessError e) {
             approvalList = new ApprovalList();
         }
