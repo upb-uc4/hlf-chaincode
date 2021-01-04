@@ -27,15 +27,15 @@ public class OperationContractUtil extends ContractUtil {
         identifier = "operation";
     }
 
-    public String getUserRejectionMessage(String message){
+    public String getUserRejectionMessage(String message) {
         return "A User denied with the following message: " + message;
     }
 
-    public String getSystemDetailedRejectionMessage(DetailedError error){
+    public String getSystemDetailedRejectionMessage(DetailedError error) {
         return "The Transaction failed with an error of type: " + error.getType();
     }
 
-    public String getSystemGenericRejectionMessage(GenericError error){
+    public String getSystemGenericRejectionMessage(GenericError error) {
         return "The Transaction failed with an error of type: " + error.getType();
     }
 

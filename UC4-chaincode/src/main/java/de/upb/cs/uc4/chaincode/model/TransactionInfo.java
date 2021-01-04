@@ -39,17 +39,17 @@ public class TransactionInfo {
         this.parameters = parameters;
     }
 
-    public TransactionInfo contractName(String contractName){
+    public TransactionInfo contractName(String contractName) {
         this.contractName = contractName;
         return this;
     }
 
-    public TransactionInfo transactionName(String transactionName){
+    public TransactionInfo transactionName(String transactionName) {
         this.transactionName = transactionName;
         return this;
     }
 
-    public TransactionInfo parameters(String parameters){
+    public TransactionInfo parameters(String parameters) {
         this.parameters = parameters;
         return this;
     }

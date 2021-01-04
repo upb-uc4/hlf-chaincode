@@ -11,11 +11,12 @@ import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
+
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public final class MatriculationDataContractTest extends TestCreationBase{
+public final class MatriculationDataContractTest extends TestCreationBase {
 
     private final MatriculationDataContract contract = new MatriculationDataContract();
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
@@ -79,9 +80,10 @@ public final class MatriculationDataContractTest extends TestCreationBase{
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             OperationContract operationContract = new OperationContract();
-            for (String id: ids) {
+            for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                operationContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
+                operationContract.approveTransaction(ctx, contract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
+
             }
             Context ctx = TestUtil.mockContext(stub);
 

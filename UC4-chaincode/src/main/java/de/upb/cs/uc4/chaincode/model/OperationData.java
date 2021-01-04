@@ -47,17 +47,17 @@ public class OperationData {
         this.transactionInfo = transactionInfo;
     }
 
-    public OperationData transactionInfo(TransactionInfo transactionInfo)  {
+    public OperationData transactionInfo(TransactionInfo transactionInfo) {
         this.transactionInfo = transactionInfo;
         return this;
     }
 
-    public OperationData state(OperationDataState state)  {
+    public OperationData state(OperationDataState state) {
         this.state = state;
         return this;
     }
 
-    public OperationData reason(String reason)  {
+    public OperationData reason(String reason) {
         this.reason = reason;
         return this;
     }

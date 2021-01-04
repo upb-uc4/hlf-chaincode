@@ -6,13 +6,13 @@
       "approvalContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
-            "users": [
-              "User1",
-              "User2"
-            ],
-            "groups": [
-              "admin"
-            ]
+          "users": [
+            "User1",
+            "User2"
+          ],
+          "groups": [
+            "admin"
+          ]
         }
       ]
     },
@@ -50,8 +50,6 @@
       }
     ]
   },
-
-
   {
     "name": "queryNonExistingApprovals",
     "type": "getApprovals",
@@ -78,8 +76,6 @@
       }
     ]
   },
-
-
   {
     "name": "queryInvalidLedgerStateApprovals",
     "type": "getApprovals",
@@ -111,8 +107,6 @@
       }
     ]
   },
-
-
   {
     "name": "queryEmptyContractNameCertificate",
     "type": "getApprovals",
@@ -145,8 +139,6 @@
       }
     ]
   },
-
-
   {
     "name": "queryEmptyTransactionNameCertificate",
     "type": "getApprovals",

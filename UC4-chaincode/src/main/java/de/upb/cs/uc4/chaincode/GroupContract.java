@@ -57,6 +57,7 @@ public class GroupContract extends ContractBase {
 
         // TODO re-enable approval validation
         /*if (!cUtil.validateApprovals(
+
                 stub,
                 this.contractName,
                 "addUserToGroup",
@@ -100,8 +101,10 @@ public class GroupContract extends ContractBase {
         group.getUserList().remove(enrollmentId);
 
         // check approval
+
         // TODO re-enable approval validation
         /*if (!cUtil.validateApprovals(
+
                 stub,
                 this.contractName,
                 "removeUserFromGroup",
@@ -132,8 +135,10 @@ public class GroupContract extends ContractBase {
         }
 
         // check approval
+
         // TODO re-enable approval validation
         /*if (!cUtil.validateApprovals(
+
                 stub,
                 this.contractName,
                 "removeUserFromAllGroups",

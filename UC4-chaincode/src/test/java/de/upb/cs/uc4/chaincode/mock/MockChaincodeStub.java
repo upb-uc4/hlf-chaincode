@@ -41,7 +41,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
             dataCollections.put(collection, new ArrayList<>());
         }
         MockKeyValue existing = null;
-        for (MockKeyValue entry: dataCollections.get(collection)) {
+        for (MockKeyValue entry : dataCollections.get(collection)) {
             if (entry.getKey().equals(key))
                 existing = entry;
         }

@@ -99,7 +99,6 @@
       }
     ]
   },
-
   {
     "name": "rejectNewTransaction_InvalidOperationId",
     "type": "rejectTransaction_FAILURE",
@@ -128,7 +127,7 @@
             ],
             "groups": ""
           },
-          "something" : ""
+          "something": ""
         }
       ]
     },

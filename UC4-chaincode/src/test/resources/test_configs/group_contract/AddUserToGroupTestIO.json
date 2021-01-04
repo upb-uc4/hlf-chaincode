@@ -37,7 +37,9 @@
         "0123",
         {
           "groupId": "0123",
-          "userList": ["0000001"]
+          "userList": [
+            "0000001"
+          ]
         }
       ],
       "certificateContract": [
@@ -70,7 +72,9 @@
         "0123",
         {
           "groupId": "0123",
-          "userList": ["0000001"]
+          "userList": [
+            "0000001"
+          ]
         }
       ],
       "certificateContract": [
@@ -104,12 +108,16 @@
         "0123",
         {
           "groupId": "0123",
-          "userList": ["0000001"]
+          "userList": [
+            "0000001"
+          ]
         },
         "0124",
         {
           "groupId": "0124",
-          "userList": ["0000001"]
+          "userList": [
+            "0000001"
+          ]
         }
       ],
       "certificateContract": [

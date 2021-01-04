@@ -62,14 +62,15 @@ public final class CertificateContractTest extends TestCreationBase {
         File[] testConfigs = dir.listFiles();
 
         List<JsonIOTest> testConfig;
-        Type type = new TypeToken<List<JsonIOTest>>() {}.getType();
+        Type type = new TypeToken<List<JsonIOTest>>() {
+        }.getType();
         ArrayList<DynamicTest> tests = new ArrayList<>();
 
         if (testConfigs == null) {
             throw new RuntimeException("No test configurations found.");
         }
 
-        for (File file: testConfigs) {
+        for (File file : testConfigs) {
             try {
                 testConfig = GsonWrapper.fromJson(new FileReader(file.getPath()), type);
             } catch (FileNotFoundException e) {

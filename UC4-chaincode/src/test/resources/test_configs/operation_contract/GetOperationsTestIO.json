@@ -18,7 +18,9 @@
           "state": "FINISHED",
           "reason": "",
           "existingApprovals": {
-            "users": ["User1"],
+            "users": [
+              "User1"
+            ],
             "groups": []
           },
           "missingApprovals": {
@@ -34,27 +36,31 @@
       "User1",
       "FINISHED"
     ],
-    "compare": [[
-      {
-        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "transactionInfo": {
-          "contractName": "UC4.Certificate",
-          "transactionName": "addCertificate",
-          "parameters": "[\"0000001\",\"cert\"]"
-        },
-        "state": "FINISHED",
-        "reason": "",
-        "existingApprovals": {
-          "users": ["User1"],
-          "groups": []
-        },
-        "missingApprovals": {
-          "users": [
-            "admin"
-          ],
-          "groups": []
+    "compare": [
+      [
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "admin"
+            ],
+            "groups": []
+          }
         }
-      }
-    ]]
+      ]
+    ]
   }
 ]

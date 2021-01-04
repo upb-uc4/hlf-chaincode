@@ -15,8 +15,6 @@
       "legit certificate"
     ]
   },
-
-
   {
     "name": "queryNonExistingCertificate",
     "type": "getCertificate",
@@ -31,8 +29,6 @@
       }
     ]
   },
-
-
   {
     "name": "queryEmptyEnrollmentIdCertificate",
     "type": "getCertificate",

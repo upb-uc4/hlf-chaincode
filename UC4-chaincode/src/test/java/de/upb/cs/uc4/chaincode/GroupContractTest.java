@@ -19,11 +19,11 @@ public final class GroupContractTest extends TestCreationBase {
     private final GroupContract contract = new GroupContract();
     private final GroupContractUtil cUtil = new GroupContractUtil();
 
-    String getTestConfigDir(){
+    String getTestConfigDir() {
         return "src/test/resources/test_configs/group_contract";
     }
 
-    DynamicTest CreateTest(JsonIOTest test){
+    DynamicTest CreateTest(JsonIOTest test) {
         String testType = test.getType();
         String testName = test.getName();
         JsonIOTestSetup setup = test.getSetup();
@@ -96,7 +96,7 @@ public final class GroupContractTest extends TestCreationBase {
                 approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
             }*/
             Context ctx = TestUtil.mockContext(stub);
-            String result =  contract.addUserToGroup(ctx, input.get(0), input.get(1));
+            String result = contract.addUserToGroup(ctx, input.get(0), input.get(1));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
@@ -120,7 +120,7 @@ public final class GroupContractTest extends TestCreationBase {
             String dropResult = contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
             assertThat(dropResult).isEqualTo("");
 
-            for(String i: compare){
+            for (String i : compare) {
                 Group compareGroup = GsonWrapper.fromJson(i, Group.class);
                 Group ledgerGroup = cUtil.getState(stub, compareGroup.getGroupId(), Group.class);
                 assertThat(ledgerGroup).isEqualTo(compareGroup);
@@ -144,7 +144,7 @@ public final class GroupContractTest extends TestCreationBase {
                 approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
             }*/
             Context ctx = TestUtil.mockContext(stub);
-            String result =  contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
+            String result = contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
         };
     }
@@ -167,7 +167,7 @@ public final class GroupContractTest extends TestCreationBase {
             String dropResult = contract.removeUserFromAllGroups(ctx, input.get(0));
             assertThat(dropResult).isEqualTo("");
 
-            for(String i: compare){
+            for (String i : compare) {
                 Group compareGroup = GsonWrapper.fromJson(i, Group.class);
                 Group ledgerGroup = cUtil.getState(stub, compareGroup.getGroupId(), Group.class);
                 assertThat(ledgerGroup).isEqualTo(compareGroup);
@@ -191,13 +191,12 @@ public final class GroupContractTest extends TestCreationBase {
                 approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
             }*/
             Context ctx = TestUtil.mockContext(stub);
-            String result =  contract.removeUserFromAllGroups(ctx, input.get(0));
+            String result = contract.removeUserFromAllGroups(ctx, input.get(0));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
         };
     }
-
 
 
     private Executable getAllGroupsSuccessTest(
@@ -293,7 +292,7 @@ public final class GroupContractTest extends TestCreationBase {
                 approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", input.get(0));
             }*/
             Context ctx = TestUtil.mockContext(stub);
-            String result =  contract.getGroupsForUser(ctx, input.get(0));
+            String result = contract.getGroupsForUser(ctx, input.get(0));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);

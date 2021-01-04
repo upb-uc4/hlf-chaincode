@@ -42,7 +42,9 @@
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -65,7 +67,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingAdmission_JsonParseError",
     "type": "addAdmission_FAILURE",
@@ -122,7 +123,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingAdmission_EmptyParam_EnrollmentId",
     "type": "addAdmission_FAILURE",
@@ -185,7 +185,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingAdmission_EmptyParam_CourseId",
     "type": "addAdmission_FAILURE",
@@ -248,7 +247,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingAdmission_EmptyParam_ModuleId",
     "type": "addAdmission_FAILURE",
@@ -311,7 +309,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingAdmission_EmptyParam_Timestamp",
     "type": "addAdmission_FAILURE",
@@ -374,7 +371,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingAdmission_WrongFormatParam_Timestamp",
     "type": "addAdmission_FAILURE",
@@ -437,7 +433,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingAdmission_InvalidModules",
     "type": "addAdmission_FAILURE",
@@ -504,7 +499,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingAdmission_InvalidModules_2",
     "type": "addAdmission_FAILURE",
@@ -571,7 +565,6 @@
       }
     ]
   },
-
   {
     "name": "addExistingAdmission_ConflictError",
     "type": "addAdmission_FAILURE",

@@ -89,6 +89,7 @@ public class AdmissionContract extends ContractBase {
         // check approval
         // TODO re-enable approval validation
         /*if (!cUtil.validateApprovals(
+
                 stub,
                 this.contractName,
                 "dropAdmission",

@@ -73,7 +73,7 @@ public final class OperationContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            for (int i=0; i< ids.size(); i++) {
+            for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
                 OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)), OperationData.class);
@@ -115,7 +115,7 @@ public final class OperationContractTest extends TestCreationBase {
             Context ctx = TestUtil.mockContext(stub);
             String rejectResult = contract.rejectTransaction(ctx, input.get(0), input.get(1));
             String expectedState = OperationDataState.REJECTED.toString();
-            OperationData compareOperationData = GsonWrapper.fromJson(compare.get(compare.size()-1), OperationData.class);
+            OperationData compareOperationData = GsonWrapper.fromJson(compare.get(compare.size() - 1), OperationData.class);
             OperationData ledgerOperationData = cUtil.getState(ctx.getStub(), compareOperationData.getOperationId(), OperationData.class);
             assertThat(GsonWrapper.toJson(compareOperationData)).isEqualTo(GsonWrapper.toJson(ledgerOperationData));
 
@@ -168,6 +168,7 @@ public final class OperationContractTest extends TestCreationBase {
 
     private String params(List<String> input) {
         return GsonWrapper.toJson(input.subList(2, input.size()));
+
     }
 
     private String operationId(List<String> input) throws NoSuchAlgorithmException {

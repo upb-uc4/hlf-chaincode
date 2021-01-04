@@ -3,7 +3,7 @@
     "name": "approveNewTransaction",
     "type": "approveTransaction_SUCCESS",
     "ids": [
-        "User1"
+      "User1"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -18,7 +18,9 @@
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -62,8 +64,6 @@
       }
     ]
   },
-
-
   {
     "name": "approveExistingTransaction",
     "type": "approveTransaction_SUCCESS",
@@ -83,11 +83,16 @@
           "state": "PENDING",
           "reason": "",
           "existingApprovals": {
-            "users": ["User2", "User3"],
-            "groups": ["some-group"]
+            "users": [
+              "User2",
+              "User3"
+            ],
+            "groups": [
+              "some-group"
+            ]
           },
           "missingApprovals": {
-            "users": [            ],
+            "users": [],
             "groups": []
           }
         }
@@ -96,7 +101,9 @@
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -143,8 +150,6 @@
       }
     ]
   },
-
-
   {
     "name": "approveApprovedTransaction",
     "type": "approveTransaction_SUCCESS",
@@ -164,11 +169,16 @@
           "state": "PENDING",
           "reason": "",
           "existingApprovals": {
-            "users": ["User1", "User2"],
-            "groups": ["admin"]
+            "users": [
+              "User1",
+              "User2"
+            ],
+            "groups": [
+              "admin"
+            ]
           },
           "missingApprovals": {
-            "users": [            ],
+            "users": [],
             "groups": []
           }
         }
@@ -177,7 +187,9 @@
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -222,8 +234,6 @@
       }
     ]
   },
-
-
   {
     "name": "approveEmptyContractNameTransaction",
     "type": "approveTransaction_FAILURE",
@@ -259,8 +269,6 @@
       }
     ]
   },
-
-
   {
     "name": "approveEmptyTransactionNameTransaction",
     "type": "approveTransaction_FAILURE",
@@ -293,8 +301,6 @@
       }
     ]
   },
-
-
   {
     "name": "approveInvalidLedgerStateTransaction",
     "type": "approveTransaction_FAILURE",

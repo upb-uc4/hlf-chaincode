@@ -11,17 +11,25 @@
         "0123",
         {
           "groupId": "0123",
-          "userList": ["0000001"]
+          "userList": [
+            "0000001"
+          ]
         },
         "0124",
         {
           "groupId": "0124",
-          "userList": ["0000001", "0000002"]
+          "userList": [
+            "0000001",
+            "0000002"
+          ]
         },
         "0125",
         {
           "groupId": "0125",
-          "userList": ["0000001", "0000003"]
+          "userList": [
+            "0000001",
+            "0000003"
+          ]
         }
       ],
       "certificateContract": [
@@ -32,9 +40,10 @@
     "input": [
       "0123"
     ],
-    "compare": [[
-      "0000001"
-    ]
+    "compare": [
+      [
+        "0000001"
+      ]
     ]
   },
   {
@@ -49,21 +58,27 @@
         "0123",
         {
           "groupId": "0123",
-          "userList": ["0000001",
+          "userList": [
+            "0000001",
             "0000002",
-            "0000003"]
+            "0000003"
+          ]
         },
         "0124",
         {
           "groupId": "0124",
-          "userList": ["0000001",
-            "0000002"]
+          "userList": [
+            "0000001",
+            "0000002"
+          ]
         },
         "0125",
         {
           "groupId": "0125",
-          "userList": ["0000001",
-            "0000003"]
+          "userList": [
+            "0000001",
+            "0000003"
+          ]
         }
       ],
       "certificateContract": [
@@ -74,11 +89,12 @@
     "input": [
       "0123"
     ],
-    "compare": [[
-      "0000001",
-      "0000002",
-      "0000003"
-    ]
+    "compare": [
+      [
+        "0000001",
+        "0000002",
+        "0000003"
+      ]
     ]
   },
   {
@@ -93,21 +109,27 @@
         "0123",
         {
           "groupId": "0123",
-          "userList": ["0000001",
+          "userList": [
+            "0000001",
             "0000002",
-            "0000003"]
+            "0000003"
+          ]
         },
         "0124",
         {
           "groupId": "0124",
-          "userList": ["0000001",
-            "0000002"]
+          "userList": [
+            "0000001",
+            "0000002"
+          ]
         },
         "0125",
         {
           "groupId": "0125",
-          "userList": ["0000001",
-            "0000003"]
+          "userList": [
+            "0000001",
+            "0000003"
+          ]
         }
       ],
       "certificateContract": [
@@ -118,16 +140,17 @@
     "input": [
       ""
     ],
-    "compare": [{
-      "type": "HLUnprocessableEntity",
-      "title": "The following parameters do not conform to the specified format",
-      "invalidParams": [
-        {
-          "name": "group.groupId",
-          "reason": "The given parameter must not be empty"
-        }
-      ]
-    }
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "group.groupId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
     ]
   },
   {
@@ -142,21 +165,27 @@
         "0123",
         {
           "groupId": "0123",
-          "userList": ["0000001",
+          "userList": [
+            "0000001",
             "0000002",
-            "0000003"]
+            "0000003"
+          ]
         },
         "0124",
         {
           "groupId": "0124",
-          "userList": ["0000001",
-            "0000002"]
+          "userList": [
+            "0000001",
+            "0000002"
+          ]
         },
         "0125",
         {
           "groupId": "0125",
-          "userList": ["0000001",
-            "0000003"]
+          "userList": [
+            "0000001",
+            "0000003"
+          ]
         }
       ],
       "certificateContract": [
@@ -167,10 +196,11 @@
     "input": [
       "0129"
     ],
-    "compare": [{
-      "type": "HLNotFound",
-      "title": "There is no Group for the given groupId"
-    }
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no Group for the given groupId"
+      }
     ]
   }
 ]

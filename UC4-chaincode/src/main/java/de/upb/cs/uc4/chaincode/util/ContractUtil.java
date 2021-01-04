@@ -106,12 +106,14 @@ abstract public class ContractUtil {
         } catch (NoSuchAlgorithmException e) {
             return false;
         }
-        try{
+        try {
             approvals = aUtil.getState(stub, key, ApprovalList.class);
-        } catch(LedgerAccessError e) {
+        } catch (LedgerAccessError e) {
             return false;
         }
+
         return OperationContractUtil.covers(requiredApprovals, approvals);
+
 
     }
 

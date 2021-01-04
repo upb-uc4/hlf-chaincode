@@ -54,7 +54,7 @@ public class OperationContract extends ContractBase {
     }
 
     @Transaction
-    public String rejectTransaction(final Context ctx, final String operationId, final String rejectMessage){
+    public String rejectTransaction(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
         try {
             operationData = cUtil.<OperationData>getState(ctx.getStub(), operationId, OperationData.class);

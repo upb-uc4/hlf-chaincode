@@ -19,7 +19,9 @@
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -50,9 +52,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addNonExistingInvalidFieldOfStudyMatriculationData",
     "type": "addMatriculationData_FAILURE",
@@ -87,9 +86,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addNonExistingMultiFieldOfStudyMatriculationData",
     "type": "addMatriculationData_SUCCESS",
@@ -116,7 +112,9 @@
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -159,14 +157,11 @@
       }
     ]
   },
-
-
-
   {
     "name": "addExistingMatriculationData",
     "type": "addMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -174,7 +169,10 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+                "WS2018/19",
+                "SS2019",
+                "WS2019/20",
+                "SS2020"
               ]
             }
           ]
@@ -196,7 +194,10 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+              "WS2018/19",
+              "SS2019",
+              "WS2019/20",
+              "SS2020"
             ]
           }
         ]
@@ -209,9 +210,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addEmptyEnrollmentIdMatriculationData",
     "type": "addMatriculationData_FAILURE",
@@ -232,7 +230,10 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+              "WS2018/19",
+              "SS2019",
+              "WS2019/20",
+              "SS2020"
             ]
           }
         ]
@@ -251,9 +252,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addOmittedEnrollmentIdMatriculationData",
     "type": "addMatriculationData_FAILURE",
@@ -273,7 +271,10 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+              "WS2018/19",
+              "SS2019",
+              "WS2019/20",
+              "SS2020"
             ]
           }
         ]
@@ -292,9 +293,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addEmptyMatriculationStatusMatriculationData",
     "type": "addMatriculationData_FAILURE",
@@ -319,8 +317,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptySemestersMatriculationData",
     "type": "addMatriculationData_FAILURE",
@@ -359,8 +355,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyFieldOfStudyMatriculationData",
     "type": "addMatriculationData_FAILURE",
@@ -372,7 +366,10 @@
           {
             "fieldOfStudy": "",
             "semesters": [
-              "WS2018/19", "SS2019", "WS2019/20", "SS2020"
+              "WS2018/19",
+              "SS2019",
+              "WS2019/20",
+              "SS2020"
             ]
           }
         ]
@@ -391,9 +388,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addInvalidSemesterMatriculationData",
     "type": "addMatriculationData_FAILURE",
@@ -414,7 +408,8 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WWS2018/20", "SS2020"
+              "WWS2018/20",
+              "SS2020"
             ]
           }
         ]
@@ -433,7 +428,6 @@
       }
     ]
   },
-
   {
     "name": "addNonExistingXssMatriculationData",
     "type": "addMatriculationData_SUCCESS",
@@ -454,7 +448,9 @@
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -485,9 +481,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addUnprocessableMatriculationData",
     "type": "addMatriculationData_FAILURE",
