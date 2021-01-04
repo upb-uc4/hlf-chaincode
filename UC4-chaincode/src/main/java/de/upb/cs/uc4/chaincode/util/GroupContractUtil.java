@@ -58,8 +58,7 @@ public class GroupContractUtil extends ContractUtil {
      * @param enrollmentId enrollmentId to return errors for
      * @return a list of all errors found for the given matriculationData
      */
-    public ArrayList<InvalidParameter> getParameterErrorsForEnrollmentId(
-            String enrollmentId) {
+    public ArrayList<InvalidParameter> getParameterErrorsForEnrollmentId(String enrollmentId) {
 
         ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
 
@@ -70,9 +69,7 @@ public class GroupContractUtil extends ContractUtil {
         return invalidparams;
     }
 
-    public ArrayList<InvalidParameter> getParameterErrorsForGroupId(
-            String groupId) {
-
+    public ArrayList<InvalidParameter> getParameterErrorsForGroupId(String groupId) {
         ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
 
         if (valueUnset(groupId)) {
@@ -87,7 +84,6 @@ public class GroupContractUtil extends ContractUtil {
     }
 
     public List<Group> getGroupsForUser(ChaincodeStub stub, String enrollmentId) {
-
         return this.getAllGroups(stub).stream().filter(item -> item.getUserList().contains(enrollmentId)).collect(Collectors.toList());
     }
 

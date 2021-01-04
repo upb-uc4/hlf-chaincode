@@ -4,7 +4,7 @@ import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.util.GroupContractUtil;
-import de.upb.cs.uc4.chaincode.util.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
@@ -29,31 +29,31 @@ public final class GroupContractTest extends TestCreationBase {
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
-        List<Approval> ids = test.getIds();
+        List<String> ids = test.getIds();
 
         switch (testType) {
             case "addUserToGroup_SUCCESS":
-                return DynamicTest.dynamicTest(testName, addUserToGroupSuccessTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, addUserToGroupSuccessTest(setup, input, compare));
             case "addUserToGroup_FAILURE":
-                return DynamicTest.dynamicTest(testName, addUserToGroupFailureTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, addUserToGroupFailureTest(setup, input, compare));
             case "removeUserFromGroup_SUCCESS":
-                return DynamicTest.dynamicTest(testName, removeUserFromGroupSuccessTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, removeUserFromGroupSuccessTest(setup, input, compare));
             case "removeUserFromGroup_FAILURE":
-                return DynamicTest.dynamicTest(testName, removeUserFromGroupFailureTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, removeUserFromGroupFailureTest(setup, input, compare));
             case "removeUserFromAllGroups_SUCCESS":
-                return DynamicTest.dynamicTest(testName, removeUserFromAllGroupsSuccessTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, removeUserFromAllGroupsSuccessTest(setup, input, compare));
             case "removeUserFromAllGroups_FAILURE":
-                return DynamicTest.dynamicTest(testName, removeUserFromAllGroupsFailureTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, removeUserFromAllGroupsFailureTest(setup, input, compare));
             case "getAllGroups_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getAllGroupsSuccessTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, getAllGroupsSuccessTest(setup, input, compare));
             case "getUsersForGroup_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getUsersForGroupSuccessTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, getUsersForGroupSuccessTest(setup, input, compare));
             case "getUsersForGroup_FAILURE":
-                return DynamicTest.dynamicTest(testName, getUsersForGroupFailureTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, getUsersForGroupFailureTest(setup, input, compare));
             case "getGroupsForUser_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getGroupsForUserSuccessTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, getGroupsForUserSuccessTest(setup, input, compare));
             case "getGroupsForUser_FAILURE":
-                return DynamicTest.dynamicTest(testName, getGroupsForUserFailureTest(setup, input, compare, ids));
+                return DynamicTest.dynamicTest(testName, getGroupsForUserFailureTest(setup, input, compare));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -62,8 +62,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable addUserToGroupSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -86,8 +85,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable addUserToGroupFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -108,8 +106,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable removeUserFromGroupSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -136,8 +133,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable removeUserFromGroupFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -157,8 +153,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable removeUserFromAllGroupsSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -185,8 +180,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable removeUserFromAllGroupsFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -209,8 +203,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getAllGroupsSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -230,8 +223,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getUsersForGroupSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -251,8 +243,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getUsersForGroupFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -271,8 +262,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getGroupsForUserSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
@@ -292,8 +282,7 @@ public final class GroupContractTest extends TestCreationBase {
     private Executable getGroupsForUserFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare,
-            List<Approval> ids
+            List<String> compare
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);

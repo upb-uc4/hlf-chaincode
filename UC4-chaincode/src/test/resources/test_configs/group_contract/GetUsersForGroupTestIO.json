@@ -3,14 +3,8 @@
     "name": "getUsersForGroup",
     "type": "getUsersForGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -47,14 +41,8 @@
     "name": "getMultipleUsersForGroup",
     "type": "getUsersForGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -97,14 +85,8 @@
     "name": "getUsersForEmptyGroup",
     "type": "getUsersForGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -152,14 +134,8 @@
     "name": "getUsersForNotExistingGroup",
     "type": "getUsersForGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [

@@ -3,14 +3,8 @@
     "name": "removeExistingUserFromGroup",
     "type": "removeUserFromGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -42,14 +36,8 @@
     "name": "removeInTwoGroupsExistingUserFromOneGroup",
     "type": "removeUserFromGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -92,14 +80,8 @@
     "name": "removeExistingUserFromGroupKeepOthers",
     "type": "removeUserFromGroup_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -146,14 +128,8 @@
     "name": "removeExistingUserFromEmptyGroupKeepOthers",
     "type": "removeUserFromGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -197,14 +173,8 @@
     "name": "removeExistingUserFromNotExistingGroupKeepOthers",
     "type": "removeUserFromGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -242,14 +212,8 @@
     "name": "removeNonExistingUserFromGroupKeepOthers",
     "type": "removeUserFromGroup_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [

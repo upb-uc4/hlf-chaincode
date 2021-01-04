@@ -15,7 +15,7 @@ public class MockCompositeKey extends CompositeKey {
         } else if (attributes.length == 1) {
             compositeKey = objectType + DELIMITER + attributes[0] + DELIMITER;
         } else {
-            compositeKey = objectType + DELIMITER + Arrays.stream(attributes).collect(Collectors.joining(DELIMITER));
+            compositeKey = objectType + DELIMITER + String.join(DELIMITER, attributes);
         }
     }
 

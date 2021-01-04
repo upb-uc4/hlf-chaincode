@@ -3,14 +3,8 @@
     "name": "addNonExistingAdmission",
     "type": "addAdmission_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -43,6 +37,13 @@
             }
           ]
         }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
+        }
       ]
     },
     "input": [
@@ -69,14 +70,8 @@
     "name": "addNonExistingAdmission_JsonParseError",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000010",
-        "type": "member"
-      }
+      "User1",
+      "0000010"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -132,14 +127,8 @@
     "name": "addNonExistingAdmission_EmptyParam_EnrollmentId",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000002",
-        "type": "member"
-      }
+      "User1",
+      "0000002"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -201,14 +190,8 @@
     "name": "addNonExistingAdmission_EmptyParam_CourseId",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000003",
-        "type": "member"
-      }
+      "User1",
+      "0000003"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -270,14 +253,8 @@
     "name": "addNonExistingAdmission_EmptyParam_ModuleId",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000004",
-        "type": "member"
-      }
+      "User1",
+      "0000004"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -339,14 +316,8 @@
     "name": "addNonExistingAdmission_EmptyParam_Timestamp",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000005",
-        "type": "member"
-      }
+      "User1",
+      "0000005"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -408,14 +379,8 @@
     "name": "addNonExistingAdmission_WrongFormatParam_Timestamp",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000006",
-        "type": "member"
-      }
+      "User1",
+      "0000006"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -477,14 +442,8 @@
     "name": "addNonExistingAdmission_InvalidModules",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000007",
-        "type": "member"
-      }
+      "User1",
+      "0000007"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -550,14 +509,8 @@
     "name": "addNonExistingAdmission_InvalidModules_2",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000009",
-        "type": "member"
-      }
+      "User1",
+      "0000009"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -623,14 +576,8 @@
     "name": "addExistingAdmission_ConflictError",
     "type": "addAdmission_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000008",
-        "type": "member"
-      }
+      "User1",
+      "0000008"
     ],
     "setup": {
       "examinationRegulationContract": [

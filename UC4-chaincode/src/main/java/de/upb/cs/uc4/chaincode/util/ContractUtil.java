@@ -3,13 +3,18 @@ package de.upb.cs.uc4.chaincode.util;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
-import de.upb.cs.uc4.chaincode.model.errors.*;
-import org.hyperledger.fabric.contract.Context;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
+import de.upb.cs.uc4.chaincode.model.errors.GenericError;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +28,7 @@ abstract public class ContractUtil {
     public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
         return getUnprocessableEntityError(getArrayList(invalidParam));
     }
+
     public DetailedError getUnprocessableEntityError(ArrayList<InvalidParameter> invalidParams) {
         return new DetailedError()
                 .type("HLUnprocessableEntity")
@@ -33,6 +39,7 @@ abstract public class ContractUtil {
     public GenericError getConflictError() {
         return getConflictError(thing, identifier);
     }
+
     protected GenericError getConflictError(String thing, String identifier) {
         String article = "aeio".contains(Character.toString(thing.charAt(0)).toLowerCase()) ? "an" : "a";
         return new GenericError()
@@ -43,6 +50,7 @@ abstract public class ContractUtil {
     public GenericError getNotFoundError() {
         return getNotFoundError(thing, identifier);
     }
+
     protected GenericError getNotFoundError(String thing, String identifier) {
         return new GenericError()
                 .type("HLNotFound")
@@ -76,42 +84,40 @@ abstract public class ContractUtil {
     public InvalidParameter getEmptyEnrollmentIdParam() {
         return getEmptyEnrollmentIdParam("");
     }
+
     public InvalidParameter getEmptyEnrollmentIdParam(String prefix) {
         return getEmptyInvalidParameter(prefix + "enrollmentId");
     }
 
 
     public boolean validateApprovals(
-            final Context ctx,
-            final List<String> requiredIds,
-            final List<String> requiredTypes,
+            final ChaincodeStub stub,
             String contractName,
             String transactionName,
             final List<String> args) {
-        // replace approval checking until we get third Party signing fixed.
-        return true;
-        /*
-        ChaincodeStub stub = ctx.getStub();
+        String jsonArgs = GsonWrapper.toJson(args);
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
+
         ApprovalContractUtil aUtil = new ApprovalContractUtil();
-        ArrayList<Approval> approvals;
+        ApprovalList approvals;
         String key;
         try {
-            key = aUtil.getDraftKey(contractName, transactionName, args.toArray(new String[0]));
+            key = aUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
             return false;
         }
         try{
-            approvals = aUtil.getState(stub, key);
+            approvals = aUtil.getState(stub, key, ApprovalList.class);
         } catch(LedgerAccessError e) {
             return false;
         }
-        return ApprovalContractUtil.covers(approvals, requiredIds, requiredTypes);
-        */
+        return ApprovalContractUtil.covers(requiredApprovals, approvals);
+
     }
 
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {
         String fullKey = stub.createCompositeKey(keyPrefix, key).toString();
-        stub.putStringState(fullKey,value);
+        stub.putStringState(fullKey, value);
         return value;
     }
 
@@ -142,7 +148,7 @@ abstract public class ContractUtil {
     }
 
     public boolean valueUnset(String value) {
-        return valueUnset((Object)value) || value.equals("");
+        return valueUnset((Object) value) || value.equals("");
     }
 
     public boolean valueUnset(Object value) {
@@ -150,7 +156,7 @@ abstract public class ContractUtil {
     }
 
     public <T> boolean valueUnset(List<T> value) {
-        return valueUnset((Object)value) || value.isEmpty();
+        return valueUnset((Object) value) || value.isEmpty();
     }
 
 
@@ -171,11 +177,12 @@ abstract public class ContractUtil {
 
         return jsonValue;
     }
+
     private <T> T ledgerJsonToType(String jsonValue, Class<T> c) throws UnprocessableLedgerStateError {
         T dataItem;
         try {
             dataItem = GsonWrapper.fromJson(jsonValue, c);
-        } catch(Exception e) {
+        } catch (Exception e) {
             throw new UnprocessableLedgerStateError(GsonWrapper.toJson(getUnprocessableLedgerStateError()));
         }
         return dataItem;
@@ -194,7 +201,7 @@ abstract public class ContractUtil {
         QueryResultsIterator<KeyValue> qrIterator;
         qrIterator = getAllRawStates(stub);
         ArrayList<T> resultItems = new ArrayList<>();
-        for (KeyValue item: qrIterator) {
+        for (KeyValue item : qrIterator) {
             String jsonValue = item.getStringValue();
             try {
                 T dataObject = ledgerJsonToType(jsonValue, c);

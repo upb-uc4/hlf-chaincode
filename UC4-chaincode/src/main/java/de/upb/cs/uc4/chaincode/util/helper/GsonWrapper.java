@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode.util.helper;
 
 import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Dummy;
@@ -13,7 +13,7 @@ import java.time.format.DateTimeParseException;
 
 public class GsonWrapper {
 
-    private static final Gson gson = new GsonBuilder()
+    private static final Gson gson = new GsonBuilder().disableHtmlEscaping() // need disableHtmlEscaping to handle testCases and data
             .registerTypeAdapter(
                     LocalDateTime.class,
                     (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> {
@@ -48,7 +48,7 @@ public class GsonWrapper {
                         try {
                             String s = json.toString();
                             if (s.charAt(0) == '"') {
-                                s = s.substring(1, s.length()-1);
+                                s = s.substring(1, s.length() - 1);
                             }
                             return new Dummy(s);
                         } catch (RuntimeException e) {

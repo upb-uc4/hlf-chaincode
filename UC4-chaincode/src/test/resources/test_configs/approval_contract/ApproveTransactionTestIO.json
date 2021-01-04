@@ -3,25 +3,56 @@
     "name": "approveNewTransaction",
     "type": "approveTransaction_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      }
+        "User1"
     ],
-    "setup": {},
-    "input": [
-      "UC4.Certificate",
-      "addCertificate",
-      "0000001",
-      "legit certificate"
-    ],
-    "compare": [
-      [
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
         {
-          "id": "User1",
-          "type": "admin"
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
         }
       ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "existingApprovals": {
+          "users": [
+            "User1"
+          ],
+          "groups": [
+            "admin"
+          ]
+        },
+        "missingApprovals": {
+          "users": [],
+          "groups": []
+        }
+      }
     ]
   },
 
@@ -30,47 +61,63 @@
     "name": "approveExistingTransaction",
     "type": "approveTransaction_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "member"
-      }
+      "User1"
     ],
     "setup": {
       "approvalContract": [
-        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
-        [
-          {
-           "id": "User2",
-           "type": "admin"
-          },
-          {
-            "id": "User3",
-            "type": "member"
-         }
-        ]
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        {
+          "users": [
+            "User2",
+            "User3"
+          ],
+          "groups": [
+            "some-group"
+          ]
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
+        }
       ]
     },
     "input": [
-      "UC4.Certificate",
-      "addCertificate",
-      "0000001",
-      "legit certificate"
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
     ],
     "compare": [
-      [
-        {
-          "id": "User2",
-          "type": "admin"
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "existingApprovals": {
+          "users": [
+            "User2",
+            "User3",
+            "User1"
+          ],
+          "groups": [
+            "some-group",
+            "admin"
+          ]
         },
-        {
-          "id": "User3",
-          "type": "member"
-        },
-        {
-          "id": "User1",
-          "type": "member"
+        "missingApprovals": {
+          "users": [],
+          "groups": []
         }
-      ]
+      }
     ]
   },
 
@@ -79,43 +126,61 @@
     "name": "approveApprovedTransaction",
     "type": "approveTransaction_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      }
+      "User1"
     ],
     "setup": {
       "approvalContract": [
-        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
-        [
-          {
-            "id": "User2",
-            "type": "member"
-          },
-          {
-            "id": "User1",
-            "type": "admin"
-          }
-        ]
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        {
+          "users": [
+            "User1",
+            "User2"
+          ],
+          "groups": [
+            "admin"
+          ]
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
+        }
       ]
     },
     "input": [
-      "UC4.Certificate",
-      "addCertificate",
-      "0000001",
-      "legit certificate"
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
     ],
     "compare": [
-      [
-        {
-          "id": "User2",
-          "type": "member"
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "existingApprovals": {
+          "users": [
+            "User1",
+            "User2"
+          ],
+          "groups": [
+            "admin"
+          ]
         },
-        {
-          "id": "User1",
-          "type": "admin"
+        "missingApprovals": {
+          "users": [],
+          "groups": []
         }
-      ]
+      }
     ]
   },
 
@@ -124,17 +189,23 @@
     "name": "approveEmptyContractNameTransaction",
     "type": "approveTransaction_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      }
+      "User1"
     ],
     "setup": {},
     "input": [
       "",
-      "addCertificate",
-      "0000001",
-      "legit certificate"
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
     ],
     "compare": [
       {
@@ -156,10 +227,19 @@
     "type": "approveTransaction_FAILURE",
     "setup": {},
     "input": [
-      "UC4.Certificate",
+      "UC4.MatriculationData",
       "",
-      "0000001",
-      "legit certificate"
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
     ],
     "compare": [
       {
@@ -177,33 +257,48 @@
 
 
   {
-    "name": "approveEmptyTransactionNameTransaction",
+    "name": "approveInvalidLedgerStateTransaction",
     "type": "approveTransaction_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      }
+      "User1"
     ],
     "setup": {
       "approvalContract": [
-        "gv/h0wBh8TpqStVfuHTXurVCBksC19liU9qHAgv8j/Q=",
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "something invalid"
       ]
     },
     "input": [
-      "UC4.Certificate",
-      "addCertificate",
-      "0000001",
-      "legit certificate"
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
     ],
     "compare": [
-      [
-        {
-          "id": "User1",
-          "type": "admin"
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "existingApprovals": {
+          "users": [
+            "User1"
+          ],
+          "groups": []
+        },
+        "missingApprovals": {
+          "users": [],
+          "groups": [
+            "admin"
+          ]
         }
-      ]
+      }
     ]
   }
 ]

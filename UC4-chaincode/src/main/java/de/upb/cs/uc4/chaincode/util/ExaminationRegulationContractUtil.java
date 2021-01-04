@@ -1,10 +1,14 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulationModule;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class ExaminationRegulationContractUtil extends ContractUtil {
     private final String prefix = "examinationRegulation";
@@ -42,7 +46,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
     public HashSet<ExaminationRegulationModule> getValidModules(ChaincodeStub stub) {
         HashSet<ExaminationRegulationModule> validModules = new HashSet<>();
         List<ExaminationRegulation> regulations = getAllStates(stub, ExaminationRegulation.class);
-        for (ExaminationRegulation regulation: regulations) {
+        for (ExaminationRegulation regulation : regulations) {
             validModules.addAll(regulation.getModules());
         }
         return validModules;
@@ -51,13 +55,13 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
     public ArrayList<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<ExaminationRegulationModule> validModules) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if(valueUnset(examinationRegulation.getName())) {
-            invalidParams.add(getEmptyInvalidParameter(this.prefix+".name"));
+        if (valueUnset(examinationRegulation.getName())) {
+            invalidParams.add(getEmptyInvalidParameter(this.prefix + ".name"));
         }
 
         invalidParams.addAll(getErrorForModuleList(
                 examinationRegulation.getModules(),
-                this.prefix+".modules",
+                this.prefix + ".modules",
                 validModules));
         return invalidParams;
     }
@@ -70,7 +74,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         } else {
             ArrayList<String> existingModules = new ArrayList<>();
 
-            for (int moduleIndex=0; moduleIndex<modules.size(); moduleIndex++) {
+            for (int moduleIndex = 0; moduleIndex < modules.size(); moduleIndex++) {
 
                 ExaminationRegulationModule module = modules.get(moduleIndex);
 
@@ -85,7 +89,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                 if (valueUnset(module.getName())) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + ".modules[" + moduleIndex + "].name"));
                 }
-                for (ExaminationRegulationModule validModule: validModules) {
+                for (ExaminationRegulationModule validModule : validModules) {
                     if (module.getId().equals(validModule.getId()) && !module.equals(validModule)) {
                         invalidParams.add(getInconsistentModuleParam(prefix + ".modules[" + moduleIndex + "]"));
                         break;

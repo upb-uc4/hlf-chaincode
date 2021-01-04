@@ -60,20 +60,20 @@ public class AdmissionContractUtil extends ContractUtil {
         ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
         MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
 
-        try{
+        try {
             MatriculationData matriculationData = matUtil.getState(stub, admission.getEnrollmentId(), MatriculationData.class);
             List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
             for (SubjectMatriculation matriculation : matriculations) {
                 String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
                 ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
                 List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
-                for(ExaminationRegulationModule module : modules){
+                for (ExaminationRegulationModule module : modules) {
                     if (module.getId().equals(admission.getModuleId())) {
                         return true;
                     }
                 }
             }
-        } catch (LedgerAccessError e){
+        } catch (LedgerAccessError e) {
             return false;
         }
 

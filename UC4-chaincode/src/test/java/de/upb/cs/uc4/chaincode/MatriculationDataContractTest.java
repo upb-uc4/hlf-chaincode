@@ -2,11 +2,10 @@ package de.upb.cs.uc4.chaincode;
 
 
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
-import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
-import de.upb.cs.uc4.chaincode.util.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
@@ -32,7 +31,7 @@ public final class MatriculationDataContractTest extends TestCreationBase{
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
-        List<Approval> ids = test.getIds();
+        List<String> ids = test.getIds();
 
         switch (testType) {
             case "getMatriculationData":
@@ -74,14 +73,14 @@ public final class MatriculationDataContractTest extends TestCreationBase{
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
-            List<Approval> ids
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             ApprovalContract approvalContract = new ApprovalContract();
-            for (Approval id: ids) {
+            for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", input.get(0));
+                approvalContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
 

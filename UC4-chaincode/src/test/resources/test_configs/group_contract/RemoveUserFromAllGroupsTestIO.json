@@ -3,14 +3,8 @@
     "name": "removeExistingUserFromAllGroups",
     "type": "removeUserFromAllGroups_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -41,14 +35,8 @@
     "name": "removeInTwoGroupsExistingUserFromAllGroups",
     "type": "removeUserFromAllGroups_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -89,14 +77,8 @@
     "name": "removeExistingUserFromAllGroupsKeepOthers",
     "type": "removeUserFromAllGroups_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -141,14 +123,8 @@
     "name": "removeEmptyUserFromAllGroupsKeepOthers",
     "type": "removeUserFromAllGroups_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [

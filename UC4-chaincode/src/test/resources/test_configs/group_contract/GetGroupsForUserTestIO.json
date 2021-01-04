@@ -3,14 +3,8 @@
     "name": "getGroupsForUser",
     "type": "getGroupsForUser_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -58,14 +52,8 @@
     "name": "getSingleGroupForLonelyUser",
     "type": "getGroupsForUser_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -112,14 +100,8 @@
     "name": "getGroupForSuperLonelyUser",
     "type": "getGroupsForUser_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [
@@ -165,14 +147,8 @@
     "name": "getGroupsForEmptyUser",
     "type": "getGroupsForUser_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "groupContract": [

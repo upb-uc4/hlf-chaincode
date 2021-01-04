@@ -1,9 +1,9 @@
 package de.upb.cs.uc4.chaincode.mock;
 
 import de.upb.cs.uc4.chaincode.ApprovalContract;
-import de.upb.cs.uc4.chaincode.model.Approval;
 import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
 import org.hyperledger.fabric.protos.peer.ProposalPackage;
@@ -22,9 +22,9 @@ public final class MockChaincodeStub implements ChaincodeStub {
     private final Map<String, List<MockKeyValue>> dataCollections;
     private final String defaultCollection = "default";
     private Map<String, byte[]> transientMap;
-    private Approval currentId;
+    private String currentId;
 
-    public void setCurrentId(Approval currentId) {
+    public void setCurrentId(String currentId) {
         this.currentId = currentId;
     }
 
@@ -141,10 +141,10 @@ public final class MockChaincodeStub implements ChaincodeStub {
                 Context ctx = TestUtil.mockContext(this, currentId);
                 String contractName = args.get(1);
                 String transName = args.get(2);
-                String[] params = args.size() > 3 ? args.subList(3, args.size()).toArray(new String[0]) : null;
+                List<String> params = args.size() > 3 ? args.subList(3, args.size()) : new ArrayList<>();
                 String result;
                 try {
-                    result = contract.getApprovals(ctx, contractName, transName, params);
+                    result = contract.getApprovals(ctx, contractName, transName, GsonWrapper.toJson(params));
                 } catch (Exception e) {
                     return ResponseUtils.newErrorResponse();
                 }

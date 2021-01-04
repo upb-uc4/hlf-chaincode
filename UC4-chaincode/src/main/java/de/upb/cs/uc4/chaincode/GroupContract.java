@@ -4,7 +4,7 @@ import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.util.GroupContractUtil;
-import de.upb.cs.uc4.chaincode.util.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Default;
@@ -12,10 +12,8 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Contract(
         name = "UC4.Group"
@@ -57,19 +55,14 @@ public class GroupContract extends ContractBase {
             group.getUserList().add(enrollmentId);
         }
 
-        List<String> requiredIds = Collections.singletonList(enrollmentId);
-        List<String> requiredTypes = Collections.singletonList("admin");
-
-        // TODO: approval Check!! I DO NOT KNOW IF I CAN JUST BUILD THE PARAMETER LIST LIKE THAT
-        if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+        // TODO re-enable approval validation
+        /*if (!cUtil.validateApprovals(
+                stub,
                 this.contractName,
                 "addUserToGroup",
-                Arrays.stream(new String[]{enrollmentId, groupId}).collect(Collectors.toList()))) {
+                new ArrayList<String>() {{add(enrollmentId);add(groupId);}})) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
-        }
+        }*/
 
         cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
 
@@ -107,17 +100,14 @@ public class GroupContract extends ContractBase {
         group.getUserList().remove(enrollmentId);
 
         // check approval
-        List<String> requiredIds = Collections.singletonList(enrollmentId);
-        List<String> requiredTypes = Collections.singletonList("admin");
-        if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+        // TODO re-enable approval validation
+        /*if (!cUtil.validateApprovals(
+                stub,
                 this.contractName,
                 "removeUserFromGroup",
-                Collections.singletonList(groupId))) {
+                new ArrayList<String>() {{add(enrollmentId);add(groupId);}})) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
-        }
+        }*/
 
         cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
 
@@ -142,17 +132,14 @@ public class GroupContract extends ContractBase {
         }
 
         // check approval
-        List<String> requiredIds = Collections.singletonList(enrollmentId);
-        List<String> requiredTypes = Collections.singletonList("admin");
-        if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+        // TODO re-enable approval validation
+        /*if (!cUtil.validateApprovals(
+                stub,
                 this.contractName,
                 "removeUserFromAllGroups",
                 Collections.singletonList(enrollmentId))) {
             return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
-        }
+        }*/
 
         cUtil.getGroupsForUser(stub, enrollmentId).forEach(item -> {
             item.getUserList().remove(enrollmentId);

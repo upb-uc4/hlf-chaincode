@@ -1,7 +1,8 @@
 package de.upb.cs.uc4.chaincode.util;
 
-import de.upb.cs.uc4.chaincode.model.*;
-
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
+import de.upb.cs.uc4.chaincode.model.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -29,13 +30,13 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
     public InvalidParameter getInvalidFieldOfStudyParam(String prefix) {
         return new InvalidParameter()
-                .name(prefix+"fieldOfStudy")
+                .name(prefix + "fieldOfStudy")
                 .reason("Field of study must be one of the specified values");
     }
 
     public InvalidParameter getDuplicateFieldOfStudyParam(String prefix, int index) {
         return new InvalidParameter()
-                .name(prefix+"[" + index + "].fieldOfStudy")
+                .name(prefix + "[" + index + "].fieldOfStudy")
                 .reason("Each field of study must only appear in one matriculationStatus");
     }
 
@@ -53,8 +54,9 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
     /**
      * Returns a list of errors describing everything wrong with the given matriculationData
+     *
      * @param matriculationData matriculationData to return errors for
-     * @param prefix prefix used for error information
+     * @param prefix            prefix used for error information
      * @return a list of all errors found for the given matriculationData
      */
     public ArrayList<InvalidParameter> getErrorForMatriculationData(
@@ -67,14 +69,14 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
         ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
 
-        if(valueUnset(matriculationData.getEnrollmentId())) {
+        if (valueUnset(matriculationData.getEnrollmentId())) {
             invalidparams.add(getEmptyEnrollmentIdParam(prefix));
         }
 
         invalidparams.addAll(getErrorForSubjectMatriculationList(
                 stub,
                 matriculationData.getMatriculationStatus(),
-                prefix+"matriculationStatus"));
+                prefix + "matriculationStatus"));
         return invalidparams;
     }
 
@@ -92,14 +94,14 @@ public class MatriculationDataContractUtil extends ContractUtil {
             ArrayList<String> existingFields = new ArrayList<>();
 
             List<String> validErIds = eUtil.getAllStates(stub, ExaminationRegulation.class).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
-            for (int subMatIndex=0; subMatIndex<matriculationStatus.size(); subMatIndex++) {
+            for (int subMatIndex = 0; subMatIndex < matriculationStatus.size(); subMatIndex++) {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
                 if (valueUnset(subMat.getFieldOfStudy())) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].fieldOfStudy"));
                 } else {
-                    if (!validErIds.contains(subMat.getFieldOfStudy())) {
+                    if (!validErIds.contains(subMat.getFieldOfStudy())) { // TODO check if examination regulation exists for the given semester
                         invalidParams.add(getInvalidFieldOfStudyParam(prefix + "[" + subMatIndex + "]."));
                     }
                     if (existingFields.contains(subMat.getFieldOfStudy())) {
@@ -114,12 +116,12 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 }
 
                 ArrayList<String> existingSemesters = new ArrayList<>();
-                for (int semesterIndex = 0; semesterIndex< Objects.requireNonNull(semesters).size(); semesterIndex++) {
+                for (int semesterIndex = 0; semesterIndex < Objects.requireNonNull(semesters).size(); semesterIndex++) {
 
                     String semester = semesters.get(semesterIndex);
 
                     if (!semesterFormatValid(semester)) {
-                        invalidParams.add(getInvalidSemesterParam(prefix+"["+subMatIndex+"].semesters", semesterIndex));
+                        invalidParams.add(getInvalidSemesterParam(prefix + "[" + subMatIndex + "].semesters", semesterIndex));
                     } else {
                         if (semesterFormatValid(semester)) {
                             if (existingSemesters.contains(semester)) {
@@ -136,6 +138,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
     /**
      * Checks the given semester string for validity.
+     *
      * @param semester semester string to check for validity
      * @return true if semester is a valid description of a semester, false otherwise
      */
@@ -144,9 +147,9 @@ public class MatriculationDataContractUtil extends ContractUtil {
         Matcher matcher = pattern.matcher(semester);
         if (!matcher.matches())
             return false;
-        if ("WS".equals(semester.substring(0,2))) {
-            int year1 = Integer.parseInt(semester.substring(4,6));
-            int year2 = Integer.parseInt(semester.substring(7,9));
+        if ("WS".equals(semester.substring(0, 2))) {
+            int year1 = Integer.parseInt(semester.substring(4, 6));
+            int year2 = Integer.parseInt(semester.substring(7, 9));
             return year2 == (year1 + 1) % 100;
         }
         return true;

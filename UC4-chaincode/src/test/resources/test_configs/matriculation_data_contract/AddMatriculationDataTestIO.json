@@ -3,14 +3,8 @@
     "name": "addNonExistingMatriculationData",
     "type": "addMatriculationData_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -19,6 +13,13 @@
           "name": "Computer Science",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
         }
       ]
     },
@@ -56,14 +57,8 @@
     "name": "addNonExistingInvalidFieldOfStudyMatriculationData",
     "type": "addMatriculationData_FAILURE",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {},
     "input": [
@@ -99,14 +94,8 @@
     "name": "addNonExistingMultiFieldOfStudyMatriculationData",
     "type": "addMatriculationData_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "0000001",
-        "type": "member"
-      }
+      "User1",
+      "0000001"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -121,6 +110,13 @@
           "name": "Philosophy",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
         }
       ]
     },
@@ -442,14 +438,8 @@
     "name": "addNonExistingXssMatriculationData",
     "type": "addMatriculationData_SUCCESS",
     "ids": [
-      {
-        "id": "User1",
-        "type": "admin"
-      },
-      {
-        "id": "firstName1alert(\\\"XSS\\\");\",",
-        "type": "member"
-      }
+      "User1",
+      "firstName1alert(\\\"XSS\\\");\","
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -458,6 +448,13 @@
           "name": "Computer Science",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
         }
       ]
     },

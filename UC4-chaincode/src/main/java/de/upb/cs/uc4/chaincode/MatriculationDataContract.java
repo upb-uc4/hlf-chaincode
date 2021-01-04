@@ -5,8 +5,8 @@ import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
+import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -15,7 +15,6 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 @Contract(
         name = "UC4.MatriculationData"
@@ -23,7 +22,7 @@ import java.util.List;
 public class MatriculationDataContract extends ContractBase {
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
-    protected String contractName = "UC4.MatriculationData";
+    protected final String contractName = "UC4.MatriculationData";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -53,13 +52,8 @@ public class MatriculationDataContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getConflictError());
         }
 
-        List<String> requiredIds = Collections.singletonList(newMatriculationData.getEnrollmentId());
-        List<String> requiredTypes = Collections.singletonList("admin");
-
         if (!cUtil.validateApprovals(
-                ctx,
-                requiredIds,
-                requiredTypes,
+                stub,
                 this.contractName,
                 "addMatriculationData",
                 Collections.singletonList(matriculationData))) {
