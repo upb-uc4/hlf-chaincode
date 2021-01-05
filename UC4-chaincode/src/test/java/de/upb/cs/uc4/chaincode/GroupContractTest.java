@@ -81,6 +81,7 @@ public final class GroupContractTest extends TestCreationBase {
             Group compareGroup = GsonWrapper.fromJson(compare.get(0), Group.class);
             Group ledgerGroup = cUtil.getState(stub, compareGroup.getGroupId(), Group.class);
             assertThat(ledgerGroup).isEqualTo(compareGroup);
+            assertThat(ledgerGroup.toString()).isEqualTo(compareGroup.toString());
         };
     }
 

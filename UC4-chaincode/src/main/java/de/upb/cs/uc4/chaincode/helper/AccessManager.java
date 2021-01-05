@@ -13,7 +13,7 @@ import java.util.List;
 public class AccessManager {
     private static ApprovalContractUtil approvalUtil = new ApprovalContractUtil();
 
-    static final String ADMIN = "admin";
+    public static final String ADMIN = "admin";
 
     public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) throws MissingTransactionError {
         Type listType = new TypeToken<ArrayList<String>>() {
@@ -111,20 +111,13 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForAddAdmission(List<String> params) {
+        // TODO fill with required approvals
         return new ApprovalList();
-        // TODO re-enable actual approval requirements
-        /*Admission admission = GsonWrapper.fromJson(params.get(0), Admission.class);
-        return new ApprovalList()
-                .addUsersItem(admission.getEnrollmentId())
-                .addGroupsItem(ADMIN);*/
     }
 
     private static ApprovalList getRequiredApprovalsForDropAdmission(List<String> params) {
+        // TODO fill with required approvals
         return new ApprovalList();
-        // TODO re-enable actual approval requirements
-        // TODO only check admin?
-        /*return new ApprovalList()
-                .addGroupsItem(ADMIN);*/
     }
 
     private static ApprovalList getRequiredApprovalsForGetAdmissions(List<String> params) {
@@ -133,26 +126,18 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForAddUserToGroup(List<String> params) {
+        // TODO fill with required approvals
         return new ApprovalList();
-        // TODO re-enable actual approval requirements
-        /*return new ApprovalList()
-                .addGroupsItem(ADMIN);*/
     }
 
     private static ApprovalList getRequiredApprovalsForRemoveUserFromGroup(List<String> params) {
+        // TODO fill with required approvals
         return new ApprovalList();
-        // TODO re-enable actual approval requirements
-        // TODO only check admin?
-        /*return new ApprovalList()
-                .addGroupsItem(ADMIN);*/
     }
 
     private static ApprovalList getRequiredApprovalsForRemoveUserFromAllGroups(List<String> params) {
+        // TODO fill with required approvals
         return new ApprovalList();
-        // TODO re-enable actual approval requirements
-        // TODO only check admin?
-        /*return new ApprovalList()
-                .addGroupsItem(ADMIN);*/
     }
 
     private static ApprovalList getRequiredApprovalsForGetAllGroups(List<String> params) {

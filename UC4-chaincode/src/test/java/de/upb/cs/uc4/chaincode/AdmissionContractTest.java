@@ -68,6 +68,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             Admission compareAdmission = GsonWrapper.fromJson(compare.get(0), Admission.class);
             Admission ledgerAdmission = cUtil.getState(stub, compareAdmission.getAdmissionId(), Admission.class);
             assertThat(ledgerAdmission).isEqualTo(compareAdmission);
+            assertThat(ledgerAdmission.toString()).isEqualTo(compareAdmission.toString());
         };
     }
 

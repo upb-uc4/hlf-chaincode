@@ -78,6 +78,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             ExaminationRegulation compareRegulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
             ExaminationRegulation ledgerRegulation = cUtil.getState(ctx.getStub(), compareRegulation.getName(), ExaminationRegulation.class);
             assertThat(ledgerRegulation).isEqualTo(compareRegulation);
+            assertThat(ledgerRegulation.toString()).isEqualTo(compareRegulation.toString());
         };
     }
 

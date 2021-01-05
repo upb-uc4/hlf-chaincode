@@ -76,7 +76,7 @@ public final class ApprovalContractTest extends TestCreationBase {
             String key = cUtil.getDraftKey(contract(input), transaction(input), params(input));
             ApprovalList compareApproval = GsonWrapper.fromJson(compare.get(compare.size()-1), SubmissionResult.class).getExistingApprovals();
             ApprovalList ledgerApproval = cUtil.getState(ctx.getStub(), key, ApprovalList.class);
-            assertThat(compareApproval).isEqualTo(ledgerApproval);
+            assertThat(ledgerApproval).isEqualTo(compareApproval);
         };
     }
 

@@ -73,6 +73,9 @@ public class JsonIOTest {
 
     @ApiModelProperty(value = "")
     public List<String> getIds() {
+        if (ids == null) {
+            ids = new ArrayList<>();
+        }
         return ids;
     }
 

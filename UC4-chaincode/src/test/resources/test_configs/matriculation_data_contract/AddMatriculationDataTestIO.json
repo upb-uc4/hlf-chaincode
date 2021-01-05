@@ -52,6 +52,51 @@
   },
 
 
+  {
+    "name": "addInsufficientApprovalsMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": ["User1"]
+        }
+      ]
+    },
+    "input": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
+      }
+    ]
+  },
+
+
 
   {
     "name": "addNonExistingInvalidFieldOfStudyMatriculationData",

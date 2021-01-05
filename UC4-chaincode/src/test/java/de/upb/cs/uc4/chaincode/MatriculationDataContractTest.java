@@ -41,7 +41,7 @@ public final class MatriculationDataContractTest extends TestCreationBase{
             case "addMatriculationData_SUCCESS":
                 return DynamicTest.dynamicTest(testName, addMatriculationDataSuccessTest(setup, input, compare, ids));
             case "addMatriculationData_FAILURE":
-                return DynamicTest.dynamicTest(testName, addMatriculationDataFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addMatriculationDataFailureTest(setup, input, compare, ids));
             case "updateMatriculationData_SUCCESS":
                 return DynamicTest.dynamicTest(testName, updateMatriculationDataSuccessTest(setup, input, compare));
             case "updateMatriculationData_FAILURE":
@@ -93,16 +93,23 @@ public final class MatriculationDataContractTest extends TestCreationBase{
             MatriculationData ledgerMatriculationData =
                     cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
+            assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };
     }
 
     private Executable addMatriculationDataFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
+            ApprovalContract approvalContract = new ApprovalContract();
+            for (String id: ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                approvalContract.approveTransaction(ctx, contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addMatriculationData(ctx, input.get(0));

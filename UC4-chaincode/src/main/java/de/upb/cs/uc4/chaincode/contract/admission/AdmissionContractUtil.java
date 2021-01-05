@@ -128,13 +128,8 @@ public class AdmissionContractUtil extends ContractUtil {
             throw new ParameterError(GsonWrapper.toJson(getConflictError()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getParameterErrorsForAdmission(newAdmission);
-        if (!invalidParams.isEmpty()) {
-            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
-        }
-        //TODO check, if makes sense to throw the exception above
-
-        // check for semantic errors
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        invalidParams.addAll(getParameterErrorsForAdmission(newAdmission));
         invalidParams.addAll(getSemanticErrorsForAdmission(stub, newAdmission));
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
