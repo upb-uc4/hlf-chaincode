@@ -95,7 +95,7 @@ public class ValidationManager {
                     case "addExaminationRegulation":
                         examinationRegulationUtil.checkParamsAddExaminationRegulation(ctx, paramList.get(0));
                         break;
-                    case "getExaminationRegulation":
+                    case "getExaminationRegulations":
                         examinationRegulationUtil.checkParamsGetExaminationRegulations(paramList.get(0));
                         break;
                     case "closeExaminationRegulation":
