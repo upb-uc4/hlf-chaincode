@@ -84,7 +84,7 @@ public class AccessManager {
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
             default:
-                throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(contractName)));
+                throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getContractUnprocessableError(contractName)));
         }
     }
 

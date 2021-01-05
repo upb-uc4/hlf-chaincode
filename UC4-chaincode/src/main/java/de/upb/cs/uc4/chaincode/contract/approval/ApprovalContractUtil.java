@@ -68,16 +68,16 @@ public class ApprovalContractUtil extends ContractUtil {
         return clientId.substring(9).split(",")[0];
     }
 
-    public DetailedError getContractUnprocessableError(String parameterName) {
+    public DetailedError getContractUnprocessableError(String contractName) {
         return getUnprocessableEntityError(new InvalidParameter()
                 .name("contractName")
-                .reason("The given contract does not exist"));
+                .reason("The given contract \"" + contractName + "\" does not exist"));
     }
 
-    public DetailedError getTransactionUnprocessableError(String parameterName) {
+    public DetailedError getTransactionUnprocessableError(String transactionName) {
         return getUnprocessableEntityError(new InvalidParameter()
                 .name("transactionName")
-                .reason("The given transaction does not exist"));
+                .reason("The given transaction \"" + transactionName + "\" does not exist"));
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
