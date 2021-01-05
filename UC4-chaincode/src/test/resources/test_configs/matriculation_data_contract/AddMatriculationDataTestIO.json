@@ -484,7 +484,7 @@
     "type": "addMatriculationData_SUCCESS",
     "ids": [
       "User1",
-      "firstName1alert(\\\"XSS\\\");\","
+      "firstName1alert(\\\"XSS\\\");\""
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -505,7 +505,7 @@
     },
     "input": [
       {
-        "enrollmentId": "firstName1<p>alert(\\\"XSS\\\");</p>\",",
+        "enrollmentId": "firstName1<p>alert(\\\"XSS\\\");</p>\"",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -518,7 +518,7 @@
     ],
     "compare": [
       {
-        "enrollmentId": "firstName1alert(\\\"XSS\\\");\",",
+        "enrollmentId": "firstName1alert(\\\"XSS\\\");\"",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",

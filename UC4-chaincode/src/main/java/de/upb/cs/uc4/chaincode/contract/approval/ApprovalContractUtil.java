@@ -48,7 +48,7 @@ public class ApprovalContractUtil extends ContractUtil {
 
     public ApprovalList addApproval(Context ctx, final String key) {
         ChaincodeStub stub = ctx.getStub();
-        String clientId = ctx.getClientIdentity().getId();
+        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = groupContractUtil.getGroupNamesForUser(stub, clientId);
         ApprovalList approvalList;
         try {
@@ -62,6 +62,10 @@ public class ApprovalContractUtil extends ContractUtil {
         }
         putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
         return approvalList;
+    }
+
+    public String getEnrollmentIdFromClientId(String clientId) {
+        return clientId.substring(9).split(",")[0];
     }
 
     public DetailedError getContractUnprocessableError(String parameterName) {
