@@ -13,7 +13,7 @@ import java.time.format.DateTimeParseException;
 
 public class GsonWrapper {
 
-    private static final Gson gson = new GsonBuilder().disableHtmlEscaping()
+    private static final Gson gson = new GsonBuilder().disableHtmlEscaping() // need disableHtmlEscaping to handle testCases and data
             .registerTypeAdapter(
                     LocalDateTime.class,
                     (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> {

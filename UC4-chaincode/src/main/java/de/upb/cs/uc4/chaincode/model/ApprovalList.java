@@ -96,7 +96,6 @@ public class ApprovalList {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class MatriculationData {\n");
-
         sb.append("    users: ").append(toIndentedString(users)).append("\n");
         sb.append("    groups: ").append(toIndentedString(groups)).append("\n");
         sb.append("}");
@@ -119,4 +118,3 @@ public class ApprovalList {
     }
 
 }
-

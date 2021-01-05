@@ -80,7 +80,6 @@ public class InvalidParameter {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class InvalidParameter {\n");
-
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    reason: ").append(toIndentedString(reason)).append("\n");
         sb.append("}");
@@ -99,4 +98,3 @@ public class InvalidParameter {
     }
 
 }
-

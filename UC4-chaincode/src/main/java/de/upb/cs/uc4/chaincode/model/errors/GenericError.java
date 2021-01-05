@@ -80,7 +80,6 @@ public class GenericError {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class DetailedError {\n");
-
         sb.append("    type: ").append(toIndentedString(type)).append("\n");
         sb.append("    title: ").append(toIndentedString(title)).append("\n");
         sb.append("}");
@@ -99,4 +98,3 @@ public class GenericError {
     }
 
 }
-

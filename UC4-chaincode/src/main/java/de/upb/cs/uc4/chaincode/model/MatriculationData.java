@@ -84,7 +84,6 @@ public class MatriculationData {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class MatriculationData {\n");
-
         sb.append("    enrollmentId: ").append(toIndentedString(enrollmentId)).append("\n");
         sb.append("    matriculationStatus: ").append(toIndentedString(matriculationStatus)).append("\n");
         sb.append("}");
@@ -126,4 +125,3 @@ public class MatriculationData {
     }
 
 }
-
