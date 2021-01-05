@@ -1,14 +1,14 @@
-# [v0.15.0 (WIP)](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.0...develop) (TBD)
+# [v0.15.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.0...v0.15.0) (2021-02-05)
 
 ## Feature
-- reenable approval Checks for transactions
+- reenable approval Checks for addMatriculationData
 - support group-approvals
 
 ## Bugfix
 - 
 
 ## Refactor
-- 
+- introduce AccessManager
 
 ## Usability
 - 
