@@ -230,7 +230,7 @@
         "invalidParams": [
           {
             "name": "contractName",
-            "reason": "The given contract does not exist"
+            "reason": "The given contract \"\" does not exist"
           }
         ]
       }
@@ -264,7 +264,7 @@
         "invalidParams": [
           {
             "name": "transactionName",
-            "reason": "The given transaction does not exist"
+            "reason": "The given transaction \"\" does not exist"
           }
         ]
       }
