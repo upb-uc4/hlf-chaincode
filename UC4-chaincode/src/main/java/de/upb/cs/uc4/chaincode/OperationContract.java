@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.util.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.util.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.util.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
@@ -28,7 +29,7 @@ public class OperationContract extends ContractBase {
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
-    public String approveTransaction(final Context ctx, final String contractName, final String transactionName, final String params) {
+    public String approveTransaction(final Context ctx, final String initiator, final String contractName, final String transactionName, final String params) {
         ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForInput(contractName, transactionName);
         if (!invalidParams.isEmpty()) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
@@ -40,14 +41,25 @@ public class OperationContract extends ContractBase {
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
-        ApprovalList existingApprovals = cUtil.addApproval(ctx, key);
+        OperationData operationData;
+        try{
+            operationData = cUtil.getState(ctx.getStub(), key, OperationData.class);
+        } catch (LedgerAccessError ledgerAccessError) {
+            operationData = new OperationData()
+                    .initiator(initiator)
+                    .operationId(key)
+                    .transactionInfo(new TransactionInfo().contractName(contractName).transactionName(transactionName).parameters(params))
+                    .state(OperationDataState.PENDING)
+                    .reason("");
+
+        }
+        String clientId = ctx.getClientIdentity().getId();
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+
+        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
-        OperationData result = new OperationData()
-                .operationId(key)
-                .transactionInfo(new TransactionInfo().contractName(contractName).transactionName(transactionName).parameters(params))
-                .state(OperationDataState.PENDING)
-                .reason("")
+        OperationData result = operationData
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
         return cUtil.putAndGetStringState(ctx.getStub(), key, GsonWrapper.toJson(result));

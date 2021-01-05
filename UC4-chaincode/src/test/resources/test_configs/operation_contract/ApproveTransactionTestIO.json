@@ -41,6 +41,7 @@
     ],
     "compare": [
       {
+        "initiator": "User1",
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
@@ -74,6 +75,7 @@
       "operationContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
+          "initiator": "User1",
           "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
@@ -124,6 +126,7 @@
     ],
     "compare": [
       {
+        "initiator": "User1",
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
@@ -160,6 +163,7 @@
       "operationContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
+          "initiator": "User1",
           "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
@@ -210,6 +214,7 @@
     ],
     "compare": [
       {
+        "initiator": "User1",
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
@@ -272,6 +277,9 @@
   {
     "name": "approveEmptyTransactionNameTransaction",
     "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
     "setup": {},
     "input": [
       "UC4.MatriculationData",
@@ -330,6 +338,7 @@
     ],
     "compare": [
       {
+        "initiator": "User1",
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",

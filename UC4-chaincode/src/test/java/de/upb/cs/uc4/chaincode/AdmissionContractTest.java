@@ -57,7 +57,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName, "addAdmission", GsonWrapper.toJson(input));
+                approvalContract.approveTransaction(ctx, id, contract.contractName, "addAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String addResult = contract.addAdmission(ctx, input.get(0));
@@ -80,7 +80,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName, "addAdmission", GsonWrapper.toJson(input));
+                approvalContract.approveTransaction(ctx, id, contract.contractName, "addAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.addAdmission(ctx, input.get(0));
@@ -99,7 +99,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName, "dropAdmission", GsonWrapper.toJson(input));
+                approvalContract.approveTransaction(ctx, id, contract.contractName, "dropAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.dropAdmission(ctx, input.get(0));
@@ -121,7 +121,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName, "dropAdmission", GsonWrapper.toJson(input));
+                approvalContract.approveTransaction(ctx, id, contract.contractName, "dropAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.dropAdmission(ctx, input.get(0));

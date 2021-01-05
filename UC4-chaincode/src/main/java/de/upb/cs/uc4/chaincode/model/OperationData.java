@@ -7,6 +7,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class OperationData {
+
+
+    @SerializedName("initiator")
+    private String initiator = null;
     @SerializedName("operationId")
     private String operationId = null;
     @SerializedName("transactionInfo")
@@ -16,12 +20,25 @@ public class OperationData {
     @SerializedName("reason")
     private String reason;
     @SerializedName("existingApprovals")
-    private ApprovalList existingApprovals = null;
+    private ApprovalList existingApprovals = new ApprovalList();
     @SerializedName("missingApprovals")
-    private ApprovalList missingApprovals = null;
+    private ApprovalList missingApprovals = new ApprovalList();
 
     public OperationData operationId(String operationId) {
         this.operationId = operationId;
+        return this;
+    }
+
+    public String getInitiator() {
+        return initiator;
+    }
+
+    public void setInitiator(String initiator) {
+        this.initiator = initiator;
+    }
+
+    public OperationData initiator(String initiator) {
+        this.initiator = initiator;
         return this;
     }
 
@@ -38,6 +55,8 @@ public class OperationData {
         this.existingApprovals = existingApprovals;
         return this;
     }
+
+
 
     public TransactionInfo getTransactionInfo() {
         return transactionInfo;

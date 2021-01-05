@@ -9,6 +9,7 @@
       "operationContract": [
         "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         {
+          "initiator": "User1",
           "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
@@ -35,6 +36,7 @@
     ],
     "compare": [
       {
+        "initiator": "User1",
         "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         "transactionInfo": {
           "contractName": "UC4.Certificate",
@@ -66,6 +68,7 @@
       "operationContract": [
         "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         {
+          "initiator": "User1",
           "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
@@ -92,6 +95,7 @@
     ],
     "compare": [
       {
+        "initiator": "User1",
         "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         "transactionInfo": {
           "contractName": "UC4.Certificate",
@@ -123,6 +127,7 @@
       "operationContract": [
         "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         {
+          "initiator": "User1",
           "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
@@ -149,6 +154,7 @@
     ],
     "compare": [
       {
+        "initiator": "User1",
         "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         "transactionInfo": {
           "contractName": "UC4.Certificate",

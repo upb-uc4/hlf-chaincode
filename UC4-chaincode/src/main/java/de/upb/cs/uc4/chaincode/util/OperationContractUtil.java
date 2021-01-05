@@ -41,7 +41,7 @@ public class OperationContractUtil extends ContractUtil {
     }
 
     public List<OperationData> getOperations(ChaincodeStub stub, String enrollmentId, String state) {
-        List<Group> groupsForUser = new GroupContractUtil().getGroupsForUser(stub, enrollmentId);
+        List<String> groupsForUser = new GroupContractUtil().getGroupNamesForUser(stub, enrollmentId);
         return this.getAllStates(stub, OperationData.class).stream()
                 .filter(item -> enrollmentId.isEmpty() ||
                         item.getExistingApprovals().getUsers().contains(enrollmentId) ||

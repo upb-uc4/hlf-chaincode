@@ -89,7 +89,7 @@ public final class OperationContractTest extends TestCreationBase {
             for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
-                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)), OperationData.class);
+                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, ids.get(i), contract(input), transaction(input), params(input)), OperationData.class);
                 assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
             }
         };
@@ -105,7 +105,7 @@ public final class OperationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             for (String s : compare) {
                 Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
-                String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
+                String result = contract.approveTransaction(ctx, ids.get(0), contract(input), transaction(input), params(input));
                 assertThat(result).isEqualTo(s);
             }
         };

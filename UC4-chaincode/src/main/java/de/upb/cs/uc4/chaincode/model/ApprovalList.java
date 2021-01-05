@@ -58,6 +58,13 @@ public class ApprovalList {
         return this;
     }
 
+    public ApprovalList addGroupsItems(List<String> groupsItems){
+        for (String groupsItem : groupsItems){
+            this.addGroupsItem(groupsItem);
+        }
+        return this;
+    }
+
     /**
      * Get matriculationStatus
      *
