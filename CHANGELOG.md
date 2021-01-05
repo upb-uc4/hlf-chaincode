@@ -1,3 +1,18 @@
+# [v0.15.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.0...v0.15.1)
+
+## Feature
+- reenable approval Checks for all transactions
+- approveTransaction now checks parameter validity
+
+## Bugfix
+- 
+
+## Refactor
+- folder structure
+
+## Usability
+- 
+
 # [v0.15.0 (WIP)](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.0...develop) (TBD)
 
 ## Feature
