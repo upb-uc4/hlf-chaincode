@@ -38,6 +38,19 @@
     ],
     "compare": [
       [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ]
+    ]
+  },
+  {
+    "name": "getOperationsNoApproval",
+    "type": "getOperations",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         {
           "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
           "transactionInfo": {
@@ -59,7 +72,110 @@
             ],
             "groups": []
           }
+        },
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1",
+              "User2"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "admin"
+            ],
+            "groups": []
+          }
+        },
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1",
+              "User2",
+              "User3"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "admin",
+              "some-group"
+            ],
+            "groups": []
+          }
         }
+      ]
+    },
+    "input": [
+      "User1",
+      "FINISHED",
+       "User2",
+        "FINISHED",
+      "",
+      "FINISHED",
+      "User3",
+      "",
+      "",
+      "",
+      "User1",
+      "PENDING",
+      "User",
+      "FINISHED",
+      "User2",
+      "HUND",
+      "Use",
+      "KATZE"
+    ],
+    "compare": [
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
       ]
     ]
   }

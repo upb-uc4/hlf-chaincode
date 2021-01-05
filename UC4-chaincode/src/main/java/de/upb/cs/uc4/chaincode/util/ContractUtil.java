@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -102,12 +103,12 @@ abstract public class ContractUtil {
         ApprovalList approvals;
         String key;
         try {
-            key = aUtil.getDraftKey(contractName, transactionName, jsonArgs);
+            key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
             return false;
         }
         try {
-            approvals = aUtil.getState(stub, key, ApprovalList.class);
+            approvals = aUtil.getState(stub, key, OperationData.class).getExistingApprovals();
         } catch (LedgerAccessError e) {
             return false;
         }

@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode.util;
 
 import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
@@ -40,9 +41,14 @@ public class OperationContractUtil extends ContractUtil {
     }
 
     public List<OperationData> getOperations(ChaincodeStub stub, String enrollmentId, String state) {
+        List<Group> groupsForUser = new GroupContractUtil().getGroupsForUser(stub, enrollmentId);
         return this.getAllStates(stub, OperationData.class).stream()
-                .filter(item -> enrollmentId.isEmpty() || item.getExistingApprovals().getUsers().contains(enrollmentId))
-                .filter(item -> state.isEmpty() || item.getState().toString().equals(state)).collect(Collectors.toList());
+                .filter(item -> enrollmentId.isEmpty() ||
+                        item.getExistingApprovals().getUsers().contains(enrollmentId) ||
+                        item.getMissingApprovals().getUsers().contains(enrollmentId) ||
+                        item.getMissingApprovals().getGroups().stream().anyMatch(groupsForUser::contains))
+                .filter(item -> state.isEmpty() ||
+                        item.getState().toString().equals(state)).collect(Collectors.toList());
     }
 
     public static boolean covers(ApprovalList requiredApprovals, ApprovalList existingApprovals) {

@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
@@ -11,8 +12,11 @@ import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
+import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -60,8 +64,17 @@ public final class OperationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             Context ctx = TestUtil.mockContext(stub);
 
-            String operations = contract.getOperations(ctx, input.get(0), input.get(1));
-            assertThat(operations).isEqualTo(compare.get(0));
+            for (int i = 0; i < compare.size(); i++) {
+                String operations = contract.getOperations(ctx, input.get(i*2), input.get(i*2+1));
+                Type listType = new TypeToken<ArrayList<OperationData>>() {
+
+                }.getType();
+                ArrayList<OperationData> operationDataList= GsonWrapper.fromJson(operations, listType);
+                List<String> operationIds = operationDataList.stream().map(operationData -> operationData.getOperationId()).collect(Collectors.toList());
+                assertThat(GsonWrapper.toJson(operationIds)).isEqualTo(compare.get(i));
+            }
+
+
         };
     }
 
