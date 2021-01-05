@@ -72,7 +72,7 @@ public class AccessManager {
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
-            case "ExaminationRegulation":
+            case "UC4.ExaminationRegulation":
                 switch (transactionName) {
                     case "addExaminationRegulation":
                         return getRequiredApprovalsForAddExaminationRegulation(paramList);

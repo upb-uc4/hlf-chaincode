@@ -1,11 +1,15 @@
 package de.upb.cs.uc4.chaincode.contract.certificate;
 
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 @Contract(
         name = "UC4.Certificate"
@@ -13,6 +17,8 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 public class CertificateContract extends ContractBase {
 
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
+
+    public final String contractName = "UC4.Certificate";
 
     /**
      * Adds a certificate to the ledger.
@@ -31,6 +37,11 @@ public class CertificateContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "addCertificate", new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return cUtil.putAndGetStringState(stub, enrollmentId, certificate);
     }
 
@@ -51,6 +62,11 @@ public class CertificateContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "updateCertificate", new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return cUtil.putAndGetStringState(stub, enrollmentId, certificate);
     }
 
@@ -70,6 +86,11 @@ public class CertificateContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "getCertificate", Collections.singletonList(enrollmentId));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         String certificate = cUtil.getStringState(stub, enrollmentId);
         return certificate;
     }
