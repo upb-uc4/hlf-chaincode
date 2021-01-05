@@ -41,6 +41,8 @@ public class ValidationManager {
                     case "addEntriesToMatriculationData":
                         matriculationDataUtil.checkParamsAddEntriesToMatriculationData(ctx, paramList.get(0), paramList.get(1));
                         break;
+                    case "getVersion":
+                        break;
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -55,6 +57,8 @@ public class ValidationManager {
                         break;
                     case "getAdmissions":
                         // pass
+                        break;
+                    case "getVersion":
                         break;
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
@@ -80,6 +84,8 @@ public class ValidationManager {
                     case "getGroupsForUser":
                         groupUtil.checkParamsGetGroupsForUser(paramList.get(0));
                         break;
+                    case "getVersion":
+                        break;
                    default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -95,6 +101,8 @@ public class ValidationManager {
                     case "closeExaminationRegulation":
                         examinationRegulationUtil.checkParamsCloseExaminationRegulation(ctx, paramList.get(0));
                         break;
+                    case "getVersion":
+                        break;
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -109,6 +117,8 @@ public class ValidationManager {
                         break;
                     case "getCertificate":
                         certificateUtil.checkParamsGetCertificate(ctx, paramList.get(0));
+                        break;
+                    case "getVersion":
                         break;
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));

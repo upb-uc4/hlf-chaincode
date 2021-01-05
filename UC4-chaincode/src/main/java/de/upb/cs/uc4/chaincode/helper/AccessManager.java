@@ -30,6 +30,8 @@ public class AccessManager {
                         return getRequiredApprovalsForGetMatriculationData(paramList);
                     case "addEntriesToMatriculationData":
                         return getRequiredApprovalsForAddEntriesToMatriculationData(paramList);
+                    case "getVersion":
+                        return new ApprovalList();
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -41,6 +43,8 @@ public class AccessManager {
                         return getRequiredApprovalsForDropAdmission(paramList);
                     case "getAdmissions":
                         return getRequiredApprovalsForGetAdmissions(paramList);
+                    case "getVersion":
+                        return new ApprovalList();
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -58,6 +62,8 @@ public class AccessManager {
                         return getRequiredApprovalsForGetUsersForGroup(paramList);
                     case "getGroupsForUser":
                         return getRequiredApprovalsForGetGroupsForUser(paramList);
+                    case "getVersion":
+                        return new ApprovalList();
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -69,6 +75,8 @@ public class AccessManager {
                         return getRequiredApprovalsForUpdateCertificate(paramList);
                     case "getCertificate":
                         return getRequiredApprovalsForGetCertificate(paramList);
+                    case "getVersion":
+                        return new ApprovalList();
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -80,6 +88,8 @@ public class AccessManager {
                         return getRequiredApprovalsForGetExaminationRegulations(paramList);
                     case "closeExaminationRegulation":
                         return getRequiredApprovalsForCloseExaminationRegulation(paramList);
+                    case "getVersion":
+                        return new ApprovalList();
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
                 }
