@@ -22,6 +22,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
     private final String defaultCollection = "default";
     private Map<String, byte[]> transientMap;
     private String currentId;
+    private Instant txTimeStamp;
 
     public void setCurrentId(String currentId) {
         this.currentId = currentId;
@@ -35,6 +36,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
     public void setTransient(Map<String, byte[]> transientMap) {
         this.transientMap = transientMap;
     }
+
 
     private void putByteState(String collection, String key, byte[] value) {
         if (!dataCollections.containsKey(collection)) {
@@ -305,7 +307,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public Instant getTxTimestamp() {
-        return null;
+        return Instant.ofEpochSecond(0);
     }
 
     @Override

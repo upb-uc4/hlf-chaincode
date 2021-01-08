@@ -40,13 +40,17 @@ public class OperationContractUtil extends ContractUtil {
         return "The Transaction failed with an error of type: " + error.getType();
     }
 
-    public List<OperationData> getOperations(ChaincodeStub stub, String enrollmentId, String state) {
-        List<String> groupsForUser = new GroupContractUtil().getGroupNamesForUser(stub, enrollmentId);
+    public List<OperationData> getOperations(ChaincodeStub stub, final String existingEnrollmentId, final String missingEnrollmentId, final String initiatorEnrollmentId, String state) {
+        List<String> groupsForUserMissingApproval = new GroupContractUtil().getGroupNamesForUser(stub, missingEnrollmentId);
+
         return this.getAllStates(stub, OperationData.class).stream()
-                .filter(item -> enrollmentId.isEmpty() ||
-                        item.getExistingApprovals().getUsers().contains(enrollmentId) ||
-                        item.getMissingApprovals().getUsers().contains(enrollmentId) ||
-                        item.getMissingApprovals().getGroups().stream().anyMatch(groupsForUser::contains))
+                .filter(item -> existingEnrollmentId.isEmpty() ||
+                        item.getExistingApprovals().getUsers().contains(existingEnrollmentId))
+                .filter(item -> missingEnrollmentId.isEmpty() ||
+                        item.getMissingApprovals().getUsers().contains(missingEnrollmentId) ||
+                        item.getMissingApprovals().getGroups().stream().anyMatch(groupsForUserMissingApproval::contains))
+                .filter(item -> initiatorEnrollmentId.isEmpty() ||
+                        item.getInitiator().equals(initiatorEnrollmentId))
                 .filter(item -> state.isEmpty() ||
                         item.getState().toString().equals(state)).collect(Collectors.toList());
     }

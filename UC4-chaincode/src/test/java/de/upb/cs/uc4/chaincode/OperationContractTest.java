@@ -65,11 +65,11 @@ public final class OperationContractTest extends TestCreationBase {
             Context ctx = TestUtil.mockContext(stub);
 
             for (int i = 0; i < compare.size(); i++) {
-                String operations = contract.getOperations(ctx, input.get(i*2), input.get(i*2+1));
+                String operations = contract.getOperations(ctx, input.get(i*4), input.get(i*4+1), input.get(i*4+2), input.get(i*4+3));
                 Type listType = new TypeToken<ArrayList<OperationData>>() {
 
                 }.getType();
-                ArrayList<OperationData> operationDataList= GsonWrapper.fromJson(operations, listType);
+                ArrayList<OperationData> operationDataList = GsonWrapper.fromJson(operations, listType);
                 List<String> operationIds = operationDataList.stream().map(operationData -> operationData.getOperationId()).collect(Collectors.toList());
                 assertThat(GsonWrapper.toJson(operationIds)).isEqualTo(compare.get(i));
             }

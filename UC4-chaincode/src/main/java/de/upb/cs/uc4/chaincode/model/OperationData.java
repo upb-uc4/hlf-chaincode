@@ -9,12 +9,17 @@ import java.util.Objects;
 public class OperationData {
 
 
-    @SerializedName("initiator")
-    private String initiator = null;
+
     @SerializedName("operationId")
     private String operationId = null;
     @SerializedName("transactionInfo")
     private TransactionInfo transactionInfo = null;
+    @SerializedName("initiator")
+    private String initiator = null;
+    @SerializedName("initiatedTimestamp")
+    private String initiatedTimestamp = null;
+    @SerializedName("lastModifiedTimestamp")
+    private String lastModifiedTimestamp = null;
     @SerializedName("state")
     private OperationDataState state = OperationDataState.PENDING;
     @SerializedName("reason")
@@ -51,12 +56,31 @@ public class OperationData {
         this.operationId = operationId;
     }
 
-    public OperationData existingApprovals(ApprovalList existingApprovals) {
-        this.existingApprovals = existingApprovals;
+    public String getInitiatedTimestamp() {
+        return initiatedTimestamp;
+    }
+
+    public void setInitiatedTimestamp(String initiatedTimestamp) {
+        this.initiatedTimestamp = initiatedTimestamp;
+    }
+
+    public OperationData initiatedTimestamp(String initiatedTimestamp) {
+        this.initiatedTimestamp = initiatedTimestamp;
         return this;
     }
 
+    public String getLastModifiedTimestamp() {
+        return lastModifiedTimestamp;
+    }
 
+    public void setLastModifiedTimestamp(String lastModifiedTimestamp) {
+        this.lastModifiedTimestamp = lastModifiedTimestamp;
+    }
+
+    public OperationData lastModifiedTimestamp(String lastModifiedTimestamp) {
+        this.lastModifiedTimestamp = lastModifiedTimestamp;
+        return this;
+    }
 
     public TransactionInfo getTransactionInfo() {
         return transactionInfo;
@@ -71,22 +95,17 @@ public class OperationData {
         return this;
     }
 
-    public OperationData state(OperationDataState state) {
-        this.state = state;
-        return this;
-    }
-
-    public OperationData reason(String reason) {
-        this.reason = reason;
-        return this;
-    }
-
     public OperationDataState getState() {
         return state;
     }
 
     public void setState(OperationDataState state) {
         this.state = state;
+    }
+
+    public OperationData state(OperationDataState state) {
+        this.state = state;
+        return this;
     }
 
     public String getReason() {
@@ -97,6 +116,11 @@ public class OperationData {
         this.reason = reason;
     }
 
+    public OperationData reason(String reason) {
+        this.reason = reason;
+        return this;
+    }
+
     public ApprovalList getExistingApprovals() {
         return existingApprovals;
     }
@@ -105,8 +129,8 @@ public class OperationData {
         this.existingApprovals = existingApprovals;
     }
 
-    public OperationData missingApprovals(ApprovalList missingApprovals) {
-        this.missingApprovals = missingApprovals;
+    public OperationData existingApprovals(ApprovalList existingApprovals) {
+        this.existingApprovals = existingApprovals;
         return this;
     }
 
@@ -116,6 +140,11 @@ public class OperationData {
 
     public void setMissingApprovals(ApprovalList missingApprovals) {
         this.missingApprovals = missingApprovals;
+    }
+
+    public OperationData missingApprovals(ApprovalList missingApprovals) {
+        this.missingApprovals = missingApprovals;
+        return this;
     }
 
     @Override
@@ -141,4 +170,3 @@ public class OperationData {
     }
 
 }
-

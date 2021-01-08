@@ -41,13 +41,15 @@
     ],
     "compare": [
       {
-        "initiator": "User1",
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
+        "initiator": "User1",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
         "reason": "",
         "existingApprovals": {
@@ -75,13 +77,15 @@
       "operationContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
-          "initiator": "User1",
           "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
             "transactionName": "addMatriculationData",
             "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
           },
+          "initiator": "User1",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
           "state": "PENDING",
           "reason": "",
           "existingApprovals": {
@@ -126,13 +130,15 @@
     ],
     "compare": [
       {
-        "initiator": "User1",
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
+        "initiator": "User1",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
         "reason": "",
         "existingApprovals": {
@@ -163,13 +169,15 @@
       "operationContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
-          "initiator": "User1",
           "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
             "transactionName": "addMatriculationData",
             "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
           },
+          "initiator": "User1",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
           "state": "PENDING",
           "reason": "",
           "existingApprovals": {
@@ -214,13 +222,15 @@
     ],
     "compare": [
       {
-        "initiator": "User1",
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
+        "initiator": "User1",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
         "reason": "",
         "existingApprovals": {
@@ -338,13 +348,15 @@
     ],
     "compare": [
       {
-        "initiator": "User1",
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
+        "initiator": "User1",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
         "reason": "",
         "existingApprovals": {

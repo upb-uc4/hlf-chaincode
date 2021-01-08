@@ -9,13 +9,15 @@
       "operationContract": [
         "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         {
-          "initiator": "User1",
           "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
             "parameters": "[\"0000001\",\"cert\"]"
           },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
           "state": "PENDING",
           "reason": "",
           "existingApprovals": {
@@ -37,13 +39,15 @@
     ],
     "compare": [
       {
-        "initiator": "User1",
         "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         "transactionInfo": {
           "contractName": "UC4.Certificate",
           "transactionName": "addCertificate",
           "parameters": "[\"0000001\",\"cert\"]"
         },
+        "initiator": "User1",
+        "initiatedTimestamp":  "",
+        "lastModifiedTimestamp": "",
         "state": "REJECTED",
         "reason": "A User denied with the following message: The transaction was invalid.",
         "existingApprovals": {
@@ -69,13 +73,15 @@
       "operationContract": [
         "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         {
-          "initiator": "User1",
           "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
             "parameters": "[\"0000001\",\"cert\"]"
           },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
           "state": "PENDING",
           "reason": "",
           "existingApprovals": {
@@ -112,13 +118,15 @@
       "operationContract": [
         "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
         {
-          "initiator": "User1",
           "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
             "parameters": "[\"0000001\",\"cert\"]"
           },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
           "state": "PENDING",
           "reason": "",
           "existingApprovals": {
