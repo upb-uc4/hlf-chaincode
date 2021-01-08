@@ -1,11 +1,12 @@
 package de.upb.cs.uc4.chaincode;
 
 
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.util.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
@@ -69,13 +70,13 @@ public final class ApprovalContractTest extends TestCreationBase {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
                 SubmissionResult compareResult = GsonWrapper.fromJson(compare.get(i), SubmissionResult.class);
                 SubmissionResult transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)), SubmissionResult.class);
-                assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
+                assertThat(transactionResult).isEqualTo(compareResult);
             }
             Context ctx = TestUtil.mockContext(stub);
             String key = cUtil.getDraftKey(contract(input), transaction(input), params(input));
             ApprovalList compareApproval = GsonWrapper.fromJson(compare.get(compare.size()-1), SubmissionResult.class).getExistingApprovals();
             ApprovalList ledgerApproval = cUtil.getState(ctx.getStub(), key, ApprovalList.class);
-            assertThat(GsonWrapper.toJson(compareApproval)).isEqualTo(GsonWrapper.toJson(ledgerApproval)); // TODO remove serialization
+            assertThat(ledgerApproval).isEqualTo(compareApproval);
         };
     }
 

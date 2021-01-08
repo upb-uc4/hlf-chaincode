@@ -1,10 +1,12 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode.contract.approval;
 
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
-import de.upb.cs.uc4.chaincode.model.errors.GenericError;
+import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
+import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -37,12 +39,6 @@ public class ApprovalContractUtil extends ContractUtil {
         return missingApprovals;
     }
 
-    public GenericError getInternalError() {
-        return new GenericError()
-                .type("HLInternalError")
-                .title("SHA-256 apparently does not exist lol...");
-    }
-
     public String getDraftKey(final String contractName, final String transactionName, final String params) throws NoSuchAlgorithmException {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params;
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
@@ -52,7 +48,7 @@ public class ApprovalContractUtil extends ContractUtil {
 
     public ApprovalList addApproval(Context ctx, final String key) {
         ChaincodeStub stub = ctx.getStub();
-        String clientId = ctx.getClientIdentity().getId();
+        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = groupContractUtil.getGroupNamesForUser(stub, clientId);
         ApprovalList approvalList;
         try {
@@ -66,6 +62,22 @@ public class ApprovalContractUtil extends ContractUtil {
         }
         putAndGetStringState(stub, key, GsonWrapper.toJson(approvalList));
         return approvalList;
+    }
+
+    public String getEnrollmentIdFromClientId(String clientId) {
+        return clientId.substring(9).split(",")[0];
+    }
+
+    public DetailedError getContractUnprocessableError(String contractName) {
+        return getUnprocessableEntityError(new InvalidParameter()
+                .name("contractName")
+                .reason("The given contract \"" + contractName + "\" does not exist"));
+    }
+
+    public DetailedError getTransactionUnprocessableError(String transactionName) {
+        return getUnprocessableEntityError(new InvalidParameter()
+                .name("transactionName")
+                .reason("The given transaction \"" + transactionName + "\" does not exist"));
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {

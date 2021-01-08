@@ -1,6 +1,13 @@
 package de.upb.cs.uc4.chaincode.model;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
+import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
+import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.util.*;
 import io.swagger.annotations.ApiModelProperty;
 import org.hyperledger.fabric.shim.ChaincodeStub;

@@ -82,6 +82,14 @@
           "groupId": "admin",
           "userList": ["User1"]
         }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
       ]
     },
     "input": [
@@ -146,6 +154,14 @@
         {
           "groupId": "admin",
           "userList": ["User1"]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
         }
       ]
     },
@@ -214,7 +230,7 @@
         "invalidParams": [
           {
             "name": "contractName",
-            "reason": "The given parameter must not be empty"
+            "reason": "The given contract \"\" does not exist"
           }
         ]
       }
@@ -248,7 +264,7 @@
         "invalidParams": [
           {
             "name": "transactionName",
-            "reason": "The given parameter must not be empty"
+            "reason": "The given transaction \"\" does not exist"
           }
         ]
       }
@@ -266,6 +282,14 @@
       "approvalContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "something invalid"
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
       ]
     },
     "input": [

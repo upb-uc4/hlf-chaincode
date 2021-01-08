@@ -1,13 +1,13 @@
-package de.upb.cs.uc4.chaincode;
+package de.upb.cs.uc4.chaincode.contract.examinationregulation;
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.contract.ContractBase;
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
-import de.upb.cs.uc4.chaincode.model.ExaminationRegulationModule;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -15,7 +15,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collections;
 
 @Contract(
         name = "UC4.ExaminationRegulation"
@@ -23,6 +23,7 @@ import java.util.HashSet;
 public class ExaminationRegulationContract extends ContractBase {
 
     private final ExaminationRegulationContractUtil cUtil = new ExaminationRegulationContractUtil();
+    public final String contractName = "UC4.ExaminationRegulation";
 
     /**
      * Adds an examination regulation to the ledger.
@@ -33,28 +34,19 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String addExaminationRegulation(final Context ctx, final String examinationRegulation) {
+        try {
+            cUtil.checkParamsAddExaminationRegulation(ctx, examinationRegulation);
+        } catch (ParameterError e) {
+            return e.getJsonError();
+        }
 
         ChaincodeStub stub = ctx.getStub();
-
-        ExaminationRegulation newExaminationRegulation;
         try {
-            newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
-        } catch (Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableExaminationRegulationParam()));
+            cUtil.validateApprovals(stub, this.contractName,  "addExaminationRegulation", Collections.singletonList(examinationRegulation));
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }
-
-        HashSet<ExaminationRegulationModule> validModules = cUtil.getValidModules(stub);
-        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForExaminationRegulation(newExaminationRegulation, validModules);
-
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
-        }
-
-        String result = cUtil.getStringState(stub, newExaminationRegulation.getName());
-        if (result != null && !result.equals("")) {
-            return GsonWrapper.toJson(cUtil.getConflictError());
-        }
-
+        ExaminationRegulation newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
         return cUtil.putAndGetStringState(stub, newExaminationRegulation.getName(), GsonWrapper.toJson(newExaminationRegulation));
     }
 
@@ -67,12 +59,20 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String getExaminationRegulations(final Context ctx, final String names) {
+        try {
+            cUtil.checkParamsGetExaminationRegulations(names);
+        } catch (ParameterError e) {
+            return e.getJsonError();
+        }
 
         ChaincodeStub stub = ctx.getStub();
-
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "getExaminationRegulations", Collections.singletonList(names));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         ArrayList<String> nameList;
-        Type listType = new TypeToken<ArrayList<String>>() {
-        }.getType();
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         try {
             nameList = GsonWrapper.fromJson(names, listType);
         } catch (Exception e) {
@@ -111,9 +111,18 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String closeExaminationRegulation(final Context ctx, final String name) {
+        try {
+            cUtil.checkParamsCloseExaminationRegulation(ctx, name);
+        } catch (LedgerAccessError e) {
+            return e.getJsonError();
+        }
 
         ChaincodeStub stub = ctx.getStub();
-
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "closeExaminationRegulation", Collections.singletonList(name));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         ExaminationRegulation regulation;
         try {
             regulation = cUtil.getState(stub, name, ExaminationRegulation.class);

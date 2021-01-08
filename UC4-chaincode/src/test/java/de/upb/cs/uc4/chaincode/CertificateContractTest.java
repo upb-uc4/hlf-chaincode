@@ -2,11 +2,12 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
-import de.upb.cs.uc4.chaincode.util.CertificateContractUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;

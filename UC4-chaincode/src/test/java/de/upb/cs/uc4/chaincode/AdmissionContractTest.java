@@ -1,9 +1,11 @@
 package de.upb.cs.uc4.chaincode;
 
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
+import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.util.AdmissionContractUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
@@ -66,6 +68,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             Admission compareAdmission = GsonWrapper.fromJson(compare.get(0), Admission.class);
             Admission ledgerAdmission = cUtil.getState(stub, compareAdmission.getAdmissionId(), Admission.class);
             assertThat(ledgerAdmission).isEqualTo(compareAdmission);
+            assertThat(ledgerAdmission.toString()).isEqualTo(compareAdmission.toString());
         };
     }
 
