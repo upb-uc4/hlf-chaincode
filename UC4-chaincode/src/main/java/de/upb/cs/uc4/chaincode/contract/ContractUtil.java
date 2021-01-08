@@ -117,7 +117,12 @@ abstract public class ContractUtil {
         } catch (NoSuchAlgorithmException e) {
             throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
-        ApprovalList approvals = aUtil.getState(stub, key, ApprovalList.class);
+        ApprovalList approvals;
+        try{
+            approvals = aUtil.getState(stub, key, ApprovalList.class);
+        } catch (Exception e) {
+            approvals = new ApprovalList();
+        }
         if (!ApprovalContractUtil.covers(requiredApprovals, approvals)) {
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
