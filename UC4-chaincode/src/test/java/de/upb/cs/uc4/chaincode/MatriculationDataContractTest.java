@@ -1,12 +1,14 @@
 package de.upb.cs.uc4.chaincode;
 
 
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
+import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
-import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
@@ -41,7 +43,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             case "addMatriculationData_SUCCESS":
                 return DynamicTest.dynamicTest(testName, addMatriculationDataSuccessTest(setup, input, compare, ids));
             case "addMatriculationData_FAILURE":
-                return DynamicTest.dynamicTest(testName, addMatriculationDataFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addMatriculationDataFailureTest(setup, input, compare, ids));
             case "updateMatriculationData_SUCCESS":
                 return DynamicTest.dynamicTest(testName, updateMatriculationDataSuccessTest(setup, input, compare));
             case "updateMatriculationData_FAILURE":
@@ -94,16 +96,23 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             MatriculationData ledgerMatriculationData =
                     cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
+            assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };
     }
 
     private Executable addMatriculationDataFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
+            OperationContract approvalContract = new OperationContract();
+            for (String id: ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                approvalContract.approveTransaction(ctx, "", contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addMatriculationData(ctx, input.get(0));

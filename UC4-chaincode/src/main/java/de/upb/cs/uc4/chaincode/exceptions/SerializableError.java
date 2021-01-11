@@ -1,9 +1,9 @@
 package de.upb.cs.uc4.chaincode.exceptions;
 
-public class ParameterError extends Exception {
+public class SerializableError extends Exception {
     private final String jsonError;
 
-    public ParameterError(String jsonError) {
+    public SerializableError(String jsonError) {
         this.jsonError = jsonError;
     }
 

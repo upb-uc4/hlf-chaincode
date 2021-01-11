@@ -1,12 +1,13 @@
 package de.upb.cs.uc4.chaincode;
 
 
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
-import de.upb.cs.uc4.chaincode.util.ExaminationRegulationContractUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
@@ -77,6 +78,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             ExaminationRegulation compareRegulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
             ExaminationRegulation ledgerRegulation = cUtil.getState(ctx.getStub(), compareRegulation.getName(), ExaminationRegulation.class);
             assertThat(ledgerRegulation).isEqualTo(compareRegulation);
+            assertThat(ledgerRegulation.toString()).isEqualTo(compareRegulation.toString());
         };
     }
 

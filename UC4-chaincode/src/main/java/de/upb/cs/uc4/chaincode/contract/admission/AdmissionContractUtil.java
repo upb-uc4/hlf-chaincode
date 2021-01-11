@@ -1,8 +1,14 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode.contract.admission;
 
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
+import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
@@ -105,5 +111,33 @@ public class AdmissionContractUtil extends ContractUtil {
         }
 
         return invalidparams;
+    }
+
+    public void checkParamsAddAdmission(Context ctx, String admissionJson) throws ParameterError {
+        ChaincodeStub stub = ctx.getStub();
+
+        Admission newAdmission;
+        try {
+            newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
+            newAdmission.resetAdmissionId();
+        } catch (Exception e) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableParam("admission"))));
+        }
+
+        if (keyExists(stub, newAdmission.getAdmissionId())) {
+            throw new ParameterError(GsonWrapper.toJson(getConflictError()));
+        }
+
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        invalidParams.addAll(getParameterErrorsForAdmission(newAdmission));
+        invalidParams.addAll(getSemanticErrorsForAdmission(stub, newAdmission));
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
+    }
+
+    public void checkParamsDropAdmission(Context ctx, String admissionId) throws LedgerAccessError {
+        ChaincodeStub stub = ctx.getStub();
+        getState(stub, admissionId, Admission.class);
     }
 }

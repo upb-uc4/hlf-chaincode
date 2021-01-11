@@ -180,6 +180,14 @@
           {
             "name": "admission.enrollmentId",
             "reason": "The given parameter must not be empty"
+          },
+          {
+            "name": "admission.enrollmentId",
+            "reason":"The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          },
+          {
+            "name": "admission.moduleId",
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
           }
         ]
       }
@@ -304,6 +312,14 @@
           {
             "name": "admission.moduleId",
             "reason": "The given parameter must not be empty"
+          },
+          {
+            "name": "admission.enrollmentId",
+            "reason":"The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          },
+          {
+            "name": "admission.moduleId",
+            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
           }
         ]
       }

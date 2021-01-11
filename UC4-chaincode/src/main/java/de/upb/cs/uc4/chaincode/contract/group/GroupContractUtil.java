@@ -1,9 +1,15 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode.contract.group;
 
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
@@ -93,5 +99,53 @@ public class GroupContractUtil extends ContractUtil {
 
     public List<String> getGroupNamesForUser(ChaincodeStub stub, String enrollmentId) {
         return this.getGroupsForUser(stub, enrollmentId).stream().map(Group::getGroupId).collect(Collectors.toList());
+    }
+
+    public void checkParamsAddUserToGroup(Context ctx, String enrollmentId, String groupId) throws ParameterError {
+        ChaincodeStub stub = ctx.getStub();
+
+        ArrayList<InvalidParameter> invalidParams = getParameterErrorsForEnrollmentId(enrollmentId);
+        invalidParams.addAll(getParameterErrorsForGroupId(groupId));
+        invalidParams.addAll(getSemanticErrorsForUserInGroup(stub, enrollmentId));
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
+    }
+
+    public void checkParamsRemoveUserFromGroup(Context ctx, String enrollmentId, String groupId) throws SerializableError {
+        ChaincodeStub stub = ctx.getStub();
+        ArrayList<InvalidParameter> invalidParams = getParameterErrorsForEnrollmentId(enrollmentId);
+        invalidParams.addAll(getParameterErrorsForGroupId(groupId));
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
+        Group group = getState(stub, groupId, Group.class);
+        if (!(group.getUserList().contains(enrollmentId))) {
+            throw new ParameterError(GsonWrapper.toJson(getUserNoRemoveError(enrollmentId, groupId)));
+        }
+    }
+
+    public void checkParamsRemoveUserFromAllGroups(String enrollmentId) throws ParameterError {
+        ArrayList<InvalidParameter> invalidParams = getParameterErrorsForEnrollmentId(enrollmentId);
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
+    }
+
+    public void checkParamsGetUsersForGroup(Context ctx, String groupId) throws SerializableError {
+        ChaincodeStub stub = ctx.getStub();
+        ArrayList<InvalidParameter> invalidParams = getParameterErrorsForGroupId(groupId);
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
+        getUsersForGroup(stub, groupId);
+
+    }
+
+    public void checkParamsGetGroupsForUser(String enrollmentId) throws ParameterError {
+        ArrayList<InvalidParameter> invalidParams = getParameterErrorsForEnrollmentId(enrollmentId);
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
     }
 }

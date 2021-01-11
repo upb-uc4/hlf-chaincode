@@ -1,14 +1,28 @@
-# [v0.15.0 (WIP)](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.0...develop) (TBD)
+# [v0.15.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.0...v0.15.1) (2021-01-05)
 
 ## Feature
-- reenable approval Checks for transactions
-- support group-approvals
+- reenable approval Checks for all transactions
+- approveTransaction now checks parameter validity
 
 ## Bugfix
 - 
 
 ## Refactor
+- folder structure
+
+## Usability
 - 
+
+# [v0.15.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.2...v0.15.0) (2021-01-05)
+
+## Feature
+- add support for group approvals
+
+## Bugfix
+- 
+
+## Refactor
+- introduce AccessManager
 
 ## Usability
 - 

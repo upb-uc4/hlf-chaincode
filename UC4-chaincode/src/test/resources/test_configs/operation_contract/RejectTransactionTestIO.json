@@ -150,7 +150,7 @@
     "compare": [
       {
         "type": "HLNotFound",
-        "title": "There is no operationData for the given operation"
+        "title": "There is no operationData for the given operationId"
       }
     ]
   }

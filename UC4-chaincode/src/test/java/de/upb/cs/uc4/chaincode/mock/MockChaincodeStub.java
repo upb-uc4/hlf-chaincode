@@ -1,7 +1,7 @@
 package de.upb.cs.uc4.chaincode.mock;
 
-import de.upb.cs.uc4.chaincode.OperationContract;
-import de.upb.cs.uc4.chaincode.util.OperationContractUtil;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;

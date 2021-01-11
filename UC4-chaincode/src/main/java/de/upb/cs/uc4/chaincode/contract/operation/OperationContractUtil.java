@@ -1,8 +1,9 @@
-package de.upb.cs.uc4.chaincode.util;
+package de.upb.cs.uc4.chaincode.contract.operation;
 
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
+import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
-import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
@@ -25,7 +26,7 @@ public class OperationContractUtil extends ContractUtil {
     public OperationContractUtil() {
         keyPrefix = "operation:";
         thing = "operationData";
-        identifier = "operation";
+        identifier = "operationId";
     }
 
     public String getUserRejectionMessage(String message) {
@@ -66,37 +67,11 @@ public class OperationContractUtil extends ContractUtil {
         return missingApprovals;
     }
 
-    public GenericError getInternalError() {
-        return new GenericError()
-                .type("HLInternalError")
-                .title("SHA-256 apparently does not exist lol...");
-    }
-
     public static String getDraftKey(final String contractName, final String transactionName, final String params) throws NoSuchAlgorithmException {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params;
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
         return new String(Base64.getEncoder().encode(bytes));
-    }
-
-    public ApprovalList addApproval(Context ctx, final String key) {
-        ChaincodeStub stub = ctx.getStub();
-        String clientId = ctx.getClientIdentity().getId();
-        // TODO
-        // String clientName = getEnrollmentId()
-        List<String> clientGroups = groupContractUtil.getGroupNamesForUser(stub, clientId);
-        ApprovalList approvalList;
-        try {
-            approvalList = getState(stub, key, OperationData.class).getExistingApprovals();
-        } catch (LedgerAccessError e) {
-            approvalList = new ApprovalList();
-        }
-        approvalList.addUsersItem(clientId);
-        for (String group : clientGroups) {
-            approvalList.addGroupsItem(group);
-        }
-
-        return approvalList;
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
@@ -108,5 +83,21 @@ public class OperationContractUtil extends ContractUtil {
             invalidParams.add(getEmptyInvalidParameter("transactionName"));
         }
         return invalidParams;
+    }
+
+    public String getEnrollmentIdFromClientId(String clientId) {
+        return clientId.substring(9).split(",")[0];
+    }
+
+    public DetailedError getContractUnprocessableError(String contractName) {
+        return getUnprocessableEntityError(new InvalidParameter()
+                .name("contractName")
+                .reason("The given contract \"" + contractName + "\" does not exist"));
+    }
+
+    public DetailedError getTransactionUnprocessableError(String transactionName) {
+        return getUnprocessableEntityError(new InvalidParameter()
+                .name("transactionName")
+                .reason("The given transaction \"" + transactionName + "\" does not exist"));
     }
 }

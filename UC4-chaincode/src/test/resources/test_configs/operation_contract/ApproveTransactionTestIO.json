@@ -47,7 +47,7 @@
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
-        "initiator": "User1",
+        "initiator": "",
         "initiatedTimestamp":  "1970-01-01T00:00:00",
         "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
@@ -83,7 +83,7 @@
             "transactionName": "addMatriculationData",
             "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
           },
-          "initiator": "User1",
+          "initiator": "",
           "initiatedTimestamp":  "1970-01-01T00:00:00",
           "lastModifiedTimestamp": "1970-01-01T00:00:00",
           "state": "PENDING",
@@ -111,6 +111,14 @@
             "User1"
           ]
         }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
       ]
     },
     "input": [
@@ -136,7 +144,7 @@
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
-        "initiator": "User1",
+        "initiator": "",
         "initiatedTimestamp":  "1970-01-01T00:00:00",
         "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
@@ -175,7 +183,7 @@
             "transactionName": "addMatriculationData",
             "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
           },
-          "initiator": "User1",
+          "initiator": "",
           "initiatedTimestamp":  "1970-01-01T00:00:00",
           "lastModifiedTimestamp": "1970-01-01T00:00:00",
           "state": "PENDING",
@@ -203,6 +211,14 @@
             "User1"
           ]
         }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
       ]
     },
     "input": [
@@ -228,7 +244,7 @@
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
-        "initiator": "User1",
+        "initiator": "",
         "initiatedTimestamp":  "1970-01-01T00:00:00",
         "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
@@ -329,6 +345,14 @@
       "approvalContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         "something invalid"
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
       ]
     },
     "input": [
@@ -354,7 +378,7 @@
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
-        "initiator": "User1",
+        "initiator": "",
         "initiatedTimestamp":  "1970-01-01T00:00:00",
         "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",

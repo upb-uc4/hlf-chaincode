@@ -2,12 +2,12 @@ package de.upb.cs.uc4.chaincode;
 
 
 import com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.util.OperationContractUtil;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
@@ -89,7 +89,7 @@ public final class OperationContractTest extends TestCreationBase {
             for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
-                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, ids.get(i), contract(input), transaction(input), params(input)), OperationData.class);
+                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, "", contract(input), transaction(input), params(input)), OperationData.class);
                 assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
             }
         };
@@ -105,7 +105,7 @@ public final class OperationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
             for (String s : compare) {
                 Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
-                String result = contract.approveTransaction(ctx, ids.get(0), contract(input), transaction(input), params(input));
+                String result = contract.approveTransaction(ctx, "", contract(input), transaction(input), params(input));
                 assertThat(result).isEqualTo(s);
             }
         };

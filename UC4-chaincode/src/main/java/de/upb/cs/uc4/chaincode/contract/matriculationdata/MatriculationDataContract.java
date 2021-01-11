@@ -1,12 +1,13 @@
-package de.upb.cs.uc4.chaincode;
+package de.upb.cs.uc4.chaincode.contract.matriculationdata;
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.exceptions.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.contract.ContractBase;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.util.MatriculationDataContractUtil;
-import de.upb.cs.uc4.chaincode.util.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -22,7 +23,7 @@ import java.util.Collections;
 public class MatriculationDataContract extends ContractBase {
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
-    protected final String contractName = "UC4.MatriculationData";
+    public final String contractName = "UC4.MatriculationData";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -33,33 +34,20 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String addMatriculationData(final Context ctx, String matriculationData) {
+        try {
+            cUtil.checkParamsAddMatriculationData(ctx, matriculationData);
+        } catch (ParameterError e) {
+            return e.getJsonError();
+        }
 
         ChaincodeStub stub = ctx.getStub();
-
-        MatriculationData newMatriculationData;
         try {
-            newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
-        } catch (Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
+            cUtil.validateApprovals(stub, this.contractName,  "addMatriculationData", Collections.singletonList(matriculationData));
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }
 
-        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
-        }
-
-        if (cUtil.keyExists(stub, newMatriculationData.getEnrollmentId())) {
-            return GsonWrapper.toJson(cUtil.getConflictError());
-        }
-
-        if (!cUtil.validateApprovals(
-                stub,
-                this.contractName,
-                "addMatriculationData",
-                Collections.singletonList(matriculationData))) {
-            return GsonWrapper.toJson(cUtil.getInsufficientApprovalsError());
-        }
-
+        MatriculationData newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
         return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));
     }
 
@@ -72,26 +60,19 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String updateMatriculationData(final Context ctx, String matriculationData) {
+        try {
+            cUtil.checkParamsUpdateMatriculationData(ctx, matriculationData);
+        } catch (ParameterError e) {
+            return e.getJsonError();
+        }
 
         ChaincodeStub stub = ctx.getStub();
-
-        MatriculationData newMatriculationData;
         try {
-            newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
-        } catch (Exception e) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableMatriculationDataParam()));
+            cUtil.validateApprovals(stub, this.contractName,  "updateMatriculationData", Collections.singletonList(matriculationData));
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }
-
-        ArrayList<InvalidParameter> invalidParams = cUtil.getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
-        }
-
-
-        if (!cUtil.keyExists(stub, newMatriculationData.getEnrollmentId())) {
-            return GsonWrapper.toJson(cUtil.getNotFoundError());
-        }
-
+        MatriculationData newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
         return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));
     }
 
@@ -104,8 +85,18 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String getMatriculationData(final Context ctx, final String enrollmentId) {
+        try {
+            cUtil.checkParamsGetMatriculationData(ctx, enrollmentId);
+        } catch (ParameterError e) {
+            return e.getJsonError();
+        }
 
         ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(stub, this.contractName,  "getMatriculationData", Collections.singletonList(enrollmentId));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         MatriculationData matriculationData;
         try {
             matriculationData = cUtil.getState(stub, enrollmentId, MatriculationData.class);
@@ -128,26 +119,21 @@ public class MatriculationDataContract extends ContractBase {
             final Context ctx,
             final String enrollmentId,
             final String matriculations) {
+        try {
+            cUtil.checkParamsAddEntriesToMatriculationData(ctx, enrollmentId, matriculations);
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
 
         ChaincodeStub stub = ctx.getStub();
-
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        if (cUtil.valueUnset(enrollmentId)) {
-            invalidParams.add(cUtil.getEmptyEnrollmentIdParam());
-        }
-        Type listType = new TypeToken<ArrayList<SubjectMatriculation>>() {
-        }.getType();
-        ArrayList<SubjectMatriculation> matriculationStatus;
         try {
-            matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
-        } catch (Exception e) {
-            invalidParams.add(cUtil.getUnparsableMatriculationParam());
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
+            cUtil.validateApprovals(stub, this.contractName,  "addEntriesToMatriculationData", new ArrayList<String>() {{add(enrollmentId); add(matriculations);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }
-        invalidParams.addAll(cUtil.getErrorForSubjectMatriculationList(stub, matriculationStatus, "matriculations"));
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
-        }
+        Type listType = new TypeToken<ArrayList<SubjectMatriculation>>() {}.getType();
+        ArrayList<SubjectMatriculation> matriculationStatus;
+        matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
 
         MatriculationData matriculationData;
         try {
