@@ -75,8 +75,8 @@ public class ValidationManager {
                     case "removeUserFromAllGroups":
                         groupUtil.checkParamsRemoveUserFromAllGroups(paramList.get(0));
                         break;
-                    case "getAllGroup":
-                        // pass
+                    case "getAllGroups":
+                        // pass, for there are no parameters
                         break;
                     case "getUsersForGroup":
                         groupUtil.checkParamsGetUsersForGroup(ctx, paramList.get(0));
