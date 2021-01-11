@@ -1,3 +1,150 @@
+# [v0.15.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.0...v0.15.1) (2021-01-05)
+
+## Feature
+- reenable approval Checks for all transactions
+- approveTransaction now checks parameter validity
+
+## Bugfix
+- 
+
+## Refactor
+- folder structure
+
+## Usability
+- 
+
+# [v0.15.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.2...v0.15.0) (2021-01-05)
+
+## Feature
+- add support for group approvals
+
+## Bugfix
+- 
+
+## Refactor
+- introduce AccessManager
+
+## Usability
+- 
+
+# [v0.14.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.14.1...v0.14.2) (2020-12-15)
+
+## Feature
+- addMatriculationData now checks approvals
+- add groups to approvals
+- add submission result
+
+
+## Bugfix
+- 
+
+## Refactor
+- 
+
+## Usability
+- 
+
+# [v0.14.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.1...v0.14.1) (2020-12-15)
+
+## Feature
+- add group Contract
+
+## Bugfix
+- 
+
+## Refactor
+- 
+
+## Usability
+- Increase Test Code Coverage Threshold
+
+# [v0.13.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.13.0...v0.13.1) (2020-12-04)
+
+## Feature
+- add admission Contract
+
+## Bugfix
+- add getAllExaminationRegulations functionality
+
+## Refactor
+- centralize Test Creation in base Class
+- remove duplicate code (EmptyParameterError)
+
+## Usability
+- adjust github workflows to always upload TestCoverage Report, even when not meeting the 70% criterion
+
+# [v0.13.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.12.3...v0.13.0) (2020-11-24)
+
+## Bugfix
+- fix general Matriculation Contract Error
+- hotfix version error by replacing resource version with hardcoded string
+
+
+# [v0.12.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.12.2...v0.12.3) (2020-11-23)
+
+## Feature
+- add fieldOfStudy validation to MatriculationData transactions
+- add tests for fieldOfStudy validation
+- add tests for unprocessable ledger state
+- read version from git-tags
+
+## Refactor
+- extend test model to allow for specification of client id
+- extend test setup model to allow for specification of contract for initial ledger entries
+
+## Bugfix
+- getExaminationRegulations("[[]]") now correctly returns the full list of existing Examination Regulations.
+
+
+# [v0.12.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.5...v0.12.2) (2020-11-10)
+
+- provide code via release assets when tagging
+- add coverage test and present reports in test runs
+- add installDist-test
+- read version from referenced tag
+- restructure gradle project to include our groupName to distinguish our project from hlf
+- remove obsolete schadowJar from build
+
+# [v0.12.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.5...v0.12.0) (2020-11-10)
+
+Release (no changes to previous version)
+
+
+
+# [v0.11.5](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.4...v0.11.5) (2020-11-04)
+
+## Refactor
+- rename ```Module``` model to ```ExaminationRegulationModule```
+- rename matriculation-contract transaction parameters to be consistent with the api
+
+
+
+# [v0.11.4](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.3...v0.11.4) (2020-11-04)
+
+## Feature
+- add examination-regulation contract
+- add examination-regulation contract tests
+
+
+# [v0.11.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.2...v0.11.3) (2020-11-03)
+
+## Feature
+- add approval contract
+- add approval contract tests
+
+
+# [v0.11.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.1...v0.11.2) (2020-10-30)
+
+## Refactor
+- replace field of study enum by string, allowing for configurable fields of study
+
+
+# [v0.11.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.11.0...v0.11.1) (2020-10-29)
+
+## Refactor
+- replace makeshift composite keys by fabric's built in composite keys
+
+
 # [v0.11.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.10.1...v0.11.0) (2020-10-26)
 
 Release (no changes to previous version)

@@ -1,0 +1,735 @@
+[
+  {
+    "name": "addEntryToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addEntryToNonExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        },
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addExistingEntryToExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addTwoEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        },
+        "Mathematics",
+        {
+          "name": "Mathematics",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Mathematics",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Mathematics",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        },
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": []
+        },
+        "Mathematics",
+        {
+          "name": "Mathematics",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Mathematics",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Mathematics",
+            "semesters": [
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_SUCCESS",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            },
+            {
+              "fieldOfStudy": "Mathematics",
+              "semesters": [
+                "SS2019"
+              ]
+            },
+            {
+              "fieldOfStudy": "Philosophy",
+              "semesters": [
+                "SS2019"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        },
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": []
+        },
+        "Mathematics",
+        {
+          "name": "Mathematics",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Mathematics",
+          "semesters": [
+            "SS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Mathematics",
+            "semesters": [
+              "SS2019"
+            ]
+          },
+          {
+            "fieldOfStudy": "Philosophy",
+            "semesters": [
+              "SS2019"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addMultipleInvalidEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Mathematics",
+          "active": true,
+          "modules": []
+        },
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Mathematics",
+          "semesters": [
+            "WS2019"
+          ]
+        },
+        {
+          "fieldOfStudy": "Philosophy",
+          "semesters": [
+            "SS2019/20"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type":"HLUnprocessableEntity",
+        "title":"The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name":"matriculations[0].semesters[0]",
+            "reason":"Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          },
+          {
+            "name":"matriculations[1].semesters[0]",
+            "reason":"Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addInvalidSemesterEntryToExistingMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/17"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "matriculations[0].semesters[0]",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addNonExistingEnrollmentIdEntryToExistingMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000002",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no MatriculationData for the given enrollmentId"
+      }
+    ]
+  },
+
+
+  {
+    "name": "addEmptyEnrollmentIdEntryToMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "enrollmentId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addEntryToUnprocessableMatriculationData",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        "something unprocessable"
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      [
+        {
+          "fieldOfStudy": "Computer Science",
+          "semesters": [
+            "WS2018/19"
+          ]
+        }
+      ]
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
+      }
+    ]
+  },
+
+
+  {
+    "name": "addUnprocessableMatriculationDataToEntry",
+    "type": "addEntryToMatriculationData_FAILURE",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      "something unprocessable"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "matriculations",
+            "reason": "The given parameter cannot be parsed from json"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,176 @@
+[
+  {
+    "name": "getUsersForGroup",
+    "type": "getUsersForGroup_SUCCESS",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001"]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001", "0000002"]
+        },
+        "0125",
+        {
+          "groupId": "0125",
+          "userList": ["0000001", "0000003"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0123"
+    ],
+    "compare": [[
+      "0000001"
+    ]
+    ]
+  },
+  {
+    "name": "getMultipleUsersForGroup",
+    "type": "getUsersForGroup_SUCCESS",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001",
+            "0000002",
+            "0000003"]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001",
+            "0000002"]
+        },
+        "0125",
+        {
+          "groupId": "0125",
+          "userList": ["0000001",
+            "0000003"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0123"
+    ],
+    "compare": [[
+      "0000001",
+      "0000002",
+      "0000003"
+    ]
+    ]
+  },
+  {
+    "name": "getUsersForEmptyGroup",
+    "type": "getUsersForGroup_FAILURE",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001",
+            "0000002",
+            "0000003"]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001",
+            "0000002"]
+        },
+        "0125",
+        {
+          "groupId": "0125",
+          "userList": ["0000001",
+            "0000003"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      ""
+    ],
+    "compare": [{
+      "type": "HLUnprocessableEntity",
+      "title": "The following parameters do not conform to the specified format",
+      "invalidParams": [
+        {
+          "name": "group.groupId",
+          "reason": "The given parameter must not be empty"
+        }
+      ]
+    }
+    ]
+  },
+  {
+    "name": "getUsersForNotExistingGroup",
+    "type": "getUsersForGroup_FAILURE",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001",
+            "0000002",
+            "0000003"]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001",
+            "0000002"]
+        },
+        "0125",
+        {
+          "groupId": "0125",
+          "userList": ["0000001",
+            "0000003"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+      "0129"
+    ],
+    "compare": [{
+      "type": "HLNotFound",
+      "title": "There is no Group for the given groupId"
+    }
+    ]
+  }
+]

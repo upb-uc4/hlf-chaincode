@@ -1,0 +1,335 @@
+[
+  {
+    "name": "addNewExaminationRegulation",
+    "type": "addExaminationRegulation_SUCCESS",
+    "setup": {
+      "examinationRegulationContract": [
+        "Philosophy",
+        {
+          "name": "Philosophy",
+          "active": true,
+          "modules": "something invalid"
+        }
+      ]
+    },
+    "input": [
+      {
+        "name": "Computer Science v3",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01158",
+            "name": "Math 1"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "name": "Computer Science v3",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01158",
+            "name": "Math 1"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addExistingExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science v3",
+        {
+          "name": "Computer Science v3",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "name": "Computer Science v3",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01157",
+            "name": "Math 2"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLConflict",
+        "title": "There is already an examination regulation for the given name"
+      }
+    ]
+  },
+
+
+  {
+    "name": "addEmptyNameExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      {
+        "name": "",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01158",
+            "name": "Math 1"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation.name",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addEmptyModulesExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      {
+        "name": "Computer Science v3",
+        "active": true,
+        "modules": null
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation.modules",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addUnparsableExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      "something invalid"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation",
+            "reason": "The given parameter cannot be parsed from json"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addEmptyModuleIdExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      {
+        "name": "Computer Science v3",
+        "active": true,
+        "modules": [
+          {
+            "id": "",
+            "name": "Math 1"
+          },
+          {
+            "id": "M.1275.01158",
+            "name": "Math 2"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation.modules[0].id",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addEmptyModuleNameExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      {
+        "name": "Computer Science v3",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01157",
+            "name": "Math 1"
+          },
+          {
+            "id": "M.1275.01158",
+            "name": ""
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation.modules[1].name",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addInconsistentModuleExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science v3",
+        {
+          "name": "Computer Science v3",
+          "active": true,
+          "modules": [
+           {
+              "id": "M.1275.01157",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.1275.01158",
+              "name": "Math 2"
+            }
+          ]
+        },
+        "Computer Engineering v2",
+        {
+          "name": "Computer Engineering v2",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01157",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.1275.01160",
+              "name": "Systems Engineering"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "name": "Computer Science v4",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01157",
+            "name": "Math 3"
+          },
+          {
+            "id": "M.1275.01160",
+            "name": "Computer Architecture"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation.modules[0]",
+            "reason": "Each module must be consistent with the modules on chain, i.e. if the module.id is equal, then module.name must be too"
+          },
+          {
+            "name": "examinationRegulation.modules[1]",
+            "reason": "Each module must be consistent with the modules on chain, i.e. if the module.id is equal, then module.name must be too"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addIDuplicateModuleExaminationRegulation",
+    "type": "addExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      {
+        "name": "Computer Science v4",
+        "active": true,
+        "modules": [
+          {
+            "id": "M.1275.01157",
+            "name": "Math 3"
+          },
+          {
+            "id": "M.1275.01157",
+            "name": "Math 3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examinationRegulation.modules[1]",
+            "reason": "Each module must only appear once in examinationRegulation.modules"
+          }
+        ]
+      }
+    ]
+  }
+]

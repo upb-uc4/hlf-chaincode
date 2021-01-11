@@ -1,0 +1,129 @@
+[
+  {
+    "name": "updateCertificateData",
+    "type": "updateCertificate_SUCCESS",
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      "new legit certificate"
+    ],
+    "compare": [
+      "new legit certificate"
+    ]
+  },
+
+
+  {
+    "name": "updateNonExistingCertificate",
+    "type": "updateCertificate_FAILURE",
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      "0000002",
+      "new legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no certificate for the given enrollmentId"
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateEmptyEnrollmentIdCertificate",
+    "type": "updateCertificate_FAILURE",
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      "",
+      "new legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams":[
+          {
+            "name": "enrollmentId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateEmptyCertificateCertificate",
+    "type": "updateCertificate_FAILURE",
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams":[
+          {
+            "name": "certificate",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "updateEmptyCertificateCertificate",
+    "type": "updateCertificate_FAILURE",
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      "",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams":[
+          {
+            "name": "enrollmentId",
+            "reason": "The given parameter must not be empty"
+          },
+          {
+            "name": "certificate",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  }
+]

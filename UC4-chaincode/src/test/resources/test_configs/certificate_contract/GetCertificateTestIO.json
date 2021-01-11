@@ -1,0 +1,56 @@
+[
+  {
+    "name": "queryExistingCertificate",
+    "type": "getCertificate",
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      "0000001"
+    ],
+    "compare": [
+      "legit certificate"
+    ]
+  },
+
+
+  {
+    "name": "queryNonExistingCertificate",
+    "type": "getCertificate",
+    "setup": {},
+    "input": [
+      "0000001"
+    ],
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no certificate for the given enrollmentId"
+      }
+    ]
+  },
+
+
+  {
+    "name": "queryEmptyEnrollmentIdCertificate",
+    "type": "getCertificate",
+    "setup": {},
+    "input": [
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "enrollmentId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  }
+]

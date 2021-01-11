@@ -1,0 +1,108 @@
+[
+  {
+    "name": "addNonExistingCertificate",
+    "type": "addCertificate_SUCCESS",
+    "setup": {},
+    "input": [
+      "0000001",
+      "legit certificate"
+    ],
+    "compare": [
+      "legit certificate"
+    ]
+  },
+
+  {
+    "name": "addExistingCertificate",
+    "type": "addCertificate_FAILURE",
+    "setup": {
+      "certificateContract": [
+        "0000001",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      "0000001",
+      "another legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLConflict",
+        "title": "There is already a certificate for the given enrollmentId"
+      }
+    ]
+  },
+
+
+  {
+    "name": "addEmptyEnrollmentIdCertificate",
+    "type": "addCertificate_FAILURE",
+    "setup": {},
+    "input": [
+      "",
+      "legit certificate"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "enrollmentId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addEmptyEnrollmentIdCertificate",
+    "type": "addCertificate_FAILURE",
+    "setup": {},
+    "input": [
+      "0000001",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "certificate",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addEmptyEnrollmentIdCertificate",
+    "type": "addCertificate_FAILURE",
+    "setup": {},
+    "input": [
+      "",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "enrollmentId",
+            "reason": "The given parameter must not be empty"
+          },
+          {
+            "name": "certificate",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  }
+]

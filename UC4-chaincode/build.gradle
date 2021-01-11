@@ -1,0 +1,53 @@
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'java-library'
+    id 'java-library-distribution'
+    id 'application'
+    id 'jacoco'
+    id "com.zoltu.git-versioning" version "3.0.3"
+}
+
+dependencies {
+    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.2.0'
+    implementation 'com.owlike:genson:1.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    api group: 'org.threeten', name: 'threetenbp', version: '1.4.4'
+    api group: 'io.swagger', name: 'swagger-annotations', version: '1.5.0'
+    api group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.4.2'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+    testImplementation 'org.mockito:mockito-core:2.+'
+    testImplementation 'org.mockito:mockito-inline:2.13.0'
+}
+
+repositories {
+    maven {
+        url 'https://hyperledger.jfrog.io/hyperledger/fabric-maven'
+    }
+    jcenter()
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+// version config
+apply from: "$rootDir/gradle/versioning.gradle"
+// test and coverage config
+apply from: "$rootDir/gradle/test.gradle"
+
+// variables
+def javaMainClass = 'org.hyperledger.fabric.contract.ContractRouter'
+group = 'de.upb.cs.uc4'
+
+// packaging config
+application {
+    mainClass.set(javaMainClass)
+    manifest {
+        attributes.putAt("version",version)
+    }
+}

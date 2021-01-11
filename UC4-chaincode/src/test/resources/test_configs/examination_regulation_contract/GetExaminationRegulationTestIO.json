@@ -1,0 +1,132 @@
+[
+  {
+    "name": "queryExistingExaminationRegulations",
+    "type": "getExaminationRegulations",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science v1",
+        {
+          "name": "Computer Science v1",
+          "active": false,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        },
+        "Computer Science v2",
+        {
+          "name": "Computer Science v2",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        },
+        "Computer Science v3",
+        {
+          "name": "Computer Science v3",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      [
+        "Computer Science v2",
+        "Computer Science v3",
+        "Computer Science v4"
+      ]
+    ],
+    "compare": [
+      [
+        {
+          "name": "Computer Science v2",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        },
+        {
+          "name": "Computer Science v3",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        }
+      ]
+    ]
+  },
+
+
+  {
+    "name": "queryNonExistingExaminationRegulations",
+    "type": "getExaminationRegulations",
+    "setup": {},
+    "input": [
+      [
+        "Computer Science v3"
+      ]
+    ],
+    "compare": [
+      []
+    ]
+  },
+
+
+  {
+    "name": "queryUnparsableNameListExaminationRegulations",
+    "type": "getExaminationRegulations",
+    "setup": {},
+    "input": [
+      "something invalid"
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "names",
+            "reason": "The given parameter cannot be parsed from json"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "queryUnprocessableLedgerStateExaminationRegulations",
+    "type": "getExaminationRegulations",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        "something invalid"
+      ]
+    },
+    "input": [
+      ["Computer Science"]
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
+      }
+    ]
+  }
+]

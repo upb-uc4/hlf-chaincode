@@ -1,0 +1,56 @@
+[
+  {
+    "name": "getAllGroups",
+    "type": "getAllGroups_SUCCESS",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "groupContract": [
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": ["0000001"]
+        },
+        "0124",
+        {
+          "groupId": "0124",
+          "userList": ["0000001", "0000002"]
+        },
+        "0125",
+        {
+          "groupId": "0125",
+          "userList": ["0000001", "0000003"]
+        }
+      ],
+      "certificateContract": [
+        "0000001",
+        "test-certificate"
+      ]
+    },
+    "input": [
+    ],
+    "compare": [[
+      {
+        "groupId": "0123",
+        "userList": [
+          "0000001"
+        ]
+      },
+      {
+        "groupId": "0124",
+        "userList": [
+          "0000001", "0000002"
+        ]
+      },
+      {
+        "groupId": "0125",
+        "userList": [
+          "0000001", "0000003"
+        ]
+      }
+      ]
+    ]
+  }
+]

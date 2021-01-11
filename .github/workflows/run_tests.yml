@@ -1,0 +1,53 @@
+name: Run Gradlew Test
+
+on:
+  push:
+    branches:
+      - '**feature**'
+      - '**fix**'
+      - develop
+      - master
+  pull_request:
+    branches: 
+      - develop
+      - master
+
+jobs:
+  TestChaincode:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - name: check out source repository
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    
+    # Set up JDK
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    # run gradle tests
+    - name: Run chaincode tests
+      run: |
+        echo "git describe: $(git describe)"
+        pushd ./UC4-chaincode
+        echo "##########################"
+        echo "starting chaincode test"
+        echo "##########################"
+        ./gradlew test
+        echo "##########################"
+        echo "#  finish chaincode test #"
+        echo "##########################"
+        popd
+
+    # Upload Coverage Report
+    - name: Upload coverage report
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v1
+      with:
+        name: coverage-report
+        path: UC4-chaincode/build/jacocoHtml

@@ -1,0 +1,88 @@
+[
+  {
+    "name": "closeExistingOpenExaminationRegistration",
+    "type": "closeExaminationRegulation_SUCCESS",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science v3",
+        {
+          "name": "Computer Science v3",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "Computer Science v3"
+    ],
+    "compare": [
+      {
+        "name": "Computer Science v3",
+        "active": false,
+        "modules": [
+          {
+            "id": "M.1275.01158",
+            "name": "Math 1"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "closeExistingClosedExaminationRegistration",
+    "type": "closeExaminationRegulation_SUCCESS",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science v3",
+        {
+          "name": "Computer Science v3",
+          "active": false,
+          "modules": [
+            {
+              "id": "M.1275.01158",
+              "name": "Math 1"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "Computer Science v3"
+    ],
+    "compare": [
+      {
+        "name": "Computer Science v3",
+        "active": false,
+        "modules": [
+          {
+            "id": "M.1275.01158",
+            "name": "Math 1"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "closeEmptyNameExaminationRegulation",
+    "type": "closeExaminationRegulation_FAILURE",
+    "setup": {},
+    "input": [
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no examination regulation for the given name"
+      }
+    ]
+  }
+]
