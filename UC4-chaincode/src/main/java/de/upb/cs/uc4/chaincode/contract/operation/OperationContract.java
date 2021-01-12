@@ -25,7 +25,7 @@ import java.util.List;
 import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Contract(
-        name = "UC4.Operation"
+        name = "UC4.OperationData"
 )
 public class OperationContract extends ContractBase {
 
