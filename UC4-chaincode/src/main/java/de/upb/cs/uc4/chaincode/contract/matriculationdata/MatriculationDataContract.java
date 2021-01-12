@@ -120,7 +120,7 @@ public class MatriculationDataContract extends ContractBase {
             final String enrollmentId,
             final String matriculations) {
         try {
-            cUtil.checkParamsAddEntriesToMatriculationData(ctx, new ArrayList<>(){{add(enrollmentId); add(matriculations);}});
+            cUtil.checkParamsAddEntriesToMatriculationData(ctx, new ArrayList<String>(){{add(enrollmentId); add(matriculations);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }

@@ -31,7 +31,7 @@ public class CertificateContract extends ContractBase {
     @Transaction()
     public String addCertificate(final Context ctx, final String enrollmentId, final String certificate) {
         try {
-            cUtil.checkParamsAddCertificate(ctx, new ArrayList<>(){{add(enrollmentId); add(certificate);}});
+            cUtil.checkParamsAddCertificate(ctx, new ArrayList<String>(){{add(enrollmentId); add(certificate);}});
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -56,7 +56,7 @@ public class CertificateContract extends ContractBase {
     @Transaction()
     public String updateCertificate(final Context ctx, final String enrollmentId, final String certificate) {
         try {
-            cUtil.checkParamsUpdateCertificate(ctx, new ArrayList<>(){{add(enrollmentId); add(certificate);}});
+            cUtil.checkParamsUpdateCertificate(ctx, new ArrayList<String>(){{add(enrollmentId); add(certificate);}});
         } catch (ParameterError e) {
             return e.getJsonError();
         }
