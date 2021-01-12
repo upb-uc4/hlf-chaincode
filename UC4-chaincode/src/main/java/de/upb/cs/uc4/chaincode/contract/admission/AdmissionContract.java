@@ -33,7 +33,7 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
         try {
-            cUtil.checkParamsAddAdmission(ctx, admissionJson);
+            cUtil.checkParamsAddAdmission(ctx, Collections.singletonList(admissionJson));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -62,8 +62,8 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String dropAdmission(final Context ctx, String admissionId) {
         try {
-            cUtil.checkParamsDropAdmission(ctx, admissionId);
-        } catch (LedgerAccessError e) {
+            cUtil.checkParamsDropAdmission(ctx, Collections.singletonList(admissionId));
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
 

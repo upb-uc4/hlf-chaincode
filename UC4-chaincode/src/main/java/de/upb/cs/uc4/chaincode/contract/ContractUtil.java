@@ -99,6 +99,13 @@ abstract public class ContractUtil {
                 .title("SHA-256 apparently does not exist lol...");
     }
 
+    public GenericError getParamNumberError() {
+        // TODO add this error to operation api (approveTransaction)
+        return new GenericError()
+                .type("HLParameterNumberError")
+                .title("The given number of parameters does not match the required number of parameters for the specified transaction");
+    }
+
 
     public void validateApprovals(
             final ChaincodeStub stub,

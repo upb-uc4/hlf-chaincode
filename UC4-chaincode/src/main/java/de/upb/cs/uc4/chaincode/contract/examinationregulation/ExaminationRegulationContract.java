@@ -35,7 +35,7 @@ public class ExaminationRegulationContract extends ContractBase {
     @Transaction()
     public String addExaminationRegulation(final Context ctx, final String examinationRegulation) {
         try {
-            cUtil.checkParamsAddExaminationRegulation(ctx, examinationRegulation);
+            cUtil.checkParamsAddExaminationRegulation(ctx, Collections.singletonList(examinationRegulation));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -60,7 +60,7 @@ public class ExaminationRegulationContract extends ContractBase {
     @Transaction()
     public String getExaminationRegulations(final Context ctx, final String names) {
         try {
-            cUtil.checkParamsGetExaminationRegulations(names);
+            cUtil.checkParamsGetExaminationRegulations(Collections.singletonList(names));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -112,8 +112,8 @@ public class ExaminationRegulationContract extends ContractBase {
     @Transaction()
     public String closeExaminationRegulation(final Context ctx, final String name) {
         try {
-            cUtil.checkParamsCloseExaminationRegulation(ctx, name);
-        } catch (LedgerAccessError e) {
+            cUtil.checkParamsCloseExaminationRegulation(ctx, Collections.singletonList(name));
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
 

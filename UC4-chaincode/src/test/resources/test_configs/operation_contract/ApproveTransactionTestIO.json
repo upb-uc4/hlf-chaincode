@@ -397,5 +397,79 @@
         }
       }
     ]
+  },
+  {
+    "name": "approveNewTooFewParamsTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData"
+    ],
+    "compare": [
+      {
+        "type": "HLParameterNumberError",
+        "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
+      }
+    ]
+  },
+  {
+    "name": "approveNewTooManyParamsTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      "",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLParameterNumberError",
+        "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
+      }
+    ]
   }
 ]
