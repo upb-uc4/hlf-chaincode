@@ -127,7 +127,6 @@ public final class OperationContractTest extends TestCreationBase {
             }*/
             Context ctx = TestUtil.mockContext(stub);
             String rejectResult = contract.rejectTransaction(ctx, input.get(0), input.get(1));
-            String expectedState = OperationDataState.REJECTED.toString();
             OperationData compareOperationData = GsonWrapper.fromJson(compare.get(compare.size() - 1), OperationData.class);
             OperationData ledgerOperationData = cUtil.getState(ctx.getStub(), compareOperationData.getOperationId(), OperationData.class);
             assertThat(GsonWrapper.toJson(compareOperationData)).isEqualTo(GsonWrapper.toJson(ledgerOperationData));
