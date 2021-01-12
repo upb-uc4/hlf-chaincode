@@ -8,6 +8,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.OperationData;
+import de.upb.cs.uc4.chaincode.model.OperationDataState;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -118,7 +119,7 @@ abstract public class ContractUtil {
             return;
         }
 
-        OperationContractUtil aUtil = new OperationContractUtil();
+        OperationContractUtil oUtil = new OperationContractUtil();
         ApprovalList approvals;
         String key;
         try {
@@ -127,7 +128,7 @@ abstract public class ContractUtil {
             throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
         try{
-            approvals = aUtil.getState(stub, key, OperationData.class).getExistingApprovals();
+            approvals = oUtil.getState(stub, key, OperationData.class).getExistingApprovals();
         } catch (Exception e) {
             approvals = new ApprovalList();
         }
@@ -135,6 +136,30 @@ abstract public class ContractUtil {
         if(!OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
+    }
+
+    public void finishOperation(
+            final ChaincodeStub stub,
+            String contractName,
+            String transactionName,
+            final List<String> args) throws SerializableError {
+        String jsonArgs = GsonWrapper.toJson(args);
+
+        OperationContractUtil oUtil = new OperationContractUtil();
+        String key;
+        try {
+            key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
+        } catch (NoSuchAlgorithmException e) {
+            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
+        }
+        OperationData operation;
+        try{
+            operation = oUtil.getState(stub, key, OperationData.class);
+        } catch (Exception e) {
+            return;
+        }
+
+        oUtil.putAndGetStringState(stub, key, GsonWrapper.toJson(operation.state(OperationDataState.FINISHED)));
     }
 
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {

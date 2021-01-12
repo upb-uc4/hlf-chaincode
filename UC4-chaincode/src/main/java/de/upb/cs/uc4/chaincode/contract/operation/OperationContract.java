@@ -81,11 +81,10 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
-        OperationData result = operationData
-                .lastModifiedTimestamp(timeStamp)
+        operationData.lastModifiedTimestamp(timeStamp)
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
-        return cUtil.putAndGetStringState(ctx.getStub(), key, GsonWrapper.toJson(result));
+        return cUtil.putAndGetStringState(ctx.getStub(), key, GsonWrapper.toJson(operationData));
     }
 
     @Transaction

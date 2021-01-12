@@ -18,12 +18,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @Contract(
-        name = "UC4.MatriculationData"
+        name = MatriculationDataContract.contractName
 )
 public class MatriculationDataContract extends ContractBase {
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
-    public final String contractName = "UC4.MatriculationData";
+    public final static String contractName = "UC4.MatriculationData";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -34,6 +34,7 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String addMatriculationData(final Context ctx, String matriculationData) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsAddMatriculationData(ctx, Collections.singletonList(matriculationData));
         } catch (ParameterError e) {
@@ -42,12 +43,17 @@ public class MatriculationDataContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "addMatriculationData", Collections.singletonList(matriculationData));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(matriculationData));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
         MatriculationData newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(matriculationData));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));
     }
 
@@ -60,6 +66,7 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String updateMatriculationData(final Context ctx, String matriculationData) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsUpdateMatriculationData(ctx, Collections.singletonList(matriculationData));
         } catch (ParameterError e) {
@@ -68,11 +75,16 @@ public class MatriculationDataContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "updateMatriculationData", Collections.singletonList(matriculationData));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(matriculationData));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         MatriculationData newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(matriculationData));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return cUtil.putAndGetStringState(stub, newMatriculationData.getEnrollmentId(), GsonWrapper.toJson(newMatriculationData));
     }
 
@@ -85,6 +97,7 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String getMatriculationData(final Context ctx, final String enrollmentId) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsGetMatriculationData(ctx, Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {
@@ -93,7 +106,7 @@ public class MatriculationDataContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "getMatriculationData", Collections.singletonList(enrollmentId));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(enrollmentId));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -101,6 +114,11 @@ public class MatriculationDataContract extends ContractBase {
         try {
             matriculationData = cUtil.getState(stub, enrollmentId, MatriculationData.class);
         } catch (LedgerAccessError e) {
+            return e.getJsonError();
+        }
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(enrollmentId));
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
         return GsonWrapper.toJson(matriculationData);
@@ -119,6 +137,7 @@ public class MatriculationDataContract extends ContractBase {
             final Context ctx,
             final String enrollmentId,
             final String matriculations) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsAddEntriesToMatriculationData(ctx, new ArrayList<String>(){{add(enrollmentId); add(matriculations);}});
         } catch (SerializableError e) {
@@ -127,7 +146,7 @@ public class MatriculationDataContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "addEntriesToMatriculationData", new ArrayList<String>() {{add(enrollmentId); add(matriculations);}});
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, new ArrayList<String>() {{add(enrollmentId); add(matriculations);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -143,6 +162,11 @@ public class MatriculationDataContract extends ContractBase {
         }
 
         matriculationData.addAbsent(matriculationStatus);
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>() {{add(enrollmentId); add(matriculations);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return cUtil.putAndGetStringState(stub, matriculationData.getEnrollmentId(), GsonWrapper.toJson(matriculationData));
     }
 }

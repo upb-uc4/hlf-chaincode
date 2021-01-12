@@ -1,7 +1,7 @@
 [
   {
-    "name": "addEntryToExistingSubjectOfExistingMatriculationData",
-    "type": "addEntryToMatriculationData_SUCCESS",
+    "name": "addEntriesToExistingSubjectOfExistingMatriculationData",
+    "type": "addEntriesToMatriculationData_SUCCESS",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -53,8 +53,8 @@
     ]
   },
   {
-    "name": "addEntryToNonExistingSubjectOfExistingMatriculationData",
-    "type": "addEntryToMatriculationData_SUCCESS",
+    "name": "addEntriesToNonExistingSubjectOfExistingMatriculationData",
+    "type": "addEntriesToMatriculationData_SUCCESS",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -118,7 +118,7 @@
   },
   {
     "name": "addExistingEntryToExistingMatriculationData",
-    "type": "addEntryToMatriculationData_SUCCESS",
+    "type": "addEntriesToMatriculationData_SUCCESS",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -170,7 +170,7 @@
   },
   {
     "name": "addTwoEntriesToExistingSubjectOfExistingMatriculationData",
-    "type": "addEntryToMatriculationData_SUCCESS",
+    "type": "addEntriesToMatriculationData_SUCCESS",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -241,7 +241,7 @@
   },
   {
     "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
-    "type": "addEntryToMatriculationData_SUCCESS",
+    "type": "addEntriesToMatriculationData_SUCCESS",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -330,7 +330,7 @@
   },
   {
     "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
-    "type": "addEntryToMatriculationData_SUCCESS",
+    "type": "addEntriesToMatriculationData_SUCCESS",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -431,7 +431,7 @@
   },
   {
     "name": "addMultipleInvalidEntriesToExistingSubjectOfExistingMatriculationData",
-    "type": "addEntryToMatriculationData_FAILURE",
+    "type": "addEntriesToMatriculationData_FAILURE",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -498,7 +498,7 @@
   },
   {
     "name": "addInvalidSemesterEntryToExistingMatriculationData",
-    "type": "addEntryToMatriculationData_FAILURE",
+    "type": "addEntriesToMatriculationData_FAILURE",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -549,7 +549,7 @@
   },
   {
     "name": "addNonExistingEnrollmentIdEntryToExistingMatriculationData",
-    "type": "addEntryToMatriculationData_FAILURE",
+    "type": "addEntriesToMatriculationData_FAILURE",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -594,7 +594,7 @@
   },
   {
     "name": "addEmptyEnrollmentIdEntryToMatriculationData",
-    "type": "addEntryToMatriculationData_FAILURE",
+    "type": "addEntriesToMatriculationData_FAILURE",
     "setup": {
       "examinationRegulationContract": [
         "Computer Science",
@@ -630,8 +630,8 @@
     ]
   },
   {
-    "name": "addEntryToUnprocessableMatriculationData",
-    "type": "addEntryToMatriculationData_FAILURE",
+    "name": "addEntriesToUnprocessableMatriculationData",
+    "type": "addEntriesToMatriculationData_FAILURE",
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -666,7 +666,7 @@
   },
   {
     "name": "addUnprocessableMatriculationDataToEntry",
-    "type": "addEntryToMatriculationData_FAILURE",
+    "type": "addEntriesToMatriculationData_FAILURE",
     "setup": {
       "matriculationDataContract": [
         "0000001",

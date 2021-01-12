@@ -1,10 +1,15 @@
 package de.upb.cs.uc4.chaincode.helper;
 
 import com.google.gson.reflect.TypeToken;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
+import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
+import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
@@ -28,7 +33,7 @@ public class ValidationManager {
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         List<String> paramList = GsonWrapper.fromJson(params, listType);
         switch (contractName) {
-            case "UC4.MatriculationData":
+            case MatriculationDataContract.contractName:
                 switch (transactionName) {
                     case "addMatriculationData":
                         matriculationDataUtil.checkParamsAddMatriculationData(ctx, paramList);
@@ -48,7 +53,7 @@ public class ValidationManager {
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
-            case "UC4.Admission":
+            case AdmissionContract.contractName:
                 switch (transactionName) {
                     case "addAdmission":
                         admissionUtil.checkParamsAddAdmission(ctx, paramList);
@@ -65,7 +70,7 @@ public class ValidationManager {
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
-            case "UC4.Group":
+            case GroupContract.contractName:
                 switch (transactionName) {
                     case "addUserToGroup":
                         groupUtil.checkParamsAddUserToGroup(ctx, paramList);
@@ -91,7 +96,7 @@ public class ValidationManager {
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
-            case "UC4.ExaminationRegulation":
+            case ExaminationRegulationContract.contractName:
                 switch (transactionName) {
                     case "addExaminationRegulation":
                         examinationRegulationUtil.checkParamsAddExaminationRegulation(ctx, paramList);
@@ -108,7 +113,7 @@ public class ValidationManager {
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
-            case "UC4.Certificate":
+            case CertificateContract.contractName:
                 switch (transactionName) {
                     case "addCertificate":
                         certificateUtil.checkParamsAddCertificate(ctx, paramList);

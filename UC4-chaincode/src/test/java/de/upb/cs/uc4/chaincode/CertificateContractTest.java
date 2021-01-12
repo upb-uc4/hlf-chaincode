@@ -128,7 +128,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:getCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             String certificate = contract.getCertificate(ctx, input.get(0));
@@ -142,7 +142,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:addCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addCertificate(ctx, input.get(0), input.get(1)))
@@ -158,7 +158,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:addCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addCertificate(ctx, input.get(0), input.get(1));
@@ -172,7 +172,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:updateCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.updateCertificate(ctx, input.get(0), input.get(1)))
@@ -189,7 +189,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:updateCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateCertificate(ctx, input.get(0), input.get(1));

@@ -12,13 +12,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @Contract(
-        name = "UC4.Certificate"
+        name = CertificateContract.contractName
 )
 public class CertificateContract extends ContractBase {
 
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
 
-    public final String contractName = "UC4.Certificate";
+    public final static String contractName = "UC4.Certificate";
 
     /**
      * Adds a certificate to the ledger.
@@ -30,6 +30,7 @@ public class CertificateContract extends ContractBase {
      */
     @Transaction()
     public String addCertificate(final Context ctx, final String enrollmentId, final String certificate) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsAddCertificate(ctx, new ArrayList<String>(){{add(enrollmentId); add(certificate);}});
         } catch (ParameterError e) {
@@ -38,7 +39,12 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "addCertificate", new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -55,6 +61,7 @@ public class CertificateContract extends ContractBase {
      */
     @Transaction()
     public String updateCertificate(final Context ctx, final String enrollmentId, final String certificate) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsUpdateCertificate(ctx, new ArrayList<String>(){{add(enrollmentId); add(certificate);}});
         } catch (ParameterError e) {
@@ -63,7 +70,12 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "updateCertificate", new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -79,6 +91,7 @@ public class CertificateContract extends ContractBase {
      */
     @Transaction()
     public String getCertificate(final Context ctx, final String enrollmentId) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsGetCertificate(ctx, Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {
@@ -87,11 +100,15 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "getCertificate", Collections.singletonList(enrollmentId));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(enrollmentId));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        String certificate = cUtil.getStringState(stub, enrollmentId);
-        return certificate;
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(enrollmentId));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+        return cUtil.getStringState(stub, enrollmentId);
     }
 }
