@@ -37,8 +37,6 @@
       }
     ]
   },
-
-
   {
     "name": "addExistingExaminationRegulation",
     "type": "addExaminationRegulation_FAILURE",
@@ -76,8 +74,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyNameExaminationRegulation",
     "type": "addExaminationRegulation_FAILURE",
@@ -107,8 +103,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyModulesExaminationRegulation",
     "type": "addExaminationRegulation_FAILURE",
@@ -133,8 +127,6 @@
       }
     ]
   },
-
-
   {
     "name": "addUnparsableExaminationRegulation",
     "type": "addExaminationRegulation_FAILURE",
@@ -155,8 +147,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyModuleIdExaminationRegulation",
     "type": "addExaminationRegulation_FAILURE",
@@ -190,8 +180,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyModuleNameExaminationRegulation",
     "type": "addExaminationRegulation_FAILURE",
@@ -225,8 +213,6 @@
       }
     ]
   },
-
-
   {
     "name": "addInconsistentModuleExaminationRegulation",
     "type": "addExaminationRegulation_FAILURE",
@@ -237,7 +223,7 @@
           "name": "Computer Science v3",
           "active": true,
           "modules": [
-           {
+            {
               "id": "M.1275.01157",
               "name": "Math 1"
             },
@@ -297,8 +283,6 @@
       }
     ]
   },
-
-
   {
     "name": "addIDuplicateModuleExaminationRegulation",
     "type": "addExaminationRegulation_FAILURE",

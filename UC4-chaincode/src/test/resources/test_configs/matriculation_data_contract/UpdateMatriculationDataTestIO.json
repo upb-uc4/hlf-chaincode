@@ -11,7 +11,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -33,7 +34,8 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "WS2020/21"
+              "WS2018/19",
+              "WS2020/21"
             ]
           }
         ]
@@ -46,19 +48,19 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "WS2020/21"
+              "WS2018/19",
+              "WS2020/21"
             ]
           }
         ]
       }
     ]
   },
-
   {
     "name": "updateMultiFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_SUCCESS",
-    "setup":{
-      "matriculationDataContract":[
+    "setup": {
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -66,7 +68,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -94,13 +97,15 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "WS2020/21"
+              "WS2018/19",
+              "WS2020/21"
             ]
           },
           {
             "fieldOfStudy": "Philosophy",
             "semesters": [
-              "WS2018/19", "WS2020/21"
+              "WS2018/19",
+              "WS2020/21"
             ]
           }
         ]
@@ -113,25 +118,26 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "WS2020/21"
+              "WS2018/19",
+              "WS2020/21"
             ]
           },
           {
             "fieldOfStudy": "Philosophy",
             "semesters": [
-              "WS2018/19", "WS2020/21"
+              "WS2018/19",
+              "WS2020/21"
             ]
           }
         ]
       }
     ]
   },
-
   {
     "name": "updateNonExistingMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup":{
-      "matriculationDataContract":[
+    "setup": {
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -139,7 +145,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -161,7 +168,8 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2020"
+              "WS2018/19",
+              "SS2020"
             ]
           }
         ]
@@ -174,13 +182,10 @@
       }
     ]
   },
-
-
-
   {
     "name": "updateEmptyMatriculationStatusMatriculationData",
     "type": "updateMatriculationData_FAILURE",
-    "setup":{
+    "setup": {
       "matriculationDataContract": [
         "0000001",
         {
@@ -189,7 +194,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -215,7 +221,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus",
             "reason": "The given parameter must not be empty"
@@ -224,13 +230,11 @@
       }
     ]
   },
-
-
   {
     "name": "updateEmptySemestersMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -238,7 +242,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -269,7 +274,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus[0].semesters",
             "reason": "The given parameter must not be empty"
@@ -278,13 +283,11 @@
       }
     ]
   },
-
-
   {
     "name": "updateEmptyFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -292,7 +295,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -314,8 +318,8 @@
           {
             "fieldOfStudy": "",
             "semesters": [
-              "WS2018/19", "SS2020"
-
+              "WS2018/19",
+              "SS2020"
             ]
           }
         ]
@@ -325,7 +329,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus[0].fieldOfStudy",
             "reason": "The given parameter must not be empty"
@@ -334,14 +338,11 @@
       }
     ]
   },
-
-
-
   {
     "name": "updateInvalidSemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -349,7 +350,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -377,14 +379,15 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WWS2018/19", "SSS2020"
-
+              "WWS2018/19",
+              "SSS2020"
             ]
           },
           {
             "fieldOfStudy": "Philosophy",
             "semesters": [
-              "WWS2018/19", "SSS2020"
+              "WWS2018/19",
+              "SSS2020"
             ]
           }
         ]
@@ -394,7 +397,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus[0].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
@@ -415,13 +418,11 @@
       }
     ]
   },
-
-
   {
     "name": "updateInvalidYearSemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -429,7 +430,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -451,8 +453,8 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/20", "SS2020"
-
+              "WS2018/20",
+              "SS2020"
             ]
           }
         ]
@@ -462,7 +464,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus[0].semesters[0]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
@@ -471,13 +473,11 @@
       }
     ]
   },
-
-
   {
     "name": "updateDuplicateFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -485,7 +485,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -507,14 +508,15 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2020"
-
+              "WS2018/19",
+              "SS2020"
             ]
           },
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2020"
+              "WS2018/19",
+              "SS2020"
             ]
           }
         ]
@@ -524,7 +526,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus[1].fieldOfStudy",
             "reason": "Each field of study must only appear in one matriculationStatus"
@@ -533,13 +535,11 @@
       }
     ]
   },
-
-
   {
     "name": "updateDuplicateSemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -547,7 +547,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2019"
+                "WS2018/19",
+                "SS2019"
               ]
             }
           ]
@@ -569,8 +570,9 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2019", "SS2019"
-
+              "WS2018/19",
+              "SS2019",
+              "SS2019"
             ]
           }
         ]
@@ -580,7 +582,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus[0].semesters[2]",
             "reason": "Each semester must only appear once in matriculationStatus.semesters"
@@ -589,14 +591,11 @@
       }
     ]
   },
-
-
-
   {
     "name": "updateEmptyEnrollmentIdMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -604,7 +603,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2019"
+                "WS2018/19",
+                "SS2019"
               ]
             }
           ]
@@ -626,7 +626,8 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2019"
+              "WS2018/19",
+              "SS2019"
             ]
           }
         ]
@@ -636,7 +637,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.enrollmentId",
             "reason": "The given parameter must not be empty"
@@ -645,14 +646,11 @@
       }
     ]
   },
-
-
-
   {
     "name": "updateEmptySemesterMatriculationData",
     "type": "updateMatriculationData_FAILURE",
     "setup": {
-      "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -660,7 +658,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2019"
+                "WS2018/19",
+                "SS2019"
               ]
             }
           ]
@@ -682,7 +681,8 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", ""
+              "WS2018/19",
+              ""
             ]
           }
         ]
@@ -692,7 +692,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData.matriculationStatus[0].semesters[1]",
             "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
@@ -701,9 +701,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "updateUnprocessableMatriculationData",
     "type": "updateMatriculationData_FAILURE",
@@ -716,7 +713,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2019"
+                "WS2018/19",
+                "SS2019"
               ]
             }
           ]
@@ -738,7 +736,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "matriculationData",
             "reason": "The given parameter cannot be parsed from json"

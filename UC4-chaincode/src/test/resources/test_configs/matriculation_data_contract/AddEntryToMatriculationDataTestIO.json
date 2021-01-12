@@ -52,9 +52,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addEntryToNonExistingSubjectOfExistingMatriculationData",
     "type": "addEntryToMatriculationData_SUCCESS",
@@ -119,9 +116,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addExistingEntryToExistingMatriculationData",
     "type": "addEntryToMatriculationData_SUCCESS",
@@ -174,7 +168,6 @@
       }
     ]
   },
-
   {
     "name": "addTwoEntriesToExistingSubjectOfExistingMatriculationData",
     "type": "addEntryToMatriculationData_SUCCESS",
@@ -246,7 +239,6 @@
       }
     ]
   },
-
   {
     "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
     "type": "addEntryToMatriculationData_SUCCESS",
@@ -336,7 +328,6 @@
       }
     ]
   },
-
   {
     "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
     "type": "addEntryToMatriculationData_SUCCESS",
@@ -438,8 +429,6 @@
       }
     ]
   },
-
-
   {
     "name": "addMultipleInvalidEntriesToExistingSubjectOfExistingMatriculationData",
     "type": "addEntryToMatriculationData_FAILURE",
@@ -492,24 +481,21 @@
     ],
     "compare": [
       {
-        "type":"HLUnprocessableEntity",
-        "title":"The following parameters do not conform to the specified format",
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name":"matriculations[0].semesters[0]",
-            "reason":"Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+            "name": "matriculations[0].semesters[0]",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           },
           {
-            "name":"matriculations[1].semesters[0]",
-            "reason":"Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
+            "name": "matriculations[1].semesters[0]",
+            "reason": "Semester must be the following format \"(WS\\d{4}/\\d{2}|SS\\d{4})\", e.g. \"WS2020/21\""
           }
         ]
       }
     ]
   },
-
-
-
   {
     "name": "addInvalidSemesterEntryToExistingMatriculationData",
     "type": "addEntryToMatriculationData_FAILURE",
@@ -561,9 +547,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addNonExistingEnrollmentIdEntryToExistingMatriculationData",
     "type": "addEntryToMatriculationData_FAILURE",
@@ -609,8 +592,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyEnrollmentIdEntryToMatriculationData",
     "type": "addEntryToMatriculationData_FAILURE",
@@ -648,9 +629,6 @@
       }
     ]
   },
-
-
-
   {
     "name": "addEntryToUnprocessableMatriculationData",
     "type": "addEntryToMatriculationData_FAILURE",
@@ -686,8 +664,6 @@
       }
     ]
   },
-
-
   {
     "name": "addUnprocessableMatriculationDataToEntry",
     "type": "addEntryToMatriculationData_FAILURE",

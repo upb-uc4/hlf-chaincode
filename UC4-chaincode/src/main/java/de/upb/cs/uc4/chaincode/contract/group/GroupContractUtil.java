@@ -101,7 +101,13 @@ public class GroupContractUtil extends ContractUtil {
         return this.getGroupsForUser(stub, enrollmentId).stream().map(Group::getGroupId).collect(Collectors.toList());
     }
 
-    public void checkParamsAddUserToGroup(Context ctx, String enrollmentId, String groupId) throws ParameterError {
+    public void checkParamsAddUserToGroup(Context ctx, List<String> params) throws ParameterError {
+        if (params.size() != 2) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String enrollmentId = params.get(0);
+        String groupId = params.get(1);
+
         ChaincodeStub stub = ctx.getStub();
 
         ArrayList<InvalidParameter> invalidParams = getParameterErrorsForEnrollmentId(enrollmentId);
@@ -112,7 +118,13 @@ public class GroupContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsRemoveUserFromGroup(Context ctx, String enrollmentId, String groupId) throws SerializableError {
+    public void checkParamsRemoveUserFromGroup(Context ctx, List<String> params) throws SerializableError {
+        if (params.size() != 2) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String enrollmentId = params.get(0);
+        String groupId = params.get(1);
+
         ChaincodeStub stub = ctx.getStub();
         ArrayList<InvalidParameter> invalidParams = getParameterErrorsForEnrollmentId(enrollmentId);
         invalidParams.addAll(getParameterErrorsForGroupId(groupId));
@@ -125,14 +137,24 @@ public class GroupContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsRemoveUserFromAllGroups(String enrollmentId) throws ParameterError {
+    public void checkParamsRemoveUserFromAllGroups(List<String> params) throws ParameterError {
+        if (params.size() != 1) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String enrollmentId = params.get(0);
+
         ArrayList<InvalidParameter> invalidParams = getParameterErrorsForEnrollmentId(enrollmentId);
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
     }
 
-    public void checkParamsGetUsersForGroup(Context ctx, String groupId) throws SerializableError {
+    public void checkParamsGetUsersForGroup(Context ctx, List<String> params) throws SerializableError {
+        if (params.size() != 1) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String groupId = params.get(0);
+
         ChaincodeStub stub = ctx.getStub();
         ArrayList<InvalidParameter> invalidParams = getParameterErrorsForGroupId(groupId);
         if (!invalidParams.isEmpty()) {
@@ -142,7 +164,12 @@ public class GroupContractUtil extends ContractUtil {
 
     }
 
-    public void checkParamsGetGroupsForUser(String enrollmentId) throws ParameterError {
+    public void checkParamsGetGroupsForUser(List<String> params) throws ParameterError {
+        if (params.size() != 1) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String enrollmentId = params.get(0);
+
         ArrayList<InvalidParameter> invalidParams = getParameterErrorsForEnrollmentId(enrollmentId);
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));

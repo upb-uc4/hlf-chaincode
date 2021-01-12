@@ -16,8 +16,6 @@
       "new legit certificate"
     ]
   },
-
-
   {
     "name": "updateNonExistingCertificate",
     "type": "updateCertificate_FAILURE",
@@ -38,8 +36,6 @@
       }
     ]
   },
-
-
   {
     "name": "updateEmptyEnrollmentIdCertificate",
     "type": "updateCertificate_FAILURE",
@@ -57,7 +53,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "enrollmentId",
             "reason": "The given parameter must not be empty"
@@ -66,8 +62,6 @@
       }
     ]
   },
-
-
   {
     "name": "updateEmptyCertificateCertificate",
     "type": "updateCertificate_FAILURE",
@@ -85,7 +79,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "certificate",
             "reason": "The given parameter must not be empty"
@@ -94,8 +88,6 @@
       }
     ]
   },
-
-
   {
     "name": "updateEmptyCertificateCertificate",
     "type": "updateCertificate_FAILURE",
@@ -113,7 +105,7 @@
       {
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
-        "invalidParams":[
+        "invalidParams": [
           {
             "name": "enrollmentId",
             "reason": "The given parameter must not be empty"

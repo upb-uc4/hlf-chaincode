@@ -113,7 +113,12 @@ public class AdmissionContractUtil extends ContractUtil {
         return invalidparams;
     }
 
-    public void checkParamsAddAdmission(Context ctx, String admissionJson) throws ParameterError {
+    public void checkParamsAddAdmission(Context ctx, List<String> params) throws ParameterError {
+        if (params.size() != 1) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String admissionJson = params.get(0);
+
         ChaincodeStub stub = ctx.getStub();
 
         Admission newAdmission;
@@ -136,7 +141,12 @@ public class AdmissionContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsDropAdmission(Context ctx, String admissionId) throws LedgerAccessError {
+    public void checkParamsDropAdmission(Context ctx, List<String> params) throws LedgerAccessError, ParameterError {
+        if (params.size() != 1) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String admissionId = params.get(0);
+
         ChaincodeStub stub = ctx.getStub();
         getState(stub, admissionId, Admission.class);
     }

@@ -2,8 +2,8 @@
   {
     "name": "queryExistingMatriculationData",
     "type": "getMatriculationData",
-    "setup":{
-      "matriculationDataContract":[
+    "setup": {
+      "matriculationDataContract": [
         "0000001",
         {
           "enrollmentId": "0000001",
@@ -11,7 +11,8 @@
             {
               "fieldOfStudy": "Computer Science",
               "semesters": [
-                "WS2018/19", "SS2020"
+                "WS2018/19",
+                "SS2020"
               ]
             }
           ]
@@ -28,16 +29,14 @@
           {
             "fieldOfStudy": "Computer Science",
             "semesters": [
-              "WS2018/19", "SS2020"
+              "WS2018/19",
+              "SS2020"
             ]
           }
         ]
       }
     ]
   },
-
-
-
   {
     "name": "queryNonExistingMatriculationData",
     "type": "getMatriculationData",
@@ -52,14 +51,11 @@
       }
     ]
   },
-
-
-
   {
     "name": "queryUnprocessableMatriculationData",
     "type": "getMatriculationData",
     "setup": {
-    "matriculationDataContract":[
+      "matriculationDataContract": [
         "0000001",
         "something unprocessable"
       ]

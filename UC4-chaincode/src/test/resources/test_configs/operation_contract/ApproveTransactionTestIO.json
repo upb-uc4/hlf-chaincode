@@ -3,7 +3,7 @@
     "name": "approveNewTransaction",
     "type": "approveTransaction_SUCCESS",
     "ids": [
-        "User1"
+      "User1"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -18,7 +18,9 @@
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -40,6 +42,16 @@
     "compare": [
       {
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
         "existingApprovals": {
           "users": [
             "User1"
@@ -55,8 +67,6 @@
       }
     ]
   },
-
-
   {
     "name": "approveExistingTransaction",
     "type": "approveTransaction_SUCCESS",
@@ -64,23 +74,42 @@
       "User1"
     ],
     "setup": {
-      "approvalContract": [
+      "operationContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
-          "users": [
-            "User2",
-            "User3"
-          ],
-          "groups": [
-            "some-group"
-          ]
+          "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User2",
+              "User3"
+            ],
+            "groups": [
+              "some-group"
+            ]
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": []
+          }
         }
       ],
       "groupContract": [
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ],
       "examinationRegulationContract": [
@@ -110,6 +139,16 @@
     "compare": [
       {
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
         "existingApprovals": {
           "users": [
             "User2",
@@ -128,8 +167,6 @@
       }
     ]
   },
-
-
   {
     "name": "approveApprovedTransaction",
     "type": "approveTransaction_SUCCESS",
@@ -137,23 +174,42 @@
       "User1"
     ],
     "setup": {
-      "approvalContract": [
+      "operationContract": [
         "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
         {
-          "users": [
-            "User1",
-            "User2"
-          ],
-          "groups": [
-            "admin"
-          ]
+          "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1",
+              "User2"
+            ],
+            "groups": [
+              "admin"
+            ]
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": []
+          }
         }
       ],
       "groupContract": [
         "admin",
         {
           "groupId": "admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
         }
       ],
       "examinationRegulationContract": [
@@ -183,6 +239,16 @@
     "compare": [
       {
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
         "existingApprovals": {
           "users": [
             "User1",
@@ -199,8 +265,6 @@
       }
     ]
   },
-
-
   {
     "name": "approveEmptyContractNameTransaction",
     "type": "approveTransaction_FAILURE",
@@ -230,17 +294,18 @@
         "invalidParams": [
           {
             "name": "contractName",
-            "reason": "The given contract \"\" does not exist"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
     ]
   },
-
-
   {
     "name": "approveEmptyTransactionNameTransaction",
     "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
     "setup": {},
     "input": [
       "UC4.MatriculationData",
@@ -264,14 +329,12 @@
         "invalidParams": [
           {
             "name": "transactionName",
-            "reason": "The given transaction \"\" does not exist"
+            "reason": "The given parameter must not be empty"
           }
         ]
       }
     ]
   },
-
-
   {
     "name": "approveInvalidLedgerStateTransaction",
     "type": "approveTransaction_FAILURE",
@@ -310,6 +373,16 @@
     "compare": [
       {
         "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
         "existingApprovals": {
           "users": [
             "User1"
@@ -322,6 +395,80 @@
             "admin"
           ]
         }
+      }
+    ]
+  },
+  {
+    "name": "approveNewTooFewParamsTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData"
+    ],
+    "compare": [
+      {
+        "type": "HLParameterNumberError",
+        "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
+      }
+    ]
+  },
+  {
+    "name": "approveNewTooManyParamsTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "admin",
+        {
+          "groupId": "admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      "",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLParameterNumberError",
+        "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
       }
     ]
   }

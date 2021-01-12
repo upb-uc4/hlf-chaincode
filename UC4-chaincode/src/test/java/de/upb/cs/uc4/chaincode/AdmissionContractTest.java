@@ -1,7 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
-import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
@@ -20,11 +20,11 @@ public final class AdmissionContractTest extends TestCreationBase {
     private final AdmissionContract contract = new AdmissionContract();
     private final AdmissionContractUtil cUtil = new AdmissionContractUtil();
 
-    String getTestConfigDir(){
+    String getTestConfigDir() {
         return "src/test/resources/test_configs/admission_contract";
     }
 
-    DynamicTest CreateTest(JsonIOTest test){
+    DynamicTest CreateTest(JsonIOTest test) {
         String testType = test.getType();
         String testName = test.getName();
         JsonIOTestSetup setup = test.getSetup();
@@ -56,10 +56,10 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            ApprovalContract approvalContract = new ApprovalContract();
-            for (String id: ids) {
+            OperationContract approvalContract = new OperationContract();
+            for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", GsonWrapper.toJson(input));
+                approvalContract.approveTransaction(ctx, id, contract.contractName, "addAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String addResult = contract.addAdmission(ctx, input.get(0));
@@ -80,13 +80,13 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            ApprovalContract approvalContract = new ApprovalContract();
-            for (String id: ids) {
+            OperationContract approvalContract = new OperationContract();
+            for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"addAdmission", GsonWrapper.toJson(input));
+                approvalContract.approveTransaction(ctx, id, contract.contractName, "addAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
-            String result =  contract.addAdmission(ctx, input.get(0));
+            String result = contract.addAdmission(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
         };
     }
@@ -99,10 +99,10 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            ApprovalContract approvalContract = new ApprovalContract();
-            for (String id: ids) {
+            OperationContract approvalContract = new OperationContract();
+            for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"dropAdmission", GsonWrapper.toJson(input));
+                approvalContract.approveTransaction(ctx, id, contract.contractName, "dropAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.dropAdmission(ctx, input.get(0));
@@ -110,7 +110,6 @@ public final class AdmissionContractTest extends TestCreationBase {
 
             List<Admission> ledgerState = cUtil.getAllStates(stub, Admission.class);
             assertThat(ledgerState).allMatch(item -> !(item.getAdmissionId().equals(input.get(0))));
-            // additionally check ledger state?
         };
     }
 
@@ -122,13 +121,13 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup);
-            ApprovalContract approvalContract = new ApprovalContract();
-            for (String id: ids) {
+            OperationContract approvalContract = new OperationContract();
+            for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, contract.contractName,"dropAdmission", GsonWrapper.toJson(input));
+                approvalContract.approveTransaction(ctx, id, contract.contractName, "dropAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
-            String result =  contract.dropAdmission(ctx, input.get(0));
+            String result = contract.dropAdmission(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
         };
     }

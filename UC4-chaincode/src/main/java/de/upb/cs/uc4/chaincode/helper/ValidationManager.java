@@ -2,11 +2,12 @@ package de.upb.cs.uc4.chaincode.helper;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
-import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import org.hyperledger.fabric.contract.Context;
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class ValidationManager {
     private static AdmissionContractUtil admissionUtil = new AdmissionContractUtil();
-    private static ApprovalContractUtil approvalUtil = new ApprovalContractUtil();
+    private static OperationContractUtil operationUtil = new OperationContractUtil();
     private static CertificateContractUtil certificateUtil = new CertificateContractUtil();
     private static ExaminationRegulationContractUtil examinationRegulationUtil = new ExaminationRegulationContractUtil();
     private static GroupContractUtil groupUtil = new GroupContractUtil();
@@ -30,30 +31,30 @@ public class ValidationManager {
             case "UC4.MatriculationData":
                 switch (transactionName) {
                     case "addMatriculationData":
-                        matriculationDataUtil.checkParamsAddMatriculationData(ctx, paramList.get(0));
+                        matriculationDataUtil.checkParamsAddMatriculationData(ctx, paramList);
                         break;
                     case "updateMatriculationData":
-                        matriculationDataUtil.checkParamsUpdateMatriculationData(ctx, paramList.get(0));
+                        matriculationDataUtil.checkParamsUpdateMatriculationData(ctx, paramList);
                         break;
                     case "getMatriculationData":
-                        matriculationDataUtil.checkParamsGetMatriculationData(ctx, paramList.get(0));
+                        matriculationDataUtil.checkParamsGetMatriculationData(ctx, paramList);
                         break;
                     case "addEntriesToMatriculationData":
-                        matriculationDataUtil.checkParamsAddEntriesToMatriculationData(ctx, paramList.get(0), paramList.get(1));
+                        matriculationDataUtil.checkParamsAddEntriesToMatriculationData(ctx, paramList);
                         break;
                     case "getVersion":
                         break;
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
             case "UC4.Admission":
                 switch (transactionName) {
                     case "addAdmission":
-                        admissionUtil.checkParamsAddAdmission(ctx, paramList.get(0));
+                        admissionUtil.checkParamsAddAdmission(ctx, paramList);
                         break;
                     case "dropAdmission":
-                        admissionUtil.checkParamsDropAdmission(ctx, paramList.get(0));
+                        admissionUtil.checkParamsDropAdmission(ctx, paramList);
                         break;
                     case "getAdmissions":
                         // pass
@@ -61,71 +62,71 @@ public class ValidationManager {
                     case "getVersion":
                         break;
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
             case "UC4.Group":
                 switch (transactionName) {
                     case "addUserToGroup":
-                        groupUtil.checkParamsAddUserToGroup(ctx, paramList.get(0), paramList.get(1));
+                        groupUtil.checkParamsAddUserToGroup(ctx, paramList);
                         break;
                     case "removeUserFromGroup":
-                        groupUtil.checkParamsRemoveUserFromGroup(ctx, paramList.get(0), paramList.get(1));
+                        groupUtil.checkParamsRemoveUserFromGroup(ctx, paramList);
                         break;
                     case "removeUserFromAllGroups":
-                        groupUtil.checkParamsRemoveUserFromAllGroups(paramList.get(0));
+                        groupUtil.checkParamsRemoveUserFromAllGroups(paramList);
                         break;
                     case "getAllGroups":
                         // pass, for there are no parameters
                         break;
                     case "getUsersForGroup":
-                        groupUtil.checkParamsGetUsersForGroup(ctx, paramList.get(0));
+                        groupUtil.checkParamsGetUsersForGroup(ctx, paramList);
                         break;
                     case "getGroupsForUser":
-                        groupUtil.checkParamsGetGroupsForUser(paramList.get(0));
+                        groupUtil.checkParamsGetGroupsForUser(paramList);
                         break;
                     case "getVersion":
                         break;
                    default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
             case "UC4.ExaminationRegulation":
                 switch (transactionName) {
                     case "addExaminationRegulation":
-                        examinationRegulationUtil.checkParamsAddExaminationRegulation(ctx, paramList.get(0));
+                        examinationRegulationUtil.checkParamsAddExaminationRegulation(ctx, paramList);
                         break;
                     case "getExaminationRegulations":
-                        examinationRegulationUtil.checkParamsGetExaminationRegulations(paramList.get(0));
+                        examinationRegulationUtil.checkParamsGetExaminationRegulations(paramList);
                         break;
                     case "closeExaminationRegulation":
-                        examinationRegulationUtil.checkParamsCloseExaminationRegulation(ctx, paramList.get(0));
+                        examinationRegulationUtil.checkParamsCloseExaminationRegulation(ctx, paramList);
                         break;
                     case "getVersion":
                         break;
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
             case "UC4.Certificate":
                 switch (transactionName) {
                     case "addCertificate":
-                        certificateUtil.checkParamsAddCertificate(ctx, paramList.get(0), paramList.get(1));
+                        certificateUtil.checkParamsAddCertificate(ctx, paramList);
                         break;
                     case "updateCertificate":
-                        certificateUtil.checkParamsUpdateCertificate(ctx, paramList.get(0), paramList.get(1));
+                        certificateUtil.checkParamsUpdateCertificate(ctx, paramList);
                         break;
                     case "getCertificate":
-                        certificateUtil.checkParamsGetCertificate(ctx, paramList.get(0));
+                        certificateUtil.checkParamsGetCertificate(ctx, paramList);
                         break;
                     case "getVersion":
                         break;
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
             default:
-                throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getContractUnprocessableError(contractName)));
+                throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getContractUnprocessableError(contractName)));
         }
     }
 }

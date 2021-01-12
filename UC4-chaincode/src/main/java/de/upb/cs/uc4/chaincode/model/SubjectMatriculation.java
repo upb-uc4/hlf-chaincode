@@ -21,6 +21,7 @@ public class SubjectMatriculation {
 
     /**
      * Get fieldOfStudy
+     *
      * @return fieldOfStudy
      **/
     @ApiModelProperty(value = "")

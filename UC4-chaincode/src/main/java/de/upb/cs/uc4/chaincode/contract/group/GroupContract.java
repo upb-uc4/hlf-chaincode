@@ -37,7 +37,7 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String addUserToGroup(final Context ctx, String enrollmentId, String groupId) {
         try {
-            cUtil.checkParamsAddUserToGroup(ctx, enrollmentId, groupId);
+            cUtil.checkParamsAddUserToGroup(ctx, new ArrayList<String>(){{add(enrollmentId); add(groupId);}});
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -77,7 +77,7 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String removeUserFromGroup(final Context ctx, String enrollmentId, String groupId) {
         try {
-            cUtil.checkParamsRemoveUserFromGroup(ctx, enrollmentId, groupId);
+            cUtil.checkParamsRemoveUserFromGroup(ctx, new ArrayList<String>(){{add(enrollmentId); add(groupId);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -113,7 +113,7 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String removeUserFromAllGroups(final Context ctx, String enrollmentId) {
         try {
-            cUtil.checkParamsRemoveUserFromAllGroups(enrollmentId);
+            cUtil.checkParamsRemoveUserFromAllGroups(Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -144,7 +144,7 @@ public class GroupContract extends ContractBase {
     public String getAllGroups(final Context ctx) {
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName, "getAllGroups", new ArrayList<>());
+            cUtil.validateApprovals(stub, this.contractName, "getAllGroups", new ArrayList<String>());
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -161,7 +161,7 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String getUsersForGroup(final Context ctx, String groupId) {
         try {
-            cUtil.checkParamsGetUsersForGroup(ctx, groupId);
+            cUtil.checkParamsGetUsersForGroup(ctx, Collections.singletonList(groupId));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -192,7 +192,7 @@ public class GroupContract extends ContractBase {
     @Transaction()
     public String getGroupsForUser(final Context ctx, String enrollmentId) {
         try {
-            cUtil.checkParamsGetGroupsForUser(enrollmentId);
+            cUtil.checkParamsGetGroupsForUser(Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {
             return e.getJsonError();
         }

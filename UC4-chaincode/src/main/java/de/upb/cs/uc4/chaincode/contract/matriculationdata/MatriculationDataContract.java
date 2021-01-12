@@ -35,7 +35,7 @@ public class MatriculationDataContract extends ContractBase {
     @Transaction()
     public String addMatriculationData(final Context ctx, String matriculationData) {
         try {
-            cUtil.checkParamsAddMatriculationData(ctx, matriculationData);
+            cUtil.checkParamsAddMatriculationData(ctx, Collections.singletonList(matriculationData));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -61,7 +61,7 @@ public class MatriculationDataContract extends ContractBase {
     @Transaction()
     public String updateMatriculationData(final Context ctx, String matriculationData) {
         try {
-            cUtil.checkParamsUpdateMatriculationData(ctx, matriculationData);
+            cUtil.checkParamsUpdateMatriculationData(ctx, Collections.singletonList(matriculationData));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -86,7 +86,7 @@ public class MatriculationDataContract extends ContractBase {
     @Transaction()
     public String getMatriculationData(final Context ctx, final String enrollmentId) {
         try {
-            cUtil.checkParamsGetMatriculationData(ctx, enrollmentId);
+            cUtil.checkParamsGetMatriculationData(ctx, Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -120,7 +120,7 @@ public class MatriculationDataContract extends ContractBase {
             final String enrollmentId,
             final String matriculations) {
         try {
-            cUtil.checkParamsAddEntriesToMatriculationData(ctx, enrollmentId, matriculations);
+            cUtil.checkParamsAddEntriesToMatriculationData(ctx, new ArrayList<String>(){{add(enrollmentId); add(matriculations);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
