@@ -30,7 +30,11 @@ public class CertificateContract extends ContractBase {
      */
     @Transaction()
     public String addCertificate(final Context ctx, final String enrollmentId, final String certificate) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = ctx.getStub().getFunction();
+        if(!transactionName.equals("addCertificate")){
+            return "FUNCTION NAME WAS: " + transactionName;
+        }
+
         try {
             cUtil.checkParamsAddCertificate(ctx, new ArrayList<String>(){{add(enrollmentId); add(certificate);}});
         } catch (ParameterError e) {

@@ -114,7 +114,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public String getFunction() {
-        return null;
+        return txId.split(":")[1];
     }
 
     @Override
