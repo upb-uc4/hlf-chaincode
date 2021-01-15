@@ -49,9 +49,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]

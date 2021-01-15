@@ -26,7 +26,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin"
+              "Admin"
             ],
             "groups": []
           }
@@ -56,7 +56,7 @@
         },
         "missingApprovals": {
           "users": [
-            "admin"
+            "Admin"
           ],
           "groups": []
         }
@@ -90,7 +90,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin"
+              "Admin"
             ],
             "groups": ""
           }
@@ -135,7 +135,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin"
+              "Admin"
             ],
             "groups": ""
           },

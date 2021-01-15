@@ -18,7 +18,7 @@ import java.util.List;
 public class AccessManager {
     private static OperationContractUtil operationUtil = new OperationContractUtil();
 
-    public static final String ADMIN = "admin";
+    public static final String ADMIN = "Admin";
 
     public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) throws MissingTransactionError {
         Type listType = new TypeToken<ArrayList<String>>() {
