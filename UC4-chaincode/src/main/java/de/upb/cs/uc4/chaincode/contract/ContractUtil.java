@@ -120,20 +120,21 @@ abstract public class ContractUtil {
         }
 
         OperationContractUtil oUtil = new OperationContractUtil();
-        ApprovalList approvals;
         String key;
         try {
             key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
             throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
+        OperationData operation;
         try{
-            approvals = oUtil.getState(stub, key, OperationData.class).getExistingApprovals();
+            operation = oUtil.getState(stub, key, OperationData.class);
         } catch (Exception e) {
-            approvals = new ApprovalList();
+            throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
-
-        if(!OperationContractUtil.covers(requiredApprovals, approvals)){
+        ApprovalList approvals = operation.getExistingApprovals();
+        // TODO throw proper error for rejected operation (with reason)
+        if(operation.getState() != OperationDataState.PENDING || !OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
     }

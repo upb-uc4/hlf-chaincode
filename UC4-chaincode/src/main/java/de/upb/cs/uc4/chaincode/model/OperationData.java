@@ -122,6 +122,9 @@ public class OperationData {
     }
 
     public ApprovalList getExistingApprovals() {
+        if (existingApprovals == null) {
+            existingApprovals = new ApprovalList();
+        }
         return existingApprovals;
     }
 
