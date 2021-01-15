@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -34,7 +35,7 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String addExaminationRegulation(final Context ctx, final String examinationRegulation) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsAddExaminationRegulation(ctx, Collections.singletonList(examinationRegulation));
         } catch (ParameterError e) {
@@ -65,7 +66,7 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String getExaminationRegulations(final Context ctx, final String names) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsGetExaminationRegulations(Collections.singletonList(names));
         } catch (ParameterError e) {
@@ -123,7 +124,7 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String closeExaminationRegulation(final Context ctx, final String name) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsCloseExaminationRegulation(ctx, Collections.singletonList(name));
         } catch (SerializableError e) {

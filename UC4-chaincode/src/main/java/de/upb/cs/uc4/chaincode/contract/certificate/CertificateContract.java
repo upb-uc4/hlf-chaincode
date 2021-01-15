@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode.contract.certificate;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -30,10 +31,7 @@ public class CertificateContract extends ContractBase {
      */
     @Transaction()
     public String addCertificate(final Context ctx, final String enrollmentId, final String certificate) {
-        String transactionName = ctx.getStub().getFunction();
-        if(!transactionName.equals("addCertificate")){
-            return "FUNCTION NAME WAS: " + transactionName;
-        }
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
 
         try {
             cUtil.checkParamsAddCertificate(ctx, new ArrayList<String>(){{add(enrollmentId); add(certificate);}});
@@ -65,7 +63,7 @@ public class CertificateContract extends ContractBase {
      */
     @Transaction()
     public String updateCertificate(final Context ctx, final String enrollmentId, final String certificate) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsUpdateCertificate(ctx, new ArrayList<String>(){{add(enrollmentId); add(certificate);}});
         } catch (ParameterError e) {
@@ -95,7 +93,7 @@ public class CertificateContract extends ContractBase {
      */
     @Transaction()
     public String getCertificate(final Context ctx, final String enrollmentId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsGetCertificate(ctx, Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {

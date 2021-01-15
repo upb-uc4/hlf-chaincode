@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -33,7 +34,7 @@ public class GroupContract extends ContractBase {
      */
     @Transaction()
     public String addUserToGroup(final Context ctx, String enrollmentId, String groupId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsAddUserToGroup(ctx, new ArrayList<String>(){{add(enrollmentId); add(groupId);}});
         } catch (ParameterError e) {
@@ -78,7 +79,7 @@ public class GroupContract extends ContractBase {
      */
     @Transaction()
     public String removeUserFromGroup(final Context ctx, String enrollmentId, String groupId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsRemoveUserFromGroup(ctx, new ArrayList<String>(){{add(enrollmentId); add(groupId);}});
         } catch (SerializableError e) {
@@ -118,7 +119,7 @@ public class GroupContract extends ContractBase {
      */
     @Transaction()
     public String removeUserFromAllGroups(final Context ctx, String enrollmentId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsRemoveUserFromAllGroups(Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {
@@ -152,7 +153,7 @@ public class GroupContract extends ContractBase {
      */
     @Transaction()
     public String getAllGroups(final Context ctx) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         ChaincodeStub stub = ctx.getStub();
         try {
             cUtil.validateApprovals(stub, this.contractName, transactionName, new ArrayList<String>());
@@ -176,7 +177,7 @@ public class GroupContract extends ContractBase {
      */
     @Transaction()
     public String getUsersForGroup(final Context ctx, String groupId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsGetUsersForGroup(ctx, Collections.singletonList(groupId));
         } catch (SerializableError e) {
@@ -212,7 +213,7 @@ public class GroupContract extends ContractBase {
      */
     @Transaction()
     public String getGroupsForUser(final Context ctx, String enrollmentId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsGetGroupsForUser(Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {
