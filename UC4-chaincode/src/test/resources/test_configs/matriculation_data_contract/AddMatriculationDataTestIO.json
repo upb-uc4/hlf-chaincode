@@ -16,9 +16,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]
@@ -70,9 +70,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": ["User1"]
         }
       ]
@@ -157,9 +157,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]
@@ -493,9 +493,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]
