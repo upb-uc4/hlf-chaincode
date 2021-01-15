@@ -1,3 +1,18 @@
+# [v0.15.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.1...v0.15.2) (2021-01-12)
+
+## Feature
+- set operation state to FINISHED on successful transaction execution
+
+## Bugfix
+- 
+
+## Refactor
+- read transactionId from stub
+- read annotated contract name from static contract name
+
+## Usability
+- 
+
 # [v0.15.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.0...v0.15.1) (2021-01-12)
 
 ## Feature

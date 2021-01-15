@@ -55,7 +55,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:getExaminationRegulations");
             Context ctx = TestUtil.mockContext(stub);
 
             String regulations = contract.getExaminationRegulations(ctx, input.get(0));
@@ -69,7 +69,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:addExaminationRegulation");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addExaminationRegulation(ctx, input.get(0));
@@ -88,7 +88,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:addExaminationRegulation");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addExaminationRegulation(ctx, input.get(0));
@@ -102,7 +102,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:closeExaminationRegulation");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.closeExaminationRegulation(ctx, input.get(0));
@@ -121,7 +121,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:closeExaminationRegulation");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.closeExaminationRegulation(ctx, input.get(0));

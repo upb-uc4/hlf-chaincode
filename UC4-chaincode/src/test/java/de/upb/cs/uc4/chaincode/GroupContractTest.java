@@ -68,7 +68,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:addUserToGroup");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -92,7 +92,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:addUserToGroup");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -113,7 +113,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:removeUserFromGroup");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -140,7 +140,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:removeUserFromGroup");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -160,7 +160,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:removeUserFromAllGroups");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -187,7 +187,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:removeUserFromAllGroups");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -209,7 +209,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getAllGroups");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -229,7 +229,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getUsersForGroup");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -249,7 +249,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getUsersForGroup");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -268,7 +268,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getGroupsForUser");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -288,7 +288,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getGroupsForUser");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);

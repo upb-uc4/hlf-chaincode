@@ -16,12 +16,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Contract(
-        name = "UC4.Admission"
+        name = AdmissionContract.contractName
 )
 public class AdmissionContract extends ContractBase {
     private final AdmissionContractUtil cUtil = new AdmissionContractUtil();
 
-    public final String contractName = "UC4.Admission";
+    public final static String contractName = "UC4.Admission";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -32,6 +32,7 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsAddAdmission(ctx, Collections.singletonList(admissionJson));
         } catch (ParameterError e) {
@@ -43,11 +44,15 @@ public class AdmissionContract extends ContractBase {
         newAdmission.resetAdmissionId();
 
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "addAdmission", Collections.singletonList(admissionJson));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(admissionJson));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(admissionJson));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         // TODO: can we create a composite key of all inputs to improve reading performance for get...forUser/Module/Course
         return cUtil.putAndGetStringState(stub, newAdmission.getAdmissionId(), GsonWrapper.toJson(newAdmission));
     }
@@ -61,6 +66,7 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String dropAdmission(final Context ctx, String admissionId) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         try {
             cUtil.checkParamsDropAdmission(ctx, Collections.singletonList(admissionId));
         } catch (SerializableError e) {
@@ -69,7 +75,7 @@ public class AdmissionContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "dropAdmission", Collections.singletonList(admissionId));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(admissionId));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -80,7 +86,11 @@ public class AdmissionContract extends ContractBase {
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
-        // success
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(admissionId));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return "";
     }
 
@@ -93,13 +103,19 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String getAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
+        String transactionName = ctx.getStub().getTxId().split(":")[1];
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "getAdmissions", new ArrayList<String>() {{add(enrollmentId);add(courseId);add(moduleId);}});
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, new ArrayList<String>() {{add(enrollmentId);add(courseId);add(moduleId);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         List<Admission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>() {{add(enrollmentId);add(courseId);add(moduleId);}});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return GsonWrapper.toJson(admissions);
     }
 }

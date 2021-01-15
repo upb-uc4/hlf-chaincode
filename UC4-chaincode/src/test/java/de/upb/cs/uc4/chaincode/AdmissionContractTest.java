@@ -55,7 +55,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:addAdmission");
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -79,7 +79,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:addAdmission");
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -98,7 +98,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:dropAdmission");
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -120,7 +120,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:dropAdmission");
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -138,7 +138,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:getAdmissions");
             Context ctx = TestUtil.mockContext(stub);
             String getResult = contract.getAdmissions(ctx, input.get(0), input.get(1), input.get(2));
             assertThat(getResult).isEqualTo(compare.get(0));

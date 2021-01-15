@@ -48,10 +48,10 @@ public final class MatriculationDataContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(testName, updateMatriculationDataSuccessTest(setup, input, compare));
             case "updateMatriculationData_FAILURE":
                 return DynamicTest.dynamicTest(testName, updateMatriculationDataFailureTest(setup, input, compare));
-            case "addEntryToMatriculationData_SUCCESS":
-                return DynamicTest.dynamicTest(testName, addEntryToMatriculationDataSuccessTest(setup, input, compare));
-            case "addEntryToMatriculationData_FAILURE":
-                return DynamicTest.dynamicTest(testName, addEntryToMatriculationDataFailureTest(setup, input, compare));
+            case "addEntriesToMatriculationData_SUCCESS":
+                return DynamicTest.dynamicTest(testName, addEntriesToMatriculationDataSuccessTest(setup, input, compare));
+            case "addEntriesToMatriculationData_FAILURE":
+                return DynamicTest.dynamicTest(testName, addEntriesToMatriculationDataFailureTest(setup, input, compare));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -63,7 +63,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:getMatriculationData");
             Context ctx = TestUtil.mockContext(stub);
 
             MatriculationData compareMatriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
@@ -80,7 +80,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:addMatriculationData");
             OperationContract operationContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -107,7 +107,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:addMatriculationData");
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
@@ -126,7 +126,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:updateMatriculationData");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateMatriculationData(ctx, input.get(0));
@@ -146,7 +146,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:updateMatriculationData");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateMatriculationData(ctx, input.get(0));
@@ -154,13 +154,13 @@ public final class MatriculationDataContractTest extends TestCreationBase {
         };
     }
 
-    private Executable addEntryToMatriculationDataSuccessTest(
+    private Executable addEntriesToMatriculationDataSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:addEntriesToMatriculationData");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
@@ -173,13 +173,13 @@ public final class MatriculationDataContractTest extends TestCreationBase {
         };
     }
 
-    private Executable addEntryToMatriculationDataFailureTest(
+    private Executable addEntriesToMatriculationDataFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:addEntriesToMatriculationData");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
