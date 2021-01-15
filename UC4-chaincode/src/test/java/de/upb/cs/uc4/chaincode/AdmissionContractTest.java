@@ -120,7 +120,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:dropAdmision");
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:dropAdmission");
             OperationContract approvalContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
