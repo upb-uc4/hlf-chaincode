@@ -15,9 +15,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]
@@ -57,7 +57,7 @@
             "User1"
           ],
           "groups": [
-            "admin"
+            "Admin"
           ]
         },
         "missingApprovals": {
@@ -104,9 +104,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]
@@ -157,7 +157,7 @@
           ],
           "groups": [
             "some-group",
-            "admin"
+            "Admin"
           ]
         },
         "missingApprovals": {
@@ -194,7 +194,7 @@
               "User2"
             ],
             "groups": [
-              "admin"
+              "Admin"
             ]
           },
           "missingApprovals": {
@@ -204,9 +204,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]
@@ -255,7 +255,7 @@
             "User2"
           ],
           "groups": [
-            "admin"
+            "Admin"
           ]
         },
         "missingApprovals": {
@@ -392,7 +392,7 @@
         "missingApprovals": {
           "users": [],
           "groups": [
-            "admin"
+            "Admin"
           ]
         }
       }
@@ -414,9 +414,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]
@@ -450,9 +450,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1"
           ]

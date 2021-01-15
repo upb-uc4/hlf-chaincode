@@ -28,7 +28,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin"
+              "Admin"
             ],
             "groups": []
           }
@@ -76,7 +76,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin"
+              "Admin"
             ],
             "groups": []
           }
@@ -103,7 +103,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin"
+              "Admin"
             ],
             "groups": []
           }
@@ -131,7 +131,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin",
+              "Admin",
               "some-group"
             ],
             "groups": []
@@ -240,10 +240,10 @@
           },
           "missingApprovals": {
             "users": [
-              "admin"
+              "Admin"
             ],
             "groups": [
-              "admin"
+              "Admin"
             ]
           }
         },
@@ -269,7 +269,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin",
+              "Admin",
               "User4",
               "User5"
             ],
@@ -301,7 +301,7 @@
           },
           "missingApprovals": {
             "users": [
-              "admin",
+              "Admin",
               "some-group",
               "User4"
             ],
@@ -310,9 +310,9 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
+          "groupId": "Admin",
           "userList": [
             "User1",
             "User5"
