@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -34,7 +35,7 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String addMatriculationData(final Context ctx, String matriculationData) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsAddMatriculationData(ctx, Collections.singletonList(matriculationData));
         } catch (ParameterError e) {
@@ -66,7 +67,7 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String updateMatriculationData(final Context ctx, String matriculationData) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsUpdateMatriculationData(ctx, Collections.singletonList(matriculationData));
         } catch (ParameterError e) {
@@ -97,7 +98,7 @@ public class MatriculationDataContract extends ContractBase {
      */
     @Transaction()
     public String getMatriculationData(final Context ctx, final String enrollmentId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsGetMatriculationData(ctx, Collections.singletonList(enrollmentId));
         } catch (ParameterError e) {
@@ -137,7 +138,7 @@ public class MatriculationDataContract extends ContractBase {
             final Context ctx,
             final String enrollmentId,
             final String matriculations) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsAddEntriesToMatriculationData(ctx, new ArrayList<String>(){{add(enrollmentId); add(matriculations);}});
         } catch (SerializableError e) {

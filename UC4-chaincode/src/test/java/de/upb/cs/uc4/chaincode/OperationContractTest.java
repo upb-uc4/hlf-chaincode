@@ -188,12 +188,12 @@ public final class OperationContractTest extends TestCreationBase {
             }
             Context ctx = TestUtil.mockContext(stub);
             MatriculationDataContract matriculationContract = new MatriculationDataContract();
-            stub.setTxId(MatriculationDataContract.contractName + ":addMatriculationData");
+            stub.setFunction(MatriculationDataContract.contractName + ":addMatriculationData");
             System.out.println("########################################################################");
             System.out.println(matriculationContract.addMatriculationData(ctx, input.get(0)));
             System.out.println("########################################################################");
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
-            stub.setTxId("UC4.OperationData:approveTransaction");
+            stub.setFunction("UC4.OperationData:approveTransaction");
             OperationData operation = GsonWrapper.fromJson(contract.getOperationData(ctx, operationId), OperationData.class);
             OperationDataState expectedState = GsonWrapper.fromJson(compare.get(0), OperationDataState.class);
             assertThat(operation.getState()).isEqualTo(expectedState);

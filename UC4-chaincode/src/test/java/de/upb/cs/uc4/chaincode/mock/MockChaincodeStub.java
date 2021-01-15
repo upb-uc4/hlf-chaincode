@@ -22,20 +22,20 @@ public final class MockChaincodeStub implements ChaincodeStub {
     private final String defaultCollection = "default";
     private Map<String, byte[]> transientMap;
     private String currentId;
-    private String txId;
+    private String function;
 
     public void setCurrentId(String currentId) {
         this.currentId = currentId;
     }
 
-    public MockChaincodeStub(String txId) {
-        this.txId = txId;
+    public MockChaincodeStub(String function) {
+        this.function = function;
         dataCollections = new HashMap<>();
         dataCollections.put(defaultCollection, new ArrayList<>());
     }
 
-    public void setTxId(String txId) {
-        this.txId = txId;
+    public void setFunction(String function) {
+        this.function = function;
     }
 
     public void setTransient(Map<String, byte[]> transientMap) {
@@ -114,7 +114,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public String getFunction() {
-        return null;
+        return function;
     }
 
     @Override
@@ -124,7 +124,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public String getTxId() {
-        return txId;
+        return null;
     }
 
     @Override
