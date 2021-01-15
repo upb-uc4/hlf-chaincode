@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.Admission;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -32,7 +33,7 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsAddAdmission(ctx, Collections.singletonList(admissionJson));
         } catch (ParameterError e) {
@@ -66,7 +67,7 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String dropAdmission(final Context ctx, String admissionId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsDropAdmission(ctx, Collections.singletonList(admissionId));
         } catch (SerializableError e) {
@@ -103,7 +104,8 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String getAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+
         ChaincodeStub stub = ctx.getStub();
         try {
             cUtil.validateApprovals(stub, this.contractName,  transactionName, new ArrayList<String>() {{add(enrollmentId);add(courseId);add(moduleId);}});
