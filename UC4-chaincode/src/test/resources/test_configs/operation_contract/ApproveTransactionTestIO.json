@@ -1,0 +1,475 @@
+[
+  {
+    "name": "approveNewTransaction",
+    "type": "approveTransaction_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
+        "existingApprovals": {
+          "users": [
+            "User1"
+          ],
+          "groups": [
+            "Admin"
+          ]
+        },
+        "missingApprovals": {
+          "users": [],
+          "groups": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "approveExistingTransaction",
+    "type": "approveTransaction_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        {
+          "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User2",
+              "User3"
+            ],
+            "groups": [
+              "some-group"
+            ]
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": []
+          }
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
+        "existingApprovals": {
+          "users": [
+            "User2",
+            "User3",
+            "User1"
+          ],
+          "groups": [
+            "some-group",
+            "Admin"
+          ]
+        },
+        "missingApprovals": {
+          "users": [],
+          "groups": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "approveApprovedTransaction",
+    "type": "approveTransaction_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        {
+          "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1",
+              "User2"
+            ],
+            "groups": [
+              "Admin"
+            ]
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": []
+          }
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
+        "existingApprovals": {
+          "users": [
+            "User1",
+            "User2"
+          ],
+          "groups": [
+            "Admin"
+          ]
+        },
+        "missingApprovals": {
+          "users": [],
+          "groups": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "approveEmptyContractNameTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {},
+    "input": [
+      "",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "contractName",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "approveEmptyTransactionNameTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {},
+    "input": [
+      "UC4.MatriculationData",
+      "",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "transactionName",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "approveInvalidLedgerStateTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "approvalContract": [
+        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "something invalid"
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
+        "existingApprovals": {
+          "users": [
+            "User1"
+          ],
+          "groups": []
+        },
+        "missingApprovals": {
+          "users": [],
+          "groups": [
+            "Admin"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    "name": "approveNewTooFewParamsTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData"
+    ],
+    "compare": [
+      {
+        "type": "HLParameterNumberError",
+        "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
+      }
+    ]
+  },
+  {
+    "name": "approveNewTooManyParamsTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      "",
+      ""
+    ],
+    "compare": [
+      {
+        "type": "HLParameterNumberError",
+        "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
+      }
+    ]
+  }
+]

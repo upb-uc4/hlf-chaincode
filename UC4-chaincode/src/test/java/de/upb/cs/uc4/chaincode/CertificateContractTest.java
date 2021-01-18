@@ -63,14 +63,15 @@ public final class CertificateContractTest extends TestCreationBase {
         File[] testConfigs = dir.listFiles();
 
         List<JsonIOTest> testConfig;
-        Type type = new TypeToken<List<JsonIOTest>>() {}.getType();
+        Type type = new TypeToken<List<JsonIOTest>>() {
+        }.getType();
         ArrayList<DynamicTest> tests = new ArrayList<>();
 
         if (testConfigs == null) {
             throw new RuntimeException("No test configurations found.");
         }
 
-        for (File file: testConfigs) {
+        for (File file : testConfigs) {
             try {
                 testConfig = GsonWrapper.fromJson(new FileReader(file.getPath()), type);
             } catch (FileNotFoundException e) {
@@ -127,7 +128,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:getCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             String certificate = contract.getCertificate(ctx, input.get(0));
@@ -141,7 +142,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:addCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.addCertificate(ctx, input.get(0), input.get(1)))
@@ -157,7 +158,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:addCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addCertificate(ctx, input.get(0), input.get(1));
@@ -171,7 +172,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:updateCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             assertThat(contract.updateCertificate(ctx, input.get(0), input.get(1)))
@@ -188,7 +189,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup);
+            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:updateCertificate");
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.updateCertificate(ctx, input.get(0), input.get(1));

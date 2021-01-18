@@ -7,18 +7,17 @@ ZoltuGitVersioning {
         def matcher = (describeResults =~ /v(?<major>[0-9]+?)\.(?<minor>[0-9]+?)\.(?<patch>[0-9]+?)(\.(?<hotfix>[0-9]+?))?(?:\-(?<tags>[0-9A-Za-z\.\-]+))?\-(?<commitCount>[0-9]+?)\-g(?<sha>[a-zA-Z0-9]+)/)
         matcher.matches()
         [
-                major: matcher.group('major'),
-                minor: matcher.group('minor'),
+                major      : matcher.group('major'),
+                minor      : matcher.group('minor'),
                 commitCount: matcher.group('commitCount'),
-                sha: matcher.group('sha'),
-                patch: matcher.group('patch'),
-                tags: matcher.group('tags') ]
+                sha        : matcher.group('sha'),
+                patch      : matcher.group('patch'),
+                tags       : matcher.group('tags')]
     }
     customVersionToString { versionInfo ->
-        if(versionInfo.commitCount.equals("0")){
+        if (versionInfo.commitCount.equals("0")) {
             return "${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}"
-        }
-        else {
+        } else {
             return "${versionInfo.major}.${versionInfo.minor}.${versionInfo.patch}-${versionInfo.commitCount}"
         }
     }

@@ -71,8 +71,6 @@
       ]
     ]
   },
-
-
   {
     "name": "queryNonExistingExaminationRegulations",
     "type": "getExaminationRegulations",
@@ -86,8 +84,6 @@
       []
     ]
   },
-
-
   {
     "name": "queryUnparsableNameListExaminationRegulations",
     "type": "getExaminationRegulations",
@@ -108,8 +104,6 @@
       }
     ]
   },
-
-
   {
     "name": "queryUnprocessableLedgerStateExaminationRegulations",
     "type": "getExaminationRegulations",
@@ -120,7 +114,9 @@
       ]
     },
     "input": [
-      ["Computer Science"]
+      [
+        "Computer Science"
+      ]
     ],
     "compare": [
       {

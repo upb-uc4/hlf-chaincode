@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 public class MockCompositeKey extends CompositeKey {
     private final String compositeKey;
     private final static String DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
+
     public MockCompositeKey(String objectType, String... attributes) {
         super(objectType, attributes);
         if (attributes.length == 0) {
@@ -26,6 +27,6 @@ public class MockCompositeKey extends CompositeKey {
 
     public static MockCompositeKey parseCompositeKey(final String compositeKey) {
         String[] keyParts = compositeKey.split(DELIMITER);
-        return new MockCompositeKey(keyParts[0], Arrays.copyOfRange(keyParts,1, keyParts.length));
+        return new MockCompositeKey(keyParts[0], Arrays.copyOfRange(keyParts, 1, keyParts.length));
     }
 }

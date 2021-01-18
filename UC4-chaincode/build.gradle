@@ -48,6 +48,6 @@ group = 'de.upb.cs.uc4'
 application {
     mainClass.set(javaMainClass)
     manifest {
-        attributes.putAt("version",version)
+        attributes.putAt("version", version)
     }
 }

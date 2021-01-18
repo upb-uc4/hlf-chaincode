@@ -1,0 +1,157 @@
+[
+  {
+    "name": "rejectNewTransaction",
+    "type": "rejectTransaction_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin"
+            ],
+            "groups": []
+          }
+        }
+      ]
+    },
+    "input": [
+      "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+      "The transaction was invalid."
+    ],
+    "compare": [
+      {
+        "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "transactionInfo": {
+          "contractName": "UC4.Certificate",
+          "transactionName": "addCertificate",
+          "parameters": "[\"0000001\",\"cert\"]"
+        },
+        "initiator": "User1",
+        "initiatedTimestamp":  "",
+        "lastModifiedTimestamp": "",
+        "state": "REJECTED",
+        "reason": "A User denied with the following message: The transaction was invalid.",
+        "existingApprovals": {
+          "users": [],
+          "groups": []
+        },
+        "missingApprovals": {
+          "users": [
+            "Admin"
+          ],
+          "groups": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "rejectNewTransaction_UnprocessableOperation",
+    "type": "rejectTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin"
+            ],
+            "groups": ""
+          }
+        }
+      ]
+    },
+    "input": [
+      "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+      "The transaction was invalid."
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableLedgerState",
+        "title": "The state on the ledger does not conform to the specified format"
+      }
+    ]
+  },
+  {
+    "name": "rejectNewTransaction_InvalidOperationId",
+    "type": "rejectTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin"
+            ],
+            "groups": ""
+          },
+          "something": ""
+        }
+      ]
+    },
+    "input": [
+      "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+      "The transaction was invalid."
+    ],
+    "compare": [
+      {
+        "type": "HLNotFound",
+        "title": "There is no operationData for the given operationId"
+      }
+    ]
+  }
+]

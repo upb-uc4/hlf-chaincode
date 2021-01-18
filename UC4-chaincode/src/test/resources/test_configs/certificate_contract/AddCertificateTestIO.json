@@ -11,7 +11,6 @@
       "legit certificate"
     ]
   },
-
   {
     "name": "addExistingCertificate",
     "type": "addCertificate_FAILURE",
@@ -32,8 +31,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyEnrollmentIdCertificate",
     "type": "addCertificate_FAILURE",
@@ -55,8 +52,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyEnrollmentIdCertificate",
     "type": "addCertificate_FAILURE",
@@ -78,8 +73,6 @@
       }
     ]
   },
-
-
   {
     "name": "addEmptyEnrollmentIdCertificate",
     "type": "addCertificate_FAILURE",

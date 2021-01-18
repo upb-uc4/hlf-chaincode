@@ -33,8 +33,6 @@
       }
     ]
   },
-
-
   {
     "name": "closeExistingClosedExaminationRegistration",
     "type": "closeExaminationRegulation_SUCCESS",
@@ -69,8 +67,6 @@
       }
     ]
   },
-
-
   {
     "name": "closeEmptyNameExaminationRegulation",
     "type": "closeExaminationRegulation_FAILURE",

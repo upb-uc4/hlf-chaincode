@@ -49,10 +49,12 @@
         }
       ],
       "groupContract": [
-        "admin",
+        "Admin",
         {
-          "groupId": "admin",
-          "userList": ["User1"]
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -63,8 +65,6 @@
       ""
     ]
   },
-
-
   {
     "name": "dropNonExistingAdmission",
     "type": "dropAdmission_FAILURE",

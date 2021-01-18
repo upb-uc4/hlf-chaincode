@@ -1,9 +1,8 @@
 package de.upb.cs.uc4.chaincode.mock;
 
-import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContract;
-import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
-import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
 import org.hyperledger.fabric.protos.peer.ProposalPackage;
@@ -23,26 +22,33 @@ public final class MockChaincodeStub implements ChaincodeStub {
     private final String defaultCollection = "default";
     private Map<String, byte[]> transientMap;
     private String currentId;
+    private String function;
 
     public void setCurrentId(String currentId) {
         this.currentId = currentId;
     }
 
-    public MockChaincodeStub() {
+    public MockChaincodeStub(String function) {
+        this.function = function;
         dataCollections = new HashMap<>();
         dataCollections.put(defaultCollection, new ArrayList<>());
+    }
+
+    public void setFunction(String function) {
+        this.function = function;
     }
 
     public void setTransient(Map<String, byte[]> transientMap) {
         this.transientMap = transientMap;
     }
 
+
     private void putByteState(String collection, String key, byte[] value) {
         if (!dataCollections.containsKey(collection)) {
             dataCollections.put(collection, new ArrayList<>());
         }
         MockKeyValue existing = null;
-        for (MockKeyValue entry: dataCollections.get(collection)) {
+        for (MockKeyValue entry : dataCollections.get(collection)) {
             if (entry.getKey().equals(key))
                 existing = entry;
         }
@@ -108,7 +114,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public String getFunction() {
-        return null;
+        return function;
     }
 
     @Override
@@ -135,16 +141,15 @@ public final class MockChaincodeStub implements ChaincodeStub {
     public Chaincode.Response invokeChaincodeWithStringArgs(String chaincodeName, List<String> args) {
         String transactionName = args.get(0);
         switch (transactionName) {
-            case "getApprovals":
-                ApprovalContract contract = new ApprovalContract();
-                ApprovalContractUtil cUtil = new ApprovalContractUtil();
+            case "getOperationData":
+                OperationContract contract = new OperationContract();
                 Context ctx = TestUtil.mockContext(this, currentId);
                 String contractName = args.get(1);
                 String transName = args.get(2);
                 List<String> params = args.size() > 3 ? args.subList(3, args.size()) : new ArrayList<>();
                 String result;
                 try {
-                    result = contract.getApprovals(ctx, contractName, transName, GsonWrapper.toJson(params));
+                    result = contract.getOperationData(ctx, OperationContractUtil.getDraftKey(contractName, transName, TestUtil.jsonListParams(params)));
                 } catch (Exception e) {
                     return ResponseUtils.newErrorResponse();
                 }
@@ -307,7 +312,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public Instant getTxTimestamp() {
-        return null;
+        return Instant.ofEpochSecond(0);
     }
 
     @Override

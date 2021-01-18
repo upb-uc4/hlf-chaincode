@@ -8,6 +8,7 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CertificateContractUtil extends ContractUtil {
 
@@ -33,7 +34,13 @@ public class CertificateContractUtil extends ContractUtil {
         return list;
     }
 
-    public void checkParamsAddCertificate(Context ctx, String enrollmentId, String certificate) throws ParameterError {
+    public void checkParamsAddCertificate(Context ctx, List<String> params) throws ParameterError {
+        if (params.size() != 2) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String enrollmentId = params.get(0);
+        String certificate = params.get(1);
+
         ChaincodeStub stub = ctx.getStub();
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
@@ -50,7 +57,13 @@ public class CertificateContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsUpdateCertificate(Context ctx, String enrollmentId, String certificate) throws ParameterError {
+    public void checkParamsUpdateCertificate(Context ctx, List<String> params) throws ParameterError {
+        if (params.size() != 2) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String enrollmentId = params.get(0);
+        String certificate = params.get(1);
+
         ChaincodeStub stub = ctx.getStub();
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
@@ -68,7 +81,12 @@ public class CertificateContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsGetCertificate(Context ctx, String enrollmentId) throws ParameterError {
+    public void checkParamsGetCertificate(Context ctx, List<String> params) throws ParameterError {
+        if (params.size() != 1) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String enrollmentId = params.get(0);
+
         ChaincodeStub stub = ctx.getStub();
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>(getErrorForEnrollmentId(enrollmentId));

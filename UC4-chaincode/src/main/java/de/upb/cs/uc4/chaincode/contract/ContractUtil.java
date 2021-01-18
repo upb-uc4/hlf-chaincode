@@ -1,12 +1,14 @@
 package de.upb.cs.uc4.chaincode.contract;
 
-import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.*;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.OperationData;
+import de.upb.cs.uc4.chaincode.model.OperationDataState;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -98,6 +100,13 @@ abstract public class ContractUtil {
                 .title("SHA-256 apparently does not exist lol...");
     }
 
+    public GenericError getParamNumberError() {
+        // TODO add this error to operation api (approveTransaction)
+        return new GenericError()
+                .type("HLParameterNumberError")
+                .title("The given number of parameters does not match the required number of parameters for the specified transaction");
+    }
+
 
     public void validateApprovals(
             final ChaincodeStub stub,
@@ -110,23 +119,47 @@ abstract public class ContractUtil {
             return;
         }
 
-        ApprovalContractUtil aUtil = new ApprovalContractUtil();
+        OperationContractUtil oUtil = new OperationContractUtil();
+        ApprovalList approvals;
         String key;
         try {
-            key = aUtil.getDraftKey(contractName, transactionName, jsonArgs);
+            key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
             throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
-        ApprovalList approvals;
         try{
-            approvals = aUtil.getState(stub, key, ApprovalList.class);
+            approvals = oUtil.getState(stub, key, OperationData.class).getExistingApprovals();
         } catch (Exception e) {
             approvals = new ApprovalList();
         }
-        if (!ApprovalContractUtil.covers(requiredApprovals, approvals)) {
+
+        if(!OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
+    }
 
+    public void finishOperation(
+            final ChaincodeStub stub,
+            String contractName,
+            String transactionName,
+            final List<String> args) throws SerializableError {
+        String jsonArgs = GsonWrapper.toJson(args);
+
+        OperationContractUtil oUtil = new OperationContractUtil();
+        String key;
+        try {
+            key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
+        } catch (NoSuchAlgorithmException e) {
+            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
+        }
+        OperationData operation;
+        try{
+            operation = oUtil.getState(stub, key, OperationData.class);
+        } catch (Exception e) {
+            return;
+        }
+
+        oUtil.putAndGetStringState(stub, key, GsonWrapper.toJson(operation.state(OperationDataState.FINISHED)));
     }
 
     public String putAndGetStringState(ChaincodeStub stub, String key, String value) {

@@ -8,12 +8,14 @@
     ],
     "setup": {
       "groupContract": [
-      "0123",
-      {
-        "groupId": "0123",
-        "userList": ["0000001"]
-      }
-    ],
+        "0123",
+        {
+          "groupId": "0123",
+          "userList": [
+            "0000001"
+          ]
+        }
+      ],
       "certificateContract": [
         "0000001",
         "test-certificate"
@@ -26,7 +28,6 @@
       {
         "groupId": "0123",
         "userList": [
-
         ]
       }
     ]
@@ -43,12 +44,16 @@
         "0123",
         {
           "groupId": "0123",
-          "userList": ["0000001"]
+          "userList": [
+            "0000001"
+          ]
         },
         "0124",
         {
           "groupId": "0124",
-          "userList": ["0000001"]
+          "userList": [
+            "0000001"
+          ]
         }
       ],
       "certificateContract": [
@@ -63,7 +68,6 @@
       {
         "groupId": "0123",
         "userList": [
-
         ]
       },
       {
@@ -93,7 +97,10 @@
         "0124",
         {
           "groupId": "0124",
-          "userList": ["0000001", "0000002"]
+          "userList": [
+            "0000001",
+            "0000002"
+          ]
         }
       ],
       "certificateContract": [
@@ -139,7 +146,10 @@
         "0124",
         {
           "groupId": "0124",
-          "userList": ["0000001", "0000002"]
+          "userList": [
+            "0000001",
+            "0000002"
+          ]
         }
       ],
       "certificateContract": [

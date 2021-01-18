@@ -1,0 +1,351 @@
+[
+  {
+    "name": "getOperationsOneApproval",
+    "type": "getOperations",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin"
+            ],
+            "groups": []
+          }
+        }
+      ]
+    },
+    "input": [
+      "User1",
+      "",
+      "",
+      "FINISHED"
+    ],
+    "compare": [
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ]
+    ]
+  },
+  {
+    "name": "getOperationsVariousApprovals",
+    "type": "getOperations",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin"
+            ],
+            "groups": []
+          }
+        },
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1",
+              "User2"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin"
+            ],
+            "groups": []
+          }
+        },
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1",
+              "User2",
+              "User3"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin",
+              "some-group"
+            ],
+            "groups": []
+          }
+        }
+      ]
+    },
+    "input": [
+      "User1",
+      "",
+      "",
+      "FINISHED",
+       "User2",
+      "",
+      "",
+        "FINISHED",
+      "",
+      "",
+      "",
+      "FINISHED",
+      "User3",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "User1",
+      "",
+      "",
+      "PENDING",
+      "User",
+      "",
+      "",
+      "FINISHED",
+      "User2",
+      "",
+      "",
+      "HUND",
+      "Use",
+      "",
+      "",
+      "KATZE"
+    ],
+    "compare": [
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+
+      ],
+      [
+
+      ],
+      [
+
+      ]
+    ]
+  },
+  {
+    "name": "getOperationsMissingApprovals",
+    "type": "getOperations",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin"
+            ],
+            "groups": [
+              "Admin"
+            ]
+          }
+        },
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1",
+              "User2"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin",
+              "User4",
+              "User5"
+            ],
+            "groups": [
+              "some-group"
+            ]
+          }
+        },
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1",
+              "User2",
+              "User3"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [
+              "Admin",
+              "some-group",
+              "User4"
+            ],
+            "groups": []
+          }
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1",
+            "User5"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "User1",
+      "",
+      "",
+      "PENDING",
+      "",
+      "User4",
+      "",
+      "",
+      "",
+      "User5",
+      "",
+      ""
+    ],
+    "compare": [
+      [
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ],
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ]
+    ]
+  }
+]

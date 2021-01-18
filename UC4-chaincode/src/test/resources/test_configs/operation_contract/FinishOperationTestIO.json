@@ -1,0 +1,78 @@
+[
+  {
+    "name": "finishSuccessfulOperation",
+    "type": "finishOperation",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      "FINISHED"
+    ]
+  },
+  {
+    "name": "leaveUnsuccessfulOperationPending",
+    "type": "finishOperation",
+    "ids": [
+      "0000001"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      "PENDING"
+    ]
+  }
+]

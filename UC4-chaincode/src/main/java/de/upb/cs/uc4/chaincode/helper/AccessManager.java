@@ -1,7 +1,12 @@
 package de.upb.cs.uc4.chaincode.helper;
 
 import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.contract.approval.ApprovalContractUtil;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
+import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
+import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
@@ -11,16 +16,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AccessManager {
-    private static ApprovalContractUtil approvalUtil = new ApprovalContractUtil();
+    private static OperationContractUtil operationUtil = new OperationContractUtil();
 
-    public static final String ADMIN = "admin";
+    public static final String ADMIN = "Admin";
 
     public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) throws MissingTransactionError {
         Type listType = new TypeToken<ArrayList<String>>() {
         }.getType();
         List<String> paramList = GsonWrapper.fromJson(params, listType);
         switch (contractName) {
-            case "UC4.MatriculationData":
+            case MatriculationDataContract.contractName:
                 switch (transactionName) {
                     case "addMatriculationData":
                         return getRequiredApprovalsForAddMatriculationData(paramList);
@@ -33,9 +38,9 @@ public class AccessManager {
                     case "getVersion":
                         return new ApprovalList();
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
-            case "UC4.Admission":
+            case AdmissionContract.contractName:
                 switch (transactionName) {
                     case "addAdmission":
                         return getRequiredApprovalsForAddAdmission(paramList);
@@ -46,9 +51,9 @@ public class AccessManager {
                     case "getVersion":
                         return new ApprovalList();
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
-            case "UC4.Group":
+            case GroupContract.contractName:
                 switch (transactionName) {
                     case "addUserToGroup":
                         return getRequiredApprovalsForAddUserToGroup(paramList);
@@ -65,9 +70,9 @@ public class AccessManager {
                     case "getVersion":
                         return new ApprovalList();
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
-            case "UC4.Certificate":
+            case CertificateContract.contractName:
                 switch (transactionName) {
                     case "addCertificate":
                         return getRequiredApprovalsForAddCertificate(paramList);
@@ -78,9 +83,9 @@ public class AccessManager {
                     case "getVersion":
                         return new ApprovalList();
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
-            case "UC4.ExaminationRegulation":
+            case ExaminationRegulationContract.contractName:
                 switch (transactionName) {
                     case "addExaminationRegulation":
                         return getRequiredApprovalsForAddExaminationRegulation(paramList);
@@ -91,10 +96,10 @@ public class AccessManager {
                     case "getVersion":
                         return new ApprovalList();
                     default:
-                        throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getTransactionUnprocessableError(transactionName)));
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
             default:
-                throw new MissingTransactionError(GsonWrapper.toJson(approvalUtil.getContractUnprocessableError(contractName)));
+                throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getContractUnprocessableError(contractName)));
         }
     }
 

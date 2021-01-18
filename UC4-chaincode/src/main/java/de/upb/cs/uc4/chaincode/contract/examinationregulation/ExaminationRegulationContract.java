@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -18,12 +19,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 @Contract(
-        name = "UC4.ExaminationRegulation"
+        name = ExaminationRegulationContract.contractName
 )
 public class ExaminationRegulationContract extends ContractBase {
 
     private final ExaminationRegulationContractUtil cUtil = new ExaminationRegulationContractUtil();
-    public final String contractName = "UC4.ExaminationRegulation";
+    public final static String contractName = "UC4.ExaminationRegulation";
 
     /**
      * Adds an examination regulation to the ledger.
@@ -34,19 +35,25 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String addExaminationRegulation(final Context ctx, final String examinationRegulation) {
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
-            cUtil.checkParamsAddExaminationRegulation(ctx, examinationRegulation);
+            cUtil.checkParamsAddExaminationRegulation(ctx, Collections.singletonList(examinationRegulation));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "addExaminationRegulation", Collections.singletonList(examinationRegulation));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(examinationRegulation));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         ExaminationRegulation newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(examinationRegulation));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return cUtil.putAndGetStringState(stub, newExaminationRegulation.getName(), GsonWrapper.toJson(newExaminationRegulation));
     }
 
@@ -59,15 +66,16 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String getExaminationRegulations(final Context ctx, final String names) {
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
-            cUtil.checkParamsGetExaminationRegulations(names);
+            cUtil.checkParamsGetExaminationRegulations(Collections.singletonList(names));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "getExaminationRegulations", Collections.singletonList(names));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(names));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -99,6 +107,11 @@ public class ExaminationRegulationContract extends ContractBase {
                 }
             }
         }
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(names));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return GsonWrapper.toJson(regulations);
     }
 
@@ -111,15 +124,16 @@ public class ExaminationRegulationContract extends ContractBase {
      */
     @Transaction()
     public String closeExaminationRegulation(final Context ctx, final String name) {
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
-            cUtil.checkParamsCloseExaminationRegulation(ctx, name);
-        } catch (LedgerAccessError e) {
+            cUtil.checkParamsCloseExaminationRegulation(ctx, Collections.singletonList(name));
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  "closeExaminationRegulation", Collections.singletonList(name));
+            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(name));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -131,6 +145,11 @@ public class ExaminationRegulationContract extends ContractBase {
         }
 
         regulation.setActive(false);
+        try {
+            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(name));
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         return cUtil.putAndGetStringState(stub, regulation.getName(), GsonWrapper.toJson(regulation));
     }
 }
