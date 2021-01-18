@@ -4,10 +4,10 @@
 - set operation state to FINISHED on successful transaction execution
 
 ## Bugfix
-- 
+- admin group name: "admin" --> "Admin"
 
 ## Refactor
-- read transactionId from stub
+- read transaction_funcitonName from stub
 - read annotated contract name from static contract name
 
 ## Usability
