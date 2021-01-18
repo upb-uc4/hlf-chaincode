@@ -1,4 +1,8 @@
-# [v0.15.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.1...v0.15.2) (2021-01-12)
+# [v0.16.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.2...v0.16.0) (2021-01-18)
+
+Release (no changes to previous version)
+
+# [v0.15.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.1...v0.15.2) (2021-01-15)
 
 ## Feature
 - set operation state to FINISHED on successful transaction execution
