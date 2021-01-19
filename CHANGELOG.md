@@ -1,3 +1,8 @@
+# [v0.16.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.1...v0.16.2) (2021-01-19)
+
+## Feature
+- executing client now implicitly approves the transaction
+
 # [v0.16.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.0...v0.16.1) (2021-01-19)
 
 ## Bugfix
