@@ -73,13 +73,17 @@ public class OperationContract extends ContractBase {
         String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
 
-        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
+        ApprovalList existingApprovals = operationData.getExistingApprovals();
         ApprovalList requiredApprovals = null;
         try {
             requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
         } catch (MissingTransactionError e) {
             return e.getJsonError();
         }
+        if (requiredApprovals.getUsers().contains(clientId)) {
+            existingApprovals.addUsersItem(clientId);
+        }
+        requiredApprovals.getGroups().forEach(group -> {if(clientGroups.contains(group)) existingApprovals.addGroupsItem(group);});
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
         operationData.lastModifiedTimestamp(timeStamp)
                 .existingApprovals(existingApprovals)

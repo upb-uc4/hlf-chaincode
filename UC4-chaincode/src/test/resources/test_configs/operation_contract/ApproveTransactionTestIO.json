@@ -471,5 +471,73 @@
         "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
       }
     ]
+  },
+  {
+    "name": "approveUnnecessaryUserNewTransaction",
+    "type": "approveTransaction_SUCCESS",
+    "ids": [
+      "User2"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "UnnecessaryGroup",
+        {
+          "groupId": "UnnecessaryGroup",
+          "userList": [
+            "User2"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
+        "existingApprovals": {
+          "users": [],
+          "groups": []
+        },
+        "missingApprovals": {
+          "users": [
+            "User1"
+          ],
+          "groups": [
+            "Admin"
+          ]
+        }
+      }
+    ]
   }
 ]
