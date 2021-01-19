@@ -44,13 +44,13 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(examinationRegulation));
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{examinationRegulation});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         ExaminationRegulation newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(examinationRegulation));
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{examinationRegulation});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -75,7 +75,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(names));
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{names});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -108,7 +108,7 @@ public class ExaminationRegulationContract extends ContractBase {
             }
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(names));
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{names});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -133,7 +133,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(name));
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{name});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -146,7 +146,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         regulation.setActive(false);
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(name));
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{name});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
