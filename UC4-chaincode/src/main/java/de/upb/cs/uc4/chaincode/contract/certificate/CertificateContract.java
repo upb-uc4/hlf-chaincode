@@ -41,12 +41,12 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId, certificate});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, certificate});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -72,12 +72,12 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId, certificate});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, certificate});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -102,12 +102,12 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, this.contractName,  transactionName, Collections.singletonList(enrollmentId));
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(enrollmentId));
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
