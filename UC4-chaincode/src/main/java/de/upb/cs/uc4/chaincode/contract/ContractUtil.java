@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract;
 
+import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.*;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
@@ -134,7 +135,10 @@ abstract public class ContractUtil {
         } catch (Exception e) {
             approvals = new ApprovalList();
         }
-        approvals.addUsersItem(getEnrollmentIdFromClientId(ctx.getClientIdentity().getId()));
+        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+        approvals.addUsersItem(clientId);
+        approvals.addGroupsItems(clientGroups);
 
         if(!OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
