@@ -85,10 +85,6 @@ public class OperationContractUtil extends ContractUtil {
         return invalidParams;
     }
 
-    public String getEnrollmentIdFromClientId(String clientId) {
-        return clientId.substring(9).split(",")[0];
-    }
-
     public DetailedError getContractUnprocessableError(String contractName) {
         return getUnprocessableEntityError(new InvalidParameter()
                 .name("contractName")
