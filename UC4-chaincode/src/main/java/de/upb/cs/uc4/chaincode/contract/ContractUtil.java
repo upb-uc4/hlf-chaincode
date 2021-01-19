@@ -114,7 +114,7 @@ abstract public class ContractUtil {
             final Context ctx,
             String contractName,
             String transactionName,
-            final List<String> args) throws SerializableError {
+            final String[] args) throws SerializableError {
         ChaincodeStub stub = ctx.getStub();
         String jsonArgs = GsonWrapper.toJson(args);
         ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
@@ -153,7 +153,7 @@ abstract public class ContractUtil {
             final ChaincodeStub stub,
             String contractName,
             String transactionName,
-            final List<String> args) throws SerializableError {
+            final String[] args) throws SerializableError {
         String jsonArgs = GsonWrapper.toJson(args);
 
         OperationContractUtil oUtil = new OperationContractUtil();

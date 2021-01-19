@@ -14,7 +14,6 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
-import java.lang.reflect.Array;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -74,7 +73,7 @@ public class OperationContract extends ContractBase {
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
 
         ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
-        ApprovalList requiredApprovals = null;
+        ApprovalList requiredApprovals;
         try {
             requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
         } catch (MissingTransactionError e) {
@@ -91,7 +90,7 @@ public class OperationContract extends ContractBase {
     public String rejectTransaction(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
         try {
-            operationData = cUtil.<OperationData>getState(ctx.getStub(), operationId, OperationData.class);
+            operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
@@ -105,7 +104,7 @@ public class OperationContract extends ContractBase {
 
         OperationData operationData;
         try {
-            operationData = cUtil.<OperationData>getState(ctx.getStub(), operationId, OperationData.class);
+            operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
