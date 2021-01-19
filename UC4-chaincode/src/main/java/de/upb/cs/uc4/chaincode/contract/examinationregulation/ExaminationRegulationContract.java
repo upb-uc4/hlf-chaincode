@@ -44,7 +44,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(examinationRegulation));
+            cUtil.validateApprovals(ctx, this.contractName,  transactionName, Collections.singletonList(examinationRegulation));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -75,7 +75,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(names));
+            cUtil.validateApprovals(ctx, this.contractName,  transactionName, Collections.singletonList(names));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -133,7 +133,7 @@ public class ExaminationRegulationContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(name));
+            cUtil.validateApprovals(ctx, this.contractName,  transactionName, Collections.singletonList(name));
         } catch (SerializableError e) {
             return e.getJsonError();
         }

@@ -1,3 +1,14 @@
+# [v0.16.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.1...v0.16.2) (2021-01-19)
+
+## Feature
+- executing client now implicitly approves the transaction
+
+# [v0.16.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.0...v0.16.1) (2021-01-19)
+
+## Bugfix
+- switch to base64url
+- adjust hash delimiter to ":"
+
 # [v0.16.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.2...v0.16.0) (2021-01-18)
 
 Release (no changes to previous version)

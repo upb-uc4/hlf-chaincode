@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class OperationContractUtil extends ContractUtil {
-    private static final String HASH_DELIMITER = new String(Character.toChars(Character.MIN_CODE_POINT));
+    private static final String HASH_DELIMITER = ":";
     private static final GroupContractUtil groupContractUtil = new GroupContractUtil();
 
     public OperationContractUtil() {
@@ -71,7 +71,7 @@ public class OperationContractUtil extends ContractUtil {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params;
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
-        return new String(Base64.getEncoder().encode(bytes));
+        return new String(Base64.getUrlEncoder().encode(bytes));
     }
 
     public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
@@ -83,10 +83,6 @@ public class OperationContractUtil extends ContractUtil {
             invalidParams.add(getEmptyInvalidParameter("transactionName"));
         }
         return invalidParams;
-    }
-
-    public String getEnrollmentIdFromClientId(String clientId) {
-        return clientId.substring(9).split(",")[0];
     }
 
     public DetailedError getContractUnprocessableError(String contractName) {

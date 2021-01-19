@@ -22,7 +22,7 @@ public class TestUtil {
     }
 
     public static Context mockContext(MockChaincodeStub stub) {
-        return mockContext(stub, "testId");
+        return mockContext(stub, wrapEnrollmentId("testId"));
     }
 
     public static Context mockContext(MockChaincodeStub stub, String clientId) {
@@ -52,5 +52,9 @@ public class TestUtil {
     public static String jsonListParams(List<String> params) {
         // TODO utilize gson for this
         return "[" + params.stream().reduce((s1, s2) -> s1 + "," + s2).orElse("") + "]";
+    }
+
+    public static String wrapEnrollmentId(String id) {
+        return "x509::CN=" + id + ", OU=admin::CN=rca-org1, OU=UC4, O=UC4, L=Paderborn, ST=NRW, C=DE";
     }
 }
