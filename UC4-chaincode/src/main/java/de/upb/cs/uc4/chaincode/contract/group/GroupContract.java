@@ -55,7 +55,7 @@ public class GroupContract extends ContractBase {
         }
 
         try {
-            cUtil.validateApprovals(stub, this.contractName, transactionName, new ArrayList<String>() {{add(enrollmentId);add(groupId);}});
+            cUtil.validateApprovals(ctx, this.contractName, transactionName, new ArrayList<String>() {{add(enrollmentId);add(groupId);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -96,7 +96,7 @@ public class GroupContract extends ContractBase {
         group.getUserList().remove(enrollmentId);
 
         try {
-            cUtil.validateApprovals(stub, this.contractName, transactionName, new ArrayList<String>() {{add(enrollmentId);add(groupId);}});
+            cUtil.validateApprovals(ctx, this.contractName, transactionName, new ArrayList<String>() {{add(enrollmentId);add(groupId);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -128,7 +128,7 @@ public class GroupContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName, transactionName, Collections.singletonList(enrollmentId));
+            cUtil.validateApprovals(ctx, this.contractName, transactionName, Collections.singletonList(enrollmentId));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -156,7 +156,7 @@ public class GroupContract extends ContractBase {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName, transactionName, new ArrayList<String>());
+            cUtil.validateApprovals(ctx, this.contractName, transactionName, new ArrayList<String>());
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -186,7 +186,7 @@ public class GroupContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName, transactionName, Collections.singletonList(groupId));
+            cUtil.validateApprovals(ctx, this.contractName, transactionName, Collections.singletonList(groupId));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -222,7 +222,7 @@ public class GroupContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName, transactionName, Collections.singletonList(enrollmentId));
+            cUtil.validateApprovals(ctx, this.contractName, transactionName, Collections.singletonList(enrollmentId));
         } catch (SerializableError e) {
             return e.getJsonError();
         }
