@@ -37,8 +37,13 @@ public class OperationContract extends ContractBase {
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
-    public String approveTransaction(final Context ctx, final String initiator, final String contractName, final String transactionName, final String params) {
+    public String approveTransaction(final Context ctx, String initiator, final String contractName, final String transactionName, final String params) {
         ArrayList<InvalidParameter> invalidParameters = cUtil.getErrorForInput(contractName, transactionName);
+        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+
+        initiator = initiator.isEmpty() ? clientId : initiator;
+
         if(!invalidParameters.isEmpty()){
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParameters));
         }
@@ -69,8 +74,6 @@ public class OperationContract extends ContractBase {
                     .reason("");
 
         }
-        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
 
         ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
         ApprovalList requiredApprovals;
