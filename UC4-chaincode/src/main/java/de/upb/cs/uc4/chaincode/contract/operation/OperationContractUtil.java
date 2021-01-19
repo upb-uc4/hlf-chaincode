@@ -30,7 +30,7 @@ public class OperationContractUtil extends ContractUtil {
     }
 
     public String getUserRejectionMessage(String message) {
-        return "A User denied with the following message: " + message;
+        return message;
     }
 
     public String getSystemDetailedRejectionMessage(DetailedError error) {
