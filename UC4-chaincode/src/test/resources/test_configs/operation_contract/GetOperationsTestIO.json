@@ -347,5 +347,60 @@
         "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
       ]
     ]
+  },
+  {
+    "name": "getOperationsMissingGroupApproval",
+    "type": "getOperations",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User2",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": [
+              "Admin"
+            ]
+          }
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "",
+      "User1",
+      "",
+      "FINISHED"
+    ],
+    "compare": [
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+      ]
+    ]
   }
 ]
