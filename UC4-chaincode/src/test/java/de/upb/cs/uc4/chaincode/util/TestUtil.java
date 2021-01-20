@@ -35,8 +35,8 @@ public class TestUtil {
         return ctx;
     }
 
-    public static MockChaincodeStub mockStub(JsonIOTestSetup setup, String txId) {
-        MockChaincodeStub stub = new MockChaincodeStub(txId);
+    public static MockChaincodeStub mockStub(JsonIOTestSetup setup, String function) {
+        MockChaincodeStub stub = new MockChaincodeStub(function);
         setup.prepareStub(stub);
         return stub;
     }
