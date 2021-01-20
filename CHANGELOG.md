@@ -2,6 +2,13 @@
 
 ## Feature
 - executing client now implicitly approves the transaction
+- implicit approval of users
+- remove additional information from users rejectionMessage
+- approveTransaction() set initiator default as client executing the transaction
+
+## Bugfix
+- operationsKey is generated in a different way (no spaces in parameters)
+- gson List/Array parsing problem (List--> null)
 
 # [v0.16.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.0...v0.16.1) (2021-01-19)
 
