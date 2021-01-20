@@ -1,3 +1,9 @@
+# [v0.16.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.2...v0.16.3) (2021-01-20)
+
+## Feature
+- System Group has to approve addMatriculationData
+- System Group, Admin Group and designated user have to approve addEntriesToMatriculationData
+
 # [v0.16.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.1...v0.16.2) (2021-01-19)
 
 ## Feature
