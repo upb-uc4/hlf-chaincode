@@ -49,7 +49,7 @@
     ],
     "compare": [
       {
-        "operationId": "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
@@ -119,7 +119,7 @@
     ],
     "compare": [
       {
-        "operationId": "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
@@ -153,9 +153,9 @@
     ],
     "setup": {
       "operationContract": [
-        "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
         {
-          "operationId": "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
             "transactionName": "addMatriculationData",
@@ -217,7 +217,7 @@
     ],
     "compare": [
       {
-        "operationId": "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
@@ -254,9 +254,9 @@
     ],
     "setup": {
       "operationContract": [
-        "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
         {
-          "operationId": "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
             "transactionName": "addMatriculationData",
@@ -318,7 +318,7 @@
     ],
     "compare": [
       {
-        "operationId": "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
@@ -425,7 +425,7 @@
     ],
     "setup": {
       "approvalContract": [
-        "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
         "something invalid"
       ],
       "examinationRegulationContract": [
@@ -455,7 +455,7 @@
     ],
     "compare": [
       {
-        "operationId": "DsPwqZ3V7J2AIFpL0Z65fimJyMj5n1p8b9D3oYVI62Q=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
