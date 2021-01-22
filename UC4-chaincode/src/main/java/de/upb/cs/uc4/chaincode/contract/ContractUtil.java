@@ -101,7 +101,6 @@ abstract public class ContractUtil {
     }
 
     public GenericError getParamNumberError() {
-        // TODO add this error to operation api (approveTransaction)
         return new GenericError()
                 .type("HLParameterNumberError")
                 .title("The given number of parameters does not match the required number of parameters for the specified transaction");
@@ -133,7 +132,6 @@ abstract public class ContractUtil {
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
         ApprovalList approvals = operation.getExistingApprovals();
-        // TODO throw proper error for rejected operation (with reason)
         if(operation.getState() != OperationDataState.PENDING || !OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
