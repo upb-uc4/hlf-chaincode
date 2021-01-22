@@ -21,6 +21,13 @@
           "userList": [
             "User1"
           ]
+        },
+        "AdditionalGroup",
+        {
+          "groupId": "AdditionalGroup",
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -57,7 +64,8 @@
             "User1"
           ],
           "groups": [
-            "Admin"
+            "Admin",
+            "AdditionalGroup"
           ]
         },
         "missingApprovals": {
