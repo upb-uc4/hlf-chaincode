@@ -117,8 +117,22 @@ public class OperationContract extends ContractBase {
     }
 
     @Transaction()
-    public String getOperations(final Context ctx, final String existingEnrollmentId, final String missingEnrollmentId, final String initiatorEnrollmentId, final String state) {
-                List<OperationData> operations = cUtil.getOperations(ctx.getStub(), existingEnrollmentId, missingEnrollmentId, initiatorEnrollmentId, state);
+    public String getOperations(
+            final Context ctx,
+            final String operationId,
+            final String existingEnrollmentId,
+            final String missingEnrollmentId,
+            final String initiatorEnrollmentId,
+            final String involvedEnrollmentId,
+            final String states) {
+                List<OperationData> operations = cUtil.getOperations(
+                        ctx.getStub(),
+                        operationId,
+                        existingEnrollmentId,
+                        missingEnrollmentId,
+                        initiatorEnrollmentId,
+                        involvedEnrollmentId,
+                        states);
         return GsonWrapper.toJson(operations);
     }
 }

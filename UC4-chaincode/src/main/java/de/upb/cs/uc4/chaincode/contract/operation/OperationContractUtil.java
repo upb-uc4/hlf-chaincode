@@ -36,7 +36,15 @@ public class OperationContractUtil extends ContractUtil {
         return message;
     }
 
-    public List<OperationData> getOperations(ChaincodeStub stub, final String existingEnrollmentId, final String missingEnrollmentId, final String initiatorEnrollmentId, String state) {
+    public List<OperationData> getOperations(
+            ChaincodeStub stub,
+            final String operationId,
+            final String existingEnrollmentId,
+            final String missingEnrollmentId,
+            final String initiatorEnrollmentId,
+            final String involvedEnrollmentId,
+            String state) {
+        // TODO update filters
         List<String> groupsForUserMissingApproval = new GroupContractUtil().getGroupNamesForUser(stub, missingEnrollmentId);
 
         return this.getAllStates(stub, OperationData.class).stream()
