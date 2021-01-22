@@ -49,7 +49,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             case "updateMatriculationData_FAILURE":
                 return DynamicTest.dynamicTest(testName, updateMatriculationDataFailureTest(setup, input, compare));
             case "addEntriesToMatriculationData_SUCCESS":
-                return DynamicTest.dynamicTest(testName, addEntriesToMatriculationDataSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addEntriesToMatriculationDataSuccessTest(setup, input, compare, ids));
             case "addEntriesToMatriculationData_FAILURE":
                 return DynamicTest.dynamicTest(testName, addEntriesToMatriculationDataFailureTest(setup, input, compare));
             default:
@@ -82,12 +82,13 @@ public final class MatriculationDataContractTest extends TestCreationBase {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:addMatriculationData");
             OperationContract operationContract = new OperationContract();
-            for (String id : ids) {
+            for (String id : ids.subList(1, ids.size())) {
                 Context ctx = TestUtil.mockContext(stub, id);
                 operationContract.approveTransaction(ctx, id, contract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
 
             }
-            Context ctx = TestUtil.mockContext(stub);
+            // utilize one id here to test implicit approval by transaction execution
+            Context ctx = TestUtil.mockContext(stub, ids.get(0));
 
             String result = contract.addMatriculationData(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -108,10 +109,10 @@ public final class MatriculationDataContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:addMatriculationData");
-            OperationContract approvalContract = new OperationContract();
+            OperationContract operationContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
+                operationContract.approveTransaction(ctx, "", contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
 
@@ -157,12 +158,19 @@ public final class MatriculationDataContractTest extends TestCreationBase {
     private Executable addEntriesToMatriculationDataSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.MatriculationData:addEntriesToMatriculationData");
-            Context ctx = TestUtil.mockContext(stub);
+            OperationContract operationContract = new OperationContract();
+            for (String id : ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                operationContract.approveTransaction(ctx, id, contract.contractName, "addEntriesToMatriculationData", GsonWrapper.toJson(input));
 
+            }
+
+            Context ctx = TestUtil.mockContext(stub);
             String result = contract.addEntriesToMatriculationData(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
 

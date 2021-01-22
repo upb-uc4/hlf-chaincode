@@ -1,13 +1,41 @@
-# [v0.15.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.1...v0.15.2) (2021-01-12)
+# [v0.16.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.2...v0.16.3) (2021-01-20)
+
+## Feature
+- System Group has to approve addMatriculationData
+- System Group, Admin Group and designated user have to approve addEntriesToMatriculationData
+
+# [v0.16.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.1...v0.16.2) (2021-01-19)
+
+## Feature
+- executing client now implicitly approves the transaction
+- implicit approval of users
+- remove additional information from users rejectionMessage
+- approveTransaction() set initiator default as client executing the transaction
+
+## Bugfix
+- operationsKey is generated in a different way (no spaces in parameters)
+- gson List/Array parsing problem (List--> null)
+
+# [v0.16.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.0...v0.16.1) (2021-01-19)
+
+## Bugfix
+- switch to base64url
+- adjust hash delimiter to ":"
+
+# [v0.16.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.2...v0.16.0) (2021-01-18)
+
+Release (no changes to previous version)
+
+# [v0.15.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.1...v0.15.2) (2021-01-15)
 
 ## Feature
 - set operation state to FINISHED on successful transaction execution
 
 ## Bugfix
-- 
+- admin group name: "admin" --> "Admin"
 
 ## Refactor
-- read transactionId from stub
+- read transaction_funcitonName from stub
 - read annotated contract name from static contract name
 
 ## Usability

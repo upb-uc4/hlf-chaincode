@@ -92,7 +92,7 @@ public final class OperationContractTest extends TestCreationBase {
             for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
-                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, "", contract(input), transaction(input), params(input)), OperationData.class);
+                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, initiator(input), contract(input), transaction(input), params(input)), OperationData.class);
                 assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
             }
         };
@@ -188,26 +188,33 @@ public final class OperationContractTest extends TestCreationBase {
             }
             Context ctx = TestUtil.mockContext(stub);
             MatriculationDataContract matriculationContract = new MatriculationDataContract();
-            stub.setTxId(MatriculationDataContract.contractName + ":addMatriculationData");
+            stub.setFunction(MatriculationDataContract.contractName + ":addMatriculationData");
+            System.out.println("########################################################################");
+            System.out.println(matriculationContract.addMatriculationData(ctx, input.get(0)));
+            System.out.println("########################################################################");
             matriculationContract.addMatriculationData(ctx, input.get(0));
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
-            stub.setTxId("UC4.OperationData:approveTransaction");
+            stub.setFunction("UC4.OperationData:approveTransaction");
             OperationData operation = GsonWrapper.fromJson(contract.getOperationData(ctx, operationId), OperationData.class);
             OperationDataState expectedState = GsonWrapper.fromJson(compare.get(0), OperationDataState.class);
             assertThat(operation.getState()).isEqualTo(expectedState);
         };
     }
 
-    private String contract(List<String> input) {
+    private String initiator(List<String> input) {
         return input.get(0);
     }
 
-    private String transaction(List<String> input) {
+    private String contract(List<String> input) {
         return input.get(1);
     }
 
+    private String transaction(List<String> input) {
+        return input.get(2);
+    }
+
     private String params(List<String> input) {
-        return GsonWrapper.toJson(input.subList(2, input.size()));
+        return GsonWrapper.toJson(input.subList(3, input.size()));
 
     }
 

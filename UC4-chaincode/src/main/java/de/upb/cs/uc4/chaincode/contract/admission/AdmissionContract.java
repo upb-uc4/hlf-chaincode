@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.Admission;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -11,7 +12,6 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsAddAdmission(ctx, Collections.singletonList(admissionJson));
         } catch (ParameterError e) {
@@ -44,12 +44,12 @@ public class AdmissionContract extends ContractBase {
         newAdmission.resetAdmissionId();
 
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(admissionJson));
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{admissionJson});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(admissionJson));
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{admissionJson});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -66,7 +66,7 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String dropAdmission(final Context ctx, String admissionId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         try {
             cUtil.checkParamsDropAdmission(ctx, Collections.singletonList(admissionId));
         } catch (SerializableError e) {
@@ -75,7 +75,7 @@ public class AdmissionContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(admissionId));
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{admissionId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -87,7 +87,7 @@ public class AdmissionContract extends ContractBase {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(admissionId));
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{admissionId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -103,16 +103,17 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String getAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
-        String transactionName = ctx.getStub().getTxId().split(":")[1];
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, new ArrayList<String>() {{add(enrollmentId);add(courseId);add(moduleId);}});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId, courseId, moduleId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         List<Admission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>() {{add(enrollmentId);add(courseId);add(moduleId);}});
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, courseId, moduleId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }

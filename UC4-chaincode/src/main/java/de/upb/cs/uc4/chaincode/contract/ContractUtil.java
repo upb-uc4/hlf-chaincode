@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract;
 
+import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.*;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
@@ -14,6 +15,7 @@ import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
@@ -108,10 +110,11 @@ abstract public class ContractUtil {
 
 
     public void validateApprovals(
-            final ChaincodeStub stub,
+            final Context ctx,
             String contractName,
             String transactionName,
-            final List<String> args) throws SerializableError {
+            final String[] args) throws SerializableError {
+        ChaincodeStub stub = ctx.getStub();
         String jsonArgs = GsonWrapper.toJson(args);
         ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
         if (requiredApprovals.isEmpty()) {
@@ -131,17 +134,26 @@ abstract public class ContractUtil {
         } catch (Exception e) {
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
+        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
         ApprovalList approvals = operation.getExistingApprovals();
+        approvals.addUsersItem(clientId);
+        approvals.addGroupsItems(clientGroups);
+
         if(operation.getState() != OperationDataState.PENDING || !OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
+    }
+
+    public String getEnrollmentIdFromClientId(String clientId) {
+        return clientId.substring(9).split(",")[0];
     }
 
     public void finishOperation(
             final ChaincodeStub stub,
             String contractName,
             String transactionName,
-            final List<String> args) throws SerializableError {
+            final String[] args) throws SerializableError {
         String jsonArgs = GsonWrapper.toJson(args);
 
         OperationContractUtil oUtil = new OperationContractUtil();

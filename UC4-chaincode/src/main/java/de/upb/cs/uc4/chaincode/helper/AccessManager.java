@@ -19,6 +19,7 @@ public class AccessManager {
     private static OperationContractUtil operationUtil = new OperationContractUtil();
 
     public static final String ADMIN = "Admin";
+    public static final String SYSTEM = "System";
 
     public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) throws MissingTransactionError {
         Type listType = new TypeToken<ArrayList<String>>() {
@@ -107,7 +108,8 @@ public class AccessManager {
         MatriculationData matriculationData = GsonWrapper.fromJson(params.get(0), MatriculationData.class);
         return new ApprovalList()
                 .addUsersItem(matriculationData.getEnrollmentId())
-                .addGroupsItem(ADMIN);
+                .addGroupsItem(ADMIN)
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForUpdateMatriculationData(List<String> params) {
@@ -121,8 +123,11 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForAddEntriesToMatriculationData(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
+        String enrollmentId = params.get(0);
+        return new ApprovalList()
+                .addUsersItem(enrollmentId)
+                .addGroupsItem(ADMIN)
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForAddAdmission(List<String> params) {

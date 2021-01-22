@@ -4,6 +4,7 @@ package de.upb.cs.uc4.chaincode;
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
@@ -45,14 +46,10 @@ public abstract class TestCreationBase {
             }
 
             for (JsonIOTest test : testConfig) {
-                test.setIds(wrapEnrollmentIds(test.getIds()));
+                test.setIds(test.getIds().stream().map(TestUtil::wrapEnrollmentId).collect(Collectors.toList()));
                 tests.add(CreateTest(test));
             }
         }
         return tests;
-    }
-
-    private List<String> wrapEnrollmentIds(List<String> ids) {
-        return ids.stream().map(id -> "x509::CN=" + id + ", OU=admin::CN=rca-org1, OU=UC4, O=UC4, L=Paderborn, ST=NRW, C=DE").collect(Collectors.toList());
     }
 }

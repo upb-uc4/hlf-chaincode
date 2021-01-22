@@ -49,7 +49,7 @@
         "initiatedTimestamp":  "",
         "lastModifiedTimestamp": "",
         "state": "REJECTED",
-        "reason": "A User denied with the following message: The transaction was invalid.",
+        "reason": "The transaction was invalid.",
         "existingApprovals": {
           "users": [],
           "groups": []
