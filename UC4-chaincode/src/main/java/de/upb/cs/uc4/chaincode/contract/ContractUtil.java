@@ -128,19 +128,22 @@ abstract public class ContractUtil {
         } catch (NoSuchAlgorithmException e) {
             throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
-        OperationData operation;
+        ApprovalList approvals;
+        OperationDataState operationState;
         try{
-            operation = oUtil.getState(stub, key, OperationData.class);
+            OperationData operation = oUtil.getState(stub, key, OperationData.class);
+            approvals = operation.getExistingApprovals();
+            operationState = operation.getState();
         } catch (Exception e) {
-            throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
+            approvals = new ApprovalList();
+            operationState = OperationDataState.PENDING;
         }
         String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-        ApprovalList approvals = operation.getExistingApprovals();
         approvals.addUsersItem(clientId);
         approvals.addGroupsItems(clientGroups);
 
-        if(operation.getState() != OperationDataState.PENDING || !OperationContractUtil.covers(requiredApprovals, approvals)){
+        if(operationState != OperationDataState.PENDING || !OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
     }
