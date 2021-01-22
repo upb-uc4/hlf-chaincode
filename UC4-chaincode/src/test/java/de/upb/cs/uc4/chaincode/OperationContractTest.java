@@ -49,8 +49,6 @@ public final class OperationContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(test.getName(), rejectTransactionSuccessTest(setup, input, compare, ids));
             case "rejectTransaction_FAILURE":
                 return DynamicTest.dynamicTest(test.getName(), rejectTransactionFailureTest(setup, input, compare, ids));
-            case "getOperationData_SUCCESS":
-                return DynamicTest.dynamicTest(test.getName(), getOperationDataSuccessTest(setup, input, compare, ids));
             case "finishOperation":
                 return DynamicTest.dynamicTest(test.getName(), finishOperationTest(setup, input, compare, ids));
             default:
@@ -129,7 +127,7 @@ public final class OperationContractTest extends TestCreationBase {
                 assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
             }*/
             Context ctx = TestUtil.mockContext(stub);
-            String rejectResult = contract.rejectTransaction(ctx, input.get(0), input.get(1));
+            String rejectResult = contract.rejectOperation(ctx, input.get(0), input.get(1));
             OperationData compareOperationData = GsonWrapper.fromJson(compare.get(compare.size() - 1), OperationData.class);
             OperationData ledgerOperationData = cUtil.getState(ctx.getStub(), compareOperationData.getOperationId(), OperationData.class);
             assertThat(GsonWrapper.toJson(compareOperationData)).isEqualTo(GsonWrapper.toJson(ledgerOperationData));
@@ -153,23 +151,8 @@ public final class OperationContractTest extends TestCreationBase {
                 assertThat(result).isEqualTo(s);
             }*/
             Context ctx = TestUtil.mockContext(stub);
-            String result = contract.rejectTransaction(ctx, input.get(0), input.get(1));
+            String result = contract.rejectOperation(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
-        };
-    }
-
-    private Executable getOperationDataSuccessTest(
-            JsonIOTestSetup setup,
-            List<String> input,
-            List<String> compare,
-            List<String> ids
-    ) {
-        return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:getOperationData");
-            Context ctx = TestUtil.mockContext(stub);
-            String getResult = contract.getOperationData(ctx, input.get(0));
-            assertThat(getResult).isEqualTo(compare.get(0));
-            assertThat(GsonWrapper.fromJson(getResult, OperationData.class)).isEqualTo(GsonWrapper.fromJson(compare.get(0), OperationData.class));
         };
     }
 

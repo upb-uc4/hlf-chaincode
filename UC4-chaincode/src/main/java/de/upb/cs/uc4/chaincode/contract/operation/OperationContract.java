@@ -84,9 +84,6 @@ public class OperationContract extends ContractBase {
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
-        if (operationData == null) {
-            return GsonWrapper.toJson(cUtil.getNotFoundError());
-        }
 
         String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
@@ -107,7 +104,7 @@ public class OperationContract extends ContractBase {
     }
 
     @Transaction
-    public String rejectTransaction(final Context ctx, final String operationId, final String rejectMessage) {
+    public String rejectOperation(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
@@ -117,18 +114,6 @@ public class OperationContract extends ContractBase {
 
         operationData.state(OperationDataState.REJECTED).reason(cUtil.getUserRejectionMessage(rejectMessage));
         return cUtil.putAndGetStringState(ctx.getStub(), operationId, GsonWrapper.toJson(operationData));
-    }
-
-    @Transaction()
-    public String getOperationData(final Context ctx, final String operationId) {
-
-        OperationData operationData;
-        try {
-            operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
-        } catch (LedgerAccessError e) {
-            return e.getJsonError();
-        }
-        return GsonWrapper.toJson(operationData);
     }
 
     @Transaction()
