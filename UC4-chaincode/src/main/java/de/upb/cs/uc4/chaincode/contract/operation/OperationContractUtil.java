@@ -30,7 +30,7 @@ public class OperationContractUtil extends ContractUtil {
     }
 
     public String getUserRejectionMessage(String message) {
-        return "A User denied with the following message: " + message;
+        return message;
     }
 
     public String getSystemDetailedRejectionMessage(DetailedError error) {
@@ -68,7 +68,7 @@ public class OperationContractUtil extends ContractUtil {
     }
 
     public static String getDraftKey(final String contractName, final String transactionName, final String params) throws NoSuchAlgorithmException {
-        String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params;
+        String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params.replace(" ", "");
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
         return new String(Base64.getUrlEncoder().encode(bytes));
