@@ -92,7 +92,7 @@ public final class OperationContractTest extends TestCreationBase {
             for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
-                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, initiator(input), contract(input), transaction(input), params(input)), OperationData.class);
+                OperationData transactionResult = GsonWrapper.fromJson(contract.initiateOperation(ctx, initiator(input), contract(input), transaction(input), params(input)), OperationData.class);
                 assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
             }
         };
@@ -108,7 +108,7 @@ public final class OperationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:approveTransaction");
             for (String s : compare) {
                 Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
-                String result = contract.approveTransaction(ctx, "", contract(input), transaction(input), params(input));
+                String result = contract.initiateOperation(ctx, "", contract(input), transaction(input), params(input));
                 assertThat(result).isEqualTo(s);
             }
         };
@@ -184,7 +184,7 @@ public final class OperationContractTest extends TestCreationBase {
             String operationJson = "";
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                operationJson = contract.approveTransaction(ctx, "", MatriculationDataContract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
+                operationJson = contract.initiateOperation(ctx, "", MatriculationDataContract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             MatriculationDataContract matriculationContract = new MatriculationDataContract();

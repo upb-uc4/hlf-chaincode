@@ -72,7 +72,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"addUserToGroup", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"addUserToGroup", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String addResult = contract.addUserToGroup(ctx, input.get(0), input.get(1));
@@ -96,7 +96,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"addUserToGroup", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"addUserToGroup", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.addUserToGroup(ctx, input.get(0), input.get(1));
@@ -117,7 +117,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"removeUserFromGroup", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"removeUserFromGroup", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
@@ -144,7 +144,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"removeUserFromGroup", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"removeUserFromGroup", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
@@ -164,7 +164,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"removeUserFromAllGroups", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"removeUserFromAllGroups", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.removeUserFromAllGroups(ctx, input.get(0));
@@ -191,7 +191,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"removeUserFromAllGroups", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"removeUserFromAllGroups", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.removeUserFromAllGroups(ctx, input.get(0));
@@ -213,7 +213,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"getAllGroups", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"getAllGroups", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.getAllGroups(ctx);
@@ -233,7 +233,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"getUsersForGroup", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"getUsersForGroup", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.getUsersForGroup(ctx, input.get(0));
@@ -253,7 +253,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"getUsersForGroup", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"getUsersForGroup", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.getUsersForGroup(ctx, input.get(0));
@@ -272,7 +272,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"getGroupsForUser", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"getGroupsForUser", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String dropResult = contract.getGroupsForUser(ctx, input.get(0));
@@ -292,7 +292,7 @@ public final class GroupContractTest extends TestCreationBase {
             OperationContract approvalContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.approveTransaction(ctx, "", contract.contractName,"getGroupsForUser", GsonWrapper.toJson(input));
+                approvalContract.initiateOperation(ctx, "", contract.contractName,"getGroupsForUser", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.getGroupsForUser(ctx, input.get(0));

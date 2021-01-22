@@ -37,42 +37,23 @@ public class OperationContract extends ContractBase {
      * @return certificate on success, serialized error on failure
      */
     @Transaction()
-    public String approveTransaction(final Context ctx, String initiator, final String contractName, final String transactionName, final String params) {
-        ArrayList<InvalidParameter> invalidParameters = cUtil.getErrorForInput(contractName, transactionName);
-        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-
-        initiator = initiator.isEmpty() ? clientId : initiator;
-
-        if(!invalidParameters.isEmpty()){
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParameters));
-        }
+    public String initiateOperation(final Context ctx, String initiator, final String contractName, final String transactionName, final String params) {
         try {
             ValidationManager.validateParams(ctx, contractName, transactionName, params);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        String key;
+        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+
+        initiator = initiator.isEmpty() ? clientId : initiator;
+
+        OperationData operationData;
         try {
-            key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
+            operationData = cUtil.getOrInitializeOperationData(ctx, initiator, contractName, transactionName, params);
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
-        }
-        OperationData operationData;
-        DateTimeFormatter fm = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
-        String timeStamp = fm.format(ctx.getStub().getTxTimestamp().truncatedTo(SECONDS));
-        try{
-            operationData = cUtil.getState(ctx.getStub(), key, OperationData.class);
-        } catch (LedgerAccessError ledgerAccessError) {
-            operationData = new OperationData()
-                    .initiator(initiator)
-                    .operationId(key)
-                    .initiatedTimestamp(timeStamp)
-                    .transactionInfo(new TransactionInfo().contractName(contractName).transactionName(transactionName).parameters(params))
-                    .state(OperationDataState.PENDING)
-                    .reason("");
-
         }
 
         ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
@@ -83,10 +64,46 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
-        operationData.lastModifiedTimestamp(timeStamp)
+        operationData.lastModifiedTimestamp(cUtil.getTimestamp(ctx.getStub()))
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
-        return cUtil.putAndGetStringState(ctx.getStub(), key, GsonWrapper.toJson(operationData));
+        return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
+    }
+
+    /**
+     * Submits a draft to the ledger.
+     *
+     * @param ctx transaction context providing access to ChaincodeStub etc.
+     * @return certificate on success, serialized error on failure
+     */
+    @Transaction()
+    public String approveOperation(final Context ctx, String operationId) {
+        OperationData operationData;
+        try {
+            operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
+        } catch (LedgerAccessError e) {
+            return e.getJsonError();
+        }
+        if (operationData == null) {
+            return GsonWrapper.toJson(cUtil.getNotFoundError());
+        }
+
+        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+
+        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
+        ApprovalList requiredApprovals;
+        try {
+            TransactionInfo info = operationData.getTransactionInfo();
+            requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
+        } catch (MissingTransactionError e) {
+            return e.getJsonError();
+        }
+        ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
+        operationData.lastModifiedTimestamp(cUtil.getTimestamp(ctx.getStub()))
+                .existingApprovals(existingApprovals)
+                .missingApprovals(missingApprovals);
+        return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
     @Transaction

@@ -3,8 +3,11 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.OperationData;
+import de.upb.cs.uc4.chaincode.model.OperationDataState;
+import de.upb.cs.uc4.chaincode.model.TransactionInfo;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -31,14 +34,6 @@ public class OperationContractUtil extends ContractUtil {
 
     public String getUserRejectionMessage(String message) {
         return message;
-    }
-
-    public String getSystemDetailedRejectionMessage(DetailedError error) {
-        return "The Transaction failed with an error of type: " + error.getType();
-    }
-
-    public String getSystemGenericRejectionMessage(GenericError error) {
-        return "The Transaction failed with an error of type: " + error.getType();
     }
 
     public List<OperationData> getOperations(ChaincodeStub stub, final String existingEnrollmentId, final String missingEnrollmentId, final String initiatorEnrollmentId, String state) {
@@ -74,17 +69,6 @@ public class OperationContractUtil extends ContractUtil {
         return new String(Base64.getUrlEncoder().encode(bytes));
     }
 
-    public ArrayList<InvalidParameter> getErrorForInput(String contractName, String transactionName) {
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        if (valueUnset(contractName)) {
-            invalidParams.add(getEmptyInvalidParameter("contractName"));
-        }
-        if (valueUnset(transactionName)) {
-            invalidParams.add(getEmptyInvalidParameter("transactionName"));
-        }
-        return invalidParams;
-    }
-
     public DetailedError getContractUnprocessableError(String contractName) {
         return getUnprocessableEntityError(new InvalidParameter()
                 .name("contractName")
@@ -95,5 +79,32 @@ public class OperationContractUtil extends ContractUtil {
         return getUnprocessableEntityError(new InvalidParameter()
                 .name("transactionName")
                 .reason("The given transaction \"" + transactionName + "\" does not exist"));
+    }
+
+    public DetailedError getEmptyContractNameError() {
+        return getUnprocessableEntityError(getEmptyInvalidParameter("contractName"));
+    }
+
+    public DetailedError getEmptyTransactionNameError() {
+        return getUnprocessableEntityError(getEmptyInvalidParameter("transactionName"));
+    }
+
+    public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws NoSuchAlgorithmException {
+        String key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
+        OperationData operationData;
+        String timeStamp = getTimestamp(ctx.getStub());
+        try{
+            operationData = getState(ctx.getStub(), key, OperationData.class);
+        } catch (LedgerAccessError ledgerAccessError) {
+            operationData = new OperationData()
+                    .initiator(initiator)
+                    .operationId(key)
+                    .initiatedTimestamp(timeStamp)
+                    .transactionInfo(new TransactionInfo().contractName(contractName).transactionName(transactionName).parameters(params))
+                    .state(OperationDataState.PENDING)
+                    .reason("");
+
+        }
+        return operationData;
     }
 }
