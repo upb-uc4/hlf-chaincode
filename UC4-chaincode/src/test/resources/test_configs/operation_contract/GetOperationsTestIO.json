@@ -41,7 +41,7 @@
       "",
       "",
       "",
-      "FINISHED"
+      ["FINISHED"]
     ],
     "compare": [
       [
@@ -147,19 +147,19 @@
       "",
       "",
       "",
-      "FINISHED",
+      ["FINISHED"],
       "",
        "User2",
       "",
       "",
       "",
-        "FINISHED",
+      ["FINISHED"],
       "",
       "",
       "",
       "",
       "",
-      "FINISHED",
+      ["FINISHED"],
       "",
       "User3",
       "",
@@ -177,25 +177,25 @@
       "",
       "",
       "",
-      "PENDING",
+      ["PENDING"],
       "",
       "User",
       "",
       "",
       "",
-      "FINISHED",
+      ["FINISHED"],
       "",
       "User2",
       "",
       "",
       "",
-      "HUND",
+      ["HUND"],
       "",
       "Use",
       "",
       "",
       "",
-      "KATZE"
+      ["KATZE"]
     ],
     "compare": [
       [
@@ -346,7 +346,7 @@
       "",
       "",
       "",
-      "PENDING",
+      ["PENDING"],
       "",
       "",
       "User4",
@@ -423,7 +423,7 @@
       "User1",
       "",
       "",
-      "FINISHED"
+      ["FINISHED"]
     ],
     "compare": [
       [

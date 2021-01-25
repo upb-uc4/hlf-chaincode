@@ -16,6 +16,7 @@ import org.junit.jupiter.api.function.Executable;
 import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,10 +68,8 @@ public final class OperationContractTest extends TestCreationBase {
 
             for (int i = 0; i < compare.size(); i++) {
                 String operations = contract.getOperations(ctx, input.get(i*6), input.get(i*6+1), input.get(i*6+2), input.get(i*6+3), input.get(i*6+4), input.get(i*6+5));
-                Type listType = new TypeToken<ArrayList<OperationData>>() {
-
-                }.getType();
-                ArrayList<OperationData> operationDataList = GsonWrapper.fromJson(operations, listType);
+                Type listType = new TypeToken<ArrayList<OperationData>>() {}.getType();
+                List<OperationData> operationDataList = GsonWrapper.fromJson(operations, listType);
                 List<String> operationIds = operationDataList.stream().map(OperationData::getOperationId).collect(Collectors.toList());
                 assertThat(GsonWrapper.toJson(operationIds)).isEqualTo(compare.get(i));
             }
@@ -180,7 +179,7 @@ public final class OperationContractTest extends TestCreationBase {
             Type listType = new TypeToken<ArrayList<OperationData>>() {
 
             }.getType();
-            List<OperationData> operations = GsonWrapper.fromJson(contract.getOperations(ctx, operationId, "", "", "", "", ""), listType);
+            List<OperationData> operations = GsonWrapper.fromJson(contract.getOperations(ctx, GsonWrapper.toJson(Collections.singletonList(operationId)), "", "", "", "", ""), listType);
             OperationData operation = operations.get(0);
             OperationDataState expectedState = GsonWrapper.fromJson(compare.get(0), OperationDataState.class);
             assertThat(operation.getState()).isEqualTo(expectedState);
