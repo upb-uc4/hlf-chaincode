@@ -1,27 +1,24 @@
 package de.upb.cs.uc4.chaincode.contract.operation;
 
+import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
-import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
+import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Contract(
         name = "UC4.OperationData"
@@ -45,9 +42,7 @@ public class OperationContract extends ContractBase {
         }
 
         String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-
-        initiator = initiator.isEmpty() ? clientId : initiator;
+        initiator = cUtil.valueUnset(initiator) ? clientId : initiator;
 
         OperationData operationData;
         try {
@@ -56,17 +51,14 @@ public class OperationContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
 
-        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
-        ApprovalList requiredApprovals;
+        // approve
         try {
-            requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
-        } catch (MissingTransactionError e) {
-            return e.getJsonError();
+            operationData = cUtil.approveOperation(ctx, operationData);
+        } catch (MissingTransactionError missingTransactionError) {
+            return missingTransactionError.getJsonError();
         }
-        ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
-        operationData.lastModifiedTimestamp(cUtil.getTimestamp(ctx.getStub()))
-                .existingApprovals(existingApprovals)
-                .missingApprovals(missingApprovals);
+
+        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
@@ -85,21 +77,14 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
 
-        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-
-        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
-        ApprovalList requiredApprovals;
+        // approve
         try {
-            TransactionInfo info = operationData.getTransactionInfo();
-            requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
-        } catch (MissingTransactionError e) {
-            return e.getJsonError();
+            operationData = cUtil.approveOperation(ctx, operationData);
+        } catch (MissingTransactionError missingTransactionError) {
+            return missingTransactionError.getJsonError();
         }
-        ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
-        operationData.lastModifiedTimestamp(cUtil.getTimestamp(ctx.getStub()))
-                .existingApprovals(existingApprovals)
-                .missingApprovals(missingApprovals);
+
+        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
@@ -112,27 +97,49 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
 
+        // reject
         operationData.state(OperationDataState.REJECTED).reason(cUtil.getUserRejectionMessage(rejectMessage));
+
+        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationId, GsonWrapper.toJson(operationData));
     }
 
     @Transaction()
     public String getOperations(
             final Context ctx,
-            final String operationId,
+            final String operationIds,
             final String existingEnrollmentId,
             final String missingEnrollmentId,
             final String initiatorEnrollmentId,
             final String involvedEnrollmentId,
             final String states) {
-                List<OperationData> operations = cUtil.getOperations(
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+
+        List<String> operationIdList = new ArrayList<>();
+        if(!cUtil.valueUnset(operationIds)) {
+            try {
+                operationIdList = GsonWrapper.fromJson(operationIds, listType);
+            } catch (Exception e) {
+                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("operationIds")))).getJsonError();
+            }
+        }
+        List<String> stateList = new ArrayList<>();
+        if(!cUtil.valueUnset(states)) {
+            try {
+                stateList = GsonWrapper.fromJson(states, listType);
+            } catch (Exception e) {
+                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("states")))).getJsonError();
+            }
+        }
+
+        List<OperationData> operations = cUtil.getOperations(
                         ctx.getStub(),
-                        operationId,
+                        operationIdList,
                         existingEnrollmentId,
                         missingEnrollmentId,
                         initiatorEnrollmentId,
                         involvedEnrollmentId,
-                        states);
+                        stateList);
         return GsonWrapper.toJson(operations);
     }
 }
