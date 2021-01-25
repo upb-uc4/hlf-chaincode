@@ -5,23 +5,15 @@ import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
-import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 @Contract(
         name = "UC4.OperationData"
@@ -45,9 +37,7 @@ public class OperationContract extends ContractBase {
         }
 
         String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-
-        initiator = initiator.isEmpty() ? clientId : initiator;
+        initiator = cUtil.valueUnset(initiator) ? clientId : initiator;
 
         OperationData operationData;
         try {
