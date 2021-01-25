@@ -66,12 +66,12 @@ public final class OperationContractTest extends TestCreationBase {
             Context ctx = TestUtil.mockContext(stub);
 
             for (int i = 0; i < compare.size(); i++) {
-                String operations = contract.getOperations(ctx, input.get(i*4), input.get(i*4+1), input.get(i*4+2), input.get(i*4+3));
+                String operations = contract.getOperations(ctx, input.get(i*6), input.get(i*6+1), input.get(i*6+2), input.get(i*6+3), input.get(i*6+4), input.get(i*6+5));
                 Type listType = new TypeToken<ArrayList<OperationData>>() {
 
                 }.getType();
                 ArrayList<OperationData> operationDataList = GsonWrapper.fromJson(operations, listType);
-                List<String> operationIds = operationDataList.stream().map(operationData -> operationData.getOperationId()).collect(Collectors.toList());
+                List<String> operationIds = operationDataList.stream().map(OperationData::getOperationId).collect(Collectors.toList());
                 assertThat(GsonWrapper.toJson(operationIds)).isEqualTo(compare.get(i));
             }
 
@@ -177,7 +177,11 @@ public final class OperationContractTest extends TestCreationBase {
             System.out.println("########################################################################");
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
             stub.setFunction("UC4.OperationData:approveTransaction");
-            OperationData operation = GsonWrapper.fromJson(contract.getOperationData(ctx, operationId), OperationData.class);
+            Type listType = new TypeToken<ArrayList<OperationData>>() {
+
+            }.getType();
+            List<OperationData> operations = GsonWrapper.fromJson(contract.getOperations(ctx, operationId, "", "", "", "", ""), listType);
+            OperationData operation = operations.get(0);
             OperationDataState expectedState = GsonWrapper.fromJson(compare.get(0), OperationDataState.class);
             assertThat(operation.getState()).isEqualTo(expectedState);
         };

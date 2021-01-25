@@ -149,7 +149,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
                 List<String> params = args.size() > 3 ? args.subList(3, args.size()) : new ArrayList<>();
                 String result;
                 try {
-                    result = contract.getOperationData(ctx, OperationContractUtil.getDraftKey(contractName, transName, TestUtil.jsonListParams(params)));
+                    result = contract.getOperations(ctx, OperationContractUtil.getDraftKey(contractName, transName, TestUtil.jsonListParams(params)), "","","","","");
                 } catch (Exception e) {
                     return ResponseUtils.newErrorResponse();
                 }
