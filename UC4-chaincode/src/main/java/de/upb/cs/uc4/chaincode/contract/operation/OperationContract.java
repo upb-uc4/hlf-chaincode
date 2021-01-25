@@ -56,17 +56,14 @@ public class OperationContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
 
-        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
-        ApprovalList requiredApprovals;
+        // approve
         try {
-            requiredApprovals = AccessManager.getRequiredApprovals(contractName, transactionName, params);
-        } catch (MissingTransactionError e) {
-            return e.getJsonError();
+            operationData = cUtil.approveOperation(ctx, operationData);
+        } catch (MissingTransactionError missingTransactionError) {
+            return missingTransactionError.getJsonError();
         }
-        ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
-        operationData.lastModifiedTimestamp(cUtil.getTimestamp(ctx.getStub()))
-                .existingApprovals(existingApprovals)
-                .missingApprovals(missingApprovals);
+
+        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
@@ -85,21 +82,14 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
 
-        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-
-        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
-        ApprovalList requiredApprovals;
+        // approve
         try {
-            TransactionInfo info = operationData.getTransactionInfo();
-            requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
-        } catch (MissingTransactionError e) {
-            return e.getJsonError();
+            operationData = cUtil.approveOperation(ctx, operationData);
+        } catch (MissingTransactionError missingTransactionError) {
+            return missingTransactionError.getJsonError();
         }
-        ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
-        operationData.lastModifiedTimestamp(cUtil.getTimestamp(ctx.getStub()))
-                .existingApprovals(existingApprovals)
-                .missingApprovals(missingApprovals);
+
+        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
@@ -112,7 +102,10 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
 
+        // reject
         operationData.state(OperationDataState.REJECTED).reason(cUtil.getUserRejectionMessage(rejectMessage));
+
+        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationId, GsonWrapper.toJson(operationData));
     }
 

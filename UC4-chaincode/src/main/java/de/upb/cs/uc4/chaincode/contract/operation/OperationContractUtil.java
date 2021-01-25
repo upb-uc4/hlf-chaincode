@@ -3,6 +3,8 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
+import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.OperationData;
@@ -34,6 +36,22 @@ public class OperationContractUtil extends ContractUtil {
 
     public String getUserRejectionMessage(String message) {
         return message;
+    }
+
+    public OperationData approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError {
+        String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+
+        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
+        ApprovalList requiredApprovals;
+
+        TransactionInfo info = operationData.getTransactionInfo();
+        requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
+
+        ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
+        return operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))
+                .existingApprovals(existingApprovals)
+                .missingApprovals(missingApprovals);
     }
 
     public List<OperationData> getOperations(
