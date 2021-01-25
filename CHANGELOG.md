@@ -1,3 +1,11 @@
+# [v0.16.4](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.3...v0.16.4) (2021-01-25)
+
+## Refactor
+- refactor approveTransaction
+- split approveTransaction into initiateOperation and approveOperation
+- rename rejectTransaction to rejectOperation
+- add operationIds, involvedEnrollmentId, and states filters to getOperations
+
 # [v0.16.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.2...v0.16.3) (2021-01-20)
 
 ## Feature
