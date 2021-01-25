@@ -192,6 +192,7 @@ public final class OperationContractTest extends TestCreationBase {
             System.out.println("########################################################################");
             System.out.println(matriculationContract.addMatriculationData(ctx, input.get(0)));
             System.out.println("########################################################################");
+            matriculationContract.addMatriculationData(ctx, input.get(0));
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
             stub.setFunction("UC4.OperationData:approveTransaction");
             OperationData operation = GsonWrapper.fromJson(contract.getOperationData(ctx, operationId), OperationData.class);
