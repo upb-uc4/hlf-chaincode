@@ -69,6 +69,11 @@ abstract public class ContractUtil {
                 .title("There is no " + thing + " for the given " + identifier);
     }
 
+    public GenericError getPendingOperationError(){
+        return new GenericError()
+                .type("HLPendingOperation")
+                .title("The operation is not PENDING anymore");
+    }
     public GenericError getUnprocessableLedgerStateError() {
         return new GenericError()
                 .type("HLUnprocessableLedgerState")

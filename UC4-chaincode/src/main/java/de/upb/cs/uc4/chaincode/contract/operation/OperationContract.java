@@ -6,11 +6,13 @@ import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -45,12 +47,17 @@ public class OperationContract extends ContractBase {
         initiator = cUtil.valueUnset(initiator) ? clientId : initiator;
 
         OperationData operationData;
+        OperationDataState operationState;
         try {
             operationData = cUtil.getOrInitializeOperationData(ctx, initiator, contractName, transactionName, params);
+            operationState = operationData.getState();
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
-
+        //check whether transaction still PENDING
+        if(operationState != OperationDataState.PENDING){
+            return GsonWrapper.toJson(cUtil.getPendingOperationError());
+        }
         // approve
         try {
             operationData = cUtil.approveOperation(ctx, operationData);
@@ -71,12 +78,17 @@ public class OperationContract extends ContractBase {
     @Transaction()
     public String approveOperation(final Context ctx, String operationId) {
         OperationData operationData;
+        OperationDataState operationState;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
+            operationState = operationData.getState();
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
-
+        //check whether transaction still PENDING
+        if(operationState != OperationDataState.PENDING){
+            return GsonWrapper.toJson(cUtil.getPendingOperationError());
+        }
         // approve
         try {
             operationData = cUtil.approveOperation(ctx, operationData);
@@ -91,10 +103,16 @@ public class OperationContract extends ContractBase {
     @Transaction
     public String rejectOperation(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
+        OperationDataState operationState;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
+            operationState = operationData.getState();
         } catch (LedgerAccessError e) {
             return e.getJsonError();
+        }
+        //check whether transaction still PENDING
+        if(operationState != OperationDataState.PENDING){
+            return GsonWrapper.toJson(cUtil.getPendingOperationError());
         }
 
         // reject

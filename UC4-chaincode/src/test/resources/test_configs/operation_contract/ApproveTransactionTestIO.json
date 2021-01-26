@@ -557,5 +557,82 @@
         "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
       }
     ]
+  },
+  {
+    "name": "approveNotPendingExistingTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+        {
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User2",
+              "User3"
+            ],
+            "groups": [
+              "some-group"
+            ]
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": []
+          }
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      "User1",
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLPendingOperation",
+        "title": "The operation is not PENDING anymore"
+      }
+    ]
   }
 ]
