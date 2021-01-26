@@ -63,7 +63,7 @@ public final class OperationContractTest extends TestCreationBase {
             List<String> compare
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:getOperations");
+            MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameGetOperations);
             Context ctx = TestUtil.mockContext(stub);
 
             for (int i = 0; i < compare.size(); i++) {
@@ -85,7 +85,7 @@ public final class OperationContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:approveTransaction");
+            MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
             for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
@@ -102,7 +102,7 @@ public final class OperationContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:approveTransaction");
+            MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
             for (String s : compare) {
                 Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
                 String result = contract.initiateOperation(ctx, "", contract(input), transaction(input), params(input));
@@ -118,7 +118,7 @@ public final class OperationContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:rejectTransaction");
+            MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameRejectOperation);
             Context ctx = TestUtil.mockContext(stub, ids.get(0));
             String rejectResult = contract.rejectOperation(ctx, input.get(0), input.get(1));
             OperationData compareOperationData = GsonWrapper.fromJson(compare.get(compare.size() - 1), OperationData.class);
@@ -137,12 +137,7 @@ public final class OperationContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:rejectTransaction");
-            /*for (String s : compare) {
-                Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
-                String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
-                assertThat(result).isEqualTo(s);
-            }*/
+            MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameRejectOperation);
             Context ctx = TestUtil.mockContext(stub, ids.get(0));
             String result = contract.rejectOperation(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
@@ -156,7 +151,7 @@ public final class OperationContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:approveTransaction");
+            MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
             String operationJson = "";
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);

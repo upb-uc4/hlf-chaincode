@@ -32,15 +32,15 @@ public class AccessManager {
         switch (contractName) {
             case MatriculationDataContract.contractName:
                 switch (transactionName) {
-                    case "addMatriculationData":
+                    case MatriculationDataContract.transactionNameAddMatriculationData:
                         return getRequiredApprovalsForAddMatriculationData(ctx, paramList);
-                    case "updateMatriculationData":
+                    case MatriculationDataContract.transactionNameUpdateMatriculationData:
                         return getRequiredApprovalsForUpdateMatriculationData(ctx, paramList);
-                    case "getMatriculationData":
+                    case MatriculationDataContract.transactionNameGetMatriculationData:
                         return getRequiredApprovalsForGetMatriculationData(ctx, paramList);
-                    case "addEntriesToMatriculationData":
+                    case MatriculationDataContract.transactionNameAddEntriesToMatriculationData:
                         return getRequiredApprovalsForAddEntriesToMatriculationData(ctx, paramList);
-                    case "getVersion":
+                    case MatriculationDataContract.transactionNameGetVersion:
                         return new ApprovalList();
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
@@ -49,13 +49,13 @@ public class AccessManager {
                 }
             case AdmissionContract.contractName:
                 switch (transactionName) {
-                    case "addAdmission":
+                    case AdmissionContract.transactionNameAddAdmission:
                         return getRequiredApprovalsForAddAdmission(ctx, paramList);
-                    case "dropAdmission":
+                    case AdmissionContract.transactionNameDropAdmission:
                         return getRequiredApprovalsForDropAdmission(ctx, paramList);
-                    case "getAdmissions":
+                    case AdmissionContract.transactionNameGetAdmissions:
                         return getRequiredApprovalsForGetAdmissions(ctx, paramList);
-                    case "getVersion":
+                    case AdmissionContract.transactionNameGetVersion:
                         return new ApprovalList();
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
@@ -64,19 +64,19 @@ public class AccessManager {
                 }
             case GroupContract.contractName:
                 switch (transactionName) {
-                    case "addUserToGroup":
+                    case GroupContract.transactionNameAddUserToGroup:
                         return getRequiredApprovalsForAddUserToGroup(ctx, paramList);
-                    case "removeUserFromGroup":
+                    case GroupContract.transactionNameRemoveUserFromGroup:
                         return getRequiredApprovalsForRemoveUserFromGroup(ctx, paramList);
-                    case "removeUserFromAllGroups":
+                    case GroupContract.transactionNameRemoveUserFromAllGroups:
                         return getRequiredApprovalsForRemoveUserFromAllGroups(ctx, paramList);
-                    case "getAllGroups":
+                    case GroupContract.transactionNameGetAllGroups:
                         return getRequiredApprovalsForGetAllGroups(ctx, paramList);
-                    case "getUsersForGroup":
+                    case GroupContract.transactionNameGetUsersForGroup:
                         return getRequiredApprovalsForGetUsersForGroup(ctx, paramList);
-                    case "getGroupsForUser":
+                    case GroupContract.transactionNameGetGroupsForUser:
                         return getRequiredApprovalsForGetGroupsForUser(ctx, paramList);
-                    case "getVersion":
+                    case GroupContract.transactionNameGetVersion:
                         return new ApprovalList();
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
@@ -85,13 +85,13 @@ public class AccessManager {
                 }
             case CertificateContract.contractName:
                 switch (transactionName) {
-                    case "addCertificate":
+                    case CertificateContract.transactionNameAddCertificate:
                         return getRequiredApprovalsForAddCertificate(ctx, paramList);
-                    case "updateCertificate":
+                    case CertificateContract.transactionNameUpdateCertificate:
                         return getRequiredApprovalsForUpdateCertificate(ctx, paramList);
-                    case "getCertificate":
+                    case CertificateContract.transactionNameGetCertificate:
                         return getRequiredApprovalsForGetCertificate(ctx, paramList);
-                    case "getVersion":
+                    case CertificateContract.transactionNameGetVersion:
                         return new ApprovalList();
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
@@ -100,13 +100,13 @@ public class AccessManager {
                 }
             case ExaminationRegulationContract.contractName:
                 switch (transactionName) {
-                    case "addExaminationRegulation":
+                    case ExaminationRegulationContract.transactionNameAddExaminationRegulation:
                         return getRequiredApprovalsForAddExaminationRegulation(ctx, paramList);
-                    case "getExaminationRegulations":
+                    case ExaminationRegulationContract.transactionNameGetExaminationRegulations:
                         return getRequiredApprovalsForGetExaminationRegulations(ctx, paramList);
-                    case "closeExaminationRegulation":
+                    case ExaminationRegulationContract.transactionNameCloseExaminationRegulation:
                         return getRequiredApprovalsForCloseExaminationRegulation(ctx, paramList);
-                    case "getVersion":
+                    case ExaminationRegulationContract.transactionNameGetVersion:
                         return new ApprovalList();
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));

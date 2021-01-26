@@ -25,6 +25,9 @@ public class ExaminationRegulationContract extends ContractBase {
 
     private final ExaminationRegulationContractUtil cUtil = new ExaminationRegulationContractUtil();
     public final static String contractName = "UC4.ExaminationRegulation";
+    public final static String transactionNameAddExaminationRegulation = "addExaminationRegulation";
+    public final static String transactionNameGetExaminationRegulations = "getExaminationRegulations";
+    public final static String transactionNameCloseExaminationRegulation = "closeExaminationRegulation";
 
     /**
      * Adds an examination regulation to the ledger.

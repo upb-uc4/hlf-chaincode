@@ -48,11 +48,11 @@ public final class CertificateContractTest extends TestCreationBase {
             case "addCertificate_SUCCESS":
                 return DynamicTest.dynamicTest(testName, addCertificateSuccessTest(setup, input, compare, ids));
             case "addCertificate_FAILURE":
-                return DynamicTest.dynamicTest(testName, addCertificateFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addCertificateFailureTest(setup, input, compare, ids));
             case "updateCertificate_SUCCESS":
                 return DynamicTest.dynamicTest(testName, updateCertificateSuccessTest(setup, input, compare, ids));
             case "updateCertificate_FAILURE":
-                return DynamicTest.dynamicTest(testName, updateCertificateFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, updateCertificateFailureTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -65,9 +65,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:getCertificate");
-            TestUtil.approveOperation(stub, CertificateContract.contractName, "getCertificate", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(CertificateContract.contractName, CertificateContract.transactionNameGetCertificate, setup, input, ids);
 
             String certificate = contract.getCertificate(ctx, input.get(0));
             assertThat(certificate).isEqualTo(compare.get(0));
@@ -81,9 +79,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:addCertificate");
-            TestUtil.approveOperation(stub, CertificateContract.contractName, "addCertificate", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(CertificateContract.contractName, CertificateContract.transactionNameAddCertificate, setup, input, ids);
 
             assertThat(contract.addCertificate(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
@@ -95,11 +91,11 @@ public final class CertificateContractTest extends TestCreationBase {
     private Executable addCertificateFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:addCertificate");
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(CertificateContract.contractName, CertificateContract.transactionNameAddCertificate, setup, input, ids);
 
             String result = contract.addCertificate(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
@@ -113,9 +109,7 @@ public final class CertificateContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:updateCertificate");
-            TestUtil.approveOperation(stub, CertificateContract.contractName, "updateCertificate", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(CertificateContract.contractName, CertificateContract.transactionNameUpdateCertificate, setup, input, ids);
 
             assertThat(contract.updateCertificate(ctx, input.get(0), input.get(1)))
                     .isEqualTo(compare.get(0));
@@ -128,11 +122,11 @@ public final class CertificateContractTest extends TestCreationBase {
     private Executable updateCertificateFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Certificate:updateCertificate");
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(CertificateContract.contractName, CertificateContract.transactionNameUpdateCertificate, setup, input, ids);
 
             String result = contract.updateCertificate(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
