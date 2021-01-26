@@ -129,13 +129,11 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForUpdateMatriculationData(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForGetMatriculationData(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
@@ -164,7 +162,6 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForGetAdmissions(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
@@ -200,37 +197,31 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForAddCertificate(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForUpdateCertificate(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForGetCertificate(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForAddExaminationRegulation(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForGetExaminationRegulations(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForCloseExaminationRegulation(Context ctx, List<String> params) {
-        // TODO fill with required approvals
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
