@@ -121,7 +121,7 @@ abstract public class ContractUtil {
             final String[] args) throws SerializableError {
         ChaincodeStub stub = ctx.getStub();
         String jsonArgs = GsonWrapper.toJson(args);
-        ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
+        ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(ctx, contractName, transactionName, jsonArgs);
         if (requiredApprovals.isEmpty()) {
             return;
         }
