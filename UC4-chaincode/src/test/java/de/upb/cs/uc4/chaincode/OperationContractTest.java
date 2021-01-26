@@ -119,13 +119,7 @@ public final class OperationContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.OperationData:rejectTransaction");
-            /*for (int i=0; i< ids.size(); i++) {
-                Context ctx = TestUtil.mockContext(stub, ids.get(i));
-                OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
-                OperationData transactionResult = GsonWrapper.fromJson(contract.approveTransaction(ctx, contract(input), transaction(input), params(input)), OperationData.class);
-                assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
-            }*/
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.mockContext(stub, ids.get(0));
             String rejectResult = contract.rejectOperation(ctx, input.get(0), input.get(1));
             OperationData compareOperationData = GsonWrapper.fromJson(compare.get(compare.size() - 1), OperationData.class);
             OperationData ledgerOperationData = cUtil.getState(ctx.getStub(), compareOperationData.getOperationId(), OperationData.class);
