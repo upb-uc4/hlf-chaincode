@@ -2,7 +2,19 @@
   {
     "name": "updateCertificateData",
     "type": "updateCertificate_SUCCESS",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "certificateContract": [
         "0000001",
         "legit certificate"

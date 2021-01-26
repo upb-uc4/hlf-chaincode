@@ -2,7 +2,19 @@
   {
     "name": "addNewExaminationRegulation",
     "type": "addExaminationRegulation_SUCCESS",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Philosophy",
         {

@@ -2,7 +2,19 @@
   {
     "name": "queryExistingMatriculationData",
     "type": "getMatriculationData",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "matriculationDataContract": [
         "0000001",
         {
