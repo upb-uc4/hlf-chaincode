@@ -108,7 +108,6 @@ abstract public class ContractUtil {
     }
 
     public GenericError getParamNumberError() {
-        // TODO add this error to operation api (approveTransaction)
         return new GenericError()
                 .type("HLParameterNumberError")
                 .title("The given number of parameters does not match the required number of parameters for the specified transaction");
@@ -128,24 +127,28 @@ abstract public class ContractUtil {
         }
 
         OperationContractUtil oUtil = new OperationContractUtil();
-        ApprovalList approvals;
         String key;
         try {
             key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
             throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
+        ApprovalList approvals;
+        OperationDataState operationState;
         try{
-            approvals = oUtil.getState(stub, key, OperationData.class).getExistingApprovals();
+            OperationData operation = oUtil.getState(stub, key, OperationData.class);
+            approvals = operation.getExistingApprovals();
+            operationState = operation.getState();
         } catch (Exception e) {
             approvals = new ApprovalList();
+            operationState = OperationDataState.PENDING;
         }
         String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
         approvals.addUsersItem(clientId);
         approvals.addGroupsItems(clientGroups);
 
-        if(!OperationContractUtil.covers(requiredApprovals, approvals)){
+        if(operationState != OperationDataState.PENDING || !OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
     }
