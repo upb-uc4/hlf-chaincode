@@ -54,8 +54,8 @@ public class OperationContract extends ContractBase {
         // approve
         try {
             operationData = cUtil.approveOperation(ctx, operationData);
-        } catch (MissingTransactionError missingTransactionError) {
-            return missingTransactionError.getJsonError();
+        } catch (MissingTransactionError e) {
+            return e.getJsonError();
         }
 
         // store
@@ -93,12 +93,15 @@ public class OperationContract extends ContractBase {
         OperationData operationData;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
-        } catch (LedgerAccessError e) {
+            if(!cUtil.mayParticipateInOperation(ctx, operationData)) {
+                return GsonWrapper.toJson(cUtil.getRejectionDeniedError());
+            }
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
-
+        // TODO check if operation is pending
         // reject
-        operationData.state(OperationDataState.REJECTED).reason(cUtil.getUserRejectionMessage(rejectMessage));
+        operationData.state(OperationDataState.REJECTED).reason(rejectMessage);
 
         // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationId, GsonWrapper.toJson(operationData));
