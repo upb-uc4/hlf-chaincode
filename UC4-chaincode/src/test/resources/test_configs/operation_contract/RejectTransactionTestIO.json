@@ -188,7 +188,7 @@
     "name": "rejectNonParticipatingUserTransaction",
     "type": "rejectTransaction_FAILURE",
     "ids": [
-      "User1"
+      "User2"
     ],
     "setup": {
       "examinationRegulationContract": [
