@@ -49,6 +49,8 @@ public class ValidationManager {
                         break;
                     case "getVersion":
                         break;
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -66,6 +68,8 @@ public class ValidationManager {
                         break;
                     case "getVersion":
                         break;
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -92,6 +96,8 @@ public class ValidationManager {
                         break;
                     case "getVersion":
                         break;
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
                    default:
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -109,6 +115,8 @@ public class ValidationManager {
                         break;
                     case "getVersion":
                         break;
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
@@ -126,10 +134,14 @@ public class ValidationManager {
                         break;
                     case "getVersion":
                         break;
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
+            case "":
+                throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyContractNameError()));
             default:
                 throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getContractUnprocessableError(contractName)));
         }

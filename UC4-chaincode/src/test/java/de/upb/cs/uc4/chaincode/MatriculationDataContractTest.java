@@ -84,7 +84,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             OperationContract operationContract = new OperationContract();
             for (String id : ids.subList(1, ids.size())) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                operationContract.approveTransaction(ctx, id, contract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
+                operationContract.initiateOperation(ctx, id, contract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
 
             }
             // utilize one id here to test implicit approval by transaction execution
@@ -112,7 +112,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             OperationContract operationContract = new OperationContract();
             for (String id: ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                operationContract.approveTransaction(ctx, "", contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
+                operationContract.initiateOperation(ctx, "", contract.contractName,"addMatriculationData", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
 
@@ -166,7 +166,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             OperationContract operationContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                operationContract.approveTransaction(ctx, id, contract.contractName, "addEntriesToMatriculationData", GsonWrapper.toJson(input));
+                operationContract.initiateOperation(ctx, id, contract.contractName, "addEntriesToMatriculationData", GsonWrapper.toJson(input));
 
             }
 

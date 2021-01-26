@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode.mock;
 
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.protos.peer.ChaincodeEventPackage;
@@ -149,7 +150,8 @@ public final class MockChaincodeStub implements ChaincodeStub {
                 List<String> params = args.size() > 3 ? args.subList(3, args.size()) : new ArrayList<>();
                 String result;
                 try {
-                    result = contract.getOperationData(ctx, OperationContractUtil.getDraftKey(contractName, transName, TestUtil.jsonListParams(params)));
+                    String key = OperationContractUtil.getDraftKey(contractName, transName, TestUtil.jsonListParams(params));
+                    result = contract.getOperations(ctx, GsonWrapper.toJson(Collections.singletonList(key)), "","","","","");
                 } catch (Exception e) {
                     return ResponseUtils.newErrorResponse();
                 }
