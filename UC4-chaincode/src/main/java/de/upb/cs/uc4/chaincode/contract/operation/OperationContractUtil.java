@@ -10,6 +10,7 @@ import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.OperationDataState;
 import de.upb.cs.uc4.chaincode.model.TransactionInfo;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
+import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -31,10 +32,6 @@ public class OperationContractUtil extends ContractUtil {
         identifier = "operationId";
     }
 
-    public String getUserRejectionMessage(String message) {
-        return message;
-    }
-
     public OperationData approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError {
         String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
@@ -53,6 +50,18 @@ public class OperationContractUtil extends ContractUtil {
         return operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
+    }
+
+    public boolean mayParticipateInOperation(Context ctx, OperationData operationData) throws MissingTransactionError {
+        String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+
+        TransactionInfo info = operationData.getTransactionInfo();
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
+        if (requiredApprovals.getUsers().contains(clientId) || requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains)) {
+            return true;
+        }
+        return false;
     }
 
     public List<OperationData> getOperations(
@@ -122,6 +131,18 @@ public class OperationContractUtil extends ContractUtil {
 
     public DetailedError getEmptyTransactionNameError() {
         return getUnprocessableEntityError(getEmptyInvalidParameter("transactionName"));
+    }
+
+    public GenericError getApprovalDeniedError() {
+        return new GenericError()
+                .type("HLApprovalDenied")
+                .title("You are not allowed to approve the given operation");
+    }
+
+    public GenericError getRejectionDeniedError() {
+        return new GenericError()
+                .type("HLRejectionDenied")
+                .title("You are not allowed to reject the given operation");
     }
 
     public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws NoSuchAlgorithmException {
