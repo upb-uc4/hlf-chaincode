@@ -54,7 +54,7 @@ public class OperationContract extends ContractBase {
         // approve
         try {
             operationData = cUtil.approveOperation(ctx, operationData);
-        } catch (MissingTransactionError e) {
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
 
@@ -80,8 +80,8 @@ public class OperationContract extends ContractBase {
         // approve
         try {
             operationData = cUtil.approveOperation(ctx, operationData);
-        } catch (MissingTransactionError missingTransactionError) {
-            return missingTransactionError.getJsonError();
+        } catch (SerializableError e) {
+            return e.getJsonError();
         }
 
         // store

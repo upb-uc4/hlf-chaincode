@@ -608,7 +608,10 @@
       }
     ],
     "compare": [
-      "TODO add proper error"
+      {
+        "type": "HLApprovalDenied",
+        "title": "You are not allowed to approve the given operation"
+      }
     ]
   }
 ]
