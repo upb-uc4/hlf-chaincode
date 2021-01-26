@@ -126,12 +126,14 @@ public class AccessManager {
 
     private static ApprovalList getRequiredApprovalsForUpdateMatriculationData(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForGetMatriculationData(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForAddEntriesToMatriculationData(List<String> params) {
@@ -144,17 +146,20 @@ public class AccessManager {
 
     private static ApprovalList getRequiredApprovalsForAddAdmission(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForDropAdmission(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForGetAdmissions(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForAddUserToGroup(List<String> params) {
@@ -189,31 +194,37 @@ public class AccessManager {
 
     private static ApprovalList getRequiredApprovalsForAddCertificate(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForUpdateCertificate(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForGetCertificate(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForAddExaminationRegulation(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForGetExaminationRegulations(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
     private static ApprovalList getRequiredApprovalsForCloseExaminationRegulation(List<String> params) {
         // TODO fill with required approvals
-        return new ApprovalList();
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 }

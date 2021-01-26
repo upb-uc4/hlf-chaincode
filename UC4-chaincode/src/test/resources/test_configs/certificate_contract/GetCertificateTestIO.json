@@ -2,10 +2,22 @@
   {
     "name": "queryExistingCertificate",
     "type": "getCertificate",
+    "ids":[
+      "User1"
+    ],
     "setup": {
       "certificateContract": [
         "0000001",
         "legit certificate"
+      ],
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
       ]
     },
     "input": [

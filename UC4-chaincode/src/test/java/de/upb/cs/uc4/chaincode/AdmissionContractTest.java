@@ -42,7 +42,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             case "dropAdmission_FAILURE":
                 return DynamicTest.dynamicTest(testName, dropAdmissionFailureTest(setup, input, compare, ids));
             case "getAdmissions_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getAdmissionsSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getAdmissionsSuccessTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -121,10 +121,10 @@ public final class AdmissionContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:dropAdmission");
-            OperationContract approvalContract = new OperationContract();
+            OperationContract operationContract = new OperationContract();
             for (String id : ids) {
                 Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.initiateOperation(ctx, id, AdmissionContract.contractName, "dropAdmission", GsonWrapper.toJson(input));
+                operationContract.initiateOperation(ctx, id, AdmissionContract.contractName, "dropAdmission", GsonWrapper.toJson(input));
             }
             Context ctx = TestUtil.mockContext(stub);
             String result = contract.dropAdmission(ctx, input.get(0));
@@ -135,10 +135,16 @@ public final class AdmissionContractTest extends TestCreationBase {
     private Executable getAdmissionsSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:getAdmissions");
+            OperationContract operationContract = new OperationContract();
+            for (String id : ids) {
+                Context ctx = TestUtil.mockContext(stub, id);
+                operationContract.initiateOperation(ctx, id, AdmissionContract.contractName, "getAdmissions", GsonWrapper.toJson(input));
+            }
             Context ctx = TestUtil.mockContext(stub);
             String getResult = contract.getAdmissions(ctx, input.get(0), input.get(1), input.get(2));
             assertThat(getResult).isEqualTo(compare.get(0));
