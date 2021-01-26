@@ -22,6 +22,13 @@
             "User1"
           ]
         },
+        "AdditionalGroup",
+        {
+          "groupId": "AdditionalGroup",
+          "userList": [
+            "User1"
+          ]
+        },
         "System",
         {
           "groupId": "System",
@@ -66,6 +73,7 @@
           ],
           "groups": [
             "Admin",
+            "AdditionalGroup",
             "System"
           ]
         },
@@ -555,6 +563,54 @@
       {
         "type": "HLParameterNumberError",
         "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
+      }
+    ]
+  },
+  {
+    "name": "approveUnnecessaryUserNewTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User2"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "UnnecessaryGroup",
+        {
+          "groupId": "UnnecessaryGroup",
+          "userList": [
+            "User2"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "User2",
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLApprovalDenied",
+        "title": "You are not allowed to approve the given operation"
       }
     ]
   }

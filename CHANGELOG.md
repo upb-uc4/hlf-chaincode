@@ -1,3 +1,9 @@
+# [v0.16.7](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.6...v0.16.7) (2021-01-26)
+
+## Bugfix
+- only users required to approve an operation are now allowed to approve the operation
+
+
 # [v0.16.6](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.5...v0.16.6) (2021-01-26)
 
 ## Bugfix

@@ -2,9 +2,12 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParticipationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.OperationDataState;
@@ -32,13 +35,19 @@ public class OperationContractUtil extends ContractUtil {
         identifier = "operationId";
     }
 
-    public OperationData approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError {
+    public OperationData approveOperation(Context ctx, OperationData operationData) throws SerializableError {
         String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
 
-        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
         TransactionInfo info = operationData.getTransactionInfo();
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
+
+        if (!requiredApprovals.getUsers().contains(clientId) && !requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains)) {
+            throw new ParticipationError(GsonWrapper.toJson(getApprovalDeniedError()));
+        }
+        ApprovalList existingApprovals = operationData.getExistingApprovals();
+        existingApprovals.addUsersItem(clientId);
+        existingApprovals.addGroupsItems(clientGroups);
 
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
         return operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))

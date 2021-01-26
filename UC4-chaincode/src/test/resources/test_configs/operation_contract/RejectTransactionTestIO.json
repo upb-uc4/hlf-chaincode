@@ -183,5 +183,61 @@
         "title": "There is no operationData for the given operationId"
       }
     ]
+  },
+  {
+    "name": "rejectNonParticipatingUserTransaction",
+    "type": "rejectTransaction_FAILURE",
+    "ids": [
+      "User2"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "operationContract": [
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+        {
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": [
+              "Admin",
+              "System"
+            ]
+          }
+        }
+      ]
+    },
+    "input": [
+      "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+      "The transaction was invalid."
+    ],
+    "compare": [
+      {
+        "type": "HLRejectionDenied",
+        "title": "You are not allowed to reject the given operation"
+      }
+    ]
   }
 ]

@@ -143,7 +143,7 @@ public final class OperationContractTest extends TestCreationBase {
                 String result = contract.approveTransaction(ctx, contract(input), transaction(input), params(input));
                 assertThat(result).isEqualTo(s);
             }*/
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.mockContext(stub, ids.get(0));
             String result = contract.rejectOperation(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
         };
@@ -165,9 +165,7 @@ public final class OperationContractTest extends TestCreationBase {
             Context ctx = TestUtil.mockContext(stub);
             MatriculationDataContract matriculationContract = new MatriculationDataContract();
             stub.setFunction(MatriculationDataContract.contractName + ":addMatriculationData");
-            System.out.println("########################################################################");
-            System.out.println(matriculationContract.addMatriculationData(ctx, input.get(0)));
-            System.out.println("########################################################################");
+            matriculationContract.addMatriculationData(ctx, input.get(0));
             matriculationContract.addMatriculationData(ctx, input.get(0));
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
             stub.setFunction("UC4.OperationData:approveTransaction");
