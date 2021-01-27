@@ -40,7 +40,7 @@ public class OperationContractUtil extends ContractUtil {
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
 
         TransactionInfo info = operationData.getTransactionInfo();
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(ctx, info.getContractName(), info.getTransactionName(), info.getParameters());
 
         if (!requiredApprovals.getUsers().contains(clientId) && !requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains)) {
             throw new ParticipationError(GsonWrapper.toJson(getApprovalDeniedError()));
@@ -55,12 +55,12 @@ public class OperationContractUtil extends ContractUtil {
                 .missingApprovals(missingApprovals);
     }
 
-    public boolean mayParticipateInOperation(Context ctx, OperationData operationData) throws MissingTransactionError {
+    public boolean mayParticipateInOperation(Context ctx, OperationData operationData) throws MissingTransactionError, LedgerAccessError {
         String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
 
         TransactionInfo info = operationData.getTransactionInfo();
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(ctx, info.getContractName(), info.getTransactionName(), info.getParameters());
         if (requiredApprovals.getUsers().contains(clientId) || requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains)) {
             return true;
         }

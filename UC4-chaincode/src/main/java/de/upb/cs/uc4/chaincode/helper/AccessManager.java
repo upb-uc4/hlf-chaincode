@@ -2,14 +2,18 @@ package de.upb.cs.uc4.chaincode.helper;
 
 import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
+import de.upb.cs.uc4.chaincode.model.Admission;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
+import org.hyperledger.fabric.contract.Context;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -21,7 +25,7 @@ public class AccessManager {
     public static final String ADMIN = "Admin";
     public static final String SYSTEM = "System";
 
-    public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) throws MissingTransactionError {
+    public static ApprovalList getRequiredApprovals(Context ctx, String contractName, String transactionName, String params) throws MissingTransactionError, LedgerAccessError {
         Type listType = new TypeToken<ArrayList<String>>() {
         }.getType();
         List<String> paramList = GsonWrapper.fromJson(params, listType);
@@ -29,13 +33,13 @@ public class AccessManager {
             case MatriculationDataContract.contractName:
                 switch (transactionName) {
                     case "addMatriculationData":
-                        return getRequiredApprovalsForAddMatriculationData(paramList);
+                        return getRequiredApprovalsForAddMatriculationData(ctx, paramList);
                     case "updateMatriculationData":
-                        return getRequiredApprovalsForUpdateMatriculationData(paramList);
+                        return getRequiredApprovalsForUpdateMatriculationData(ctx, paramList);
                     case "getMatriculationData":
-                        return getRequiredApprovalsForGetMatriculationData(paramList);
+                        return getRequiredApprovalsForGetMatriculationData(ctx, paramList);
                     case "addEntriesToMatriculationData":
-                        return getRequiredApprovalsForAddEntriesToMatriculationData(paramList);
+                        return getRequiredApprovalsForAddEntriesToMatriculationData(ctx, paramList);
                     case "getVersion":
                         return new ApprovalList();
                     case "":
@@ -46,11 +50,11 @@ public class AccessManager {
             case AdmissionContract.contractName:
                 switch (transactionName) {
                     case "addAdmission":
-                        return getRequiredApprovalsForAddAdmission(paramList);
+                        return getRequiredApprovalsForAddAdmission(ctx, paramList);
                     case "dropAdmission":
-                        return getRequiredApprovalsForDropAdmission(paramList);
+                        return getRequiredApprovalsForDropAdmission(ctx, paramList);
                     case "getAdmissions":
-                        return getRequiredApprovalsForGetAdmissions(paramList);
+                        return getRequiredApprovalsForGetAdmissions(ctx, paramList);
                     case "getVersion":
                         return new ApprovalList();
                     case "":
@@ -61,17 +65,17 @@ public class AccessManager {
             case GroupContract.contractName:
                 switch (transactionName) {
                     case "addUserToGroup":
-                        return getRequiredApprovalsForAddUserToGroup(paramList);
+                        return getRequiredApprovalsForAddUserToGroup(ctx, paramList);
                     case "removeUserFromGroup":
-                        return getRequiredApprovalsForRemoveUserFromGroup(paramList);
+                        return getRequiredApprovalsForRemoveUserFromGroup(ctx, paramList);
                     case "removeUserFromAllGroups":
-                        return getRequiredApprovalsForRemoveUserFromAllGroups(paramList);
+                        return getRequiredApprovalsForRemoveUserFromAllGroups(ctx, paramList);
                     case "getAllGroups":
-                        return getRequiredApprovalsForGetAllGroups(paramList);
+                        return getRequiredApprovalsForGetAllGroups(ctx, paramList);
                     case "getUsersForGroup":
-                        return getRequiredApprovalsForGetUsersForGroup(paramList);
+                        return getRequiredApprovalsForGetUsersForGroup(ctx, paramList);
                     case "getGroupsForUser":
-                        return getRequiredApprovalsForGetGroupsForUser(paramList);
+                        return getRequiredApprovalsForGetGroupsForUser(ctx, paramList);
                     case "getVersion":
                         return new ApprovalList();
                     case "":
@@ -82,11 +86,11 @@ public class AccessManager {
             case CertificateContract.contractName:
                 switch (transactionName) {
                     case "addCertificate":
-                        return getRequiredApprovalsForAddCertificate(paramList);
+                        return getRequiredApprovalsForAddCertificate(ctx, paramList);
                     case "updateCertificate":
-                        return getRequiredApprovalsForUpdateCertificate(paramList);
+                        return getRequiredApprovalsForUpdateCertificate(ctx, paramList);
                     case "getCertificate":
-                        return getRequiredApprovalsForGetCertificate(paramList);
+                        return getRequiredApprovalsForGetCertificate(ctx, paramList);
                     case "getVersion":
                         return new ApprovalList();
                     case "":
@@ -97,11 +101,11 @@ public class AccessManager {
             case ExaminationRegulationContract.contractName:
                 switch (transactionName) {
                     case "addExaminationRegulation":
-                        return getRequiredApprovalsForAddExaminationRegulation(paramList);
+                        return getRequiredApprovalsForAddExaminationRegulation(ctx, paramList);
                     case "getExaminationRegulations":
-                        return getRequiredApprovalsForGetExaminationRegulations(paramList);
+                        return getRequiredApprovalsForGetExaminationRegulations(ctx, paramList);
                     case "closeExaminationRegulation":
-                        return getRequiredApprovalsForCloseExaminationRegulation(paramList);
+                        return getRequiredApprovalsForCloseExaminationRegulation(ctx, paramList);
                     case "getVersion":
                         return new ApprovalList();
                     case "":
@@ -116,7 +120,7 @@ public class AccessManager {
         }
     }
 
-    private static ApprovalList getRequiredApprovalsForAddMatriculationData(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForAddMatriculationData(Context ctx, List<String> params) {
         MatriculationData matriculationData = GsonWrapper.fromJson(params.get(0), MatriculationData.class);
         return new ApprovalList()
                 .addUsersItem(matriculationData.getEnrollmentId())
@@ -124,17 +128,17 @@ public class AccessManager {
                 .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForUpdateMatriculationData(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
+    private static ApprovalList getRequiredApprovalsForUpdateMatriculationData(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForGetMatriculationData(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
+    private static ApprovalList getRequiredApprovalsForGetMatriculationData(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForAddEntriesToMatriculationData(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForAddEntriesToMatriculationData(Context ctx, List<String> params) {
         String enrollmentId = params.get(0);
         return new ApprovalList()
                 .addUsersItem(enrollmentId)
@@ -142,78 +146,83 @@ public class AccessManager {
                 .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForAddAdmission(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForAddAdmission(Context ctx, List<String> params) {
+        Admission admission = GsonWrapper.fromJson(params.get(0), Admission.class);
+        return new ApprovalList()
+                .addUsersItem(admission.getEnrollmentId())
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForDropAdmission(Context ctx, List<String> params) throws LedgerAccessError {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        Admission admission = cUtil.getState(ctx.getStub(), params.get(0), Admission.class);
+        return new ApprovalList()
+                .addUsersItem(admission.getEnrollmentId())
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetAdmissions(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForAddUserToGroup(Context ctx, List<String> params) {
         // TODO fill with required approvals
         return new ApprovalList();
     }
 
-    private static ApprovalList getRequiredApprovalsForDropAdmission(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForRemoveUserFromGroup(Context ctx, List<String> params) {
         // TODO fill with required approvals
         return new ApprovalList();
     }
 
-    private static ApprovalList getRequiredApprovalsForGetAdmissions(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForRemoveUserFromAllGroups(Context ctx, List<String> params) {
         // TODO fill with required approvals
         return new ApprovalList();
     }
 
-    private static ApprovalList getRequiredApprovalsForAddUserToGroup(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForGetAllGroups(Context ctx, List<String> params) {
         // TODO fill with required approvals
         return new ApprovalList();
     }
 
-    private static ApprovalList getRequiredApprovalsForRemoveUserFromGroup(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForGetUsersForGroup(Context ctx, List<String> params) {
         // TODO fill with required approvals
         return new ApprovalList();
     }
 
-    private static ApprovalList getRequiredApprovalsForRemoveUserFromAllGroups(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForGetGroupsForUser(Context ctx, List<String> params) {
         // TODO fill with required approvals
         return new ApprovalList();
     }
 
-    private static ApprovalList getRequiredApprovalsForGetAllGroups(List<String> params) {
+    private static ApprovalList getRequiredApprovalsForAddCertificate(Context ctx, List<String> params) {
         // TODO fill with required approvals
         return new ApprovalList();
     }
 
-    private static ApprovalList getRequiredApprovalsForGetUsersForGroup(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
+    private static ApprovalList getRequiredApprovalsForUpdateCertificate(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForGetGroupsForUser(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
+    private static ApprovalList getRequiredApprovalsForGetCertificate(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForAddCertificate(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
+    private static ApprovalList getRequiredApprovalsForAddExaminationRegulation(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForUpdateCertificate(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
+    private static ApprovalList getRequiredApprovalsForGetExaminationRegulations(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForGetCertificate(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
-    }
-
-    private static ApprovalList getRequiredApprovalsForAddExaminationRegulation(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
-    }
-
-    private static ApprovalList getRequiredApprovalsForGetExaminationRegulations(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
-    }
-
-    private static ApprovalList getRequiredApprovalsForCloseExaminationRegulation(List<String> params) {
-        // TODO fill with required approvals
-        return new ApprovalList();
+    private static ApprovalList getRequiredApprovalsForCloseExaminationRegulation(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
     }
 }

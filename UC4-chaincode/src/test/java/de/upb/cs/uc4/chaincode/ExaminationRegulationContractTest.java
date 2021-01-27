@@ -32,16 +32,17 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
+        List<String> ids = test.getIds();
 
         switch (testType) {
             case "getExaminationRegulations":
-                return DynamicTest.dynamicTest(testName, getExaminationRegulationsTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getExaminationRegulationsTest(setup, input, compare, ids));
             case "addExaminationRegulation_SUCCESS":
-                return DynamicTest.dynamicTest(testName, addExaminationRegulationSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addExaminationRegulationSuccessTest(setup, input, compare, ids));
             case "addExaminationRegulation_FAILURE":
                 return DynamicTest.dynamicTest(testName, addExaminationRegulationFailureTest(setup, input, compare));
             case "closeExaminationRegulation_SUCCESS":
-                return DynamicTest.dynamicTest(testName, closeExaminationRegulationSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, closeExaminationRegulationSuccessTest(setup, input, compare, ids));
             case "closeExaminationRegulation_FAILURE":
                 return DynamicTest.dynamicTest(testName, closeExaminationRegulationFailureTest(setup, input, compare));
             default:
@@ -52,10 +53,12 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private Executable getExaminationRegulationsTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:getExaminationRegulations");
+            TestUtil.approveOperation(stub, ExaminationRegulationContract.contractName,"getExaminationRegulations", ids, input);
             Context ctx = TestUtil.mockContext(stub);
 
             String regulations = contract.getExaminationRegulations(ctx, input.get(0));
@@ -66,10 +69,12 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private Executable addExaminationRegulationSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:addExaminationRegulation");
+            TestUtil.approveOperation(stub, ExaminationRegulationContract.contractName,"addExaminationRegulation", ids, input);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.addExaminationRegulation(ctx, input.get(0));
@@ -99,10 +104,12 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private Executable closeExaminationRegulationSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:closeExaminationRegulation");
+            TestUtil.approveOperation(stub, ExaminationRegulationContract.contractName,"closeExaminationRegulation", ids, input);
             Context ctx = TestUtil.mockContext(stub);
 
             String result = contract.closeExaminationRegulation(ctx, input.get(0));

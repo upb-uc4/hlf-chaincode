@@ -2,7 +2,19 @@
   {
     "name": "updateMatriculationData",
     "type": "updateMatriculationData_SUCCESS",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "matriculationDataContract": [
         "0000001",
         {
@@ -59,7 +71,19 @@
   {
     "name": "updateMultiFieldOfStudyMatriculationData",
     "type": "updateMatriculationData_SUCCESS",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "matriculationDataContract": [
         "0000001",
         {
