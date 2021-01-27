@@ -36,10 +36,12 @@
       ]
     },
     "input": [
+      "",
       "User1",
       "",
       "",
-      "FINISHED"
+      "",
+      ["FINISHED"]
     ],
     "compare": [
       [
@@ -140,18 +142,25 @@
       ]
     },
     "input": [
+      "",
       "User1",
       "",
       "",
-      "FINISHED",
+      "",
+      ["FINISHED"],
+      "",
        "User2",
       "",
       "",
-        "FINISHED",
+      "",
+      ["FINISHED"],
       "",
       "",
       "",
-      "FINISHED",
+      "",
+      "",
+      ["FINISHED"],
+      "",
       "User3",
       "",
       "",
@@ -160,22 +169,33 @@
       "",
       "",
       "",
+      "",
+      "",
+      "",
+      "",
       "User1",
       "",
       "",
-      "PENDING",
+      "",
+      ["PENDING"],
+      "",
       "User",
       "",
       "",
-      "FINISHED",
+      "",
+      ["FINISHED"],
+      "",
       "User2",
       "",
       "",
-      "HUND",
+      "",
+      ["HUND"],
+      "",
       "Use",
       "",
       "",
-      "KATZE"
+      "",
+      ["KATZE"]
     ],
     "compare": [
       [
@@ -321,16 +341,22 @@
       ]
     },
     "input": [
+      "",
       "User1",
       "",
       "",
-      "PENDING",
+      "",
+      ["PENDING"],
+      "",
       "",
       "User4",
       "",
       "",
       "",
+      "",
+      "",
       "User5",
+      "",
       "",
       ""
     ],
@@ -393,9 +419,11 @@
     },
     "input": [
       "",
+      "",
       "User1",
       "",
-      "FINISHED"
+      "",
+      ["FINISHED"]
     ],
     "compare": [
       [

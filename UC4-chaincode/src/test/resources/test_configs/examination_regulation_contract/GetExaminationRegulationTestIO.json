@@ -2,7 +2,19 @@
   {
     "name": "queryExistingExaminationRegulations",
     "type": "getExaminationRegulations",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science v1",
         {
@@ -74,7 +86,20 @@
   {
     "name": "queryNonExistingExaminationRegulations",
     "type": "getExaminationRegulations",
-    "setup": {},
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
     "input": [
       [
         "Computer Science v3"
@@ -107,7 +132,19 @@
   {
     "name": "queryUnprocessableLedgerStateExaminationRegulations",
     "type": "getExaminationRegulations",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         "something invalid"

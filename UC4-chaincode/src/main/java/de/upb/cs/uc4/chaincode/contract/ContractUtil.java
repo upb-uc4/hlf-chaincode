@@ -22,8 +22,13 @@ import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 abstract public class ContractUtil {
 
@@ -116,7 +121,7 @@ abstract public class ContractUtil {
             final String[] args) throws SerializableError {
         ChaincodeStub stub = ctx.getStub();
         String jsonArgs = GsonWrapper.toJson(args);
-        ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
+        ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(ctx, contractName, transactionName, jsonArgs);
         if (requiredApprovals.isEmpty()) {
             return;
         }
@@ -160,6 +165,11 @@ abstract public class ContractUtil {
 
     public String getEnrollmentIdFromClientId(String clientId) {
         return clientId.substring(9).split(",")[0];
+    }
+
+    public String getTimestamp(ChaincodeStub stub) {
+        DateTimeFormatter fm = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
+        return fm.format(stub.getTxTimestamp().truncatedTo(SECONDS));
     }
 
     public void finishOperation(

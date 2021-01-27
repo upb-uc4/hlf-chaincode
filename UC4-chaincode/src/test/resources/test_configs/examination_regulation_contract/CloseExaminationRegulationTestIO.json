@@ -2,7 +2,19 @@
   {
     "name": "closeExistingOpenExaminationRegistration",
     "type": "closeExaminationRegulation_SUCCESS",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science v3",
         {
@@ -36,7 +48,19 @@
   {
     "name": "closeExistingClosedExaminationRegistration",
     "type": "closeExaminationRegulation_SUCCESS",
+    "ids": [
+      "User1"
+    ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science v3",
         {
