@@ -22,6 +22,9 @@ public class AdmissionContract extends ContractBase {
     private final AdmissionContractUtil cUtil = new AdmissionContractUtil();
 
     public final static String contractName = "UC4.Admission";
+    public final static String transactionNameAddAdmission = "addAdmission";
+    public final static String transactionNameDropAdmission = "dropAdmission";
+    public final static String transactionNameGetAdmissions = "getAdmissions";
 
     /**
      * Adds MatriculationData to the ledger.
