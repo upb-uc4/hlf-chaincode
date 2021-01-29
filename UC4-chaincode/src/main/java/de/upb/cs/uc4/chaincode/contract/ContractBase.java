@@ -18,7 +18,7 @@ public abstract class ContractBase implements ContractInterface {
      */
     @Transaction()
     public String getVersion(final Context ctx) {
-        return "0.15.1";
+        return "0.17.0";
 
         /*
         URLClassLoader cl = (URLClassLoader) getClass().getClassLoader();
