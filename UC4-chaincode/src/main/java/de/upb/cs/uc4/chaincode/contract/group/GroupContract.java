@@ -101,6 +101,7 @@ public class GroupContract extends ContractBase {
         try {
             
             cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
+            cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{enrollmentId, groupId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
