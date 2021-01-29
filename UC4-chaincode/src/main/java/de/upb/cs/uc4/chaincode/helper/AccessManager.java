@@ -25,6 +25,8 @@ public class AccessManager {
     public static final String ADMIN = "Admin";
     public static final String SYSTEM = "System";
 
+    public static final String HLF_ATTRIBUTE_SYSADMIN = "sysAdmin";
+
     public static ApprovalList getRequiredApprovals(Context ctx, String contractName, String transactionName, String params) throws MissingTransactionError, LedgerAccessError {
         Type listType = new TypeToken<ArrayList<String>>() {
         }.getType();

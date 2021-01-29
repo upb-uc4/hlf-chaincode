@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -56,7 +57,7 @@ public class GroupContract extends ContractBase {
 
         try {
             cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{enrollmentId, groupId});
-            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add("sysAdmin");}});
+            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
