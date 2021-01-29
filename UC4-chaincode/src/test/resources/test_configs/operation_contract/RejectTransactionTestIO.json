@@ -31,9 +31,9 @@
         }
       ],
       "operationContract": [
-        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         {
-          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
             "transactionName": "addMatriculationData",
@@ -61,12 +61,12 @@
       ]
     },
     "input": [
-      "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+      "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
       "The transaction was invalid."
     ],
     "compare": [
       {
-        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
@@ -101,9 +101,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -128,7 +128,7 @@
       ]
     },
     "input": [
-      "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+      "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
       "The transaction was invalid."
     ],
     "compare": [
@@ -146,9 +146,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -174,7 +174,7 @@
       ]
     },
     "input": [
-      "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+      "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
       "The transaction was invalid."
     ],
     "compare": [
@@ -200,9 +200,9 @@
         }
       ],
       "operationContract": [
-        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         {
-          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
             "transactionName": "addMatriculationData",
@@ -230,7 +230,7 @@
       ]
     },
     "input": [
-      "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs=",
+      "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
       "The transaction was invalid."
     ],
     "compare": [

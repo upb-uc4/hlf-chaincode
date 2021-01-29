@@ -7,9 +7,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -45,7 +45,7 @@
     ],
     "compare": [
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ]
     ]
   },
@@ -57,9 +57,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -83,9 +83,9 @@
             "groups": []
           }
         },
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -110,9 +110,9 @@
             "groups": []
           }
         },
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -199,26 +199,26 @@
     ],
     "compare": [
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
 
@@ -239,9 +239,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -267,9 +267,9 @@
             ]
           }
         },
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -298,9 +298,9 @@
             ]
           }
         },
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -362,15 +362,15 @@
     ],
     "compare": [
       [
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ]
     ]
   },
@@ -382,9 +382,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -427,7 +427,7 @@
     ],
     "compare": [
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ]
     ]
   }
