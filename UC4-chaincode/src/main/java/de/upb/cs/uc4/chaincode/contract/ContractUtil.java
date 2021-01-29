@@ -153,6 +153,16 @@ abstract public class ContractUtil {
         }
     }
 
+    public void validateAttributes(Context ctx, List<String> attributes) throws SerializableError {
+        for (String attribute : attributes){
+            boolean userIsSysAdmin = ctx.getClientIdentity().assertAttributeValue(attribute, "true");
+            if(!userIsSysAdmin){
+                // TODO: better Error?
+                throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
+            }
+        }
+    }
+
     public String getEnrollmentIdFromClientId(String clientId) {
         return clientId.substring(9).split(",")[0];
     }

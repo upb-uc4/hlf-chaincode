@@ -1,5 +1,9 @@
 # [v0.17.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.8...v0.17.0) (2021-01-29)
 
+## Feature
+- Restrict GroupContract transaction access 
+  - only users with hlf.attribut sysAdmin=true are allowed to manipulate groups
+
 ## Bugfix
 - operationIds now no longer contain "=" signs
 

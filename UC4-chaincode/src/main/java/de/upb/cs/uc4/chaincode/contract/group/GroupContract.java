@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -61,6 +62,8 @@ public class GroupContract extends ContractBase {
         }
 
         try {
+            
+            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
             cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{enrollmentId, groupId});
         } catch (SerializableError e) {
             return e.getJsonError();
@@ -102,6 +105,8 @@ public class GroupContract extends ContractBase {
         group.getUserList().remove(enrollmentId);
 
         try {
+            
+            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
             cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{enrollmentId, groupId});
         } catch (SerializableError e) {
             return e.getJsonError();
@@ -134,6 +139,8 @@ public class GroupContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
+            
+            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
             cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{enrollmentId});
         } catch (SerializableError e) {
             return e.getJsonError();
