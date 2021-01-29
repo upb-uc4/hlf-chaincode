@@ -99,7 +99,7 @@ public class GroupContract extends ContractBase {
 
         try {
             cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{enrollmentId, groupId});
-            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add("sysAdmin");}});
+            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -132,7 +132,7 @@ public class GroupContract extends ContractBase {
         ChaincodeStub stub = ctx.getStub();
         try {
             cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{enrollmentId});
-            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add("sysAdmin");}});
+            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
