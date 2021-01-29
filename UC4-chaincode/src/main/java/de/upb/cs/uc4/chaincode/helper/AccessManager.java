@@ -204,13 +204,13 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForUpdateCertificate(Context ctx, List<String> params) {
-        return new ApprovalList()
-                .addGroupsItem(SYSTEM);
+        // TODO fill with required approvals
+        return new ApprovalList();
     }
 
     private static ApprovalList getRequiredApprovalsForGetCertificate(Context ctx, List<String> params) {
-        return new ApprovalList()
-                .addGroupsItem(SYSTEM);
+        // TODO fill with required approvals
+        return new ApprovalList();
     }
 
     private static ApprovalList getRequiredApprovalsForAddExaminationRegulation(Context ctx, List<String> params) {
