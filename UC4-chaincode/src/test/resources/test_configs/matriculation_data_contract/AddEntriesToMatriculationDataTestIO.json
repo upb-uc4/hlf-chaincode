@@ -2,6 +2,11 @@
   {
     "name": "addEntriesToExistingSubjectOfExistingMatriculationData",
     "type": "addEntriesToMatriculationData_SUCCESS",
+    "ids": [
+      "SysAdmin",
+      "3rdPartyAdmin",
+      "0000001"
+    ],
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -23,6 +28,22 @@
           "name": "Computer Science",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "3rdPartyAdmin"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "SysAdmin"
+          ]
         }
       ]
     },
@@ -55,6 +76,11 @@
   {
     "name": "addEntriesToNonExistingSubjectOfExistingMatriculationData",
     "type": "addEntriesToMatriculationData_SUCCESS",
+    "ids": [
+      "SysAdmin",
+      "3rdPartyAdmin",
+      "0000001"
+    ],
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -82,6 +108,22 @@
           "name": "Philosophy",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "3rdPartyAdmin"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "SysAdmin"
+          ]
         }
       ]
     },
@@ -119,6 +161,11 @@
   {
     "name": "addExistingEntryToExistingMatriculationData",
     "type": "addEntriesToMatriculationData_SUCCESS",
+    "ids": [
+      "SysAdmin",
+      "3rdPartyAdmin",
+      "0000001"
+    ],
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -140,6 +187,22 @@
           "name": "Computer Science",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "3rdPartyAdmin"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "SysAdmin"
+          ]
         }
       ]
     },
@@ -171,6 +234,11 @@
   {
     "name": "addTwoEntriesToExistingSubjectOfExistingMatriculationData",
     "type": "addEntriesToMatriculationData_SUCCESS",
+    "ids": [
+      "SysAdmin",
+      "3rdPartyAdmin",
+      "0000001"
+    ],
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -198,6 +266,22 @@
           "name": "Mathematics",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "3rdPartyAdmin"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "SysAdmin"
+          ]
         }
       ]
     },
@@ -242,6 +326,11 @@
   {
     "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
     "type": "addEntriesToMatriculationData_SUCCESS",
+    "ids": [
+      "SysAdmin",
+      "3rdPartyAdmin",
+      "0000001"
+    ],
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -275,6 +364,22 @@
           "name": "Mathematics",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "3rdPartyAdmin"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "SysAdmin"
+          ]
         }
       ]
     },
@@ -331,6 +436,11 @@
   {
     "name": "addMultipleEntriesToExistingSubjectOfExistingMatriculationData",
     "type": "addEntriesToMatriculationData_SUCCESS",
+    "ids": [
+      "SysAdmin",
+      "3rdPartyAdmin",
+      "0000001"
+    ],
     "setup": {
       "matriculationDataContract": [
         "0000001",
@@ -376,6 +486,22 @@
           "name": "Mathematics",
           "active": true,
           "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "3rdPartyAdmin"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "SysAdmin"
+          ]
         }
       ]
     },

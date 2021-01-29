@@ -7,9 +7,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -36,14 +36,16 @@
       ]
     },
     "input": [
+      "",
       "User1",
       "",
       "",
-      "FINISHED"
+      "",
+      ["FINISHED"]
     ],
     "compare": [
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ]
     ]
   },
@@ -55,9 +57,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -81,9 +83,9 @@
             "groups": []
           }
         },
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -108,9 +110,9 @@
             "groups": []
           }
         },
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -140,18 +142,25 @@
       ]
     },
     "input": [
+      "",
       "User1",
       "",
       "",
-      "FINISHED",
+      "",
+      ["FINISHED"],
+      "",
        "User2",
       "",
       "",
-        "FINISHED",
+      "",
+      ["FINISHED"],
       "",
       "",
       "",
-      "FINISHED",
+      "",
+      "",
+      ["FINISHED"],
+      "",
       "User3",
       "",
       "",
@@ -160,45 +169,56 @@
       "",
       "",
       "",
+      "",
+      "",
+      "",
+      "",
       "User1",
       "",
       "",
-      "PENDING",
+      "",
+      ["PENDING"],
+      "",
       "User",
       "",
       "",
-      "FINISHED",
+      "",
+      ["FINISHED"],
+      "",
       "User2",
       "",
       "",
-      "HUND",
+      "",
+      ["HUND"],
+      "",
       "Use",
       "",
       "",
-      "KATZE"
+      "",
+      ["KATZE"]
     ],
     "compare": [
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
 
@@ -219,9 +239,9 @@
     ],
     "setup": {
       "operationContract": [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -247,9 +267,9 @@
             ]
           }
         },
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -278,9 +298,9 @@
             ]
           }
         },
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
         {
-          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
+          "operationId": "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
           "transactionInfo": {
             "contractName": "UC4.Certificate",
             "transactionName": "addCertificate",
@@ -321,30 +341,93 @@
       ]
     },
     "input": [
+      "",
       "User1",
       "",
       "",
-      "PENDING",
+      "",
+      ["PENDING"],
+      "",
       "",
       "User4",
       "",
       "",
       "",
+      "",
+      "",
       "User5",
+      "",
       "",
       ""
     ],
     "compare": [
       [
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "MaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ],
       [
-        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU=",
-        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU="
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        "DaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
+      ]
+    ]
+  },
+  {
+    "name": "getOperationsMissingGroupApproval",
+    "type": "getOperations",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "operationContract": [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+        {
+          "operationId": "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU",
+          "transactionInfo": {
+            "contractName": "UC4.Certificate",
+            "transactionName": "addCertificate",
+            "parameters": "[\"0000001\",\"cert\"]"
+          },
+          "initiator": "User2",
+          "initiatedTimestamp":  "",
+          "lastModifiedTimestamp": "",
+          "state": "FINISHED",
+          "reason": "",
+          "existingApprovals": {
+            "users": [],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": [
+              "Admin"
+            ]
+          }
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "",
+      "",
+      "User1",
+      "",
+      "",
+      ["FINISHED"]
+    ],
+    "compare": [
+      [
+        "CaaxsIz63qWk2PdwJ9CmH89yXsFCnTUFiiOB1woElZU"
       ]
     ]
   }

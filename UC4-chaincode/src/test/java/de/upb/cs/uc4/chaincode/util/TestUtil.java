@@ -1,5 +1,10 @@
 package de.upb.cs.uc4.chaincode.util;
 
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
+import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
+import de.upb.cs.uc4.chaincode.helper.AccessManager;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
@@ -22,7 +27,7 @@ public class TestUtil {
     }
 
     public static Context mockContext(MockChaincodeStub stub) {
-        return mockContext(stub, "testId");
+        return mockContext(stub, wrapEnrollmentId("testId"));
     }
 
     public static Context mockContext(MockChaincodeStub stub, String clientId) {
@@ -31,12 +36,14 @@ public class TestUtil {
         stub.setCurrentId(clientId);
         ClientIdentity testId = mock(ClientIdentity.class);
         when(testId.getId()).thenReturn(clientId);
+        when(testId.getAttributeValue(AccessManager.HLF_ATTRIBUTE_SYSADMIN)).thenReturn("true");
+        when(testId.assertAttributeValue(AccessManager.HLF_ATTRIBUTE_SYSADMIN, "true")).thenReturn(true);
         when(ctx.getClientIdentity()).thenReturn(testId);
         return ctx;
     }
 
-    public static MockChaincodeStub mockStub(JsonIOTestSetup setup, String txId) {
-        MockChaincodeStub stub = new MockChaincodeStub(txId);
+    public static MockChaincodeStub mockStub(JsonIOTestSetup setup, String function) {
+        MockChaincodeStub stub = new MockChaincodeStub(function);
         setup.prepareStub(stub);
         return stub;
     }
@@ -52,5 +59,28 @@ public class TestUtil {
     public static String jsonListParams(List<String> params) {
         // TODO utilize gson for this
         return "[" + params.stream().reduce((s1, s2) -> s1 + "," + s2).orElse("") + "]";
+    }
+
+    public static String wrapEnrollmentId(String id) {
+        return "x509::CN=" + id + ", OU=admin::CN=rca-org1, OU=UC4, O=UC4, L=Paderborn, ST=NRW, C=DE";
+    }
+
+    public static void approveOperation(
+            MockChaincodeStub stub,
+            String contractName,
+            String transactionName,
+            List<String> ids,
+            List<String> input) {
+        OperationContract operationContract = new OperationContract();
+        for (String id : ids) {
+            Context ctx = TestUtil.mockContext(stub, id);
+            operationContract.initiateOperation(ctx, ids.get(0), contractName, transactionName, GsonWrapper.toJson(input));
+        }
+    }
+
+    public static Context buildContext(String contractName, String transactionName, JsonIOTestSetup setup, List<String> input, List<String> ids) {
+        MockChaincodeStub stub = TestUtil.mockStub(setup, contractName + ":" + transactionName);
+        TestUtil.approveOperation(stub, contractName, transactionName, ids, input);
+        return TestUtil.mockContext(stub);
     }
 }

@@ -4,7 +4,8 @@
     "type": "finishOperation",
     "ids": [
       "User1",
-      "0000001"
+      "0000001",
+      "SysAdmin"
     ],
     "setup": {
       "examinationRegulationContract": [
@@ -22,12 +23,19 @@
           "userList": [
             "User1"
           ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "SysAdmin"
+          ]
         }
       ]
     },
     "input": [
       {
-        "enrollmentId": "User1",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -60,7 +68,7 @@
     },
     "input": [
       {
-        "enrollmentId": "User1",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",

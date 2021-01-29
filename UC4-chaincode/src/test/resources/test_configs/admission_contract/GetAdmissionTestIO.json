@@ -7,6 +7,15 @@
       "0000001"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -159,6 +168,15 @@
       "0000002"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -318,6 +336,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -462,6 +489,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -621,6 +657,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -773,6 +818,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -917,6 +971,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -1090,6 +1153,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -1256,6 +1328,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -1422,6 +1503,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -1588,6 +1678,15 @@
       "0000003"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {

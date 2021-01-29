@@ -22,6 +22,13 @@
           "userList": [
             "User1"
           ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -73,7 +80,16 @@
         "Admin",
         {
           "groupId": "Admin",
-          "userList": ["User1"]
+          "userList": [
+            "User1"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -160,6 +176,13 @@
         "Admin",
         {
           "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
           "userList": [
             "User1"
           ]
@@ -499,6 +522,13 @@
           "userList": [
             "User1"
           ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
@@ -546,6 +576,146 @@
             "reason": "The given parameter cannot be parsed from json"
           }
         ]
+      }
+    ]
+  },
+  {
+    "name": "addFinishedOperationMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "ids": [],
+    "setup": {
+      "operationContract": [
+        "mxRuZY52DtT0NcCIF9wXDO12JDAZVZTJIoqGr8SkI2A=",
+        {
+          "operationId": "mxRuZY52DtT0NcCIF9wXDO12JDAZVZTJIoqGr8SkI2A=",
+          "transactionInfo":
+          {
+            "contractName": "UC4.MatriculationData",
+            "transactionName":"addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"0000001\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "x509::CN=User1, OU=admin::CN=rca-org1, OU=UC4, O=UC4, L=Paderborn, ST=NRW, C=DE",
+          "initiatedTimestamp":"1970-01-01T00:00:00",
+          "lastModifiedTimestamp":"1970-01-01T00:00:00",
+          "state":"FINISHED",
+          "reason": "",
+          "existingApprovals":
+          {
+            "users": ["User1", "0000001"],
+            "groups": ["Admin"]
+          },
+          "missingApprovals":
+          {
+            "users": [],
+            "groups": []
+          }
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
+      }
+    ]
+  },
+  {
+    "name": "addRejectedOperationMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "ids": [],
+    "setup": {
+      "operationContract": [
+        "mxRuZY52DtT0NcCIF9wXDO12JDAZVZTJIoqGr8SkI2A=",
+        {
+          "operationId": "mxRuZY52DtT0NcCIF9wXDO12JDAZVZTJIoqGr8SkI2A=",
+          "transactionInfo":
+          {
+            "contractName": "UC4.MatriculationData",
+            "transactionName":"addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"0000001\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "x509::CN=User1, OU=admin::CN=rca-org1, OU=UC4, O=UC4, L=Paderborn, ST=NRW, C=DE",
+          "initiatedTimestamp":"1970-01-01T00:00:00",
+          "lastModifiedTimestamp":"1970-01-01T00:00:00",
+          "state":"REJECTED",
+          "reason": "",
+          "existingApprovals":
+          {
+            "users": ["User1", "0000001"],
+            "groups": ["Admin"]
+          },
+          "missingApprovals":
+          {
+            "users": [],
+            "groups": []
+          }
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
       }
     ]
   }

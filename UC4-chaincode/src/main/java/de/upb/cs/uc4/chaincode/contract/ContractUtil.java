@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract;
 
+import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.*;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
@@ -14,14 +15,20 @@ import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 abstract public class ContractUtil {
 
@@ -101,7 +108,6 @@ abstract public class ContractUtil {
     }
 
     public GenericError getParamNumberError() {
-        // TODO add this error to operation api (approveTransaction)
         return new GenericError()
                 .type("HLParameterNumberError")
                 .title("The given number of parameters does not match the required number of parameters for the specified transaction");
@@ -109,40 +115,68 @@ abstract public class ContractUtil {
 
 
     public void validateApprovals(
-            final ChaincodeStub stub,
+            final Context ctx,
             String contractName,
             String transactionName,
-            final List<String> args) throws SerializableError {
+            final String[] args) throws SerializableError {
+        ChaincodeStub stub = ctx.getStub();
         String jsonArgs = GsonWrapper.toJson(args);
-        ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
+        ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(ctx, contractName, transactionName, jsonArgs);
         if (requiredApprovals.isEmpty()) {
             return;
         }
 
         OperationContractUtil oUtil = new OperationContractUtil();
-        ApprovalList approvals;
         String key;
         try {
             key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
         } catch (NoSuchAlgorithmException e) {
             throw new ValidationError(GsonWrapper.toJson(getInternalError()));
         }
+        ApprovalList approvals;
+        OperationDataState operationState;
         try{
-            approvals = oUtil.getState(stub, key, OperationData.class).getExistingApprovals();
+            OperationData operation = oUtil.getState(stub, key, OperationData.class);
+            approvals = operation.getExistingApprovals();
+            operationState = operation.getState();
         } catch (Exception e) {
             approvals = new ApprovalList();
+            operationState = OperationDataState.PENDING;
         }
+        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+        approvals.addUsersItem(clientId);
+        approvals.addGroupsItems(clientGroups);
 
-        if(!OperationContractUtil.covers(requiredApprovals, approvals)){
+        if(operationState != OperationDataState.PENDING || !OperationContractUtil.covers(requiredApprovals, approvals)){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
+    }
+
+    public void validateAttributes(Context ctx, List<String> attributes) throws SerializableError {
+        for (String attribute : attributes){
+            boolean userIsSysAdmin = ctx.getClientIdentity().assertAttributeValue(attribute, "true");
+            if(!userIsSysAdmin){
+                // TODO: better Error?
+                throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
+            }
+        }
+    }
+
+    public String getEnrollmentIdFromClientId(String clientId) {
+        return clientId.substring(9).split(",")[0];
+    }
+
+    public String getTimestamp(ChaincodeStub stub) {
+        DateTimeFormatter fm = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
+        return fm.format(stub.getTxTimestamp().truncatedTo(SECONDS));
     }
 
     public void finishOperation(
             final ChaincodeStub stub,
             String contractName,
             String transactionName,
-            final List<String> args) throws SerializableError {
+            final String[] args) throws SerializableError {
         String jsonArgs = GsonWrapper.toJson(args);
 
         OperationContractUtil oUtil = new OperationContractUtil();

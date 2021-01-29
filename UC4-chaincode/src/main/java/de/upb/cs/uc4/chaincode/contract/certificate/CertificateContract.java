@@ -20,6 +20,9 @@ public class CertificateContract extends ContractBase {
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
 
     public final static String contractName = "UC4.Certificate";
+    public final static String transactionNameAddCertificate = "addCertificate";
+    public final static String transactionNameGetCertificate = "getCertificate";
+    public final static String transactionNameUpdateCertificate = "updateCertificate";
 
     /**
      * Adds a certificate to the ledger.
@@ -41,12 +44,12 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId, certificate});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, certificate});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -72,12 +75,12 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId, certificate});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, new ArrayList<String>(){{add(enrollmentId);add(certificate);}});
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, certificate});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -102,12 +105,12 @@ public class CertificateContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(stub, this.contractName,  transactionName, Collections.singletonList(enrollmentId));
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, this.contractName,  transactionName, Collections.singletonList(enrollmentId));
+            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId});
         } catch (SerializableError e) {
             return e.getJsonError();
         }

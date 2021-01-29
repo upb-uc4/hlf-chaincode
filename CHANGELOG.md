@@ -1,3 +1,65 @@
+# [v0.17.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.8...v0.17.0) (2021-01-29)
+
+## Feature
+- Restrict GroupContract transaction access 
+  - only users with hlf.attribut sysAdmin=true are allowed to manipulate groups
+
+## Bugfix
+- operationIds now no longer contain "=" signs
+
+# [v0.16.8](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.7...v0.16.8) (2021-01-27)
+
+## Feature
+- adding System Group to required approvals for most transactions
+
+# [v0.16.7](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.6...v0.16.7) (2021-01-26)
+
+## Bugfix
+- only users required to approve an operation are now allowed to approve the operation
+
+
+# [v0.16.6](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.5...v0.16.6) (2021-01-26)
+
+## Bugfix
+- only users required to approve an operation are now allowed to reject the operation
+
+# [v0.16.5](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.4...v0.16.5) (2021-01-25)
+
+## Refactor
+- refactor approveTransaction
+- split approveTransaction into initiateOperation and approveOperation
+- rename rejectTransaction to rejectOperation
+- add operationIds, involvedEnrollmentId, and states filters to getOperations
+
+# [v0.16.4](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.3...v0.16.4) (2021-01-25)
+
+## Bugfix
+- transactions now check if the operation is pending before executing
+
+# [v0.16.3](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.2...v0.16.3) (2021-01-20)
+
+## Feature
+- System Group has to approve addMatriculationData
+- System Group, Admin Group and designated user have to approve addEntriesToMatriculationData
+
+# [v0.16.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.1...v0.16.2) (2021-01-19)
+
+## Feature
+- executing client now implicitly approves the transaction
+- implicit approval of users
+- remove additional information from users rejectionMessage
+- approveTransaction() set initiator default as client executing the transaction
+
+## Bugfix
+- operationsKey is generated in a different way (no spaces in parameters)
+- gson List/Array parsing problem (List--> null)
+
+# [v0.16.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.0...v0.16.1) (2021-01-19)
+
+## Bugfix
+- switch to base64url
+- adjust hash delimiter to ":"
+
 # [v0.16.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.15.2...v0.16.0) (2021-01-18)
 
 Release (no changes to previous version)

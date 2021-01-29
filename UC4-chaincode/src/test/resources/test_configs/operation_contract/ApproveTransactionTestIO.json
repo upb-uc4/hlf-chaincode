@@ -21,10 +21,25 @@
           "userList": [
             "User1"
           ]
+        },
+        "AdditionalGroup",
+        {
+          "groupId": "AdditionalGroup",
+          "userList": [
+            "User1"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
         }
       ]
     },
     "input": [
+      "User1",
       "UC4.MatriculationData",
       "addMatriculationData",
       {
@@ -41,13 +56,84 @@
     ],
     "compare": [
       {
-        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
-        "initiator": "",
+        "initiator": "User1",
+        "initiatedTimestamp":  "1970-01-01T00:00:00",
+        "lastModifiedTimestamp": "1970-01-01T00:00:00",
+        "state": "PENDING",
+        "reason": "",
+        "existingApprovals": {
+          "users": [
+            "User1"
+          ],
+          "groups": [
+            "Admin",
+            "AdditionalGroup",
+            "System"
+          ]
+        },
+        "missingApprovals": {
+          "users": [],
+          "groups": []
+        }
+      }
+    ]
+  },
+  {
+    "name": "approveNewTransactionEmptyInitiator",
+    "type": "approveTransaction_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "",
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
+        "transactionInfo": {
+          "contractName": "UC4.MatriculationData",
+          "transactionName": "addMatriculationData",
+          "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+        },
+        "initiator": "User1",
         "initiatedTimestamp":  "1970-01-01T00:00:00",
         "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
@@ -62,7 +148,7 @@
         },
         "missingApprovals": {
           "users": [],
-          "groups": []
+          "groups": ["System"]
         }
       }
     ]
@@ -75,15 +161,15 @@
     ],
     "setup": {
       "operationContract": [
-        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         {
-          "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
             "transactionName": "addMatriculationData",
             "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
           },
-          "initiator": "",
+          "initiator": "User1",
           "initiatedTimestamp":  "1970-01-01T00:00:00",
           "lastModifiedTimestamp": "1970-01-01T00:00:00",
           "state": "PENDING",
@@ -122,6 +208,7 @@
       ]
     },
     "input": [
+      "User1",
       "UC4.MatriculationData",
       "addMatriculationData",
       {
@@ -138,13 +225,13 @@
     ],
     "compare": [
       {
-        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
-        "initiator": "",
+        "initiator": "User1",
         "initiatedTimestamp":  "1970-01-01T00:00:00",
         "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
@@ -162,7 +249,7 @@
         },
         "missingApprovals": {
           "users": [],
-          "groups": []
+          "groups": ["System"]
         }
       }
     ]
@@ -175,15 +262,15 @@
     ],
     "setup": {
       "operationContract": [
-        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         {
-          "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
           "transactionInfo": {
             "contractName": "UC4.MatriculationData",
             "transactionName": "addMatriculationData",
             "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
           },
-          "initiator": "",
+          "initiator": "User1",
           "initiatedTimestamp":  "1970-01-01T00:00:00",
           "lastModifiedTimestamp": "1970-01-01T00:00:00",
           "state": "PENDING",
@@ -222,6 +309,7 @@
       ]
     },
     "input": [
+      "User1",
       "UC4.MatriculationData",
       "addMatriculationData",
       {
@@ -238,13 +326,13 @@
     ],
     "compare": [
       {
-        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
-        "initiator": "",
+        "initiator": "User1",
         "initiatedTimestamp":  "1970-01-01T00:00:00",
         "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
@@ -260,7 +348,7 @@
         },
         "missingApprovals": {
           "users": [],
-          "groups": []
+          "groups": ["System"]
         }
       }
     ]
@@ -273,6 +361,7 @@
     ],
     "setup": {},
     "input": [
+      "User1",
       "",
       "addMatriculationData",
       {
@@ -308,6 +397,7 @@
     ],
     "setup": {},
     "input": [
+      "User1",
       "UC4.MatriculationData",
       "",
       {
@@ -343,7 +433,7 @@
     ],
     "setup": {
       "approvalContract": [
-        "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         "something invalid"
       ],
       "examinationRegulationContract": [
@@ -356,6 +446,7 @@
       ]
     },
     "input": [
+      "User1",
       "UC4.MatriculationData",
       "addMatriculationData",
       {
@@ -372,13 +463,13 @@
     ],
     "compare": [
       {
-        "operationId": "sOfHOt7+0bOQtKDw26imWtObQ0jnEpqrciDGkt+KHCQ=",
+        "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         "transactionInfo": {
           "contractName": "UC4.MatriculationData",
           "transactionName": "addMatriculationData",
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
-        "initiator": "",
+        "initiator": "User1",
         "initiatedTimestamp":  "1970-01-01T00:00:00",
         "lastModifiedTimestamp": "1970-01-01T00:00:00",
         "state": "PENDING",
@@ -392,7 +483,8 @@
         "missingApprovals": {
           "users": [],
           "groups": [
-            "Admin"
+            "Admin",
+            "System"
           ]
         }
       }
@@ -424,6 +516,7 @@
       ]
     },
     "input": [
+      "User1",
       "UC4.MatriculationData",
       "addMatriculationData"
     ],
@@ -460,6 +553,7 @@
       ]
     },
     "input": [
+      "User1",
       "UC4.MatriculationData",
       "addMatriculationData",
       "",
@@ -469,6 +563,54 @@
       {
         "type": "HLParameterNumberError",
         "title": "The given number of parameters does not match the required number of parameters for the specified transaction"
+      }
+    ]
+  },
+  {
+    "name": "approveUnnecessaryUserNewTransaction",
+    "type": "approveTransaction_FAILURE",
+    "ids": [
+      "User2"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "UnnecessaryGroup",
+        {
+          "groupId": "UnnecessaryGroup",
+          "userList": [
+            "User2"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "User2",
+      "UC4.MatriculationData",
+      "addMatriculationData",
+      {
+        "enrollmentId": "User1",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLApprovalDenied",
+        "title": "You are not allowed to approve the given operation"
       }
     ]
   }
