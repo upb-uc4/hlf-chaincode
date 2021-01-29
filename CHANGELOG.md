@@ -1,3 +1,8 @@
+# [v0.16.9](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.8...v0.16.9) (2021-01-29)
+
+## Bugfix
+- operationIds now no longer contain "=" signs
+
 # [v0.16.8](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.7...v0.16.8) (2021-01-27)
 
 ## Feature
