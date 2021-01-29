@@ -35,8 +35,8 @@ public class TestUtil {
         stub.setCurrentId(clientId);
         ClientIdentity testId = mock(ClientIdentity.class);
         when(testId.getId()).thenReturn(clientId);
-        when(testId.getAttributeValue("sysAdmin")).thenReturn("true");
-        when(testId.assertAttributeValue("sysAdmin", "true")).thenReturn(true);
+        when(testId.getAttributeValue(AccessManager.HLF_ATTRIBUTE_SYSADMIN)).thenReturn("true");
+        when(testId.assertAttributeValue(AccessManager.HLF_ATTRIBUTE_SYSADMIN "true")).thenReturn(true);
         when(ctx.getClientIdentity()).thenReturn(testId);
         return ctx;
     }
