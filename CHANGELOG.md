@@ -1,3 +1,8 @@
+# [v0.16.8](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.7...v0.16.8) (2021-01-27)
+
+## Feature
+- adding System Group to required approvals for most transactions
+
 # [v0.16.7](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.6...v0.16.7) (2021-01-26)
 
 ## Bugfix
