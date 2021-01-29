@@ -35,19 +35,19 @@ public class ValidationManager {
         switch (contractName) {
             case MatriculationDataContract.contractName:
                 switch (transactionName) {
-                    case "addMatriculationData":
+                    case MatriculationDataContract.transactionNameAddMatriculationData:
                         matriculationDataUtil.checkParamsAddMatriculationData(ctx, paramList);
                         break;
-                    case "updateMatriculationData":
+                    case MatriculationDataContract.transactionNameUpdateMatriculationData:
                         matriculationDataUtil.checkParamsUpdateMatriculationData(ctx, paramList);
                         break;
-                    case "getMatriculationData":
+                    case MatriculationDataContract.transactionNameGetMatriculationData:
                         matriculationDataUtil.checkParamsGetMatriculationData(ctx, paramList);
                         break;
-                    case "addEntriesToMatriculationData":
+                    case MatriculationDataContract.transactionNameAddEntriesToMatriculationData:
                         matriculationDataUtil.checkParamsAddEntriesToMatriculationData(ctx, paramList);
                         break;
-                    case "getVersion":
+                    case MatriculationDataContract.transactionNameGetVersion:
                         break;
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
@@ -57,16 +57,16 @@ public class ValidationManager {
                 break;
             case AdmissionContract.contractName:
                 switch (transactionName) {
-                    case "addAdmission":
+                    case AdmissionContract.transactionNameAddAdmission:
                         admissionUtil.checkParamsAddAdmission(ctx, paramList);
                         break;
-                    case "dropAdmission":
+                    case AdmissionContract.transactionNameDropAdmission:
                         admissionUtil.checkParamsDropAdmission(ctx, paramList);
                         break;
-                    case "getAdmissions":
+                    case AdmissionContract.transactionNameGetAdmissions:
                         // pass
                         break;
-                    case "getVersion":
+                    case AdmissionContract.transactionNameGetVersion:
                         break;
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
@@ -76,25 +76,25 @@ public class ValidationManager {
                 break;
             case GroupContract.contractName:
                 switch (transactionName) {
-                    case "addUserToGroup":
+                    case GroupContract.transactionNameAddUserToGroup:
                         groupUtil.checkParamsAddUserToGroup(ctx, paramList);
                         break;
-                    case "removeUserFromGroup":
+                    case GroupContract.transactionNameRemoveUserFromGroup:
                         groupUtil.checkParamsRemoveUserFromGroup(ctx, paramList);
                         break;
-                    case "removeUserFromAllGroups":
+                    case GroupContract.transactionNameRemoveUserFromAllGroups:
                         groupUtil.checkParamsRemoveUserFromAllGroups(paramList);
                         break;
-                    case "getAllGroups":
+                    case GroupContract.transactionNameGetAllGroups:
                         // pass, for there are no parameters
                         break;
-                    case "getUsersForGroup":
+                    case GroupContract.transactionNameGetUsersForGroup:
                         groupUtil.checkParamsGetUsersForGroup(ctx, paramList);
                         break;
-                    case "getGroupsForUser":
+                    case GroupContract.transactionNameGetGroupsForUser:
                         groupUtil.checkParamsGetGroupsForUser(paramList);
                         break;
-                    case "getVersion":
+                    case GroupContract.transactionNameGetVersion:
                         break;
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
@@ -104,16 +104,16 @@ public class ValidationManager {
                 break;
             case ExaminationRegulationContract.contractName:
                 switch (transactionName) {
-                    case "addExaminationRegulation":
+                    case ExaminationRegulationContract.transactionNameAddExaminationRegulation:
                         examinationRegulationUtil.checkParamsAddExaminationRegulation(ctx, paramList);
                         break;
-                    case "getExaminationRegulations":
+                    case ExaminationRegulationContract.transactionNameGetExaminationRegulations:
                         examinationRegulationUtil.checkParamsGetExaminationRegulations(paramList);
                         break;
-                    case "closeExaminationRegulation":
+                    case ExaminationRegulationContract.transactionNameCloseExaminationRegulation:
                         examinationRegulationUtil.checkParamsCloseExaminationRegulation(ctx, paramList);
                         break;
-                    case "getVersion":
+                    case ExaminationRegulationContract.transactionNameGetVersion:
                         break;
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
@@ -123,16 +123,16 @@ public class ValidationManager {
                 break;
             case CertificateContract.contractName:
                 switch (transactionName) {
-                    case "addCertificate":
+                    case CertificateContract.transactionNameAddCertificate:
                         certificateUtil.checkParamsAddCertificate(ctx, paramList);
                         break;
-                    case "updateCertificate":
+                    case CertificateContract.transactionNameUpdateCertificate:
                         certificateUtil.checkParamsUpdateCertificate(ctx, paramList);
                         break;
-                    case "getCertificate":
+                    case CertificateContract.transactionNameGetCertificate:
                         certificateUtil.checkParamsGetCertificate(ctx, paramList);
                         break;
-                    case "getVersion":
+                    case CertificateContract.transactionNameGetVersion:
                         break;
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));

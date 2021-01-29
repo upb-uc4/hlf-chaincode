@@ -20,6 +20,9 @@ public class CertificateContract extends ContractBase {
     private final CertificateContractUtil cUtil = new CertificateContractUtil();
 
     public final static String contractName = "UC4.Certificate";
+    public final static String transactionNameAddCertificate = "addCertificate";
+    public final static String transactionNameGetCertificate = "getCertificate";
+    public final static String transactionNameUpdateCertificate = "updateCertificate";
 
     /**
      * Adds a certificate to the ledger.

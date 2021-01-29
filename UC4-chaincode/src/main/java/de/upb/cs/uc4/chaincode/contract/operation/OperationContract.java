@@ -2,13 +2,10 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 
 import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
-import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
-import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.*;
 import org.hyperledger.fabric.contract.Context;
@@ -21,11 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Contract(
-        name = "UC4.OperationData"
+        name = OperationContract.contractName
 )
 public class OperationContract extends ContractBase {
 
     private final OperationContractUtil cUtil = new OperationContractUtil();
+
+    public final static String contractName = "UC4.OperationData";
+    public final static String transactionNameInitiateOperation = "initiateOperation";
+    public final static String transactionNameApproveOperation = "approveOperation";
+    public final static String transactionNameRejectOperation = "rejectOperation";
+    public final static String transactionNameGetOperations = "getOperations";
 
     /**
      * Submits a draft to the ledger.

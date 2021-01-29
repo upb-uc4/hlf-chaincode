@@ -1,5 +1,7 @@
 package de.upb.cs.uc4.chaincode.util;
 
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -74,5 +76,11 @@ public class TestUtil {
             Context ctx = TestUtil.mockContext(stub, id);
             operationContract.initiateOperation(ctx, ids.get(0), contractName, transactionName, GsonWrapper.toJson(input));
         }
+    }
+
+    public static Context buildContext(String contractName, String transactionName, JsonIOTestSetup setup, List<String> input, List<String> ids) {
+        MockChaincodeStub stub = TestUtil.mockStub(setup, contractName + ":" + transactionName);
+        TestUtil.approveOperation(stub, contractName, transactionName, ids, input);
+        return TestUtil.mockContext(stub);
     }
 }

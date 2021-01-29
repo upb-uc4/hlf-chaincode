@@ -8,6 +8,7 @@ import java.io.IOException;
 
 public abstract class ContractBase implements ContractInterface {
     protected String contractName = "UC4.ContractBase";
+    public final static String transactionNameGetVersion = "getVersion";
 
     /**
      * Gets version of the chaincode

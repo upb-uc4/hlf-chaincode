@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
@@ -69,14 +70,13 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:addUserToGroup");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"addUserToGroup", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameAddUserToGroup, setup, input, ids);
+
             String addResult = contract.addUserToGroup(ctx, input.get(0), input.get(1));
             assertThat(addResult).isEqualTo("");
 
             Group compareGroup = GsonWrapper.fromJson(compare.get(0), Group.class);
-            Group ledgerGroup = cUtil.getState(stub, compareGroup.getGroupId(), Group.class);
+            Group ledgerGroup = cUtil.getState(ctx.getStub(), compareGroup.getGroupId(), Group.class);
             assertThat(ledgerGroup).isEqualTo(compareGroup);
             assertThat(ledgerGroup.toString()).isEqualTo(compareGroup.toString());
         };
@@ -89,9 +89,8 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:addUserToGroup");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"addUserToGroup", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameAddUserToGroup, setup, input, ids);
+
             String result = contract.addUserToGroup(ctx, input.get(0), input.get(1));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
@@ -106,15 +105,14 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:removeUserFromGroup");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"removeUserFromGroup", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameRemoveUserFromGroup, setup, input, ids);
+
             String dropResult = contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
             assertThat(dropResult).isEqualTo("");
 
             for (String i : compare) {
                 Group compareGroup = GsonWrapper.fromJson(i, Group.class);
-                Group ledgerGroup = cUtil.getState(stub, compareGroup.getGroupId(), Group.class);
+                Group ledgerGroup = cUtil.getState(ctx.getStub(), compareGroup.getGroupId(), Group.class);
                 assertThat(ledgerGroup).isEqualTo(compareGroup);
             }
 
@@ -129,9 +127,8 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:removeUserFromGroup");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"removeUserFromGroup", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameRemoveUserFromGroup, setup, input, ids);
+
             String result = contract.removeUserFromGroup(ctx, input.get(0), input.get(1));
             assertThat(result).isEqualTo(compare.get(0));
         };
@@ -145,15 +142,14 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:removeUserFromAllGroups");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"removeUserFromAllGroups", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameRemoveUserFromAllGroups, setup, input, ids);
+
             String dropResult = contract.removeUserFromAllGroups(ctx, input.get(0));
             assertThat(dropResult).isEqualTo("");
 
             for (String i : compare) {
                 Group compareGroup = GsonWrapper.fromJson(i, Group.class);
-                Group ledgerGroup = cUtil.getState(stub, compareGroup.getGroupId(), Group.class);
+                Group ledgerGroup = cUtil.getState(ctx.getStub(), compareGroup.getGroupId(), Group.class);
                 assertThat(ledgerGroup).isEqualTo(compareGroup);
             }
 
@@ -168,9 +164,8 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:removeUserFromAllGroups");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"removeUserFromAllGroups", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameRemoveUserFromAllGroups, setup, input, ids);
+
             String result = contract.removeUserFromAllGroups(ctx, input.get(0));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
@@ -186,9 +181,8 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getAllGroups");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"getAllGroups", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameGetAllGroups, setup, input, ids);
+
             String dropResult = contract.getAllGroups(ctx);
             assertThat(dropResult).isEqualTo(compare.get(0));
 
@@ -202,9 +196,8 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getUsersForGroup");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"getUsersForGroup", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameGetUsersForGroup, setup, input, ids);
+
             String dropResult = contract.getUsersForGroup(ctx, input.get(0));
             assertThat(dropResult).isEqualTo(compare.get(0));
 
@@ -218,9 +211,8 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getUsersForGroup");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"getUsersForGroup", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameGetUsersForGroup, setup, input, ids);
+
             String result = contract.getUsersForGroup(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
         };
@@ -233,9 +225,8 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getGroupsForUser");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"getGroupsForUser", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameGetGroupsForUser, setup, input, ids);
+
             String dropResult = contract.getGroupsForUser(ctx, input.get(0));
             assertThat(dropResult).isEqualTo(compare.get(0));
 
@@ -249,9 +240,7 @@ public final class GroupContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Group:getGroupsForUser");
-            TestUtil.approveOperation(stub, GroupContract.contractName,"getGroupsForUser", ids, input);
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameGetGroupsForUser, setup, input, ids);
             String result = contract.getGroupsForUser(ctx, input.get(0));
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);

@@ -24,6 +24,12 @@ public class GroupContract extends ContractBase {
     private final GroupContractUtil cUtil = new GroupContractUtil();
 
     public final static String contractName = "UC4.Group";
+    public final static String transactionNameAddUserToGroup = "addUserToGroup";
+    public final static String transactionNameRemoveUserFromGroup = "removeUserFromGroup";
+    public final static String transactionNameRemoveUserFromAllGroups = "removeUserFromAllGroups";
+    public final static String transactionNameGetAllGroups = "getAllGroups";
+    public final static String transactionNameGetUsersForGroup = "getUsersForGroup";
+    public final static String transactionNameGetGroupsForUser = "getGroupsForUser";
 
     /**
      * Adds user to group.

@@ -25,6 +25,10 @@ public class MatriculationDataContract extends ContractBase {
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
     public final static String contractName = "UC4.MatriculationData";
+    public final static String transactionNameAddMatriculationData = "addMatriculationData";
+    public final static String transactionNameUpdateMatriculationData = "updateMatriculationData";
+    public final static String transactionNameGetMatriculationData = "getMatriculationData";
+    public final static String transactionNameAddEntriesToMatriculationData = "addEntriesToMatriculationData";
 
     /**
      * Adds MatriculationData to the ledger.
