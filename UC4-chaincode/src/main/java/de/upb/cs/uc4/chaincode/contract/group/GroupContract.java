@@ -99,7 +99,7 @@ public class GroupContract extends ContractBase {
         group.getUserList().remove(enrollmentId);
 
         try {
-            cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{enrollmentId, groupId});
+            
             cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
         } catch (SerializableError e) {
             return e.getJsonError();
