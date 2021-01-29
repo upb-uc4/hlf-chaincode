@@ -113,7 +113,7 @@ public class OperationContractUtil extends ContractUtil {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params.replace(" ", "");
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
-        return new String(Base64.getUrlEncoder().encode(bytes));
+        return new String(Base64.getUrlEncoder().withoutPadding().encode(bytes));
     }
 
     public DetailedError getContractUnprocessableError(String contractName) {
