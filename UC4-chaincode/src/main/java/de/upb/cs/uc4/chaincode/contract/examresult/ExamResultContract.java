@@ -39,6 +39,7 @@ public class ExamResultContract extends ContractBase {
         } catch (ParameterError e) {
             return e.getJsonError();
         }
+        // todo: implement
         // check required approvals
         // add to ledger
         return "";
@@ -61,6 +62,7 @@ public class ExamResultContract extends ContractBase {
         } catch (ParameterError e) {
             return e.getJsonError();
         }
+        // todo: implement
         // logical AND filter
         // filter for enrollment ID (if not empty)
         // filter for examIds (if not empty)

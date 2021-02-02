@@ -157,6 +157,7 @@ public class ExamResultContractUtil extends ContractUtil {
     public void checkParamsGetExamResultEntries(Context ctx, List<String> params) throws ParameterError {
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        // todo:Implement checks
         // check if 2 params
         // check params: enrollmentId, examIds
         // examIds: Check, if valid jsonList of String
