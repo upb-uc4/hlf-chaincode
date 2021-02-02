@@ -12,7 +12,6 @@ import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import org.hyperledger.fabric.contract.Context;
@@ -63,7 +62,7 @@ public class ValidationManager {
                     case AdmissionContract.transactionNameDropAdmission:
                         admissionUtil.checkParamsDropAdmission(ctx, paramList);
                         break;
-                    case AdmissionContract.transactionNameGetAdmissions:
+                    case AdmissionContract.transactionNameGetCourseAdmissions:
                         // pass
                         break;
                     case AdmissionContract.transactionNameGetVersion:

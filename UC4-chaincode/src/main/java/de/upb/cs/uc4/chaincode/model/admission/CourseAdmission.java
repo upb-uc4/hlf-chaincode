@@ -103,22 +103,22 @@ public class CourseAdmission extends AbstractAdmission {
     @Override
     public ArrayList<InvalidParameter> getParameterErrors() {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (cUtil.valueUnset(this.getEnrollmentId())) {
-            invalidparams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
+            invalidParams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
         }
         if (cUtil.valueUnset(this.getCourseId())) {
-            invalidparams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".courseId"));
+            invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".courseId"));
         }
         if (cUtil.valueUnset(this.getModuleId())) {
-            invalidparams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".moduleId"));
+            invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".moduleId"));
         }
         if (cUtil.valueUnset(this.getTimestamp())) {
-            invalidparams.add(cUtil.getInvalidTimestampParam());
+            invalidParams.add(cUtil.getInvalidTimestampParam());
         }
 
-        return invalidparams;
+        return invalidParams;
     }
 
     @Override

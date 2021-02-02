@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract.admission;
 
+import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
@@ -8,11 +9,14 @@ import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
 import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.model.admission.ExamAdmission;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,7 +29,8 @@ public class AdmissionContract extends ContractBase {
     public final static String contractName = "UC4.Admission";
     public final static String transactionNameAddAdmission = "addAdmission";
     public final static String transactionNameDropAdmission = "dropAdmission";
-    public final static String transactionNameGetAdmissions = "getAdmissions";
+    public final static String transactionNameGetCourseAdmissions = "getCourseAdmissions";
+    public final static String transactionNameGetExamAdmissions = "getExamAdmissions";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -99,10 +104,12 @@ public class AdmissionContract extends ContractBase {
     }
 
     /**
-     * Gets AdmissionList from the ledger.
+     * Gets CourseAdmissionList from the ledger.
      *
      * @param ctx          transaction context providing access to ChaincodeStub etc.
-     * @param enrollmentId enrollment to find admissions for
+     * @param enrollmentId enrollment to filter admissions by
+     * @param courseId     courseId to filter admissions by
+     * @param moduleId     moduleId to filter admissions by
      * @return Serialized List of Matching Admissions on success, serialized error on failure
      */
     @Transaction()
@@ -118,6 +125,41 @@ public class AdmissionContract extends ContractBase {
         List<CourseAdmission> admissions = cUtil.getCourseAdmissions(stub, enrollmentId, courseId, moduleId);
         try {
             cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, courseId, moduleId});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+        return GsonWrapper.toJson(admissions);
+    }
+
+    /**
+     * Gets ExamAdmissionList from the ledger.
+     *
+     * @param ctx          transaction context providing access to ChaincodeStub etc.
+     * @param enrollmentId enrollment to filter admissions by
+     * @return Serialized List of Matching Admissions on success, serialized error on failure
+     */
+    @Transaction()
+    public String getExamAdmissions(final Context ctx, final String admissionIds, final String enrollmentId, final String examIds) {
+        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        final String[] args = new String[]{admissionIds, enrollmentId, examIds};
+        try {
+            cUtil.checkParamsGetExamAdmission(ctx, args);
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+
+        ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+        Type listType = new TypeToken<String[]>() {}.getType();
+        ArrayList<String> admissionIdList = GsonWrapper.fromJson(admissionIds, listType);
+        ArrayList<String> examIdList = GsonWrapper.fromJson(examIds, listType);
+        List<ExamAdmission> admissions = cUtil.getExamAdmissions(stub, admissionIdList, enrollmentId, examIdList);
+        try {
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }

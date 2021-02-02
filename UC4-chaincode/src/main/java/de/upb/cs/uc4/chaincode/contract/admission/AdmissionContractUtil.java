@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract.admission;
 
+import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.*;
@@ -14,6 +15,7 @@ import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,13 +48,16 @@ public class AdmissionContractUtil extends ContractUtil {
         return this.getAllStates(stub, CourseAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> courseId.isEmpty() || item.getCourseId().equals(courseId))
-                .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId)).collect(Collectors.toList());
+                .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId))
+                .collect(Collectors.toList());
     }
 
-    public List<ExamAdmission> getExamAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
+    public List<ExamAdmission> getExamAdmissions(ChaincodeStub stub, List<String> admissionIds, String enrollmentId, List<String> examIds) {
         return this.getAllStates(stub, ExamAdmission.class).stream()
-                .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId)).collect(Collectors.toList());
-        // TODO add filters
+                .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
+                .filter(item -> admissionIds.isEmpty() || admissionIds.contains(item.getAdmissionId()))
+                .filter(item -> examIds.isEmpty() || examIds.contains(item.getExamId()))
+                .collect(Collectors.toList());
     }
 
     public boolean checkModuleAvailable(ChaincodeStub stub, CourseAdmission admission) {
@@ -114,6 +119,27 @@ public class AdmissionContractUtil extends ContractUtil {
         String admissionId = params.get(0);
 
         ChaincodeStub stub = ctx.getStub();
-        getState(stub, admissionId, CourseAdmission.class);
+        getState(stub, admissionId, AbstractAdmission.class);
+    }
+
+    public void checkParamsGetExamAdmission(Context ctx, String[] params) throws LedgerAccessError, ParameterError {
+        if (params.length != 3) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        Type listType = new TypeToken<String[]>() {}.getType();
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        try {
+            GsonWrapper.fromJson(params[0], listType);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("admissionIds"));
+        }
+        try {
+            GsonWrapper.fromJson(params[2], listType);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("examIds"));        }
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+
+        }
     }
 }

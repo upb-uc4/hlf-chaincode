@@ -10,7 +10,7 @@ import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContr
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
-import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
+import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import org.hyperledger.fabric.contract.Context;
@@ -55,8 +55,10 @@ public class AccessManager {
                         return getRequiredApprovalsForAddAdmission(ctx, paramList);
                     case AdmissionContract.transactionNameDropAdmission:
                         return getRequiredApprovalsForDropAdmission(ctx, paramList);
-                    case AdmissionContract.transactionNameGetAdmissions:
-                        return getRequiredApprovalsForGetAdmissions(ctx, paramList);
+                    case AdmissionContract.transactionNameGetCourseAdmissions:
+                        return getRequiredApprovalsForGetCourseAdmissions(ctx, paramList);
+                    case AdmissionContract.transactionNameGetExamAdmissions:
+                        return getRequiredApprovalsForGetExamAdmissions(ctx, paramList);
                     case AdmissionContract.transactionNameGetVersion:
                         return new ApprovalList();
                     case "":
@@ -149,7 +151,7 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForAddAdmission(Context ctx, List<String> params) {
-        CourseAdmission admission = GsonWrapper.fromJson(params.get(0), CourseAdmission.class);
+        AbstractAdmission admission = GsonWrapper.fromJson(params.get(0), AbstractAdmission.class);
         return new ApprovalList()
                 .addUsersItem(admission.getEnrollmentId())
                 .addGroupsItem(SYSTEM);
@@ -157,13 +159,18 @@ public class AccessManager {
 
     private static ApprovalList getRequiredApprovalsForDropAdmission(Context ctx, List<String> params) throws LedgerAccessError {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        CourseAdmission admission = cUtil.getState(ctx.getStub(), params.get(0), CourseAdmission.class);
+        AbstractAdmission admission = cUtil.getState(ctx.getStub(), params.get(0), AbstractAdmission.class);
         return new ApprovalList()
                 .addUsersItem(admission.getEnrollmentId())
                 .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForGetAdmissions(Context ctx, List<String> params) {
+    private static ApprovalList getRequiredApprovalsForGetCourseAdmissions(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetExamAdmissions(Context ctx, List<String> params) {
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }

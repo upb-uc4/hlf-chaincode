@@ -126,7 +126,7 @@ public class OperationContract extends ContractBase {
             try {
                 operationIdList = GsonWrapper.fromJson(operationIds, listType);
             } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("operationIds")))).getJsonError();
+                return  GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("operationIds")));
             }
         }
         List<String> stateList = new ArrayList<>();
@@ -134,7 +134,7 @@ public class OperationContract extends ContractBase {
             try {
                 stateList = GsonWrapper.fromJson(states, listType);
             } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("states")))).getJsonError();
+                return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("states")));
             }
         }
 
