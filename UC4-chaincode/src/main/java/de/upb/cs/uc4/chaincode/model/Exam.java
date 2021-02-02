@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode.model;
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,13 +21,13 @@ public class Exam {
     @SerializedName("type")
     private String type;
     @SerializedName("date")
-    private String date;
+    private LocalDateTime date;
     @SerializedName("ects")
     private int ects;
     @SerializedName("admittableUntil")
-    private String admittableUntil;
+    private LocalDateTime admittableUntil;
     @SerializedName("droppableUntil")
-    private String droppableUntil;
+    private LocalDateTime droppableUntil;
 
     /**
      * Get examId
@@ -129,15 +130,15 @@ public class Exam {
      * @return date
      **/
     @ApiModelProperty()
-    public String getDate() {
+    public LocalDateTime getDate() {
         return this.date;
     }
 
-    public void setDate(String value) {
+    public void setDate(LocalDateTime value) {
         this.date = value;
     }
 
-    public Exam date(String date) {
+    public Exam date(LocalDateTime date) {
         this.date = date;
         return this;
     }
@@ -167,15 +168,15 @@ public class Exam {
      * @return admittableUntil
      **/
     @ApiModelProperty()
-    public String getAdmittableUntil() {
+    public LocalDateTime getAdmittableUntil() {
         return this.admittableUntil;
     }
 
-    public void setAdmittableUntil(String value) {
+    public void setAdmittableUntil(LocalDateTime value) {
         this.admittableUntil = value;
     }
 
-    public Exam admittableUntil(String admittableUntil) {
+    public Exam admittableUntil(LocalDateTime admittableUntil) {
         this.admittableUntil = admittableUntil;
         return this;
     }
@@ -186,15 +187,15 @@ public class Exam {
      * @return droppableUntil
      **/
     @ApiModelProperty()
-    public String getDroppableUntil() {
+    public LocalDateTime getDroppableUntil() {
         return this.droppableUntil;
     }
 
-    public void setDroppableUntil(String value) {
+    public void setDroppableUntil(LocalDateTime value) {
         this.droppableUntil = value;
     }
 
-    public Exam droppableUntil(String droppableUntil) {
+    public Exam droppableUntil(LocalDateTime droppableUntil) {
         this.droppableUntil = droppableUntil;
         return this;
     }
