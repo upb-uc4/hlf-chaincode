@@ -158,4 +158,9 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         ChaincodeStub stub = ctx.getStub();
         getState(stub, name, ExaminationRegulation.class);
     }
+
+    public boolean moduleExists(ChaincodeStub stub, String moduleId) {
+        return getAllStates(stub, ExaminationRegulation.class)
+                .stream().anyMatch(er -> er.getModules().stream().anyMatch(module -> module.getId() == moduleId));
+    }
 }

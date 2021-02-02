@@ -72,62 +72,38 @@ public class ExamContract extends ContractBase {
      * @return Serialized List of Matching Exams on success, serialized error on failure
      */
     @Transaction()
-    public String getExams(final Context ctx, final String examIds, final String courseIds, final String lecturerIds,
-                           final String moduleIds, final String types, final String admittableAt, final String droppableAt) {
+    public String getExams(
+            final Context ctx,
+            final String examIds,
+            final String courseIds,
+            final String lecturerIds,
+            final String moduleIds,
+            final String types,
+            final String admittableAt,
+            final String droppableAt) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        try {
+            cUtil.checkParamsGetExams(ctx, new ArrayList<String>(){{
+                add(examIds);
+                add(courseIds);
+                add(lecturerIds);
+                add(moduleIds);
+                add(types);
+                add(admittableAt);
+                add(droppableAt);
+            }});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        List<String> examIdList = new ArrayList<>();
-        if(!cUtil.valueUnset(examIds)) {
-            try {
-                examIdList = GsonWrapper.fromJson(examIds, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("examIds")))).getJsonError();
-            }
-        }
-
-        List<String> courseIdList = new ArrayList<>();
-        if(!cUtil.valueUnset(examIds)) {
-            try {
-                courseIdList = GsonWrapper.fromJson(courseIds, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("courseIds")))).getJsonError();
-            }
-        }
-
-        List<String> lecturerIdList = new ArrayList<>();
-        if(!cUtil.valueUnset(examIds)) {
-            try {
-                lecturerIdList = GsonWrapper.fromJson(lecturerIds, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("lecturerIds")))).getJsonError();
-            }
-        }
-
-        List<String> moduleIdList = new ArrayList<>();
-        if(!cUtil.valueUnset(examIds)) {
-            try {
-                moduleIdList = GsonWrapper.fromJson(moduleIds, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("moduleIds")))).getJsonError();
-            }
-        }
-
-        List<String> typeList = new ArrayList<>();
-        if(!cUtil.valueUnset(examIds)) {
-            try {
-                typeList = GsonWrapper.fromJson(types, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("types")))).getJsonError();
-            }
-        }
-
         List<Exam> examList = cUtil.getExams(
                 ctx.getStub(),
-                examIdList,
-                courseIdList,
-                lecturerIdList,
-                moduleIdList,
-                typeList,
+                GsonWrapper.fromJson(examIds, listType),
+                GsonWrapper.fromJson(courseIds, listType),
+                GsonWrapper.fromJson(lecturerIds, listType),
+                GsonWrapper.fromJson(moduleIds, listType),
+                GsonWrapper.fromJson(types, listType),
                 admittableAt,
                 droppableAt);
         return GsonWrapper.toJson(examList);

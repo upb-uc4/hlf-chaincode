@@ -1,18 +1,22 @@
 package de.upb.cs.uc4.chaincode.helper;
 
+import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 public class GsonWrapper {
 
+    private static final Gson cleanGson = new GsonBuilder().disableHtmlEscaping().create();
     private static final Gson gson = new GsonBuilder().disableHtmlEscaping() // need disableHtmlEscaping to handle testCases and data
             .registerTypeAdapter(
                     LocalDateTime.class,
@@ -74,6 +78,12 @@ public class GsonWrapper {
     }
 
     public static <T> T fromJson(String json, Type type) {
+        Type listType = new TypeToken<ArrayList<String>> () {}.getType();
+        if (type.equals(listType)) {
+            if (json == null || json.equals("")) {
+                return cleanGson.fromJson("[]", type);
+            }
+        }
         return gson.fromJson(json, type);
     }
 }

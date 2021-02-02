@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract.exam;
 
+import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
@@ -13,6 +14,7 @@ import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -37,7 +39,7 @@ public class ExamContractUtil extends ContractUtil {
     }
 
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
-        // FIXME the reason of this invalid parameter does not make sense, does it?
+        // FIXME the reason of this invalid parameter does not make sense
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
                 .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
@@ -61,11 +63,11 @@ public class ExamContractUtil extends ContractUtil {
             invalidParameters.add(getInvalidUserNotRegistered());
         }
 
-        // FIXME this is odd; the lecturer has to be matriculated for the examination regulation containing the module?
-        if (!this.checkModuleAvailable(stub, exam.getLecturerEnrollmentId(), exam.getModuleId())) {
+        if (new ExaminationRegulationContractUtil().moduleExists(stub, exam.getModuleId())) {
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
+        // TODO use timestamp from proposal, unless frontend can manipulate that arbitrarily
         if(!(exam.getDate().isAfter(LocalDateTime.now()))){
             invalidParameters.add(getInvalidModuleAvailable("date"));
         }
@@ -189,19 +191,55 @@ public class ExamContractUtil extends ContractUtil {
         if (params.size() != 7) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String examJson = params.get(0);
+        final String examIds = params.get(0);
+        final String courseIds = params.get(1);
+        final String lecturerIds = params.get(2);
+        final String moduleIds = params.get(3);
+        final String types = params.get(4);
+        final String admittableAt = params.get(5);
+        final String droppableAt = params.get(6);
 
-        Exam exam;
+        // TODO check if admittableAt and droppableAt are dates
+
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         try {
-            exam = GsonWrapper.fromJson(examJson, Exam.class);
+            GsonWrapper.fromJson(examIds, listType);
         } catch (Exception e) {
-            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableParam("exam"))));
+            invalidParams.add(getUnparsableParam("examIds"));
         }
-
-        ArrayList<InvalidParameter> invalidParams = getParameterErrorsForExam(exam);
+        try {
+            GsonWrapper.fromJson(courseIds, listType);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("courseIds"));
+        }
+        try {
+            GsonWrapper.fromJson(lecturerIds, listType);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("lecturerIds"));
+        }
+        try {
+            GsonWrapper.fromJson(moduleIds, listType);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("moduleIds"));
+        }
+        try {
+            GsonWrapper.fromJson(types, listType);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("types"));
+        }
+        try {
+            GsonWrapper.fromJson(admittableAt, LocalDateTime.class);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("admittableAt"));
+        }
+        try {
+            GsonWrapper.fromJson(droppableAt, LocalDateTime.class);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("droppableAt"));
+        }
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
-
     }
 }

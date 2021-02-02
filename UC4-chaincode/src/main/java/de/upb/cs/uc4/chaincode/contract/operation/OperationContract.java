@@ -8,6 +8,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -121,21 +122,21 @@ public class OperationContract extends ContractBase {
             final String states) {
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
 
-        List<String> operationIdList = new ArrayList<>();
-        if(!cUtil.valueUnset(operationIds)) {
-            try {
-                operationIdList = GsonWrapper.fromJson(operationIds, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("operationIds")))).getJsonError();
-            }
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<String> operationIdList = null;
+        try {
+            operationIdList = GsonWrapper.fromJson(operationIds, listType);
+        } catch (Exception e) {
+            invalidParams.add(cUtil.getUnparsableParam("operationIds"));
         }
-        List<String> stateList = new ArrayList<>();
-        if(!cUtil.valueUnset(states)) {
-            try {
-                stateList = GsonWrapper.fromJson(states, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("states")))).getJsonError();
-            }
+        List<String> stateList = null;
+        try {
+            stateList = GsonWrapper.fromJson(states, listType);
+        } catch (Exception e) {
+            invalidParams.add(cUtil.getUnparsableParam("states"));
+        }
+        if (!invalidParams.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
         List<OperationData> operations = cUtil.getOperations(
