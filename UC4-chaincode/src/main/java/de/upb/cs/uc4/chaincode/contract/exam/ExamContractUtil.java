@@ -199,8 +199,6 @@ public class ExamContractUtil extends ContractUtil {
         final String admittableAt = params.get(5);
         final String droppableAt = params.get(6);
 
-        // TODO check if admittableAt and droppableAt are dates
-
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         try {
