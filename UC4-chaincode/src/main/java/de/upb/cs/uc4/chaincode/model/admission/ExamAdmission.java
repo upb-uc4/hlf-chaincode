@@ -41,11 +41,8 @@ public class ExamAdmission extends AbstractAdmission {
             return false;
         }
         ExamAdmission other = (ExamAdmission) o;
-        return Objects.equals(this.admissionId, other.admissionId)
-                && Objects.equals(this.enrollmentId, other.enrollmentId)
-                && Objects.equals(this.examId, other.examId)
-                && Objects.equals(this.timestamp, other.timestamp)
-                && Objects.equals(this.type, other.type);
+        return Objects.equals(this.examId, other.examId)
+                && super.equals(o);
     }
 
     @Override

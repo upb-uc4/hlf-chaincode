@@ -1,6 +1,6 @@
 [
   {
-    "name": "addNonExistingAdmission",
+    "name": "addNonExistingCourseAdmission",
     "type": "addAdmission_SUCCESS",
     "ids": [
       "User1",
@@ -66,6 +66,43 @@
         "enrollmentId": "0000001",
         "timestamp": "2020-12-31T23:59:59",
         "type": "Course"
+      }
+    ]
+  },
+  {
+    "name": "addNonExistingExamAdmission",
+    "type": "addAdmission_SUCCESS",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000001",
+        "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Exam"
+      }
+    ],
+    "compare": [
+      {
+        "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+        "admissionId": "0000001:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+        "enrollmentId": "0000001",
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Exam"
       }
     ]
   },

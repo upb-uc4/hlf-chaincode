@@ -65,6 +65,9 @@ public class ValidationManager {
                     case AdmissionContract.transactionNameGetCourseAdmissions:
                         // pass
                         break;
+                    case AdmissionContract.transactionNameGetExamAdmissions:
+                        admissionUtil.checkParamsGetExamAdmission(ctx, paramList);
+                        break;
                     case AdmissionContract.transactionNameGetVersion:
                         break;
                     case "":

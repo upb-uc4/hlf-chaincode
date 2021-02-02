@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
+import de.upb.cs.uc4.chaincode.model.admission.AdmissionType;
 import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
 import de.upb.cs.uc4.chaincode.model.admission.ExamAdmission;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -17,6 +18,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,7 +53,7 @@ public class AdmissionContractUtil extends ContractUtil {
     }
 
     public List<CourseAdmission> getCourseAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
-        return this.getAllStates(stub, CourseAdmission.class).stream()
+        return this.getAllStates(stub, AbstractAdmission.class, CourseAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> courseId.isEmpty() || item.getCourseId().equals(courseId))
                 .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId))
@@ -59,7 +61,7 @@ public class AdmissionContractUtil extends ContractUtil {
     }
 
     public List<ExamAdmission> getExamAdmissions(ChaincodeStub stub, List<String> admissionIds, String enrollmentId, List<String> examIds) {
-        return this.getAllStates(stub, ExamAdmission.class).stream()
+        return this.getAllStates(stub, AbstractAdmission.class, ExamAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> admissionIds.isEmpty() || admissionIds.contains(item.getAdmissionId()))
                 .filter(item -> examIds.isEmpty() || examIds.contains(item.getExamId()))
@@ -146,7 +148,11 @@ public class AdmissionContractUtil extends ContractUtil {
             invalidParams.add(getUnparsableParam("examIds"));        }
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
-
         }
+    }
+
+    public <T1, T2> List<T2> getAllStates(ChaincodeStub stub, Class<T1> superClass, Class<T2> c) {
+        ArrayList<T1> states = super.getAllStates(stub, superClass);
+        return (List<T2>) states.stream().filter(item -> item.getClass() == c).collect(Collectors.toList());
     }
 }

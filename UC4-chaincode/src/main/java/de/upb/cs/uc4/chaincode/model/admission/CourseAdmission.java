@@ -61,12 +61,9 @@ public class CourseAdmission extends AbstractAdmission {
             return false;
         }
         CourseAdmission other = (CourseAdmission) o;
-        return Objects.equals(this.admissionId, other.admissionId)
-                && Objects.equals(this.enrollmentId, other.enrollmentId)
-                && Objects.equals(this.courseId, other.courseId)
+        return Objects.equals(this.courseId, other.courseId)
                 && Objects.equals(this.moduleId, other.moduleId)
-                && Objects.equals(this.timestamp, other.timestamp)
-                && Objects.equals(this.type, other.type);
+                && super.equals(o);
     }
 
     @Override

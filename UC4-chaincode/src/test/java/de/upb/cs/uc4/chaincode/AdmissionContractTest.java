@@ -40,8 +40,10 @@ public final class AdmissionContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(testName, dropAdmissionSuccessTest(setup, input, compare, ids));
             case "dropAdmission_FAILURE":
                 return DynamicTest.dynamicTest(testName, dropAdmissionFailureTest(setup, input, compare, ids));
-            case "getAdmissions_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getAdmissionsSuccessTest(setup, input, compare, ids));
+            case "getCourseAdmissions_SUCCESS":
+                return DynamicTest.dynamicTest(testName, getCourseAdmissionsSuccessTest(setup, input, compare, ids));
+            case "getExamAdmissions_SUCCESS":
+                return DynamicTest.dynamicTest(testName, getExamAdmissionsSuccessTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -110,7 +112,7 @@ public final class AdmissionContractTest extends TestCreationBase {
         };
     }
 
-    private Executable getAdmissionsSuccessTest(
+    private Executable getCourseAdmissionsSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
             List<String> compare,
@@ -120,6 +122,20 @@ public final class AdmissionContractTest extends TestCreationBase {
             Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameGetCourseAdmissions, setup, input, ids);
 
             String getResult = contract.getCourseAdmissions(ctx, input.get(0), input.get(1), input.get(2));
+            assertThat(getResult).isEqualTo(compare.get(0));
+        };
+    }
+
+    private Executable getExamAdmissionsSuccessTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<String> ids
+    ) {
+        return () -> {
+            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameGetExamAdmissions, setup, input, ids);
+
+            String getResult = contract.getExamAdmissions(ctx, input.get(0), input.get(1), input.get(2));
             assertThat(getResult).isEqualTo(compare.get(0));
         };
     }
