@@ -5,7 +5,8 @@ import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
-import de.upb.cs.uc4.chaincode.model.Admission;
+import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
+import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
@@ -43,7 +44,7 @@ public class AdmissionContract extends ContractBase {
         }
 
         ChaincodeStub stub = ctx.getStub();
-        Admission newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
+        AbstractAdmission newAdmission = GsonWrapper.fromJson(admissionJson, AbstractAdmission.class);
         newAdmission.resetAdmissionId();
 
         try {
@@ -114,7 +115,7 @@ public class AdmissionContract extends ContractBase {
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        List<Admission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
+        List<CourseAdmission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
         try {
             cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, courseId, moduleId});
         } catch (SerializableError e) {

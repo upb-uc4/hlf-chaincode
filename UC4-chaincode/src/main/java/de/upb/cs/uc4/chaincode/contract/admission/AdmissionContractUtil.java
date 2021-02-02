@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode.contract.admission;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
@@ -35,8 +36,8 @@ public class AdmissionContractUtil extends ContractUtil {
                 .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
     }
 
-    public List<Admission> getAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
-        return this.getAllStates(stub, Admission.class).stream()
+    public List<CourseAdmission> getAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
+        return this.getAllStates(stub, CourseAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> courseId.isEmpty() || item.getCourseId().equals(courseId))
                 .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId)).collect(Collectors.toList());
@@ -50,7 +51,7 @@ public class AdmissionContractUtil extends ContractUtil {
      */
     public ArrayList<InvalidParameter> getSemanticErrorsForAdmission(
             ChaincodeStub stub,
-            Admission admission) {
+            CourseAdmission admission) {
 
         ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
@@ -62,7 +63,7 @@ public class AdmissionContractUtil extends ContractUtil {
         return invalidParameters;
     }
 
-    private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) {
+    private boolean checkModuleAvailable(ChaincodeStub stub, CourseAdmission admission) {
         ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
         MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
 
@@ -93,7 +94,7 @@ public class AdmissionContractUtil extends ContractUtil {
      * @return a list of all errors found for the given matriculationData
      */
     public ArrayList<InvalidParameter> getParameterErrorsForAdmission(
-            Admission admission) {
+            CourseAdmission admission) {
 
         ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
 
@@ -121,9 +122,9 @@ public class AdmissionContractUtil extends ContractUtil {
 
         ChaincodeStub stub = ctx.getStub();
 
-        Admission newAdmission;
+        CourseAdmission newAdmission;
         try {
-            newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
+            newAdmission = GsonWrapper.fromJson(admissionJson, CourseAdmission.class);
             newAdmission.resetAdmissionId();
         } catch (Exception e) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableParam("admission"))));
@@ -148,6 +149,6 @@ public class AdmissionContractUtil extends ContractUtil {
         String admissionId = params.get(0);
 
         ChaincodeStub stub = ctx.getStub();
-        getState(stub, admissionId, Admission.class);
+        getState(stub, admissionId, CourseAdmission.class);
     }
 }
