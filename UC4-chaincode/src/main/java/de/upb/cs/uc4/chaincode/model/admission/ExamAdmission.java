@@ -7,7 +7,14 @@ import java.util.Objects;
 
 public class ExamAdmission extends AbstractAdmission {
 
-    protected final AdmissionType type = AdmissionType.EXAM;
+    public ExamAdmission () {
+        type = AdmissionType.EXAM;
+    }
+
+    @Override
+    public void setType(AdmissionType type) {
+        this.type = AdmissionType.EXAM;
+    }
 
     @SerializedName("examId")
     private String examId;

@@ -8,7 +8,14 @@ import java.util.Objects;
 
 public class CourseAdmission extends AbstractAdmission {
 
-    protected final AdmissionType type = AdmissionType.COURSE;
+    public CourseAdmission () {
+        type = AdmissionType.COURSE;
+    }
+
+    @Override
+    public void setType(AdmissionType type) {
+        this.type = AdmissionType.COURSE;
+    }
 
     @SerializedName("courseId")
     protected String courseId;

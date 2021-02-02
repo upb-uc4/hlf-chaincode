@@ -54,16 +54,18 @@
         "enrollmentId": "0000001",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T23:59:59"
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
       {
-        "admissionId": "0000001:C.1",
-        "enrollmentId": "0000001",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T23:59:59"
+        "admissionId": "0000001:C.1",
+        "enrollmentId": "0000001",
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Course"
       }
     ]
   },
@@ -169,7 +171,8 @@
         "enrollmentId": "",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T23:59:59"
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -239,7 +242,8 @@
         "enrollmentId": "0000003",
         "courseId": "",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T23:59:59"
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -301,7 +305,8 @@
         "enrollmentId": "0000004",
         "courseId": "C.1",
         "moduleId": "",
-        "timestamp": "2020-12-31T23:59:59"
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -371,7 +376,8 @@
         "enrollmentId": "0000005",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": ""
+        "timestamp": "",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -433,7 +439,8 @@
         "enrollmentId": "0000006",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31-23:59:59"
+        "timestamp": "2020-12-31-23:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -495,7 +502,8 @@
         "enrollmentId": "0000007",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T12:59:59"
+        "timestamp": "2020-12-31T12:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -561,7 +569,8 @@
         "enrollmentId": "0000009",
         "courseId": "C.1",
         "moduleId": "M.3",
-        "timestamp": "2020-12-31T12:59:59"
+        "timestamp": "2020-12-31T12:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -627,7 +636,8 @@
           "enrollmentId": "0000008",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T12:59:59"
+          "timestamp": "2020-12-31T12:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -637,7 +647,8 @@
         "enrollmentId": "0000008",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T12:59:59"
+        "timestamp": "2020-12-31T12:59:59",
+        "type": "Course"
       }
     ],
     "compare": [

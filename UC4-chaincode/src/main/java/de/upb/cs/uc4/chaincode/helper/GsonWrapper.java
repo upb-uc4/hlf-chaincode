@@ -64,6 +64,7 @@ public class GsonWrapper {
             .registerTypeAdapter(
                     AbstractAdmission.class,
                     (JsonDeserializer<AbstractAdmission>) (json, type, jsonDeserializationContext) -> {
+                        // TODO throw proper error if type field unset/does not exist
                         JsonObject wrapper = (JsonObject) json;
                         AdmissionType admissionType = jsonDeserializationContext.deserialize(wrapper.get("type"), AdmissionType.class);
                         return jsonDeserializationContext.deserialize(json, admissionType.getAdmissionType());

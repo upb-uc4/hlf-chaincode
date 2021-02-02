@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
+import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
@@ -10,6 +11,8 @@ import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -119,7 +122,7 @@ public final class AdmissionContractTest extends TestCreationBase {
         return () -> {
             Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameGetAdmissions, setup, input, ids);
 
-            String getResult = contract.getAdmissions(ctx, input.get(0), input.get(1), input.get(2));
+            String getResult = contract.getCourseAdmissions(ctx, input.get(0), input.get(1), input.get(2));
             assertThat(getResult).isEqualTo(compare.get(0));
         };
     }

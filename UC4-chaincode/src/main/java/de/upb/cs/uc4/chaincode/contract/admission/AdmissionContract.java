@@ -106,7 +106,7 @@ public class AdmissionContract extends ContractBase {
      * @return Serialized List of Matching Admissions on success, serialized error on failure
      */
     @Transaction()
-    public String getAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
+    public String getCourseAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
 
         ChaincodeStub stub = ctx.getStub();
@@ -115,7 +115,7 @@ public class AdmissionContract extends ContractBase {
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        List<CourseAdmission> admissions = cUtil.getAdmissions(stub, enrollmentId, courseId, moduleId);
+        List<CourseAdmission> admissions = cUtil.getCourseAdmissions(stub, enrollmentId, courseId, moduleId);
         try {
             cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, courseId, moduleId});
         } catch (SerializableError e) {

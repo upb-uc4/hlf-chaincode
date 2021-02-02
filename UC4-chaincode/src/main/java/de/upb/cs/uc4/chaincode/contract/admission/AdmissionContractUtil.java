@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
+import de.upb.cs.uc4.chaincode.model.admission.ExamAdmission;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
@@ -36,11 +37,17 @@ public class AdmissionContractUtil extends ContractUtil {
                 .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
     }
 
-    public List<CourseAdmission> getAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
+    public List<CourseAdmission> getCourseAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
         return this.getAllStates(stub, CourseAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> courseId.isEmpty() || item.getCourseId().equals(courseId))
                 .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId)).collect(Collectors.toList());
+    }
+
+    public List<ExamAdmission> getExamAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
+        return this.getAllStates(stub, ExamAdmission.class).stream()
+                .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId)).collect(Collectors.toList());
+        // TODO add filters
     }
 
     /**
