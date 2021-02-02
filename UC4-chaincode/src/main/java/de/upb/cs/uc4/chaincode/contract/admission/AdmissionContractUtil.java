@@ -53,7 +53,7 @@ public class AdmissionContractUtil extends ContractUtil {
     }
 
     public List<CourseAdmission> getCourseAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
-        return this.getAllStates(stub, AbstractAdmission.class, CourseAdmission.class).stream()
+        return this.getAllStates(stub, CourseAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> courseId.isEmpty() || item.getCourseId().equals(courseId))
                 .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId))
@@ -61,7 +61,7 @@ public class AdmissionContractUtil extends ContractUtil {
     }
 
     public List<ExamAdmission> getExamAdmissions(ChaincodeStub stub, List<String> admissionIds, String enrollmentId, List<String> examIds) {
-        return this.getAllStates(stub, AbstractAdmission.class, ExamAdmission.class).stream()
+        return this.getAllStates(stub, ExamAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> admissionIds.isEmpty() || admissionIds.contains(item.getAdmissionId()))
                 .filter(item -> examIds.isEmpty() || examIds.contains(item.getExamId()))
@@ -151,8 +151,9 @@ public class AdmissionContractUtil extends ContractUtil {
         }
     }
 
-    public <T1, T2> List<T2> getAllStates(ChaincodeStub stub, Class<T1> superClass, Class<T2> c) {
-        ArrayList<T1> states = super.getAllStates(stub, superClass);
-        return (List<T2>) states.stream().filter(item -> item.getClass() == c).collect(Collectors.toList());
+    @Override
+    public <T> List<T> getAllStates(ChaincodeStub stub, Class<T> c) {
+        List<AbstractAdmission> states = super.getAllStates(stub, AbstractAdmission.class);
+        return (List<T>) states.stream().filter(item -> item.getClass() == c).collect(Collectors.toList());
     }
 }

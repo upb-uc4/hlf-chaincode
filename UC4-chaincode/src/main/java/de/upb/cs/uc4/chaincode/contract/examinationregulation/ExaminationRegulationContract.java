@@ -17,6 +17,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Contract(
         name = ExaminationRegulationContract.contractName
@@ -92,7 +93,7 @@ public class ExaminationRegulationContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableNameListParam()));
         }
 
-        ArrayList<ExaminationRegulation> regulations = new ArrayList<>();
+        List<ExaminationRegulation> regulations = new ArrayList<>();
         if (nameList.isEmpty()) {
             // read all existing information
             regulations = cUtil.getAllStates(stub, ExaminationRegulation.class);

@@ -234,6 +234,36 @@
     ]
   },
   {
+    "name": "addNonExistingExamAdmission_EmptyExamId",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      "User1",
+      "0000002"
+    ],
+    "setup": {},
+    "input": [
+      {
+        "examId": "",
+        "admissionId": "",
+        "enrollmentId": "0000001",
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Exam"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.examId",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "name": "addNonExistingAdmission_EmptyParam_CourseId",
     "type": "addAdmission_FAILURE",
     "ids": [
