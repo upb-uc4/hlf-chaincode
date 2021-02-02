@@ -1,15 +1,15 @@
 package de.upb.cs.uc4.chaincode.contract;
 
+import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
+import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.*;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
-import de.upb.cs.uc4.chaincode.model.OperationData;
-import de.upb.cs.uc4.chaincode.model.OperationDataState;
+import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -99,6 +99,12 @@ abstract public class ContractUtil {
 
     public InvalidParameter getEmptyEnrollmentIdParam(String prefix) {
         return getEmptyInvalidParameter(prefix + "enrollmentId");
+    }
+
+    public InvalidParameter getInvalidTimestampParam() {
+        return new InvalidParameter()
+                .name(errorPrefix + ".timestamp")
+                .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
     }
 
     public GenericError getInternalError() {
@@ -292,5 +298,28 @@ abstract public class ContractUtil {
             }
         }
         return resultItems;
+    }
+
+    public boolean checkModuleAvailable(ChaincodeStub stub, String enrollmentId, String moduleId) {
+        ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
+        MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
+
+        try {
+            MatriculationData matriculationData = matUtil.getState(stub, enrollmentId, MatriculationData.class);
+            List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
+            for (SubjectMatriculation matriculation : matriculations) {
+                String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
+                ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
+                List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
+                for (ExaminationRegulationModule module : modules) {
+                    if (module.getId().equals(moduleId)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (LedgerAccessError e) {
+            return false;
+        }
+        return false;
     }
 }

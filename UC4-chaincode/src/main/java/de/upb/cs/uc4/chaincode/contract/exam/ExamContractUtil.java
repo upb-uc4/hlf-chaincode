@@ -36,13 +36,8 @@ public class ExamContractUtil extends ContractUtil {
                 .reason("The user trying to add an exam is not registered in the system.");
     }
 
-    public InvalidParameter getInvalidTimestampParam() {
-        return new InvalidParameter()
-                .name(errorPrefix + ".timestamp")
-                .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
-    }
-
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
+        // FIXME the reason of this invalid parameter does not make sense, does it?
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
                 .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
@@ -66,7 +61,8 @@ public class ExamContractUtil extends ContractUtil {
             invalidParameters.add(getInvalidUserNotRegistered());
         }
 
-        if (!this.checkModuleAvailable(stub, exam)) {
+        // FIXME this is odd; the lecturer has to be matriculated for the examination regulation containing the module?
+        if (!this.checkModuleAvailable(stub, exam.getLecturerEnrollmentId(), exam.getModuleId())) {
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
@@ -97,30 +93,6 @@ public class ExamContractUtil extends ContractUtil {
         return invalidParameters;
     }
 
-    private boolean checkModuleAvailable(ChaincodeStub stub, Exam exam) {
-        ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
-        MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
-
-        try {
-            MatriculationData matriculationData = matUtil.getState(stub, exam.getLecturerEnrollmentId(), MatriculationData.class);
-            List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
-            for (SubjectMatriculation matriculation : matriculations) {
-                String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
-                ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
-                List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
-                for (ExaminationRegulationModule module : modules) {
-                    if (module.getId().equals(exam.getModuleId())) {
-                        return true;
-                    }
-                }
-            }
-        } catch (LedgerAccessError e) {
-            return false;
-        }
-
-        return false;
-    }
-
     /**
      * Returns a list of errors describing everything wrong with the given exam parameters
      *
@@ -131,31 +103,31 @@ public class ExamContractUtil extends ContractUtil {
     public ArrayList<InvalidParameter> getParameterErrorsForExam(
             Exam exam) {
 
-        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(exam.getExamId())) {
-            invalidparams.add(getEmptyEnrollmentIdParam(errorPrefix + ".examId"));
+            invalidParams.add(getEmptyEnrollmentIdParam(errorPrefix + ".examId"));
         }
         if (valueUnset(exam.getCourseId())) {
-            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".courseId"));
+            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".courseId"));
         }
         if (valueUnset(exam.getLecturerEnrollmentId())) {
-            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".lecturerId"));
+            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".lecturerId"));
         }
         if (valueUnset(exam.getModuleId())) {
-            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
+            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
         }
         if (valueUnset(exam.getType())) {
-            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".type"));
+            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".type"));
         }
         if (valueUnset(exam.getAdmittableUntil())) {
-            invalidparams.add(getInvalidTimestampParam());
+            invalidParams.add(getInvalidTimestampParam());
         }
         if (valueUnset(exam.getDroppableUntil())) {
-            invalidparams.add(getInvalidTimestampParam());
+            invalidParams.add(getInvalidTimestampParam());
         }
 
-        return invalidparams;
+        return invalidParams;
     }
 
     public List<Exam> getExams(

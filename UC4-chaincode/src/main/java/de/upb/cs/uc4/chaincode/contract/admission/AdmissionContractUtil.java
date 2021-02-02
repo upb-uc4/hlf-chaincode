@@ -23,12 +23,6 @@ public class AdmissionContractUtil extends ContractUtil {
         identifier = "admissionId";
     }
 
-    public InvalidParameter getInvalidTimestampParam() {
-        return new InvalidParameter()
-                .name(errorPrefix + ".timestamp")
-                .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
-    }
-
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
@@ -54,36 +48,12 @@ public class AdmissionContractUtil extends ContractUtil {
 
         ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
-        if (!this.checkModuleAvailable(stub, admission)) {
+        if (!this.checkModuleAvailable(stub, admission.getEnrollmentId(), admission.getModuleId())) {
             invalidParameters.add(getInvalidModuleAvailable("enrollmentId"));
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
         return invalidParameters;
-    }
-
-    private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) {
-        ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
-        MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
-
-        try {
-            MatriculationData matriculationData = matUtil.getState(stub, admission.getEnrollmentId(), MatriculationData.class);
-            List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
-            for (SubjectMatriculation matriculation : matriculations) {
-                String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
-                ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
-                List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
-                for (ExaminationRegulationModule module : modules) {
-                    if (module.getId().equals(admission.getModuleId())) {
-                        return true;
-                    }
-                }
-            }
-        } catch (LedgerAccessError e) {
-            return false;
-        }
-
-        return false;
     }
 
     /**

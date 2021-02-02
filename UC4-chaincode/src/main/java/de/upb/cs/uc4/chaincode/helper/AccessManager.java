@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
@@ -12,6 +13,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.model.Admission;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.Exam;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import org.hyperledger.fabric.contract.Context;
 
@@ -110,6 +112,17 @@ public class AccessManager {
                         return getRequiredApprovalsForCloseExaminationRegulation(ctx, paramList);
                     case ExaminationRegulationContract.transactionNameGetVersion:
                         return new ApprovalList();
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
+                    default:
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
+                }
+            case ExamContract.contractName:
+                switch (transactionName) {
+                    case ExamContract.transactionNameAddExam:
+                        return getRequiredApprovalsForAddExam(ctx, paramList);
+                    case ExamContract.transactionNameGetExams:
+                        return getRequiredApprovalsForGetExams(ctx, paramList);
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
                     default:
@@ -224,6 +237,19 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForCloseExaminationRegulation(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForAddExam(Context ctx, List<String> params) {
+        Exam exam = GsonWrapper.fromJson(params.get(0), Exam.class);
+        return new ApprovalList()
+                .addUsersItem(exam.getLecturerEnrollmentId())
+                .addGroupsItem(ADMIN)
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetExams(Context ctx, List<String> params) {
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }

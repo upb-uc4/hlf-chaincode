@@ -5,6 +5,8 @@ import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
@@ -28,6 +30,7 @@ public class ValidationManager {
     private static ExaminationRegulationContractUtil examinationRegulationUtil = new ExaminationRegulationContractUtil();
     private static GroupContractUtil groupUtil = new GroupContractUtil();
     private static MatriculationDataContractUtil matriculationDataUtil = new MatriculationDataContractUtil();
+    private static ExamContractUtil examUtil = new ExamContractUtil();
 
     public static void validateParams(Context ctx, String contractName, String transactionName, String params) throws SerializableError {
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
@@ -140,6 +143,19 @@ public class ValidationManager {
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
                 break;
+            case ExamContract.contractName:
+                switch (transactionName) {
+                    case ExamContract.transactionNameAddExam:
+                        examUtil.checkParamsAddExam(ctx, paramList);
+                        break;
+                    case ExamContract.transactionNameGetExams:
+                        examUtil.checkParamsGetExams(ctx, paramList);
+                        break;
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
+                    default:
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
+                }
             case "":
                 throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyContractNameError()));
             default:
