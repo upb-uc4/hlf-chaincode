@@ -1,20 +1,20 @@
 package de.upb.cs.uc4.chaincode.model.admission;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import io.swagger.annotations.ApiModelProperty;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class CourseAdmission extends AbstractAdmission {
 
     public CourseAdmission () {
         type = AdmissionType.COURSE;
-    }
-
-    @Override
-    public void setType(AdmissionType type) {
-        this.type = AdmissionType.COURSE;
     }
 
     @SerializedName("courseId")
@@ -98,6 +98,40 @@ public class CourseAdmission extends AbstractAdmission {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+    @Override
+    public ArrayList<InvalidParameter> getParameterErrors() {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+
+        if (cUtil.valueUnset(this.getEnrollmentId())) {
+            invalidparams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
+        }
+        if (cUtil.valueUnset(this.getCourseId())) {
+            invalidparams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".courseId"));
+        }
+        if (cUtil.valueUnset(this.getModuleId())) {
+            invalidparams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".moduleId"));
+        }
+        if (cUtil.valueUnset(this.getTimestamp())) {
+            invalidparams.add(cUtil.getInvalidTimestampParam());
+        }
+
+        return invalidparams;
+    }
+
+    @Override
+    public ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
+
+        if (!cUtil.checkModuleAvailable(stub, this)) {
+            invalidParameters.add(cUtil.getInvalidModuleAvailable("enrollmentId"));
+            invalidParameters.add(cUtil.getInvalidModuleAvailable("moduleId"));
+        }
+
+        return invalidParameters;
     }
 }
 

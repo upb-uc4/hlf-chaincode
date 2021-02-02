@@ -1,19 +1,18 @@
 package de.upb.cs.uc4.chaincode.model.admission;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import io.swagger.annotations.ApiModelProperty;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ExamAdmission extends AbstractAdmission {
 
     public ExamAdmission () {
         type = AdmissionType.EXAM;
-    }
-
-    @Override
-    public void setType(AdmissionType type) {
-        this.type = AdmissionType.EXAM;
     }
 
     @SerializedName("examId")
@@ -77,6 +76,30 @@ public class ExamAdmission extends AbstractAdmission {
             return "null";
         }
         return o.toString().replace("\n", "\n    ");
+    }
+
+
+    @Override
+    public ArrayList<InvalidParameter> getParameterErrors() {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+
+        if (cUtil.valueUnset(this.getEnrollmentId())) {
+            invalidparams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
+        }
+
+        // TODO analogous to CourseAdmission
+
+        return invalidparams;
+    }
+
+    public ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
+
+        // TODO
+
+        return invalidParameters;
     }
 }
 

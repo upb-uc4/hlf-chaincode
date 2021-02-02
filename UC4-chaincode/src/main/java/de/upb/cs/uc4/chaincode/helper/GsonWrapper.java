@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode.helper;
 
 import com.google.gson.*;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
 import de.upb.cs.uc4.chaincode.model.admission.AdmissionType;
@@ -64,9 +65,12 @@ public class GsonWrapper {
             .registerTypeAdapter(
                     AbstractAdmission.class,
                     (JsonDeserializer<AbstractAdmission>) (json, type, jsonDeserializationContext) -> {
-                        // TODO throw proper error if type field unset/does not exist
                         JsonObject wrapper = (JsonObject) json;
-                        AdmissionType admissionType = jsonDeserializationContext.deserialize(wrapper.get("type"), AdmissionType.class);
+                        JsonElement jsonType = wrapper.get("type");
+                        if (jsonType == null) {
+                            // TODO throw proper error if type field unset/does not exist
+                        }
+                        AdmissionType admissionType = jsonDeserializationContext.deserialize(jsonType, AdmissionType.class);
                         return jsonDeserializationContext.deserialize(json, admissionType.getAdmissionType());
                     })
             .create();

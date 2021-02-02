@@ -1,12 +1,15 @@
 package de.upb.cs.uc4.chaincode.model.admission;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import io.swagger.annotations.ApiModelProperty;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Objects;
 
-public class AbstractAdmission {
+public abstract class AbstractAdmission {
     protected static final String DELIMITER = ":";
 
     @SerializedName("admissionId")
@@ -31,7 +34,7 @@ public class AbstractAdmission {
         return this.admissionId;
     }
 
-    public void resetAdmissionId() {}
+    public abstract void resetAdmissionId();
 
     @ApiModelProperty()
     public String getEnrollmentId() {
@@ -55,10 +58,6 @@ public class AbstractAdmission {
     @ApiModelProperty()
     public AdmissionType getType() {
         return this.type;
-    }
-
-    public void setType(AdmissionType type) {
-        this.type = type;
     }
 
     @Override
@@ -104,5 +103,8 @@ public class AbstractAdmission {
         }
         return o.toString().replace("\n", "\n    ");
     }
+
+    public abstract ArrayList<InvalidParameter> getParameterErrors();
+    public abstract ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub);
 }
 
