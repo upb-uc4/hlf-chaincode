@@ -107,11 +107,11 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         return invalidParams;
     }
 
-    public void checkParamsAddExaminationRegulation(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsAddExaminationRegulation(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String examinationRegulation = params.get(0);
+        String examinationRegulation = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -135,11 +135,11 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsGetExaminationRegulations(List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsGetExaminationRegulations(String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String names = params.get(0);
+        String names = params[0];
 
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         try {
@@ -149,11 +149,11 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsCloseExaminationRegulation(Context ctx, List<String> params) throws LedgerAccessError, ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsCloseExaminationRegulation(Context ctx, String[] params) throws LedgerAccessError, ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String name = params.get(0);
+        String name = params[0];
 
         ChaincodeStub stub = ctx.getStub();
         getState(stub, name, ExaminationRegulation.class);

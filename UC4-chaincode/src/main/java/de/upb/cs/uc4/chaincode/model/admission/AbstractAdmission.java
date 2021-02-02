@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode.model.admission;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import io.swagger.annotations.ApiModelProperty;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -104,7 +105,25 @@ public abstract class AbstractAdmission {
         return o.toString().replace("\n", "\n    ");
     }
 
-    public abstract ArrayList<InvalidParameter> getParameterErrors();
+    public ArrayList<InvalidParameter> getParameterErrors() {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+
+        if (cUtil.valueUnset(this.enrollmentId)) {
+            invalidParams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
+        }
+        if (cUtil.valueUnset(this.timestamp)) {
+            invalidParams.add(cUtil.getInvalidTimestampParam());
+        }
+        if (cUtil.valueUnset(this.type)) {
+            invalidParams.add(cUtil.getInvalidTypeParam());
+        }
+
+        return invalidParams;
+    }
+
     public abstract ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub);
+
+    public abstract void ensureIsDroppable(ChaincodeStub stub);
 }
 

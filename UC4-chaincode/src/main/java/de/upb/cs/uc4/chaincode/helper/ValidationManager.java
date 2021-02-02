@@ -29,8 +29,8 @@ public class ValidationManager {
     private static MatriculationDataContractUtil matriculationDataUtil = new MatriculationDataContractUtil();
 
     public static void validateParams(Context ctx, String contractName, String transactionName, String params) throws SerializableError {
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        List<String> paramList = GsonWrapper.fromJson(params, listType);
+        Type listType = new TypeToken<String[]>() {}.getType();
+        String[] paramList = GsonWrapper.fromJson(params, listType);
         switch (contractName) {
             case MatriculationDataContract.contractName:
                 switch (transactionName) {

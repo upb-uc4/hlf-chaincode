@@ -82,24 +82,27 @@ public class ExamAdmission extends AbstractAdmission {
     @Override
     public ArrayList<InvalidParameter> getParameterErrors() {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidParams = super.getParameterErrors();
 
-        if (cUtil.valueUnset(this.getEnrollmentId())) {
-            invalidparams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
+        if (cUtil.valueUnset(this.examId)) {
+            invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".examId"));
         }
 
-        // TODO analogous to CourseAdmission
-
-        return invalidparams;
+        return invalidParams;
     }
 
     public ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
         ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
-        // TODO
+        // TODO add remaining checks once all necessary contracts available
 
         return invalidParameters;
+    }
+
+    @Override
+    public void ensureIsDroppable(ChaincodeStub stub) {
+        // TODO check if corresponding exam is droppable (otherwise throw error)
     }
 }
 

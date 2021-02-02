@@ -38,6 +38,12 @@ public class AdmissionContractUtil extends ContractUtil {
                 .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
     }
 
+    public InvalidParameter getInvalidTypeParam() {
+        return new InvalidParameter()
+                .name(errorPrefix + ".type")
+                .reason("Type must be one of (Course|Exam)");
+    }
+
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
@@ -84,11 +90,11 @@ public class AdmissionContractUtil extends ContractUtil {
         return false;
     }
 
-    public void checkParamsAddAdmission(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsAddAdmission(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String admissionJson = params.get(0);
+        String admissionJson = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -112,14 +118,15 @@ public class AdmissionContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsDropAdmission(Context ctx, List<String> params) throws LedgerAccessError, ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsDropAdmission(Context ctx, String[] params) throws LedgerAccessError, ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String admissionId = params.get(0);
+        String admissionId = params[0];
 
         ChaincodeStub stub = ctx.getStub();
-        getState(stub, admissionId, AbstractAdmission.class);
+        AbstractAdmission admission = getState(stub, admissionId, AbstractAdmission.class);
+        admission.ensureIsDroppable(stub);
     }
 
     public void checkParamsGetExamAdmission(Context ctx, String[] params) throws LedgerAccessError, ParameterError {

@@ -103,19 +103,13 @@ public class CourseAdmission extends AbstractAdmission {
     @Override
     public ArrayList<InvalidParameter> getParameterErrors() {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidParams = super.getParameterErrors();
 
-        if (cUtil.valueUnset(this.getEnrollmentId())) {
-            invalidParams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
-        }
         if (cUtil.valueUnset(this.getCourseId())) {
             invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".courseId"));
         }
         if (cUtil.valueUnset(this.getModuleId())) {
             invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".moduleId"));
-        }
-        if (cUtil.valueUnset(this.getTimestamp())) {
-            invalidParams.add(cUtil.getInvalidTimestampParam());
         }
 
         return invalidParams;
@@ -133,5 +127,8 @@ public class CourseAdmission extends AbstractAdmission {
 
         return invalidParameters;
     }
+
+    @Override
+    public void ensureIsDroppable(ChaincodeStub stub) {}
 }
 

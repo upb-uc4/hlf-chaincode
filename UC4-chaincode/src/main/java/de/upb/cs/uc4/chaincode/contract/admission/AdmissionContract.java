@@ -42,8 +42,9 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        final String[] args = new String[]{admissionJson};
         try {
-            cUtil.checkParamsAddAdmission(ctx, Collections.singletonList(admissionJson));
+            cUtil.checkParamsAddAdmission(ctx, args);
         } catch (ParameterError e) {
             return e.getJsonError();
         }
@@ -53,12 +54,12 @@ public class AdmissionContract extends ContractBase {
         newAdmission.resetAdmissionId();
 
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{admissionJson});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{admissionJson});
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -76,15 +77,16 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String dropAdmission(final Context ctx, String admissionId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        final String[] args = new String[]{admissionId};
         try {
-            cUtil.checkParamsDropAdmission(ctx, Collections.singletonList(admissionId));
+            cUtil.checkParamsDropAdmission(ctx, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{admissionId});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -96,7 +98,7 @@ public class AdmissionContract extends ContractBase {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{admissionId});
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -115,16 +117,16 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String getCourseAdmissions(final Context ctx, final String enrollmentId, final String courseId, final String moduleId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
-
+        final String[] args = new String[]{enrollmentId, courseId, moduleId};
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId, courseId, moduleId});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         List<CourseAdmission> admissions = cUtil.getCourseAdmissions(stub, enrollmentId, courseId, moduleId);
         try {
-            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, courseId, moduleId});
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -135,7 +137,9 @@ public class AdmissionContract extends ContractBase {
      * Gets ExamAdmissionList from the ledger.
      *
      * @param ctx          transaction context providing access to ChaincodeStub etc.
+     * @param admissionIds admissionIds to filter admissions by
      * @param enrollmentId enrollment to filter admissions by
+     * @param examIds examIds to filter admissions by
      * @return Serialized List of Matching Admissions on success, serialized error on failure
      */
     @Transaction()
