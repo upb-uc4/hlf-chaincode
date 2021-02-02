@@ -104,6 +104,9 @@ public class OperationContract extends ContractBase {
         }
         // TODO check if operation is pending
         // reject
+        if(cUtil.valueUnset(rejectMessage)){
+            return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getEmptyInvalidParameter("rejectMessage")))).getJsonError();
+        }
         operationData.state(OperationDataState.REJECTED).reason(rejectMessage);
 
         // store
