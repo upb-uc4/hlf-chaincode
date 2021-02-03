@@ -156,6 +156,7 @@ public class ValidationManager {
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
+                break;
             case "":
                 throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyContractNameError()));
             default:
