@@ -39,10 +39,9 @@ public class ExamContractUtil extends ContractUtil {
     }
 
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
-        // FIXME the reason of this invalid parameter does not make sense
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
-                .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
+                .reason("The exam cannot be specified for the given module.");
     }
 
     /**
