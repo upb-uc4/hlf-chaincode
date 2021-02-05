@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract.examresult;
 
+import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
@@ -13,8 +14,11 @@ import de.upb.cs.uc4.chaincode.model.examresult.GradeType;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class ExamResultContractUtil extends ContractUtil {
     private final CertificateContractUtil certUtil = new CertificateContractUtil();
@@ -141,15 +145,40 @@ public class ExamResultContractUtil extends ContractUtil {
     }
 
     public void checkParamsGetExamResultEntries(Context ctx, List<String> params) throws ParameterError {
+        if (params.size() != 2) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String enrollmentId = params.get(0);
+        String examIds = params.get(1);
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        // todo:Implement checks
-        // check if 2 params
-        // check params: enrollmentId, examIds
-        // examIds: Check, if valid jsonList of String
-
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+        try {
+            GsonWrapper.fromJson(examIds, listType);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("examIds"));
+        }
+        if (valueUnset(enrollmentId)) {
+            invalidParams.add(getEmptyEnrollmentIdParam());
+        }
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
+    }
+
+    public List<ExamResultEntry> getExamResultEntries(
+            ChaincodeStub stub,
+            final String enrollmentId,
+            final List<String> examIds) {
+
+        return this.getAllStates(stub, ExamResult.class).stream()
+                .map(result -> result.getExamResultEntries().stream())
+                .reduce((entries1, entries2) -> Stream.concat(entries1, entries2))
+                .orElse(Stream.empty())
+                .filter(item -> enrollmentId.isEmpty() ||
+                        enrollmentId.equals(item.getEnrollmentId()))
+                .filter(item -> valueUnset(examIds) ||
+                        examIds.contains(item.getExamId()))
+                .collect(Collectors.toList());
     }
 }

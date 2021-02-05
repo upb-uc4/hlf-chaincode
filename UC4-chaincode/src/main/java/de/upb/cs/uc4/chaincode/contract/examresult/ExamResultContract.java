@@ -1,17 +1,20 @@
 package de.upb.cs.uc4.chaincode.contract.examresult;
 
+import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
+import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,19 +79,33 @@ public class ExamResultContract extends ContractBase {
      */
 
     @Transaction()
-    public String getExamResultEntries(final Context ctx, String enrollmentId, List<String> examIds) {
+    public String getExamResultEntries(final Context ctx, String enrollmentId, String examIds) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        String[] args = new String[]{enrollmentId, examIds};
         try {
-            cUtil.checkParamsGetExamResultEntries(ctx, new ArrayList<String>(){{add(enrollmentId); addAll(examIds);}});
+            cUtil.checkParamsGetExamResultEntries(ctx, new ArrayList<String>(){{add(enrollmentId); add(examIds);}});
         } catch (ParameterError e) {
             return e.getJsonError();
         }
-        // todo: implement
-        // logical AND filter
-        // filter for enrollment ID (if not empty)
-        // filter for examIds (if not empty)
-        // return results
-        return "";
+        ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+
+        try {
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+        List<ExamResultEntry>examResults = cUtil.getExamResultEntries(
+                stub,
+                enrollmentId,
+                GsonWrapper.fromJson(examIds, listType));
+        return GsonWrapper.toJson(examResults);
     }
 
 }
