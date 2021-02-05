@@ -137,7 +137,6 @@ public class ExamResultContractUtil extends ContractUtil {
         if (params.size() != 2) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String enrollmentId = params.get(0);
         String examIds = params.get(1);
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
