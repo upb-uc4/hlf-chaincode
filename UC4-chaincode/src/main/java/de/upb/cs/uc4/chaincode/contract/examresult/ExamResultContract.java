@@ -3,12 +3,16 @@ package de.upb.cs.uc4.chaincode.contract.examresult;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import org.hyperledger.fabric.contract.annotation.Contract;
-import de.upb.cs.uc4.chaincode.model.ExamResult;
-import de.upb.cs.uc4.chaincode.model.ExamResultEntry;
+import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Transaction;
+import org.hyperledger.fabric.shim.ChaincodeStub;
+
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -32,17 +36,34 @@ public class ExamResultContract extends ContractBase {
      * @return examResult object on ledger on success, serialized error on failure
      */
     @Transaction()
-    public String addExamResult(final Context ctx, ExamResult examResult) {
+    public String addExamResult(final Context ctx, String examResult) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        final String[] args = new String[]{examResult};
         try {
-            cUtil.checkParamsAddExamResult(ctx, examResult);
+            cUtil.checkParamsAddExamResult(ctx, Collections.singletonList(examResult));
         } catch (ParameterError e) {
             return e.getJsonError();
         }
-        // todo: implement
-        // check required approvals
-        // add to ledger
-        return "";
+
+        ChaincodeStub stub = ctx.getStub();
+        try {
+            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{examResult});
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+
+        ExamResult newExamResult = GsonWrapper.fromJson(examResult, ExamResult.class);
+        try {
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+
+        try {
+            return cUtil.putAndGetStringState(stub, cUtil.getKey(newExamResult), GsonWrapper.toJson(newExamResult));
+        } catch (NoSuchAlgorithmException e) {
+            return GsonWrapper.toJson(cUtil.getInternalError());
+        }
     }
 
     /**

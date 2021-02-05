@@ -5,124 +5,93 @@ import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
-import de.upb.cs.uc4.chaincode.model.ExamResult;
-import de.upb.cs.uc4.chaincode.model.ExamResultEntry;
+import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
+import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulationModule;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.examresult.GradeType;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
-import java.util.Iterator;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.*;
 
 public class ExamResultContractUtil extends ContractUtil {
     private final CertificateContractUtil certUtil = new CertificateContractUtil();
     private final ExaminationRegulationContractUtil exRegUtil = new ExaminationRegulationContractUtil();
     public ExamResultContractUtil() {
-        keyPrefix = "examResult";
+        keyPrefix = "examResultEntries";
         thing = "ExamResult";
         identifier = "";
     }
 
-    public InvalidParameter getEmptyExamIdParam() {
+    public InvalidParameter getModuleForExamIdDoesNotExistParam(int index) {
         return new InvalidParameter()
-                .name(errorPrefix + ".examId")
-                .reason("The examId must not be empty or null.");
+                .name(errorPrefix + "[" + index + "].examId")
+                .reason("There is no module for the given examId");
     }
 
-    public InvalidParameter getEmptyModuleIdParam() {
+    public InvalidParameter getNoCertificateForEnrollmentIdParam(int index) {
         return new InvalidParameter()
-                .name(errorPrefix + ".moduleId")
-                .reason("The moduleId must not be empty or null.");
+                .name(errorPrefix + "[" + index + "].enrollmentId")
+                .reason("The enrollmentId must have a certificate");
     }
 
-    public InvalidParameter getNoCertificateForEnrollmentIDParam() {
+    public InvalidParameter getInvalidExamIdParam(int index) {
         return new InvalidParameter()
-                .name(errorPrefix + ".enrollmentId")
-                .reason("The enrollmentId must have a certificate.");
-    }
-    public InvalidParameter getNoExaminationRegulationModuleForModuleIDParam() {
-        return new InvalidParameter()
-                .name(errorPrefix + ".moduleId")
-                .reason("The moduleId must have an ExaminationRegulation which contains the moduleId.");
+                .name(errorPrefix + "[" + index + "].examId")
+                .reason("The examId must have format <courseId>:<moduleId>:<type>:<date>");
     }
 
-    public InvalidParameter getIncorrectGradeParam() {
+    public InvalidParameter getDistinctExamIdsParam() {
         return new InvalidParameter()
-                .name(errorPrefix + ".grade")
+                .name(errorPrefix)
+                .reason("There are exam-result entries for different examIds");
+    }
+
+    public InvalidParameter getIncorrectGradeParam(int index) {
+        return new InvalidParameter()
+                .name(errorPrefix + "[" + index + "].grade")
                 .reason("Grade must be AnyOf(\"1.0\", \"1.3\", \"1.7\", \"2.0\", \"2.3\", \"2.7\", \"3.0\", \"3.3\", \"3.7\", \"4.0\", \"5.0\")");
     }
 
-    private ArrayList<InvalidParameter> getErrorForEnrollmentId(final String enrollmentId){
-        ArrayList<InvalidParameter> list = new ArrayList<>();
-        if (enrollmentId == null || enrollmentId.equals("")) {
-            list.add(getEmptyEnrollmentIdParam());
-        }
-        return list;
+    public String getKey(ExamResult examResult) throws NoSuchAlgorithmException {
+        return hashAndEncodeBase64url(GsonWrapper.toJson(examResult));
     }
 
-    private ArrayList<InvalidParameter> getErrorForExamId(final String examId){
-        ArrayList<InvalidParameter> list = new ArrayList<>();
-        if (examId == null || examId.equals("")) {
-            list.add(getEmptyExamIdParam());
-        }
-        return list;
-    }
-
-    private ArrayList<InvalidParameter> getErrorForModuleId(final String moduleId){
-        ArrayList<InvalidParameter> list = new ArrayList<>();
-        if (moduleId == null || moduleId.equals("")) {
-            list.add(getEmptyModuleIdParam());
-        }
-        return list;
-    }
-
-    private ArrayList<InvalidParameter> getErrorForGrade(final String grade){
-        ArrayList<InvalidParameter> list = new ArrayList<>();
-        List<String> gradesList = new ArrayList<String>(){{add("1.0");add("1.3");add("1.7"); add("2.0");add("2.3");add("2.7");add("3.0");
-                add("3.3");add("3.7");add("4.0");add("5.0");}};
-        if (!(gradesList.contains(grade))) {
-            list.add(getIncorrectGradeParam());
-        }
-        return list;
-    }
-
-    public ArrayList<InvalidParameter> getParameterErrorsForExamResultEntry(Context ctx, ExamResultEntry entry) throws ParameterError {
+    public List<InvalidParameter> getParameterErrorsForExamResultEntry(Context ctx, ExamResultEntry entry, int index) {
 
         ChaincodeStub stub = ctx.getStub();
-        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
-        List<String> gradesList = new ArrayList<String>(){{add("1.0");add("1.3");add("1.7"); add("2.0");add("2.3");add("2.7");add("3.0");
-            add("3.3");add("3.7");add("4.0");add("5.0");}};
+        List<InvalidParameter> invalidParams = getParameterErrorsForExamId(ctx, entry.getExamId(), index);
 
-        if (!(gradesList.contains(entry.getGrade()))) {
-            invalidparams.add(getIncorrectGradeParam());
+        if (entry.getGrade() == null) {
+            invalidParams.add(getIncorrectGradeParam(index));
         }
-        if (entry.getExamId() == null || entry.getExamId().equals("")) {
-            invalidparams.add(getEmptyExamIdParam());
-        }
-        if (entry.getEnrollmentId() == null || entry.getEnrollmentId().equals("")) {
-            invalidparams.add(getEmptyEnrollmentIdParam());
+        if (valueUnset(entry.getEnrollmentId())) {
+            invalidParams.add(getEmptyEnrollmentIdParam());
         }
         if(!(certUtil.keyExists(stub, entry.getEnrollmentId()))){
-            invalidparams.add(getNoCertificateForEnrollmentIDParam());
+            invalidParams.add(getNoCertificateForEnrollmentIdParam(index));
         }
+        return invalidParams;
+    }
 
-        // todo: nicer way get to get moduleId
-        String examId= entry.getExamId();
-        String moduleId= examId.substring(examId.indexOf(":")+1,examId.indexOf(":",examId.indexOf(":")+1));
-
-        if (moduleId == null || moduleId.equals("")) {
-            invalidparams.add(getEmptyModuleIdParam());
+    public List<InvalidParameter> getParameterErrorsForExamId(Context ctx, String examId, int index) {
+        String moduleId = null;
+        try {
+            moduleId = getModuleFromKey(examId);
+        } catch (ArrayIndexOutOfBoundsException e) {
+            return Collections.singletonList(getInvalidExamIdParam(index));
         }
-        // Check, if there exists an ExaminationRegulation which contains the moduleId
-        HashSet<ExaminationRegulationModule> validModules = exRegUtil.getValidModules(stub);
-        if(!checkModuleId(validModules,moduleId)){
-            invalidparams.add(getNoExaminationRegulationModuleForModuleIDParam());
+        // TODO Check, if examId exists
+        if (!exRegUtil.checkModuleAvailable(ctx.getStub(), moduleId)) {
+            return Collections.singletonList(getModuleForExamIdDoesNotExistParam(index));
         }
-        // todo:Check, if examId exists
+        return new ArrayList<>();
+    }
 
-        return invalidparams;
+    private String getModuleFromKey(String examId) throws ArrayIndexOutOfBoundsException {
+        return examId.split(":")[1];
     }
 
     public boolean checkModuleId(HashSet<ExaminationRegulationModule> validModules, String moduleId){
@@ -135,23 +104,40 @@ public class ExamResultContractUtil extends ContractUtil {
         return false;
     }
 
-    public void checkParamsAddExamResult(Context ctx, ExamResult examResult) throws ParameterError {
+    public void checkParamsAddExamResult(Context ctx, List<String> params) throws ParameterError {
+        if (params.size() != 1) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        String examResult = params.get(0);
+
         ChaincodeStub stub = ctx.getStub();
+
+        ExamResult newExamResult;
+        try {
+            newExamResult = GsonWrapper.fromJson(examResult, ExamResult.class);
+        } catch (Exception e) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableParam("examResult"))));
+        }
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        List<ExamResultEntry> examResultEntries=examResult.getExamResultEntries();
+        List<ExamResultEntry> examResultEntries = newExamResult.getExamResultEntries();
         //for each entry
         for (int i=0; i< examResultEntries.size();i++){
-            ExamResultEntry entry= examResultEntries.get(i);
-            // check if enrollmentId, examID, moduleID are not empty and grade is correct and certificate for enrollment ID exists and examID exists
-            invalidParams.addAll(getParameterErrorsForExamResultEntry(ctx, entry));
+            ExamResultEntry entry = examResultEntries.get(i);
+            invalidParams.addAll(getParameterErrorsForExamResultEntry(ctx, entry, i));
         }
-        // todo: Check All entries refer to the same examId
+        if (distinctExamIds(examResultEntries)) {
+            invalidParams.add(getDistinctExamIdsParam());
+        }
         // todo: Check All students referenced must be admitted (?)
         // todo: Check All students admitted must be referenced (?)
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
 
+    }
+
+    private boolean distinctExamIds(List<ExamResultEntry> entries) {
+        return entries.stream().map(entry -> entry.getExamId()).distinct().count() > 1;
     }
 
     public void checkParamsGetExamResultEntries(Context ctx, List<String> params) throws ParameterError {

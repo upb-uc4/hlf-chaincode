@@ -59,6 +59,11 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         return validModules;
     }
 
+    public boolean checkModuleAvailable(ChaincodeStub stub, String moduleId) {
+        HashSet<ExaminationRegulationModule> moduleIds = getValidModules(stub);
+        return moduleIds.contains(moduleId);
+    }
+
     public ArrayList<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<ExaminationRegulationModule> validModules) {
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
 

@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.examresult;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
@@ -11,7 +11,7 @@ public class ExamResultEntry {
     private String enrollmentId;
 
     @SerializedName("grade")
-    private String grade;
+    private GradeType grade;
 
     @SerializedName("examId")
     private String examId;
@@ -34,11 +34,11 @@ public class ExamResultEntry {
      * @return grade
      **/
     @ApiModelProperty()
-    public String getGrade() {
+    public GradeType getGrade() {
         return this.grade;
     }
 
-    public void setGrade(String value) {
+    public void setGrade(GradeType value) {
         this.grade = value;
     }
 
