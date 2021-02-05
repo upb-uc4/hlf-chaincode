@@ -159,8 +159,8 @@ public class AdmissionContract extends ContractBase {
             return e.getJsonError();
         }
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        ArrayList<String> admissionIdList = GsonWrapper.fromJson(admissionIds, listType);
-        ArrayList<String> examIdList = GsonWrapper.fromJson(examIds, listType);
+        List<String> admissionIdList = GsonWrapper.fromJson(admissionIds, listType);
+        List<String> examIdList = GsonWrapper.fromJson(examIds, listType);
         List<ExamAdmission> admissions = cUtil.getExamAdmissions(stub, admissionIdList, enrollmentId, examIdList);
         try {
             cUtil.finishOperation(stub, contractName,  transactionName, args);
