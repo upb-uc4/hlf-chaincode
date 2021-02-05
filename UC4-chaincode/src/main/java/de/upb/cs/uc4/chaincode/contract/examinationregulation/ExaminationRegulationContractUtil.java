@@ -60,8 +60,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
     }
 
     public boolean checkModuleAvailable(ChaincodeStub stub, String moduleId) {
-        HashSet<ExaminationRegulationModule> moduleIds = getValidModules(stub);
-        return moduleIds.contains(moduleId);
+         return getValidModules(stub).stream().map(module -> module.getId()).anyMatch(item -> item.equals(moduleId));
     }
 
     public ArrayList<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<ExaminationRegulationModule> validModules) {

@@ -10,11 +10,11 @@ public class ExamResultEntry {
     @SerializedName("enrollmentId")
     private String enrollmentId;
 
-    @SerializedName("grade")
-    private GradeType grade;
-
     @SerializedName("examId")
     private String examId;
+
+    @SerializedName("grade")
+    private GradeType grade;
 
     /**
      * Get enrollmentId

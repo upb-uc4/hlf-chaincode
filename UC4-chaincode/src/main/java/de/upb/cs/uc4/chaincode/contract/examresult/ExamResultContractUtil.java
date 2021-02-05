@@ -8,9 +8,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
-import de.upb.cs.uc4.chaincode.model.ExaminationRegulationModule;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.model.examresult.GradeType;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -24,9 +22,10 @@ public class ExamResultContractUtil extends ContractUtil {
     private final CertificateContractUtil certUtil = new CertificateContractUtil();
     private final ExaminationRegulationContractUtil exRegUtil = new ExaminationRegulationContractUtil();
     public ExamResultContractUtil() {
-        keyPrefix = "examResultEntries";
+        keyPrefix = "examResult";
         thing = "ExamResult";
         identifier = "";
+        errorPrefix = "examResultEntries";
     }
 
     public InvalidParameter getModuleForExamIdDoesNotExistParam(int index) {
@@ -96,16 +95,6 @@ public class ExamResultContractUtil extends ContractUtil {
 
     private String getModuleFromKey(String examId) throws ArrayIndexOutOfBoundsException {
         return examId.split(":")[1];
-    }
-
-    public boolean checkModuleId(HashSet<ExaminationRegulationModule> validModules, String moduleId){
-        Iterator<ExaminationRegulationModule> it = validModules.iterator();
-        while(it.hasNext()){
-            if(it.next().getId().equals(moduleId)){
-                return true;
-            }
-        }
-        return false;
     }
 
     public void checkParamsAddExamResult(Context ctx, List<String> params) throws ParameterError {
