@@ -172,6 +172,7 @@ public class ExamContractUtil extends ContractUtil {
         Exam exam;
         try {
             exam = GsonWrapper.fromJson(examJson, Exam.class);
+            exam.resetExamId();
         } catch (Exception e) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableParam("exam"))));
         }

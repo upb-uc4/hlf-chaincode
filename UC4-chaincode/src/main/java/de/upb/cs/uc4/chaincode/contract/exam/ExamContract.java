@@ -49,6 +49,7 @@ public class ExamContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         Exam exam = GsonWrapper.fromJson(examJson, Exam.class);
+        exam.resetExamId();
 
         try {
             cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{examJson});

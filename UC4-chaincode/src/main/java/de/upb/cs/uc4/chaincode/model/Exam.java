@@ -29,6 +29,8 @@ public class Exam {
     @SerializedName("droppableUntil")
     private LocalDateTime droppableUntil;
 
+    protected static final String DELIMITER = ":";
+
     /**
      * Get examId
      *
@@ -48,6 +50,10 @@ public class Exam {
         return this;
     }
 
+    public void resetExamId() {
+        this.examId = this.courseId + DELIMITER + this.moduleId + DELIMITER + this.type + DELIMITER + this.date;
+    }
+
     /**
      * Get courseId
      *
@@ -60,6 +66,7 @@ public class Exam {
 
     public void setCourseId(String value) {
         this.courseId = value;
+        resetExamId();
     }
 
     public Exam courseId(String courseId) {
@@ -98,6 +105,7 @@ public class Exam {
 
     public void setModuleId(String value) {
         this.moduleId = value;
+        resetExamId();
     }
 
     public Exam moduleId(String moduleId) {
@@ -117,6 +125,7 @@ public class Exam {
 
     public void setType(String value) {
         this.type = value;
+        resetExamId();
     }
 
     public Exam type(String type) {
@@ -136,6 +145,7 @@ public class Exam {
 
     public void setDate(LocalDateTime value) {
         this.date = value;
+        resetExamId();
     }
 
     public Exam date(LocalDateTime date) {
