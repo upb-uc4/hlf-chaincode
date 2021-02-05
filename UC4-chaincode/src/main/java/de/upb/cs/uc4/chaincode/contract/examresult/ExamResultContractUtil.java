@@ -158,9 +158,6 @@ public class ExamResultContractUtil extends ContractUtil {
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("examIds"));
         }
-        if (valueUnset(enrollmentId)) {
-            invalidParams.add(getEmptyEnrollmentIdParam());
-        }
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
