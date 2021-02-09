@@ -58,6 +58,10 @@ public class OperationContract extends ContractBase {
         if(operationState != OperationDataState.PENDING){
            return GsonWrapper.toJson(cUtil.getApprovalImpossibleError());
         }
+        // check if the user trying to approve is not allowed to approve the operation
+        if(!operationData.getMissingApprovals().getUsers().contains(initiator)){
+            return GsonWrapper.toJson(cUtil.getApprovalDeniedError());
+        }
         // approve
         try {
             operationData = cUtil.approveOperation(ctx, operationData);
@@ -101,6 +105,7 @@ public class OperationContract extends ContractBase {
     }
 
     @Transaction
+
     public String rejectOperation(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
         OperationDataState operationState;
@@ -114,7 +119,7 @@ public class OperationContract extends ContractBase {
         if(operationState != OperationDataState.PENDING){
             return GsonWrapper.toJson(cUtil.getRejectionImpossibleError());
         }
-        // todo: check whether the user trying to reject is not allowed to reject the operation
+
 
         // reject
         operationData.state(OperationDataState.REJECTED).reason(cUtil.getUserRejectionMessage(rejectMessage));

@@ -5,11 +5,13 @@ import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.OperationDataState;
 import de.upb.cs.uc4.chaincode.model.TransactionInfo;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
+import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -36,7 +38,7 @@ public class OperationContractUtil extends ContractUtil {
     }
 
     public OperationData approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError {
-        // todo: add error if if the user trying to approve is not allowed to approve the operation
+
         String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
 
@@ -45,6 +47,7 @@ public class OperationContractUtil extends ContractUtil {
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
 
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
+
         return operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
