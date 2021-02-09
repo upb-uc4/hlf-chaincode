@@ -54,9 +54,9 @@ public class OperationContract extends ContractBase {
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
-        //check whether transaction still PENDING
+        // check whether transaction still PENDING
         if(operationState != OperationDataState.PENDING){
-            return GsonWrapper.toJson(cUtil.getPendingOperationError());
+           return GsonWrapper.toJson(cUtil.getApprovalImpossibleError());
         }
         // approve
         try {
@@ -87,7 +87,7 @@ public class OperationContract extends ContractBase {
         }
         //check whether transaction still PENDING
         if(operationState != OperationDataState.PENDING){
-            return GsonWrapper.toJson(cUtil.getPendingOperationError());
+            return GsonWrapper.toJson(cUtil.getApprovalImpossibleError());
         }
         // approve
         try {
@@ -112,8 +112,9 @@ public class OperationContract extends ContractBase {
         }
         //check whether transaction still PENDING
         if(operationState != OperationDataState.PENDING){
-            return GsonWrapper.toJson(cUtil.getPendingOperationError());
+            return GsonWrapper.toJson(cUtil.getRejectionImpossibleError());
         }
+        // todo: check whether the user trying to reject is not allowed to reject the operation
 
         // reject
         operationData.state(OperationDataState.REJECTED).reason(cUtil.getUserRejectionMessage(rejectMessage));

@@ -36,6 +36,7 @@ public class OperationContractUtil extends ContractUtil {
     }
 
     public OperationData approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError {
+        // todo: add error if if the user trying to approve is not allowed to approve the operation
         String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
 
