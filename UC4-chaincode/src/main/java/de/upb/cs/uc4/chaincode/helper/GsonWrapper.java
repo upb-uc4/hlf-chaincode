@@ -20,10 +20,10 @@ public class GsonWrapper {
     private static final Gson gson = new GsonBuilder().disableHtmlEscaping() // need disableHtmlEscaping to handle testCases and data
             .registerTypeAdapter(
                     LocalDateTime.class,
-                    (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> {
+                    (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) ->{
                         try {
                             return LocalDateTime.parse(json.getAsJsonPrimitive().getAsString());
-                        } catch (DateTimeParseException e) {
+                        } catch(Exception e){
                             return null;
                         }
                     })
@@ -85,5 +85,13 @@ public class GsonWrapper {
             }
         }
         return gson.fromJson(json, type);
+    }
+
+    public static LocalDateTime localDateTimeFromJson(String s){
+        if(s.isEmpty()){
+            return null;
+        }
+
+        return LocalDateTime.parse(s);
     }
 }

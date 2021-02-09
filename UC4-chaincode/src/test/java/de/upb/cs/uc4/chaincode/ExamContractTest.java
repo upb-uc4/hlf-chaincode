@@ -40,6 +40,8 @@ public final class ExamContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(testName, addExamSuccessTest(setup, input, compare, ids));
             case "addExam_FAILURE":
                 return DynamicTest.dynamicTest(testName, addExamFailureTest(setup, input, compare, ids));
+            case "getExam_SUCCESS":
+                return DynamicTest.dynamicTest(testName, getExamsSuccessTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -52,7 +54,7 @@ public final class ExamContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameAddAdmission, setup, input, ids);
+            Context ctx = TestUtil.buildContext(ExamContract.contractName, ExamContract.transactionNameAddExam, setup, input, ids);
 
             String addResult = contract.addExam(ctx, input.get(0));
 
@@ -71,9 +73,23 @@ public final class ExamContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, ExamContract.transactionNameAddExam, setup, input, ids);
+            Context ctx = TestUtil.buildContext(ExamContract.contractName, ExamContract.transactionNameAddExam, setup, input, ids);
             String result = contract.addExam(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
+        };
+    }
+
+    private Executable getExamsSuccessTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<String> ids
+    ) {
+        return () -> {
+            Context ctx = TestUtil.buildContext(ExamContract.contractName, ExamContract.transactionNameGetExams, setup, input, ids);
+
+            String getResult = contract.getExams(ctx, input.get(0), input.get(1), input.get(2), input.get(3), input.get(4), input.get(5), input.get(6));
+            assertThat(getResult).isEqualTo(compare.get(0));
         };
     }
 

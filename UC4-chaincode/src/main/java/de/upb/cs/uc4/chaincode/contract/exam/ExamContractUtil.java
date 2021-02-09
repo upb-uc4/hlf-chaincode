@@ -44,6 +44,24 @@ public class ExamContractUtil extends ContractUtil {
                 .reason("The exam cannot be specified for the given module.");
     }
 
+    public InvalidParameter getInvalidDate(String parameterName) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The exam date has to be in the future and after admittbale and droppable date.");
+    }
+
+    public InvalidParameter getInvalidAdmittableDate(String parameterName) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The admittable date has to be in the future and before droppable date and date of the exam.");
+    }
+
+    public InvalidParameter getInvalidDroppableDate(String parameterName) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The droppable date has to be in the future and after admittable date and before date of the exam.");
+    }
+
     /**
      * Returns a list of errors describing everything wrong with the given exam parameters
      *
@@ -62,33 +80,33 @@ public class ExamContractUtil extends ContractUtil {
             invalidParameters.add(getInvalidUserNotRegistered());
         }
 
-        if (new ExaminationRegulationContractUtil().moduleExists(stub, exam.getModuleId())) {
+        if (!new ExaminationRegulationContractUtil().moduleExists(stub, exam.getModuleId())) {
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
         // TODO use timestamp from proposal, unless frontend can manipulate that arbitrarily
         if(exam.getDate() != null && !(exam.getDate().isAfter(LocalDateTime.now()))){
-            invalidParameters.add(getInvalidModuleAvailable("date"));
+            invalidParameters.add(getInvalidDate("date"));
         }
 
         if(exam.getAdmittableUntil() != null && !(exam.getAdmittableUntil().isAfter(LocalDateTime.now()))){
-            invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
+            invalidParameters.add(getInvalidAdmittableDate("admittableAt"));
         }
 
         if(exam.getDroppableUntil() != null && !(exam.getDroppableUntil().isAfter(LocalDateTime.now()))){
-            invalidParameters.add(getInvalidModuleAvailable("droppableAt"));
+            invalidParameters.add(getInvalidDroppableDate("droppableAt"));
         }
 
         if(exam.getDate() != null && exam.getAdmittableUntil() != null && !(exam.getAdmittableUntil().isBefore(exam.getDate()))){
-            invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
+            invalidParameters.add(getInvalidAdmittableDate("admittableAt"));
         }
 
         if(exam.getDate() != null && exam.getDroppableUntil() != null && !(exam.getDroppableUntil().isBefore(exam.getDate()))){
-            invalidParameters.add(getInvalidModuleAvailable("droppableAt"));
+            invalidParameters.add(getInvalidDroppableDate("droppableAt"));
         }
 
         if(exam.getAdmittableUntil() != null && exam.getDroppableUntil() != null && !(exam.getAdmittableUntil().isBefore(exam.getDroppableUntil()))){
-            invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
+            invalidParameters.add(getInvalidAdmittableDate("admittableAt"));
         }
 
         return invalidParameters;
@@ -141,8 +159,8 @@ public class ExamContractUtil extends ContractUtil {
         final List<String> lecturerIds,
         final List<String> moduleIds,
         final List<String> types,
-        final String admittableAt,
-        final String droppableAt) {
+        final LocalDateTime admittableAt,
+        final LocalDateTime droppableAt) {
 
             return this.getAllStates(stub, Exam.class).stream()
                     .filter(item -> examIds.isEmpty() ||
@@ -155,10 +173,10 @@ public class ExamContractUtil extends ContractUtil {
                             moduleIds.contains(item.getModuleId()))
                     .filter(item -> types.isEmpty() ||
                             types.contains(item.getType()))
-                    .filter(item -> admittableAt.isEmpty() ||
-                            item.getAdmittableUntil().equals(admittableAt))
-                    .filter(item -> droppableAt.isEmpty() ||
-                            item.getDroppableUntil().equals(droppableAt))
+                    .filter(item -> admittableAt.equals(null) ||
+                            item.getAdmittableUntil().equals(admittableAt) || item.getAdmittableUntil().isAfter(admittableAt))
+                    .filter(item -> droppableAt.equals(null) ||
+                            item.getDroppableUntil().equals(droppableAt) || item.getDroppableUntil().isAfter(droppableAt))
                     .collect(Collectors.toList());
     }
 
@@ -231,12 +249,14 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getUnparsableParam("types"));
         }
         try {
-            GsonWrapper.fromJson(admittableAt, LocalDateTime.class);
+            //GsonWrapper.fromJson(admittableAt, LocalDateTime.class);
+            GsonWrapper.localDateTimeFromJson(admittableAt);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("admittableAt"));
         }
         try {
-            GsonWrapper.fromJson(droppableAt, LocalDateTime.class);
+            //GsonWrapper.fromJson(droppableAt, LocalDateTime.class);
+            GsonWrapper.localDateTimeFromJson(droppableAt);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("droppableAt"));
         }

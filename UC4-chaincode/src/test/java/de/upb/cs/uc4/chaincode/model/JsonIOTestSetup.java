@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
@@ -278,6 +279,12 @@ public class JsonIOTestSetup {
 
         cUtil = new GroupContractUtil();
         setup = TestUtil.toStringList(this.groupContract);
+        for (int i = 0; i < setup.size(); i += 2) {
+            cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i + 1));
+        }
+
+        cUtil = new ExamContractUtil();
+        setup = TestUtil.toStringList(this.examContract);
         for (int i = 0; i < setup.size(); i += 2) {
             cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i + 1));
         }
