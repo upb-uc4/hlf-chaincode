@@ -95,9 +95,9 @@ the test configurations can be found in: src\test\resources\test_configs
 To add a test you can insert a new test in json format like he following example which can be found in 'hlf-chaincode\UC4-chaincode\src\test\resources\test_configs\matriculation_data_contract\AddMatriculationDataTestIO.json':
 ```
  {
-    "name": "addExistingMatriculationData",                                     #kommentar
-    "type": "addMatriculationData_FAILURE",
-    "setup": {
+    "name": "addExistingMatriculationData",                                     # Name of the test
+    "type": "addMatriculationData_FAILURE",                                     # identify the structure of the test
+    "setup": {                                                                  # the setup for the test that simulates the initial ledger state
       "matriculationDataContract": [
         "0000001",
         {
@@ -124,7 +124,7 @@ To add a test you can insert a new test in json format like he following example
         }
       ]
     },
-    "input": [
+    "input": [                                                                     # the input for the test for example to add a new semester for a student
       {
         "enrollmentId": "0000001",
         "matriculationStatus": [
@@ -140,7 +140,7 @@ To add a test you can insert a new test in json format like he following example
         ]
       }
     ],
-    "compare": [
+    "compare": [                                                                    # this is the expected outcome of the test                                                              
       {
         "type": "HLConflict",
         "title": "There is already a MatriculationData for the given enrollmentId"
