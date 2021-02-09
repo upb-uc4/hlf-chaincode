@@ -67,27 +67,27 @@ public class ExamContractUtil extends ContractUtil {
         }
 
         // TODO use timestamp from proposal, unless frontend can manipulate that arbitrarily
-        if(!(exam.getDate().isAfter(LocalDateTime.now()))){
+        if(exam.getDate() != null && !(exam.getDate().isAfter(LocalDateTime.now()))){
             invalidParameters.add(getInvalidModuleAvailable("date"));
         }
 
-        if(!(exam.getAdmittableUntil().isAfter(LocalDateTime.now()))){
+        if(exam.getAdmittableUntil() != null && !(exam.getAdmittableUntil().isAfter(LocalDateTime.now()))){
             invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
         }
 
-        if(!(exam.getDroppableUntil().isAfter(LocalDateTime.now()))){
+        if(exam.getDroppableUntil() != null && !(exam.getDroppableUntil().isAfter(LocalDateTime.now()))){
             invalidParameters.add(getInvalidModuleAvailable("droppableAt"));
         }
 
-        if(!(exam.getAdmittableUntil().isBefore(exam.getDate()))){
+        if(exam.getDate() != null && exam.getAdmittableUntil() != null && !(exam.getAdmittableUntil().isBefore(exam.getDate()))){
             invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
         }
 
-        if(!(exam.getDroppableUntil().isBefore(exam.getDate()))){
+        if(exam.getDate() != null && exam.getDroppableUntil() != null && !(exam.getDroppableUntil().isBefore(exam.getDate()))){
             invalidParameters.add(getInvalidModuleAvailable("droppableAt"));
         }
 
-        if(!(exam.getAdmittableUntil().isBefore(exam.getDroppableUntil()))){
+        if(exam.getAdmittableUntil() != null && exam.getDroppableUntil() != null && !(exam.getAdmittableUntil().isBefore(exam.getDroppableUntil()))){
             invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
         }
 
@@ -113,19 +113,22 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".courseId"));
         }
         if (valueUnset(exam.getLecturerEnrollmentId())) {
-            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".lecturerId"));
+            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".lecturerEnrollmentId"));
         }
         if (valueUnset(exam.getModuleId())) {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
+        }
+        if (valueUnset(exam.getDate())) {
+            invalidParams.add(getInvalidTimestampParam("date"));
         }
         if (valueUnset(exam.getType())) {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".type"));
         }
         if (valueUnset(exam.getAdmittableUntil())) {
-            invalidParams.add(getInvalidTimestampParam());
+            invalidParams.add(getInvalidTimestampParam("admittableUntil"));
         }
         if (valueUnset(exam.getDroppableUntil())) {
-            invalidParams.add(getInvalidTimestampParam());
+            invalidParams.add(getInvalidTimestampParam("droppableUntil"));
         }
 
         return invalidParams;
@@ -221,6 +224,7 @@ public class ExamContractUtil extends ContractUtil {
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("moduleIds"));
         }
+
         try {
             GsonWrapper.fromJson(types, listType);
         } catch (Exception e) {

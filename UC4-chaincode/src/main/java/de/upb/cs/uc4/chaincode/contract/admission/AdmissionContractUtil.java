@@ -77,7 +77,7 @@ public class AdmissionContractUtil extends ContractUtil {
             invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
         }
         if (valueUnset(admission.getTimestamp())) {
-            invalidparams.add(getInvalidTimestampParam());
+            invalidparams.add(getInvalidTimestampParam("timestamp"));
         }
 
         return invalidparams;

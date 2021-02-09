@@ -99,6 +99,31 @@ public class JsonIOTestSetup {
         this.certificateContract = certificateContract;
     }
 
+    @SerializedName("examContract")
+    private List<Dummy> examContract = null;
+
+    public JsonIOTestSetup examContract(List<Dummy> examContract) {
+        this.examContract = examContract;
+        return this;
+    }
+
+    public JsonIOTestSetup addExamContractItem(Dummy examContractItem) {
+        if (this.examContract == null) {
+            this.examContract = new ArrayList<Dummy>();
+        }
+        this.examContract.add(examContractItem);
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public List<Dummy> getExamContract() {
+        return examContract;
+    }
+
+    public void setExamContract(List<Dummy> examContract) {
+        this.examContract = examContract;
+    }
+
     @SerializedName("examinationRegulationContract")
     private List<Dummy> examinationRegulationContract = null;
 

@@ -1,0 +1,118 @@
+[
+  {
+    "name": "addNonExistingExam_EmptyParam_Date",
+    "type": "addExam_FAILURE",
+    "ids": [
+      "User1",
+      "0000005"
+    ],
+    "setup": {
+      "certificateContract": [
+      "0000005",
+      "legit certificate"
+    ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "examId": "",
+        "courseId": "C.1",
+        "lecturerEnrollmentId": "0000005",
+        "moduleId": "M.1",
+        "type": "Written Exam",
+        "date": "",
+        "ects": 3,
+        "admittableUntil": "2021-04-30T23:59:59",
+        "droppableUntil": "2021-12-31T23:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "exam.date",
+            "reason": "date must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addNonExistingExam_EmptyUser_Id",
+    "type": "addExam_FAILURE",
+    "ids": [
+      "User1",
+      "0000005"
+    ],
+    "setup": {
+      "certificateContract": [
+        "0000005",
+        "legit certificate"
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "examId": "",
+        "courseId": "C.1",
+        "lecturerEnrollmentId": "",
+        "moduleId": "M.1",
+        "type": "Written Exam",
+        "date": "2022-04-30T23:59:59",
+        "ects": 3,
+        "admittableUntil": "2021-04-30T23:59:59",
+        "droppableUntil": "2021-12-31T23:59:59"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "exam.lecturerEnrollmentId",
+            "reason": "The given parameter must not be empty"
+          },
+          {
+            "name": "exam.lecturerEnrollmentId",
+            "reason": "The user trying to add an exam is not registered in the system."
+          }
+        ]
+      }
+    ]
+  }
+]
