@@ -124,7 +124,7 @@ To add a test you can insert a new test in json format like he following example
         }
       ]
     },
-    "input": [                                                                     # the input for the test for example to add a new semester for a student
+    "input": [                                                                    # the input for the test for example to add a new semester for a student
       {
         "enrollmentId": "0000001",
         "matriculationStatus": [
@@ -140,7 +140,7 @@ To add a test you can insert a new test in json format like he following example
         ]
       }
     ],
-    "compare": [                                                                    # this is the expected outcome of the test                                                              
+    "compare": [                                                                   # this is the expected outcome of the test                                                              
       {
         "type": "HLConflict",
         "title": "There is already a MatriculationData for the given enrollmentId"
