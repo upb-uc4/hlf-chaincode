@@ -113,30 +113,6 @@ abstract public class ContractUtil {
                 .title("The given number of parameters does not match the required number of parameters for the specified transaction");
     }
 
-    public GenericError getApprovalDeniedError(){
-        return new GenericError()
-                .type("HLApprovalDenied")
-                .title("You are not allowed to approve the given operation");
-    }
-
-    public GenericError getApprovalImpossibleError(){
-        return new GenericError()
-                .type("HLApprovalImpossible")
-                .title("The operation is not in pending state");
-    }
-
-    public GenericError getRejectionDeniedError(){
-        return new GenericError()
-                .type("HLRejectionDenied")
-                .title("You are not allowed to reject the given operation");
-    }
-
-    public GenericError getRejectionImpossibleError(){
-        return new GenericError()
-                .type("HLRejectionImpossible")
-                .title("The operation is not in pending state");
-    }
-
     public void validateApprovals(
             final Context ctx,
             String contractName,
