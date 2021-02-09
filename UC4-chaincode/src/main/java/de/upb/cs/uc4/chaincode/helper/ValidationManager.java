@@ -9,12 +9,13 @@ import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
+import de.upb.cs.uc4.chaincode.contract.examresult.ExamResultContract;
+import de.upb.cs.uc4.chaincode.contract.examresult.ExamResultContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import org.hyperledger.fabric.contract.Context;
@@ -31,6 +32,7 @@ public class ValidationManager {
     private static GroupContractUtil groupUtil = new GroupContractUtil();
     private static MatriculationDataContractUtil matriculationDataUtil = new MatriculationDataContractUtil();
     private static ExamContractUtil examUtil = new ExamContractUtil();
+    private static ExamResultContractUtil examResultContractUtil = new ExamResultContractUtil();
 
     public static void validateParams(Context ctx, String contractName, String transactionName, String params) throws SerializableError {
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();
@@ -150,6 +152,22 @@ public class ValidationManager {
                         break;
                     case ExamContract.transactionNameGetExams:
                         examUtil.checkParamsGetExams(ctx, paramList);
+                        break;
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
+                    default:
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
+                }
+                break;
+            case ExamResultContract.contractName:
+                switch (transactionName) {
+                    case ExamResultContract.transactionNameAddExamResult:
+                        examResultContractUtil.checkParamsAddExamResult(ctx, paramList);
+                        break;
+                    case ExamResultContract.transactionNameGetExamResultEntries:
+                        examResultContractUtil.checkParamsGetExamResultEntries(ctx, paramList);
+                        break;
+                    case CertificateContract.transactionNameGetVersion:
                         break;
                     case "":
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));

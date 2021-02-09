@@ -1,0 +1,473 @@
+[
+  {
+    "name": "addNonExistingExamResults",
+    "type": "addExamResult_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Module 1"
+            }
+          ]
+        }
+      ],
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "certificateContract": [
+        "0000010",
+        "legit certificate",
+        "0000013",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      {
+        "examResultEntries": [
+          {
+            "enrollmentId": "0000010",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.0"
+          },
+          {
+            "enrollmentId": "0000013",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "examResultEntries": [
+          {
+            "enrollmentId": "0000010",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.0"
+          },
+          {
+            "enrollmentId": "0000013",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.3"
+          }
+        ]
+      }
+    ]
+  },
+
+
+  {
+    "name": "addInsufficientApprovalsExamResult",
+    "type": "addExamResult_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Module 1"
+            }
+          ]
+        }
+      ],
+      "certificateContract": [
+        "0000010",
+        "legit certificate",
+        "0000013",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      {
+        "examResultEntries": [
+          {
+            "enrollmentId": "0000010",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.0"
+          },
+          {
+            "enrollmentId": "0000013",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLInsufficientApprovals",
+        "title": "The approvals present on the ledger do not suffice to execute this transaction"
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addNonExistingModuleIdExamResults",
+    "type": "addExamResult_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.2",
+              "name": "Module 2"
+            }
+          ]
+        }
+      ],
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "certificateContract": [
+        "0000010",
+        "legit certificate",
+        "0000013",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      {
+        "examResultEntries": [
+          {
+            "enrollmentId": "0000010",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.0"
+          },
+          {
+            "enrollmentId": "0000013",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examResultEntries[0].examId",
+            "reason": "There is no module for the given examId"
+          },
+          {
+            "name": "examResultEntries[1].examId",
+            "reason": "There is no module for the given examId"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addNonExistingCertificateForEnrollmentIdExamResults",
+    "type": "addExamResult_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Module 1"
+            }
+          ]
+        }
+      ],
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "certificateContract": [
+        "0000010",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      {
+        "examResultEntries": [
+          {
+            "enrollmentId": "0000010",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.0"
+          },
+          {
+            "enrollmentId": "0000013",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examResultEntries[1].enrollmentId",
+            "reason": "The enrollmentId must have a certificate"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addNonExistingInvalidExamIdExamResults",
+    "type": "addExamResult_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Module 1"
+            }
+          ]
+        }
+      ],
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "certificateContract": [
+        "0000010",
+        "legit certificate",
+        "0000013",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      {
+        "examResultEntries": [
+          {
+            "enrollmentId": "0000010",
+            "examId": "invalid",
+            "grade": "1.0"
+          },
+          {
+            "enrollmentId": "0000013",
+            "examId": "invalid",
+            "grade": "1.3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examResultEntries[0].examId",
+            "reason": "The examId must have format <courseId>:<moduleId>:<type>:<date>"
+          },
+          {
+            "name": "examResultEntries[1].examId",
+            "reason": "The examId must have format <courseId>:<moduleId>:<type>:<date>"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addNonExistingDistinctModuleIdsExamResults",
+    "type": "addExamResult_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Module 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Module 2"
+            }
+          ]
+        }
+      ],
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "certificateContract": [
+        "0000010",
+        "legit certificate",
+        "0000013",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      {
+        "examResultEntries": [
+          {
+            "enrollmentId": "0000010",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.0"
+          },
+          {
+            "enrollmentId": "0000013",
+            "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examResultEntries",
+            "reason": "There are exam-result entries for different examIds"
+          }
+        ]
+      }
+    ]
+  },
+
+
+
+  {
+    "name": "addNonExistingInvalidGradeExamResults",
+    "type": "addExamResult_FAILURE",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Module 1"
+            }
+          ]
+        }
+      ],
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "certificateContract": [
+        "0000010",
+        "legit certificate",
+        "0000013",
+        "legit certificate"
+      ]
+    },
+    "input": [
+      {
+        "examResultEntries": [
+          {
+            "enrollmentId": "0000010",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1.0"
+          },
+          {
+            "enrollmentId": "0000013",
+            "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+            "grade": "1,3"
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "examResultEntries[1].grade",
+            "reason": "Grade must be AnyOf(\"1.0\", \"1.3\", \"1.7\", \"2.0\", \"2.3\", \"2.7\", \"3.0\", \"3.3\", \"3.7\", \"4.0\", \"5.0\")"
+          }
+        ]
+      }
+    ]
+  }
+]

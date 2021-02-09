@@ -21,11 +21,14 @@ import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
@@ -232,6 +235,12 @@ abstract public class ContractUtil {
     public boolean keyExists(ChaincodeStub stub, String key) {
         String result = getStringState(stub, key);
         return result != null && !result.equals("");
+    }
+
+    public static String hashAndEncodeBase64url(String all) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
+        return new String(Base64.getUrlEncoder().withoutPadding().encode(bytes));
     }
 
     public boolean valueUnset(String value) {

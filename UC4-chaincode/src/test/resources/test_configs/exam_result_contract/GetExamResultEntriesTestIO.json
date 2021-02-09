@@ -1,0 +1,500 @@
+[
+  {
+    "name": "queryExistingExamResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examResultContract": [
+        "1",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.3"
+            },
+            {
+              "enrollmentId": "0000017",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.7"
+            },
+            {
+              "enrollmentId": "0000020",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.0"
+            },
+            {
+              "enrollmentId": "0000023",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.3"
+            },
+            {
+              "enrollmentId": "0000027",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.7"
+            }
+          ]
+        },
+        "2",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "3.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "3.3"
+            },
+            {
+              "enrollmentId": "0000017",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "4.0"
+            },
+            {
+              "enrollmentId": "0000020",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "5.0"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "",
+      []
+    ],
+    "compare": [
+      [
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.0"
+        },
+        {
+          "enrollmentId": "0000013",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.3"
+        },
+        {
+          "enrollmentId": "0000017",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.7"
+        },
+        {
+          "enrollmentId": "0000020",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "2.0"
+        },
+        {
+          "enrollmentId": "0000023",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "2.3"
+        },
+        {
+          "enrollmentId": "0000027",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "2.7"
+        },
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "3.0"
+        },
+        {
+          "enrollmentId": "0000013",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "3.3"
+        },
+        {
+          "enrollmentId": "0000017",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "4.0"
+        },
+        {
+          "enrollmentId": "0000020",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "5.0"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "queryNonExistingEnrollmentIdResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "0000001",
+      []
+    ],
+    "compare": [
+      []
+    ]
+  },
+  {
+    "name": "queryExistingEnrollmentIdExamResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examResultContract": [
+        "1",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.3"
+            },
+            {
+              "enrollmentId": "0000017",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.7"
+            },
+            {
+              "enrollmentId": "0000020",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.0"
+            },
+            {
+              "enrollmentId": "0000023",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.3"
+            },
+            {
+              "enrollmentId": "0000027",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.7"
+            }
+          ]
+        },
+        "2",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "3.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "3.3"
+            },
+            {
+              "enrollmentId": "0000017",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "4.0"
+            },
+            {
+              "enrollmentId": "0000020",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "5.0"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "0000010",
+      []
+    ],
+    "compare": [
+      [
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.0"
+        },
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "3.0"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "queryExistingExamIdsExamResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examResultContract": [
+        "1",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.3"
+            },
+            {
+              "enrollmentId": "0000017",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.7"
+            }
+          ]
+        },
+        "2",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.3"
+            },
+            {
+              "enrollmentId": "0000017",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.0"
+            },
+            {
+              "enrollmentId": "0000020",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "3.0"
+            }
+          ]
+        },
+        "3",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000020",
+              "examId": "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.0"
+            },
+            {
+              "enrollmentId": "0000023",
+              "examId": "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.3"
+            },
+            {
+              "enrollmentId": "0000027",
+              "examId": "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.7"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "",
+      [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00"
+      ]
+    ],
+    "compare": [
+      [
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.0"
+        },
+        {
+          "enrollmentId": "0000013",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.3"
+        },
+        {
+          "enrollmentId": "0000017",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.7"
+        },
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "2.0"
+        },
+        {
+          "enrollmentId": "0000013",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "2.3"
+        },
+        {
+          "enrollmentId": "0000017",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "2.0"
+        },
+        {
+          "enrollmentId": "0000020",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "3.0"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "queryExistingEnrollmentIdAndExamIdsExamResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examResultContract": [
+        "1",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.3"
+            },
+            {
+              "enrollmentId": "0000017",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.7"
+            }
+          ]
+        },
+        "2",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.3"
+            },
+            {
+              "enrollmentId": "0000017",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.0"
+            },
+            {
+              "enrollmentId": "0000020",
+              "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+              "grade": "3.0"
+            }
+          ]
+        },
+        "3",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000020",
+              "examId": "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.0"
+            },
+            {
+              "enrollmentId": "0000023",
+              "examId": "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.3"
+            },
+            {
+              "enrollmentId": "0000027",
+              "examId": "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
+              "grade": "2.7"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "0000010",
+      [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00"
+      ]
+    ],
+    "compare": [
+      [
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.0"
+        },
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
+          "grade": "2.0"
+        }
+      ]
+    ]
+  }
+]

@@ -111,9 +111,7 @@ public class OperationContractUtil extends ContractUtil {
 
     public static String getDraftKey(final String contractName, final String transactionName, final String params) throws NoSuchAlgorithmException {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params.replace(" ", "");
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
-        return new String(Base64.getUrlEncoder().withoutPadding().encode(bytes));
+        return hashAndEncodeBase64url(all);
     }
 
     public DetailedError getContractUnprocessableError(String contractName) {
