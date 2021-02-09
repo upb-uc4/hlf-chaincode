@@ -97,13 +97,11 @@ public class ExamResultContractUtil extends ContractUtil {
         return examId.split(":")[1];
     }
 
-    public void checkParamsAddExamResult(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsAddExamResult(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String examResult = params.get(0);
-
-        ChaincodeStub stub = ctx.getStub();
+        String examResult = params[0];
 
         ExamResult newExamResult;
         try {
@@ -133,11 +131,11 @@ public class ExamResultContractUtil extends ContractUtil {
         return entries.stream().map(entry -> entry.getExamId()).distinct().count() > 1;
     }
 
-    public void checkParamsGetExamResultEntries(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 2) {
+    public void checkParamsGetExamResultEntries(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 2) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String examIds = params.get(1);
+        String examIds = params[1];
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();

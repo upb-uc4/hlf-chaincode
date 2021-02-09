@@ -30,6 +30,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
@@ -293,7 +294,7 @@ abstract public class ContractUtil {
         deleteStringState(stub, key);
     }
 
-    public <T> ArrayList<T> getAllStates(ChaincodeStub stub, Class<T> c) {
+    public <T> List<T> getAllStates(ChaincodeStub stub, Class<T> c) {
         QueryResultsIterator<KeyValue> qrIterator;
         qrIterator = getAllRawStates(stub);
         ArrayList<T> resultItems = new ArrayList<>();

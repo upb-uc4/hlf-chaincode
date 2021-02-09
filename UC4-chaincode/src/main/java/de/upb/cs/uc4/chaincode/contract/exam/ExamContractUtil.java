@@ -159,12 +159,12 @@ public class ExamContractUtil extends ContractUtil {
                     .collect(Collectors.toList());
     }
 
-    public void checkParamsAddExam(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsAddExam(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
 
-        String examJson = params.get(0);
+        String examJson = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -187,17 +187,17 @@ public class ExamContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsGetExams(Context ctx, List<String> params) throws SerializableError {
-        if (params.size() != 7) {
+    public void checkParamsGetExams(Context ctx, String[] params) throws SerializableError {
+        if (params.length != 7) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        final String examIds = params.get(0);
-        final String courseIds = params.get(1);
-        final String lecturerIds = params.get(2);
-        final String moduleIds = params.get(3);
-        final String types = params.get(4);
-        final String admittableAt = params.get(5);
-        final String droppableAt = params.get(6);
+        final String examIds = params[0];
+        final String courseIds = params[1];
+        final String lecturerIds = params[2];
+        final String moduleIds = params[3];
+        final String types = params[4];
+        final String admittableAt = params[5];
+        final String droppableAt = params[6];
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         Type listType = new TypeToken<ArrayList<String>>() {}.getType();

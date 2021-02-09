@@ -1,7 +1,7 @@
 [
   {
-    "name": "getExistingAdmissions",
-    "type": "getAdmissions_SUCCESS",
+    "name": "getExistingCourseAdmissions",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000001"
@@ -123,7 +123,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -131,7 +132,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -139,7 +141,16 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
+        },
+        "0000001:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+        {
+          "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+          "admissionId": "0000001:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Exam"
         }
       ]
     },
@@ -151,18 +162,72 @@
     "compare": [
       [
         {
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "getExistingExamAdmissions",
+    "type": "getExamAdmissions_SUCCESS",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "admissionContract": [
+        "0000001:C.1",
+        {
           "admissionId": "0000001:C.1",
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
+        },
+        "0000001:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+        {
+          "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+          "admissionId": "0000001:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Exam"
+        }
+      ]
+    },
+    "input": [
+      [],
+      "0000001",
+      []
+    ],
+    "compare": [
+      [
+        {
+          "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+          "admissionId": "0000001:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Exam"
         }
       ]
     ]
   },
   {
     "name": "getExistingAdmissions_Multiple",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000002"
@@ -284,7 +349,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -292,7 +358,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -300,7 +367,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -312,25 +380,27 @@
     "compare": [
       [
         {
-          "admissionId": "0000002:C.1",
-          "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         {
-          "admissionId": "0000002:C.2",
-          "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     ]
   },
   {
     "name": "getExistingAdmissions_Empty",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -452,7 +522,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -460,7 +531,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -468,7 +540,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -483,7 +556,7 @@
   },
   {
     "name": "getExistingAdmissions_CourseId",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -605,7 +678,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -613,7 +687,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -621,7 +696,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -633,25 +709,27 @@
     "compare": [
       [
         {
-          "admissionId": "0000001:C.1",
-          "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         {
-          "admissionId": "0000002:C.1",
-          "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     ]
   },
   {
     "name": "getExistingAdmissions_CourseId_2",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -773,7 +851,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -781,7 +860,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -789,7 +869,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -801,18 +882,19 @@
     "compare": [
       [
         {
-          "admissionId": "0000002:C.2",
-          "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     ]
   },
   {
     "name": "getExistingAdmissions_CourseId_Empty",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -934,7 +1016,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -942,7 +1025,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -950,7 +1034,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -965,7 +1050,7 @@
   },
   {
     "name": "getExistingAdmissions_ModuleId",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -1093,7 +1178,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -1101,7 +1187,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -1109,7 +1196,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.3",
         {
@@ -1117,7 +1205,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.3",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -1129,25 +1218,27 @@
     "compare": [
       [
         {
-          "admissionId": "0000001:C.1",
-          "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         {
-          "admissionId": "0000002:C.3",
-          "enrollmentId": "0000002",
           "courseId": "C.3",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000002:C.3",
+          "enrollmentId": "0000002",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     ]
   },
   {
     "name": "getExistingAdmissions_ModuleId_CourseId",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -1275,7 +1366,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -1283,7 +1375,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -1291,7 +1384,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.3",
         {
@@ -1299,7 +1393,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.3",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -1311,18 +1406,19 @@
     "compare": [
       [
         {
-          "admissionId": "0000002:C.3",
-          "enrollmentId": "0000002",
           "courseId": "C.3",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000002:C.3",
+          "enrollmentId": "0000002",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     ]
   },
   {
     "name": "getExistingAdmissions_ModuleId_EnrollmentId",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -1450,7 +1546,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -1458,7 +1555,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -1466,7 +1564,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.3",
         {
@@ -1474,7 +1573,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.3",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -1486,18 +1586,19 @@
     "compare": [
       [
         {
-          "admissionId": "0000001:C.1",
-          "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     ]
   },
   {
     "name": "getExistingAdmissions_CourseId_EnrollmentId",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -1625,7 +1726,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -1633,7 +1735,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -1641,7 +1744,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.3",
         {
@@ -1649,7 +1753,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.3",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -1661,18 +1766,19 @@
     "compare": [
       [
         {
-          "admissionId": "0000001:C.1",
-          "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     ]
   },
   {
     "name": "getExistingAdmissions_NoFilter",
-    "type": "getAdmissions_SUCCESS",
+    "type": "getCourseAdmissions_SUCCESS",
     "ids": [
       "User1",
       "0000003"
@@ -1794,7 +1900,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.1",
         {
@@ -1802,7 +1909,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         "0000002:C.2",
         {
@@ -1810,7 +1918,8 @@
           "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -1822,25 +1931,28 @@
     "compare": [
       [
         {
-          "admissionId": "0000001:C.1",
-          "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         {
-          "admissionId": "0000002:C.1",
-          "enrollmentId": "0000002",
           "courseId": "C.1",
           "moduleId": "F.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000002:C.1",
+          "enrollmentId": "0000002",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         },
         {
-          "admissionId": "0000002:C.2",
-          "enrollmentId": "0000002",
           "courseId": "C.2",
           "moduleId": "MM.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "admissionId": "0000002:C.2",
+          "enrollmentId": "0000002",
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     ]

@@ -21,8 +21,6 @@ import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import org.hyperledger.fabric.contract.Context;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ValidationManager {
     private static AdmissionContractUtil admissionUtil = new AdmissionContractUtil();
@@ -35,8 +33,8 @@ public class ValidationManager {
     private static ExamResultContractUtil examResultContractUtil = new ExamResultContractUtil();
 
     public static void validateParams(Context ctx, String contractName, String transactionName, String params) throws SerializableError {
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        List<String> paramList = GsonWrapper.fromJson(params, listType);
+        Type listType = new TypeToken<String[]>() {}.getType();
+        String[] paramList = GsonWrapper.fromJson(params, listType);
         switch (contractName) {
             case MatriculationDataContract.contractName:
                 switch (transactionName) {
@@ -68,8 +66,11 @@ public class ValidationManager {
                     case AdmissionContract.transactionNameDropAdmission:
                         admissionUtil.checkParamsDropAdmission(ctx, paramList);
                         break;
-                    case AdmissionContract.transactionNameGetAdmissions:
+                    case AdmissionContract.transactionNameGetCourseAdmissions:
                         // pass
+                        break;
+                    case AdmissionContract.transactionNameGetExamAdmissions:
+                        admissionUtil.checkParamsGetExamAdmission(ctx, paramList);
                         break;
                     case AdmissionContract.transactionNameGetVersion:
                         break;

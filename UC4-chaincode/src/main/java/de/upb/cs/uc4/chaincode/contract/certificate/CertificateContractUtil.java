@@ -34,12 +34,12 @@ public class CertificateContractUtil extends ContractUtil {
         return list;
     }
 
-    public void checkParamsAddCertificate(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 2) {
+    public void checkParamsAddCertificate(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 2) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String enrollmentId = params.get(0);
-        String certificate = params.get(1);
+        String enrollmentId = params[0];
+        String certificate = params[1];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -57,12 +57,12 @@ public class CertificateContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsUpdateCertificate(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 2) {
+    public void checkParamsUpdateCertificate(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 2) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String enrollmentId = params.get(0);
-        String certificate = params.get(1);
+        String enrollmentId = params[0];
+        String certificate = params[1];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -81,11 +81,11 @@ public class CertificateContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsGetCertificate(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsGetCertificate(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String enrollmentId = params.get(0);
+        String enrollmentId = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 

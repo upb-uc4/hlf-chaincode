@@ -164,11 +164,11 @@ public class MatriculationDataContractUtil extends ContractUtil {
         return true;
     }
 
-    public void checkParamsAddMatriculationData(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsAddMatriculationData(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String matriculationData = params.get(0);
+        String matriculationData = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -189,11 +189,11 @@ public class MatriculationDataContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsUpdateMatriculationData(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsUpdateMatriculationData(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String matriculationData = params.get(0);
+        String matriculationData = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -214,11 +214,11 @@ public class MatriculationDataContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsGetMatriculationData(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsGetMatriculationData(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String enrollmentId = params.get(0);
+        String enrollmentId = params[0];
 
         ChaincodeStub stub = ctx.getStub();
         try {
@@ -228,12 +228,12 @@ public class MatriculationDataContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsAddEntriesToMatriculationData(Context ctx, List<String> params) throws SerializableError {
-        if (params.size() != 2) {
+    public void checkParamsAddEntriesToMatriculationData(Context ctx, String[] params) throws SerializableError {
+        if (params.length != 2) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String enrollmentId = params.get(0);
-        String matriculations = params.get(1);
+        String enrollmentId = params[0];
+        String matriculations = params[1];
 
         ChaincodeStub stub = ctx.getStub();
 

@@ -43,14 +43,14 @@ public class ExamResultContract extends ContractBase {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{examResult};
         try {
-            cUtil.checkParamsAddExamResult(ctx, Collections.singletonList(examResult));
+            cUtil.checkParamsAddExamResult(ctx, args);
         } catch (ParameterError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{examResult});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -83,7 +83,7 @@ public class ExamResultContract extends ContractBase {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         String[] args = new String[]{enrollmentId, examIds};
         try {
-            cUtil.checkParamsGetExamResultEntries(ctx, new ArrayList<String>(){{add(enrollmentId); add(examIds);}});
+            cUtil.checkParamsGetExamResultEntries(ctx, args);
         } catch (ParameterError e) {
             return e.getJsonError();
         }

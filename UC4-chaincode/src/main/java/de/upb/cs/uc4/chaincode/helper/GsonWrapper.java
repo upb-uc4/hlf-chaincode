@@ -3,6 +3,8 @@ package de.upb.cs.uc4.chaincode.helper;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Dummy;
+import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
+import de.upb.cs.uc4.chaincode.model.admission.AdmissionType;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -63,6 +65,14 @@ public class GsonWrapper {
                     String.class,
                     (JsonDeserializer<String>) (json, type, jsonDeserializationContext) ->
                             Jsoup.clean(json.getAsJsonPrimitive().getAsString(), Whitelist.none()))
+            .registerTypeAdapter(
+                    AbstractAdmission.class,
+                    (JsonDeserializer<AbstractAdmission>) (json, type, jsonDeserializationContext) -> {
+                        JsonObject wrapper = (JsonObject) json;
+                        JsonElement jsonType = wrapper.get("type");
+                        AdmissionType admissionType = jsonDeserializationContext.deserialize(jsonType, AdmissionType.class);
+                        return jsonDeserializationContext.deserialize(json, admissionType.valueToType());
+                    })
             .create();
 
     public static <T> T fromJson(String json, Class<T> t) throws JsonSyntaxException {
