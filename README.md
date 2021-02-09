@@ -80,3 +80,83 @@ echo "#                                CHAINCODE  INSTALLED                     
 echo "#                                  READY FOR ACTION                                        #"
 echo "############################################################################################"
 ```
+
+## How to run local chaincode tests 
+clone the chaincode repository: hlf-chaincode \
+the chaincode repository requires java jdk1.8, make sure you configure your IDE with this version
+```
+open folder: hlf-chaincode/UC4-chaincode
+open this project in this folder with an IDE for example IntelliJ IDEA
+to run the tests you can right-click on the project and select: Run 'Tests in 'UC4-Chaincode.test''
+
+the test scripts can be found in: src\test\java\de\upb\cs\uc4\chaincode
+the test configurations can be found in: src\test\resources\test_configs
+```
+To add a test you can insert a new test in json format like he following example which can be found in 'hlf-chaincode\UC4-chaincode\src\test\resources\test_configs\matriculation_data_contract\AddMatriculationDataTestIO.json':
+```
+ {
+    "name": "addExistingMatriculationData",                                     #kommentar
+    "type": "addMatriculationData_FAILURE",
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19",
+                "SS2019",
+                "WS2019/20",
+                "SS2020"
+              ]
+            }
+          ]
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    },
+    "input": [
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19",
+              "SS2019",
+              "WS2019/20",
+              "SS2020"
+            ]
+          }
+        ]
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLConflict",
+        "title": "There is already a MatriculationData for the given enrollmentId"
+      }
+    ]
+  },
+  {
+    "name": "addEmptyEnrollmentIdMatriculationData",
+    "type": "addMatriculationData_FAILURE",
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ]
+    }
