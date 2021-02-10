@@ -6,15 +6,38 @@ Find our API - documentation for the different contracts here: https://github.co
 
 ## How to install our chaincode
 
-download the necessary assets for your usecase
+Download the necessary assets for your usecase
 ```
 CHAINCODE_VERSION_PATH="latest/download"
 # CHAINCODE_VERSION_PATH="download/v0.12.2"
+
+mkdir -p chaincode/assets
+mkdir -p chaincode/UC4-chaincode
+echo "################Download chaincode##################"
 wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION_PATH"/UC4-chaincode.tar.gz -O - | tar -xz -C "./chaincode/UC4-chaincode"
+echo "################Download assets#####################"
 wget -q -c https://github.com/upb-uc4/hlf-chaincode/releases/"$CHAINCODE_VERSION_PATH"/collections_config.json -O "./chaincode/assets/collections_config_dev.json"
 ```
-And run your peer commands
+
+Read the version and safe locally
+``` 
+echo "######### Read Chaincode version from file ########"
+jarPath=./chaincode/UC4-chaincode/UC4-chaincode/UC4-chaincode*.jar
+unzip -c $jarPath META-INF/MANIFEST.MF | grep 'Implementation-Version' | cut -d ':' -f2 | tr -d ' ' | tr -d '\r' | tr -d '\n'>./chaincode/assets/testversion.txt
+echo "###### add access rights to file for everyone #########"
+chmod 777 ./chaincode/assets/testversion.txt
+export CHAINCODE_VERSION=$(cat ./chaincode/assets/testversion.txt)
+echo "CHAINCODE VERSION:: $CHAINCODE_VERSION"
 ```
+
+Run your peer commands
+```
+echo "############################################################################################"
+echo "READ CHAINCODE VERSION"
+echo "############################################################################################"
+export CHAINCODE_VERSION=$(cat chaincode/assets/testversion.txt)
+echo "CHAINCODE VERSION:: $CHAINCODE_VERSION"
+
 echo "############################################################################################"
 echo "PACKAGE CHAINCODE"
 echo "############################################################################################"
@@ -37,7 +60,7 @@ peer lifecycle chaincode approveformyorg \
   --orderer orderer:7050 \
   --channelID "$CHANNEL_NAME" \
   --name "$CHAINCODE_NAME" \
-  --version 1.0 \
+  --version $CHAINCODE_VERSION \
   --package-id "$CHAINCODE_ID" \
   --sequence 1 \
   --collections-config chaincode/assets/collections_config_dev.json
@@ -49,7 +72,7 @@ echo "##########################################################################
 peer lifecycle chaincode checkcommitreadiness \
   --channelID "$CHANNEL_NAME" \
   --name "$CHAINCODE_NAME" \
-  --version 1.0 \
+  --version $CHAINCODE_VERSION \
   --sequence 1 \
   --output json \
   --collections-config chaincode/assets/collections_config_dev.json
@@ -61,7 +84,7 @@ peer lifecycle chaincode commit \
     --orderer orderer:7050 \
     --channelID "$CHANNEL_NAME" \
     --name "$CHAINCODE_NAME" \
-    --version 1.0 \
+    --version $CHAINCODE_VERSION \
     --sequence 1 \
     --peerAddresses peer:7051 \
     --collections-config chaincode/assets/collections_config_dev.json
