@@ -9,7 +9,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
 import java.io.Reader;
-import java.lang.reflect.Array;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,7 +18,9 @@ import java.util.ArrayList;
 public class GsonWrapper {
 
     private static final Gson cleanGson = new GsonBuilder().disableHtmlEscaping().create();
-    private static final Gson gson = new GsonBuilder().disableHtmlEscaping() // need disableHtmlEscaping to handle testCases and data
+    private static final Gson gson = new GsonBuilder()
+            .disableHtmlEscaping() // need disableHtmlEscaping to handle testCases and data
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
             .registerTypeAdapter(
                     LocalDateTime.class,
                     (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> {
