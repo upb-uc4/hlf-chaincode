@@ -4,9 +4,7 @@ import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
-import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.*;
@@ -16,10 +14,9 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,27 +64,27 @@ public class ExamContractUtil extends ContractUtil {
         }
 
         // TODO use timestamp from proposal, unless frontend can manipulate that arbitrarily
-        if(!(exam.getDate().isAfter(LocalDateTime.now()))){
+        if(!(exam.getDate().after(Date.from(ZonedDateTime.now().toInstant())))){
             invalidParameters.add(getInvalidModuleAvailable("date"));
         }
 
-        if(!(exam.getAdmittableUntil().isAfter(LocalDateTime.now()))){
+        if(!(exam.getAdmittableUntil().after(Date.from(ZonedDateTime.now().toInstant())))){
             invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
         }
 
-        if(!(exam.getDroppableUntil().isAfter(LocalDateTime.now()))){
+        if(!(exam.getDroppableUntil().after(Date.from(ZonedDateTime.now().toInstant())))){
             invalidParameters.add(getInvalidModuleAvailable("droppableAt"));
         }
 
-        if(!(exam.getAdmittableUntil().isBefore(exam.getDate()))){
+        if(!(exam.getAdmittableUntil().before(exam.getDate()))){
             invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
         }
 
-        if(!(exam.getDroppableUntil().isBefore(exam.getDate()))){
+        if(!(exam.getDroppableUntil().before(exam.getDate()))){
             invalidParameters.add(getInvalidModuleAvailable("droppableAt"));
         }
 
-        if(!(exam.getAdmittableUntil().isBefore(exam.getDroppableUntil()))){
+        if(!(exam.getAdmittableUntil().before(exam.getDroppableUntil()))){
             invalidParameters.add(getInvalidModuleAvailable("admittableAt"));
         }
 
@@ -153,9 +150,9 @@ public class ExamContractUtil extends ContractUtil {
                     .filter(item -> types.isEmpty() ||
                             types.contains(item.getType()))
                     .filter(item -> admittableAt.isEmpty() ||
-                            item.getAdmittableUntil().equals(admittableAt))
+                            item.getAdmittableUntil().after(GsonWrapper.fromJson(admittableAt, Date.class)))
                     .filter(item -> droppableAt.isEmpty() ||
-                            item.getDroppableUntil().equals(droppableAt))
+                            item.getDroppableUntil().after(GsonWrapper.fromJson(droppableAt, Date.class)))
                     .collect(Collectors.toList());
     }
 
