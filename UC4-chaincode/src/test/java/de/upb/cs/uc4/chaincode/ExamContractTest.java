@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.Exam;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
+import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
@@ -72,7 +73,9 @@ public final class ExamContractTest extends TestCreationBase {
         return () -> {
             Context ctx = TestUtil.buildContext(ExamContract.contractName, ExamContract.transactionNameAddExam, setup, input, ids);
             String result = contract.addExam(ctx, input.get(0));
-            assertThat(result).isEqualTo(compare.get(0));
+            DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
+            DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
+            assertThat(actualError).isEqualTo(expectedError);
         };
     }
 

@@ -7,6 +7,15 @@
       "0000005"
     ],
     "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "testId"
+          ]
+        }
+      ],
       "certificateContract": [
         "0000005",
         "legit certificate"
@@ -29,53 +38,53 @@
         }
       ],
       "examContract": [
-        "0000021:M.1:Written Exam:2021-02-12T10:00:00",
+        "0000021:M.1:Written Exam:2021-02-12T10:00:00.000Z",
         {
-          "examId": "00000021:M.1:Written Exam:2022-02-12T10:00:00",
+          "examId": "00000021:M.1:Written Exam:2022-02-12T10:00:00.000Z",
           "courseId": "C.1",
           "lecturerEnrollmentId": "0000001",
           "moduleId": "M.1",
           "type": "Written Exam",
-          "date": "2022-02-12T10:00:00",
+          "date": "2022-02-12T10:00:00.000Z",
           "ects": 3,
-          "admittableUntil": "2021-04-30T23:59:59",
-          "droppableUntil": "2021-12-31T23:59:59"
+          "admittableUntil": "2021-04-30T23:59:59.000Z",
+          "droppableUntil": "2021-12-31T23:59:59.000Z"
         },
-        "0000022:M.1:Written Exam:2021-02-12T10:00:00",
+        "0000022:M.1:Written Exam:2021-02-12T10:00:00.000Z",
         {
-          "examId": "00000021:M.1:Written Exam:2022-02-12T10:00:00",
+          "examId": "00000021:M.1:Written Exam:2022-02-12T10:00:00.000Z",
           "courseId": "C.2",
           "lecturerEnrollmentId": "0000001",
           "moduleId": "M.1",
           "type": "Written Exam",
-          "date": "2022-02-12T10:00:00",
+          "date": "2022-02-12T10:00:00:999Z",
           "ects": 3,
-          "admittableUntil": "2021-05-30T23:59:59",
-          "droppableUntil": "2021-12-31T23:59:59"
+          "admittableUntil": "2021-05-30T23:59:59.000Z",
+          "droppableUntil": "2021-12-31T23:59:59.000Z"
         }
       ]
     },
     "input": [
-        ["00000021:M.1:Written Exam:2022-02-12T10:00:00"],
+        ["00000021:M.1:Written Exam:2022-02-12T10:00:00.000Z"],
         ["C.1"],
         ["0000001"],
         ["M.1"],
         ["Written Exam"],
-        "2021-04-30T23:59:59",
-        "2021-12-31T23:59:59"
+        "2021-04-03T23:59:59.000Z",
+        "2021-12-03T23:59:59.000Z"
     ],
     "compare": [
       [
         {
-          "examId": "00000021:M.1:Written Exam:2022-02-12T10:00:00",
+          "examId": "00000021:M.1:Written Exam:2022-02-12T10:00:00.000Z",
           "courseId": "C.1",
           "lecturerEnrollmentId": "0000001",
           "moduleId": "M.1",
           "type": "Written Exam",
-          "date": "2022-02-12T10:00:00",
+          "date": "2022-02-12T10:00:00.000Z",
           "ects": 3,
-          "admittableUntil": "2021-04-30T23:59:59",
-          "droppableUntil": "2021-12-31T23:59:59"
+          "admittableUntil": "2021-04-30T23:59:59.000Z",
+          "droppableUntil": "2021-12-31T23:59:59.000Z"
         }
       ]
     ]

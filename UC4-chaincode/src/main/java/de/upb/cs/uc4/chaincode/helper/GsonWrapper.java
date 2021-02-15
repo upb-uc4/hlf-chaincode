@@ -12,15 +12,15 @@ import java.io.Reader;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GsonWrapper {
 
     private static final Gson cleanGson = new GsonBuilder().disableHtmlEscaping().create();
     private static final Gson gson = new GsonBuilder()
             .disableHtmlEscaping() // need disableHtmlEscaping to handle testCases and data
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            //.setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             .registerTypeAdapter(
                     LocalDateTime.class,
                     (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) ->{
@@ -35,6 +35,7 @@ public class GsonWrapper {
                     (JsonSerializer<LocalDateTime>) (date, typeOfSrc, context) -> {
                         return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)); // "YYYY-MM-DDThh:mm:ss"
                     })
+            .registerTypeAdapter(Date.class, new DateSerializer())
             .registerTypeAdapter(
                     Integer.class,
                     (JsonDeserializer<Integer>) (json, type, jsonDeserializationContext) -> {
@@ -98,11 +99,11 @@ public class GsonWrapper {
         return gson.fromJson(json, type);
     }
 
-    public static LocalDateTime localDateTimeFromJson(String s){
+    public static Date absoluteDateTimeFromJson(String s){
         if(s.isEmpty()){
             return null;
         }
 
-        return LocalDateTime.parse(s);
+        return GsonWrapper.fromJson(s, Date.class);
     }
 }

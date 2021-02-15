@@ -104,8 +104,8 @@ public class ExamContract extends ContractBase {
                 GsonWrapper.fromJson(lecturerIds, listType),
                 GsonWrapper.fromJson(moduleIds, listType),
                 GsonWrapper.fromJson(types, listType),
-                admittableAt,
-                droppableAt);
+                GsonWrapper.absoluteDateTimeFromJson(admittableAt),
+                GsonWrapper.absoluteDateTimeFromJson(droppableAt));
         return GsonWrapper.toJson(examList);
     }
 }

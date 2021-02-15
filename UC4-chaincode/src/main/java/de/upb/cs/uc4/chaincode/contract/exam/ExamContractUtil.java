@@ -155,8 +155,8 @@ public class ExamContractUtil extends ContractUtil {
         final List<String> lecturerIds,
         final List<String> moduleIds,
         final List<String> types,
-        final String admittableAt,
-        final String droppableAt) {
+        final Date admittableAt,
+        final Date droppableAt) {
 
             return this.getAllStates(stub, Exam.class).stream()
                     .filter(item -> examIds.isEmpty() ||
@@ -170,9 +170,9 @@ public class ExamContractUtil extends ContractUtil {
                     .filter(item -> types.isEmpty() ||
                             types.contains(item.getType()))
                     .filter(item -> valueUnset(admittableAt) ||
-                            item.getAdmittableUntil().after(GsonWrapper.fromJson(admittableAt, Date.class)))
+                            item.getAdmittableUntil().after(admittableAt))
                     .filter(item -> valueUnset(droppableAt) ||
-                            item.getDroppableUntil().after(GsonWrapper.fromJson(droppableAt, Date.class)))
+                            item.getDroppableUntil().after(droppableAt))
                     .collect(Collectors.toList());
     }
 
@@ -245,14 +245,12 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getUnparsableParam("types"));
         }
         try {
-            //GsonWrapper.fromJson(admittableAt, LocalDateTime.class);
-            GsonWrapper.localDateTimeFromJson(admittableAt);
+            GsonWrapper.absoluteDateTimeFromJson(admittableAt);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("admittableAt"));
         }
         try {
-            //GsonWrapper.fromJson(droppableAt, LocalDateTime.class);
-            GsonWrapper.localDateTimeFromJson(droppableAt);
+            GsonWrapper.absoluteDateTimeFromJson(droppableAt);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("droppableAt"));
         }

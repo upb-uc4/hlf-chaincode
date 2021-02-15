@@ -108,6 +108,11 @@ abstract public class ContractUtil {
     public InvalidParameter getInvalidTimestampParam(String param) {
         return new InvalidParameter()
                 .name(errorPrefix + "." + param)
+                .reason(param + " must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z\", e.g. \"2020-12-31T23:59:59.999Z\"");
+    }
+    public InvalidParameter getInvalidTimestampParamLocalDateTime(String param) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + param)
                 .reason(param + " must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
     }
 

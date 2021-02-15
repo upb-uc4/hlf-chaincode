@@ -5,7 +5,6 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
-import de.upb.cs.uc4.chaincode.model.admission.AdmissionType;
 import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
 import de.upb.cs.uc4.chaincode.model.admission.ExamAdmission;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -18,7 +17,6 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,12 +30,6 @@ public class AdmissionContractUtil extends ContractUtil {
 
     public String getErrorPrefix() {
         return errorPrefix;
-    }
-
-    public InvalidParameter getInvalidTimestampParam() {
-        return new InvalidParameter()
-                .name(errorPrefix + ".timestamp")
-                .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
     }
 
     public InvalidParameter getInvalidTypeParam() {
@@ -145,7 +137,9 @@ public class AdmissionContractUtil extends ContractUtil {
         try {
             GsonWrapper.fromJson(params[2], listType);
         } catch (Exception e) {
-            invalidParams.add(getUnparsableParam("examIds"));        }
+            invalidParams.add(getUnparsableParam("examIds"));
+        }
+
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
