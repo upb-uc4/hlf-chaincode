@@ -13,7 +13,6 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -156,8 +155,8 @@ public class ExamContractUtil extends ContractUtil {
         final List<String> lecturerIds,
         final List<String> moduleIds,
         final List<String> types,
-        final LocalDateTime admittableAt,
-        final LocalDateTime droppableAt) {
+        final String admittableAt,
+        final String droppableAt) {
 
             return this.getAllStates(stub, Exam.class).stream()
                     .filter(item -> examIds.isEmpty() ||
@@ -170,9 +169,9 @@ public class ExamContractUtil extends ContractUtil {
                             moduleIds.contains(item.getModuleId()))
                     .filter(item -> types.isEmpty() ||
                             types.contains(item.getType()))
-                    .filter(item -> admittableAt.equals(null) ||
+                    .filter(item -> valueUnset(admittableAt) ||
                             item.getAdmittableUntil().after(GsonWrapper.fromJson(admittableAt, Date.class)))
-                    .filter(item -> droppableAt.equals(null) ||
+                    .filter(item -> valueUnset(droppableAt) ||
                             item.getDroppableUntil().after(GsonWrapper.fromJson(droppableAt, Date.class)))
                     .collect(Collectors.toList());
     }
