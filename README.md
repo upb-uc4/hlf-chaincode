@@ -119,7 +119,7 @@ To add a test you can insert a new test in json format like he following example
 ```
  {
     "name": "addExistingMatriculationData",                                     # Name of the test
-    "type": "addMatriculationData_FAILURE",                                     # identify the structure of the test
+    "type": "addMatriculationData_FAILURE",                                     # identify the structure of the test - the assigned value has to match a value in the test-code
     "setup": {                                                                  # the setup for the test that simulates the initial ledger state
       "matriculationDataContract": [
         "0000001",
