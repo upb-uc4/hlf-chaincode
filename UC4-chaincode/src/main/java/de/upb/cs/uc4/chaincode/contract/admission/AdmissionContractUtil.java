@@ -90,6 +90,33 @@ public class AdmissionContractUtil extends ContractUtil {
         }
 
         return false;
+    }    
+
+    /**
+     * Returns a list of errors describing everything wrong with the given admission parameters
+     *
+     * @param admission admission to return errors for
+     * @return a list of all errors found for the given matriculationData
+     */
+    public ArrayList<InvalidParameter> getParameterErrorsForAdmission(
+            Admission admission) {
+
+        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+
+        if (valueUnset(admission.getEnrollmentId())) {
+            invalidparams.add(getEmptyEnrollmentIdParam(errorPrefix + "."));
+        }
+        if (valueUnset(admission.getCourseId())) {
+            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".courseId"));
+        }
+        if (valueUnset(admission.getModuleId())) {
+            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
+        }
+        if (valueUnset(admission.getTimestamp())) {
+            invalidparams.add(getInvalidTimestampParam("timestamp"));
+        }
+
+        return invalidparams;
     }
 
     public void checkParamsAddAdmission(Context ctx, String[] params) throws ParameterError {

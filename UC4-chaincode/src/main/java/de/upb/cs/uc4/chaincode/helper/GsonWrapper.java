@@ -23,10 +23,10 @@ public class GsonWrapper {
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
             .registerTypeAdapter(
                     LocalDateTime.class,
-                    (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) -> {
+                    (JsonDeserializer<LocalDateTime>) (json, type, jsonDeserializationContext) ->{
                         try {
                             return LocalDateTime.parse(json.getAsJsonPrimitive().getAsString());
-                        } catch (DateTimeParseException e) {
+                        } catch(Exception e){
                             return null;
                         }
                     })
@@ -96,5 +96,13 @@ public class GsonWrapper {
             }
         }
         return gson.fromJson(json, type);
+    }
+
+    public static LocalDateTime localDateTimeFromJson(String s){
+        if(s.isEmpty()){
+            return null;
+        }
+
+        return LocalDateTime.parse(s);
     }
 }

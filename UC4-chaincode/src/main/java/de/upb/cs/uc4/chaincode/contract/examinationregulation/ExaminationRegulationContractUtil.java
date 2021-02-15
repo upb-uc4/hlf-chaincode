@@ -165,6 +165,6 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
 
     public boolean moduleExists(ChaincodeStub stub, String moduleId) {
         return getAllStates(stub, ExaminationRegulation.class)
-                .stream().anyMatch(er -> er.getModules().stream().anyMatch(module -> module.getId() == moduleId));
+                .stream().anyMatch(er -> er.getModules().stream().anyMatch(module -> module.getId().equals(moduleId)));
     }
 }

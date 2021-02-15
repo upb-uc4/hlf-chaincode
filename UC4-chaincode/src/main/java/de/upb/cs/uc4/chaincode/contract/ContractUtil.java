@@ -105,10 +105,10 @@ abstract public class ContractUtil {
         return getEmptyInvalidParameter(prefix + "enrollmentId");
     }
 
-    public InvalidParameter getInvalidTimestampParam() {
+    public InvalidParameter getInvalidTimestampParam(String param) {
         return new InvalidParameter()
-                .name(errorPrefix + ".timestamp")
-                .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
+                .name(errorPrefix + "." + param)
+                .reason(param + " must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
     }
 
     public GenericError getInternalError() {

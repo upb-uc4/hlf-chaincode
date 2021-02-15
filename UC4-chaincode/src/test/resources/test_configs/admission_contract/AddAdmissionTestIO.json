@@ -454,7 +454,7 @@
         "invalidParams": [
           {
             "name": "admission.timestamp",
-            "reason": "Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
+            "reason": "timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
           }
         ]
       }
@@ -517,7 +517,7 @@
         "invalidParams": [
           {
             "name": "admission.timestamp",
-            "reason": "Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
+            "reason": "timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
           }
         ]
       }

@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examresult.ExamResultContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
@@ -98,6 +99,31 @@ public class JsonIOTestSetup {
 
     public void setCertificateContract(List<Dummy> certificateContract) {
         this.certificateContract = certificateContract;
+    }
+
+    @SerializedName("examContract")
+    private List<Dummy> examContract = null;
+
+    public JsonIOTestSetup examContract(List<Dummy> examContract) {
+        this.examContract = examContract;
+        return this;
+    }
+
+    public JsonIOTestSetup addExamContractItem(Dummy examContractItem) {
+        if (this.examContract == null) {
+            this.examContract = new ArrayList<Dummy>();
+        }
+        this.examContract.add(examContractItem);
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public List<Dummy> getExamContract() {
+        return examContract;
+    }
+
+    public void setExamContract(List<Dummy> examContract) {
+        this.examContract = examContract;
     }
 
     @SerializedName("examinationRegulationContract")
@@ -281,6 +307,12 @@ public class JsonIOTestSetup {
 
         cUtil = new GroupContractUtil();
         setup = TestUtil.toStringList(this.groupContract);
+        for (int i = 0; i < setup.size(); i += 2) {
+            cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i + 1));
+        }
+
+        cUtil = new ExamContractUtil();
+        setup = TestUtil.toStringList(this.examContract);
         for (int i = 0; i < setup.size(); i += 2) {
             cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i + 1));
         }
