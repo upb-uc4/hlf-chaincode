@@ -1,5 +1,78 @@
 [
   {
+    "name": "addNonExistingExam",
+    "type": "addExam_SUCCESS",
+    "ids": [
+      "User1",
+      "0000005"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "0000005"
+          ]
+        },
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "0000005"
+          ]
+        }
+      ],
+      "certificateContract": [
+        "0000005",
+        "legit certificate"
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "examId": "",
+        "courseId": "C.1",
+        "lecturerEnrollmentId": "0000005",
+        "moduleId": "M.1",
+        "type": "Written Exam",
+        "date": "2022-12-31T23:59:59.000Z",
+        "ects": 3,
+        "admittableUntil": "2021-04-30T23:59:59.000Z",
+        "droppableUntil": "2021-12-31T23:59:59.000Z"
+      }
+    ],
+    "compare": [
+      {
+        "examId": "C.1:M.1:Written Exam:2022-12-31T23:59:59.000Z",
+        "courseId": "C.1",
+        "lecturerEnrollmentId": "0000005",
+        "moduleId": "M.1",
+        "type": "Written Exam",
+        "date": "2022-12-31T23:59:59.000Z",
+        "ects": 3,
+        "admittableUntil": "2021-04-30T23:59:59.000Z",
+        "droppableUntil": "2021-12-31T23:59:59.000Z"
+      }
+    ]
+  },
+  {
     "name": "addNonExistingExam_EmptyParam_Date",
     "type": "addExam_FAILURE",
     "ids": [
