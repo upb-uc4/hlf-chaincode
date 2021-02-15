@@ -169,17 +169,4 @@ To add a test you can insert a new test in json format like he following example
         "title": "There is already a MatriculationData for the given enrollmentId"
       }
     ]
-  },
-  {
-    "name": "addEmptyEnrollmentIdMatriculationData",
-    "type": "addMatriculationData_FAILURE",
-    "setup": {
-      "examinationRegulationContract": [
-        "Computer Science",
-        {
-          "name": "Computer Science",
-          "active": true,
-          "modules": []
-        }
-      ]
-    }
+  }
