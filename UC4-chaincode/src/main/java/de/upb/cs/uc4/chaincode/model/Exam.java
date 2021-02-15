@@ -1,8 +1,8 @@
 package de.upb.cs.uc4.chaincode.model;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import io.swagger.annotations.ApiModelProperty;
-import org.joda.time.DateTime;
 
 import java.util.Date;
 import java.util.Objects;
@@ -50,7 +50,7 @@ public class Exam {
     }
 
     public void resetExamId() {
-        this.examId = this.courseId + DELIMITER + this.moduleId + DELIMITER + this.type + DELIMITER + this.date;
+        this.examId = this.courseId + DELIMITER + this.moduleId + DELIMITER + this.type + DELIMITER + getDateString();
     }
 
     /**
@@ -141,6 +141,9 @@ public class Exam {
     public Date getDate() {
         return this.date;
     }
+    public String getDateString() {
+        return GsonWrapper.toJson(this.date);
+    }
 
     public void setDate(Date value) {
         this.date = value;
@@ -180,6 +183,9 @@ public class Exam {
     public Date getAdmittableUntil() {
         return this.admittableUntil;
     }
+    public String getAdmittableUntilString() {
+        return GsonWrapper.toJson(this.admittableUntil);
+    }
 
     public void setAdmittableUntil(Date value) {
         this.admittableUntil = value;
@@ -198,6 +204,9 @@ public class Exam {
     @ApiModelProperty()
     public Date getDroppableUntil() {
         return this.droppableUntil;
+    }
+    public String getDroppableUntilString() {
+        return GsonWrapper.toJson(this.droppableUntil);
     }
 
     public void setDroppableUntil(Date value) {
@@ -242,10 +251,10 @@ public class Exam {
         sb.append("    lecturerEnrollmentId: ").append(toIndentedString(this.lecturerEnrollmentId)).append("\n");
         sb.append("    moduleId: ").append(toIndentedString(this.moduleId)).append("\n");
         sb.append("    type: ").append(toIndentedString(this.type)).append("\n");
-        sb.append("    date: ").append(toIndentedString(this.date)).append("\n");
+        sb.append("    date: ").append(toIndentedString(getDateString())).append("\n");
         sb.append("    ects: ").append(toIndentedString(this.ects)).append("\n");
-        sb.append("    admittableUntil: ").append(toIndentedString(this.admittableUntil)).append("\n");
-        sb.append("    droppableUntil: ").append(toIndentedString(this.droppableUntil)).append("\n");
+        sb.append("    admittableUntil: ").append(toIndentedString(getAdmittableUntilString())).append("\n");
+        sb.append("    droppableUntil: ").append(toIndentedString(getDroppableUntilString())).append("\n");
         sb.append("}");
         return sb.toString();
     }

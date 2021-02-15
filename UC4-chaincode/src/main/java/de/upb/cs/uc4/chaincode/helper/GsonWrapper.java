@@ -106,4 +106,11 @@ public class GsonWrapper {
 
         return GsonWrapper.fromJson(s, Date.class);
     }
+    public static String absoluteDateTimeToJson(Date src){
+        if(src == null){
+            return "";
+        }
+
+        return GsonWrapper.toJson(src);
+    }
 }

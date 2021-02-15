@@ -4,20 +4,18 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
 
 import com.google.gson.*;
 
 public class DateSerializer implements JsonDeserializer<Date>, JsonSerializer<Date> {
 
-    String datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    public static String datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
+    public static SimpleDateFormat format = new SimpleDateFormat(datePattern);
 
     @Override
     public Date deserialize(JsonElement element, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
         String dateString = element.getAsString();
 
-        SimpleDateFormat format = new SimpleDateFormat(datePattern);
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
         try {
             return format.parse(dateString);
         } catch (ParseException exp) {
@@ -27,8 +25,6 @@ public class DateSerializer implements JsonDeserializer<Date>, JsonSerializer<Da
 
     @Override
     public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-        SimpleDateFormat format = new SimpleDateFormat(datePattern);
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
         return new JsonPrimitive(format.format(src));
     }
 }
