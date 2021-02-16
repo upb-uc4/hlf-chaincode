@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
+import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.Exam;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
@@ -40,6 +41,8 @@ public final class ExamContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(testName, addExamFailureTest(setup, input, compare, ids));
             case "getExam_SUCCESS":
                 return DynamicTest.dynamicTest(testName, getExamsSuccessTest(setup, input, compare, ids));
+            case "getExam_FAILURE":
+                return DynamicTest.dynamicTest(testName, getExamsFailureTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -90,6 +93,20 @@ public final class ExamContractTest extends TestCreationBase {
 
             String getResult = contract.getExams(ctx, input.get(0), input.get(1), input.get(2), input.get(3), input.get(4), input.get(5), input.get(6));
             assertThat(getResult).isEqualTo(compare.get(0));
+        };
+    }
+
+    private Executable getExamsFailureTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<String> ids
+    ) {
+        return () -> {
+            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameGetUsersForGroup, setup, input, ids);
+
+            String result = contract.getExams(ctx, input.get(0), input.get(1), input.get(2), input.get(3), input.get(4), input.get(5), input.get(6));
+            assertThat(result).isEqualTo(compare.get(0));
         };
     }
 
