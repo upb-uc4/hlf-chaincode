@@ -85,6 +85,20 @@
             "User1"
           ]
         }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
       ]
     },
     "input": [
@@ -223,7 +237,7 @@
           },
           {
             "name": "admission.enrollmentId",
-            "reason":"The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+            "reason":"The student is not matriculated in any examinationRegulation"
           },
           {
             "name": "admission.moduleId",
@@ -238,9 +252,24 @@
     "type": "addAdmission_FAILURE",
     "ids": [
       "User1",
-      "0000002"
+      "0000001"
     ],
-    "setup": {},
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
     "input": [
       {
         "examId": "",
@@ -386,10 +415,6 @@
             "reason": "The given parameter must not be empty"
           },
           {
-            "name": "admission.enrollmentId",
-            "reason":"The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
-          },
-          {
             "name": "admission.moduleId",
             "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
           }
@@ -454,7 +479,7 @@
         "invalidParams": [
           {
             "name": "admission.enrollmentId",
-            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+            "reason": "The student is not matriculated in any examinationRegulation"
           },
           {
             "name": "admission.moduleId",
@@ -519,10 +544,6 @@
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
-          {
-            "name": "admission.enrollmentId",
-            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
-          },
           {
             "name": "admission.moduleId",
             "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
@@ -596,6 +617,46 @@
       {
         "type": "HLConflict",
         "title": "There is already an Admission for the given admissionId"
+      }
+    ]
+  },
+  {
+    "name": "addInvalidEnrollmentIdExamAdmission",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000001",
+        "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Exam"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.enrollmentId",
+            "reason": "The student is not matriculated in any examinationRegulation"
+          }
+        ]
       }
     ]
   }

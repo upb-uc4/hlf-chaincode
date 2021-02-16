@@ -90,7 +90,7 @@ public class ExamAdmission extends AbstractAdmission {
 
     public ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidParameters = super.getSemanticErrors(stub);
 
         // TODO add remaining checks once all necessary contracts available
 
