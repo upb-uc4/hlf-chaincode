@@ -80,31 +80,31 @@ public class ExamContractUtil extends ContractUtil {
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
-        if (exam.getDate() != null && !(exam.getDate().after(Date.from(ZonedDateTime.now().toInstant())))) {
+        Date now = Date.from(ZonedDateTime.now().toInstant());
+
+        if (initializedAndBefore(exam.getDate(), now)) {
             invalidParameters.add(getInvalidDate("date"));
         }
 
-        if (exam.getAdmittableUntil() != null &&
-                (
-                        !(exam.getAdmittableUntil().after(Date.from(ZonedDateTime.now().toInstant()))) //admittableUntil lies in future
-                                || (exam.getDate() != null && !(exam.getAdmittableUntil().before(exam.getDate()))) // admittabelUntil before date
-                                || (exam.getDroppableUntil() != null && !(exam.getAdmittableUntil().before(exam.getDroppableUntil()))) // admittableUntil before droppableUntil
-                )
+        if (initializedAndBefore(exam.getAdmittableUntil(), now) //admittableUntil lies in the past
+                || initializedAndBefore(exam.getDate(), exam.getAdmittableUntil()) // admittabelUntil after date
+                || initializedAndBefore(exam.getDroppableUntil(), exam.getAdmittableUntil()) // droppableUntil before admittableUntil
         ) {
             invalidParameters.add(getInvalidAdmittableDate("admittableUntil"));
         }
 
-        if (exam.getDroppableUntil() != null &&
-                (
-                        !(exam.getDroppableUntil().after(Date.from(ZonedDateTime.now().toInstant()))) //dropableUntil lies in future
-                                || (exam.getDate() != null && !(exam.getDroppableUntil().before(exam.getDate()))) // dropableUntil before date
-                                || (exam.getAdmittableUntil() != null && !(exam.getAdmittableUntil().before(exam.getDroppableUntil()))) // dropableUntil after admittableUntil
-                )
+        if (initializedAndBefore(exam.getDroppableUntil(), now) //dropableUntil lies in the past
+                || initializedAndBefore(exam.getDate(), exam.getDroppableUntil()) // dropableUntil after date
+                || initializedAndBefore(exam.getDroppableUntil(), exam.getAdmittableUntil()) // dropableUntil before admittableUntil
         ) {
             invalidParameters.add(getInvalidDroppableDate("droppableUntil"));
         }
 
         return invalidParameters;
+    }
+
+    private boolean initializedAndBefore (Date before, Date after) {
+        return before != null && after != null && before.before(after);
     }
 
     /**
