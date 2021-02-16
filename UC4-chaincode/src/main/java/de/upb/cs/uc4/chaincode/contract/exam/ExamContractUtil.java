@@ -86,16 +86,16 @@ public class ExamContractUtil extends ContractUtil {
             invalidParameters.add(getInvalidDate("date"));
         }
 
-        if (initializedAndBefore(exam.getAdmittableUntil(), now) //admittableUntil lies in the past
-                || initializedAndBefore(exam.getDate(), exam.getAdmittableUntil()) // admittabelUntil after date
-                || initializedAndBefore(exam.getDroppableUntil(), exam.getAdmittableUntil()) // droppableUntil before admittableUntil
+        if (initializedAndBefore(exam.getAdmittableUntil(), now)
+                || initializedAndBefore(exam.getDate(), exam.getAdmittableUntil())
+                || initializedAndBefore(exam.getDroppableUntil(), exam.getAdmittableUntil())
         ) {
             invalidParameters.add(getInvalidAdmittableDate("admittableUntil"));
         }
 
-        if (initializedAndBefore(exam.getDroppableUntil(), now) //dropableUntil lies in the past
-                || initializedAndBefore(exam.getDate(), exam.getDroppableUntil()) // dropableUntil after date
-                || initializedAndBefore(exam.getDroppableUntil(), exam.getAdmittableUntil()) // dropableUntil before admittableUntil
+        if (initializedAndBefore(exam.getDroppableUntil(), now)
+                || initializedAndBefore(exam.getDate(), exam.getDroppableUntil())
+                || initializedAndBefore(exam.getDroppableUntil(), exam.getAdmittableUntil())
         ) {
             invalidParameters.add(getInvalidDroppableDate("droppableUntil"));
         }
