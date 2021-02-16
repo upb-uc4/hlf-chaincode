@@ -41,8 +41,6 @@ public final class ExamContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(testName, addExamFailureTest(setup, input, compare, ids));
             case "getExam_SUCCESS":
                 return DynamicTest.dynamicTest(testName, getExamsSuccessTest(setup, input, compare, ids));
-            case "getExam_FAILURE":
-                return DynamicTest.dynamicTest(testName, getExamsFailureTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
