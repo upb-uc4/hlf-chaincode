@@ -119,7 +119,14 @@ public abstract class AbstractAdmission {
         return invalidParams;
     }
 
-    public abstract ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub);
+    public ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
+        if (!cUtil.checkStudentMatriculated(stub, this)) {
+            invalidParameters.add(cUtil.getStudentNotMatriculatedParam("enrollmentId"));
+        }
+        return invalidParameters;
+    }
 
     public abstract void ensureIsDroppable(ChaincodeStub stub);
 }

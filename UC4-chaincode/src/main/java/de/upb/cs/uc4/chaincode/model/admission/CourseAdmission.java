@@ -115,13 +115,11 @@ public class CourseAdmission extends AbstractAdmission {
     @Override
     public ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
+        ArrayList<InvalidParameter> invalidParameters = super.getSemanticErrors(stub);
 
         if (!cUtil.checkModuleAvailable(stub, this)) {
-            invalidParameters.add(cUtil.getInvalidModuleAvailable("enrollmentId"));
             invalidParameters.add(cUtil.getInvalidModuleAvailable("moduleId"));
         }
-
         return invalidParameters;
     }
 
