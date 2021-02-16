@@ -13,6 +13,7 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
+import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -80,7 +81,7 @@ public class ExamContractUtil extends ContractUtil {
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
-        Date now = Date.from(ZonedDateTime.now().toInstant());
+        Instant now = ZonedDateTime.now().toInstant();
 
         if (initializedAndBefore(exam.getDate(), now)) {
             invalidParameters.add(getInvalidDate("date"));
@@ -103,8 +104,8 @@ public class ExamContractUtil extends ContractUtil {
         return invalidParameters;
     }
 
-    private boolean initializedAndBefore (Date before, Date after) {
-        return before != null && after != null && before.before(after);
+    private boolean initializedAndBefore (Instant before, Instant after) {
+        return before != null && after != null && before.isBefore(after);
     }
 
     /**
@@ -154,8 +155,8 @@ public class ExamContractUtil extends ContractUtil {
             final List<String> lecturerIds,
             final List<String> moduleIds,
             final List<String> types,
-            final Date admittableAt,
-            final Date droppableAt) {
+            final Instant admittableAt,
+            final Instant droppableAt) {
 
         return this.getAllStates(stub, Exam.class).stream()
                 .filter(item -> examIds.isEmpty() ||
@@ -169,9 +170,9 @@ public class ExamContractUtil extends ContractUtil {
                 .filter(item -> types.isEmpty() ||
                         types.contains(item.getType()))
                 .filter(item -> valueUnset(admittableAt) ||
-                        item.getAdmittableUntil().after(admittableAt))
+                        item.getAdmittableUntil().isAfter(admittableAt))
                 .filter(item -> valueUnset(droppableAt) ||
-                        item.getDroppableUntil().after(droppableAt))
+                        item.getDroppableUntil().isAfter(droppableAt))
                 .collect(Collectors.toList());
     }
 

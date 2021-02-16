@@ -16,9 +16,8 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Contract(
@@ -53,7 +52,7 @@ public class AdmissionContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         AbstractAdmission newAdmission = GsonWrapper.fromJson(admissionJson, AbstractAdmission.class);
-        newAdmission.setTimestamp(LocalDateTime.parse(timeStamp));
+        newAdmission.setTimestamp(GsonWrapper.fromJson(timeStamp, Instant.class));
         newAdmission.resetAdmissionId();
 
         try {

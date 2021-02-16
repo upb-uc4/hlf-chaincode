@@ -35,7 +35,7 @@ public class GsonWrapper {
                     (JsonSerializer<LocalDateTime>) (date, typeOfSrc, context) -> {
                         return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)); // "YYYY-MM-DDThh:mm:ss"
                     })
-            .registerTypeAdapter(Date.class, new DateSerializer())
+            .registerTypeAdapter(Date.class, new InstantAdapter())
             .registerTypeAdapter(
                     Integer.class,
                     (JsonDeserializer<Integer>) (json, type, jsonDeserializationContext) -> {
