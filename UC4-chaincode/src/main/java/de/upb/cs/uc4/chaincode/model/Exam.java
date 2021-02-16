@@ -143,7 +143,7 @@ public class Exam {
         return this.date;
     }
     public String getDateString() {
-        return this.date == null ? "" : DateSerializer.internalSerialize(this.date);
+        return GsonWrapper.toJson(this.date);
     }
 
     public void setDate(Date value) {
@@ -185,7 +185,7 @@ public class Exam {
         return this.admittableUntil;
     }
     public String getAdmittableUntilString() {
-        return DateSerializer.internalSerialize(this.admittableUntil);
+        return GsonWrapper.toJson(this.admittableUntil);
     }
 
     public void setAdmittableUntil(Date value) {
@@ -207,7 +207,7 @@ public class Exam {
         return this.droppableUntil;
     }
     public String getDroppableUntilString() {
-        return DateSerializer.internalSerialize(this.droppableUntil);
+        return GsonWrapper.toJson(this.droppableUntil);
     }
 
     public void setDroppableUntil(Date value) {

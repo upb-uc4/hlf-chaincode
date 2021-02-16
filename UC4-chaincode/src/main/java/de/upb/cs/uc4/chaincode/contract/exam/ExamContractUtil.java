@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.DateSerializer;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.Exam;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -157,22 +158,22 @@ public class ExamContractUtil extends ContractUtil {
             final Date admittableAt,
             final Date droppableAt) {
 
-        return this.getAllStates(stub, Exam.class).stream()
-                .filter(item -> examIds.isEmpty() ||
-                        examIds.contains(item.getExamId()))
-                .filter(item -> courseIds.isEmpty() ||
-                        courseIds.contains(item.getCourseId()))
-                .filter(item -> lecturerIds.isEmpty() ||
-                        lecturerIds.contains(item.getLecturerEnrollmentId()))
-                .filter(item -> moduleIds.isEmpty() ||
-                        moduleIds.contains(item.getModuleId()))
-                .filter(item -> types.isEmpty() ||
-                        types.contains(item.getType()))
-                .filter(item -> valueUnset(admittableAt) ||
-                        item.getAdmittableUntil().after(admittableAt))
-                .filter(item -> valueUnset(droppableAt) ||
-                        item.getDroppableUntil().after(droppableAt))
-                .collect(Collectors.toList());
+            return this.getAllStates(stub, Exam.class).stream()
+                    .filter(item -> examIds.isEmpty() ||
+                            examIds.contains(item.getExamId()))
+                    .filter(item -> courseIds.isEmpty() ||
+                            courseIds.contains(item.getCourseId()))
+                    .filter(item -> lecturerIds.isEmpty() ||
+                            lecturerIds.contains(item.getLecturerEnrollmentId()))
+                    .filter(item -> moduleIds.isEmpty() ||
+                            moduleIds.contains(item.getModuleId()))
+                    .filter(item -> types.isEmpty() ||
+                            types.contains(item.getType()))
+                    .filter(item -> admittableAt == null ||
+                            item.getAdmittableUntil().after(admittableAt))
+                    .filter(item -> droppableAt == null ||
+                            item.getDroppableUntil().after(droppableAt))
+                    .collect(Collectors.toList());
     }
 
     public void checkParamsAddExam(Context ctx, String[] params) throws ParameterError {
@@ -244,14 +245,10 @@ public class ExamContractUtil extends ContractUtil {
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("types"));
         }
-        try {
-            GsonWrapper.absoluteDateTimeFromJson(admittableAt);
-        } catch (Exception e) {
+        if (GsonWrapper.fromJson(admittableAt, Date.class) == null && !admittableAt.isEmpty()) {
             invalidParams.add(getUnparsableParam("admittableAt"));
         }
-        try {
-            GsonWrapper.absoluteDateTimeFromJson(droppableAt);
-        } catch (Exception e) {
+        if (GsonWrapper.fromJson(droppableAt, Date.class) == null && ! droppableAt.isEmpty()) {
             invalidParams.add(getUnparsableParam("droppableAt"));
         }
         if (!invalidParams.isEmpty()) {

@@ -19,11 +19,7 @@ public class DateSerializer implements JsonDeserializer<Date>, JsonSerializer<Da
         String dateString = element.getAsString();
 
         format.setTimeZone(tz);
-        try {
-            return internalDeserialize(dateString);
-        } catch (ParseException exp) {
-            return null;
-        }
+        return internalDeserialize(dateString);
     }
 
     @Override
@@ -33,10 +29,14 @@ public class DateSerializer implements JsonDeserializer<Date>, JsonSerializer<Da
 
     public static String internalSerialize(Date src){
         format.setTimeZone(tz);
-        return format.format(src);
+        return src == null ? "" : format.format(src);
     }
-    public static Date internalDeserialize(String src) throws ParseException {
+    public static Date internalDeserialize(String src) {
         format.setTimeZone(tz);
-        return format.parse(src);
+        try {
+            return format.parse(src);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }
