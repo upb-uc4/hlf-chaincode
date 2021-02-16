@@ -7,7 +7,7 @@ import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulat
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.Exam;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -80,32 +80,31 @@ public class ExamContractUtil extends ContractUtil {
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
-        // TODO use timestamp from proposal, unless frontend can manipulate that arbitrarily
-        if(exam.getDate() != null && !(exam.getDate().after(Date.from(ZonedDateTime.now().toInstant())))){
+        Date now = Date.from(ZonedDateTime.now().toInstant());
+
+        if (initializedAndBefore(exam.getDate(), now)) {
             invalidParameters.add(getInvalidDate("date"));
         }
 
-        if(exam.getAdmittableUntil() != null && !(exam.getAdmittableUntil().after(Date.from(ZonedDateTime.now().toInstant())))){
-            invalidParameters.add(getInvalidAdmittableDate("admittableAt"));
+        if (initializedAndBefore(exam.getAdmittableUntil(), now)
+                || initializedAndBefore(exam.getDate(), exam.getAdmittableUntil())
+                || initializedAndBefore(exam.getDroppableUntil(), exam.getAdmittableUntil())
+        ) {
+            invalidParameters.add(getInvalidAdmittableDate("admittableUntil"));
         }
 
-        if(exam.getDroppableUntil() != null && !(exam.getDroppableUntil().after(Date.from(ZonedDateTime.now().toInstant())))){
-            invalidParameters.add(getInvalidDroppableDate("droppableAt"));
-        }
-
-        if(exam.getDate() != null && exam.getAdmittableUntil() != null && !(exam.getAdmittableUntil().before(exam.getDate()))){
-            invalidParameters.add(getInvalidAdmittableDate("admittableAt"));
-        }
-
-        if(exam.getDate() != null && exam.getDroppableUntil() != null && !(exam.getDroppableUntil().before(exam.getDate()))){
-            invalidParameters.add(getInvalidDroppableDate("droppableAt"));
-        }
-
-        if(exam.getAdmittableUntil() != null && exam.getDroppableUntil() != null && !(exam.getAdmittableUntil().before(exam.getDroppableUntil()))){
-            invalidParameters.add(getInvalidAdmittableDate("admittableAt"));
+        if (initializedAndBefore(exam.getDroppableUntil(), now)
+                || initializedAndBefore(exam.getDate(), exam.getDroppableUntil())
+                || initializedAndBefore(exam.getDroppableUntil(), exam.getAdmittableUntil())
+        ) {
+            invalidParameters.add(getInvalidDroppableDate("droppableUntil"));
         }
 
         return invalidParameters;
+    }
+
+    private boolean initializedAndBefore (Date before, Date after) {
+        return before != null && after != null && before.before(after);
     }
 
     /**
@@ -149,31 +148,31 @@ public class ExamContractUtil extends ContractUtil {
     }
 
     public List<Exam> getExams(
-        ChaincodeStub stub,
-        final List<String> examIds,
-        final List<String> courseIds,
-        final List<String> lecturerIds,
-        final List<String> moduleIds,
-        final List<String> types,
-        final Date admittableAt,
-        final Date droppableAt) {
+            ChaincodeStub stub,
+            final List<String> examIds,
+            final List<String> courseIds,
+            final List<String> lecturerIds,
+            final List<String> moduleIds,
+            final List<String> types,
+            final Date admittableAt,
+            final Date droppableAt) {
 
-            return this.getAllStates(stub, Exam.class).stream()
-                    .filter(item -> examIds.isEmpty() ||
-                            examIds.contains(item.getExamId()))
-                    .filter(item -> courseIds.isEmpty() ||
-                            courseIds.contains(item.getCourseId()))
-                    .filter(item -> lecturerIds.isEmpty() ||
-                            lecturerIds.contains(item.getLecturerEnrollmentId()))
-                    .filter(item -> moduleIds.isEmpty() ||
-                            moduleIds.contains(item.getModuleId()))
-                    .filter(item -> types.isEmpty() ||
-                            types.contains(item.getType()))
-                    .filter(item -> valueUnset(admittableAt) ||
-                            item.getAdmittableUntil().after(admittableAt))
-                    .filter(item -> valueUnset(droppableAt) ||
-                            item.getDroppableUntil().after(droppableAt))
-                    .collect(Collectors.toList());
+        return this.getAllStates(stub, Exam.class).stream()
+                .filter(item -> examIds.isEmpty() ||
+                        examIds.contains(item.getExamId()))
+                .filter(item -> courseIds.isEmpty() ||
+                        courseIds.contains(item.getCourseId()))
+                .filter(item -> lecturerIds.isEmpty() ||
+                        lecturerIds.contains(item.getLecturerEnrollmentId()))
+                .filter(item -> moduleIds.isEmpty() ||
+                        moduleIds.contains(item.getModuleId()))
+                .filter(item -> types.isEmpty() ||
+                        types.contains(item.getType()))
+                .filter(item -> valueUnset(admittableAt) ||
+                        item.getAdmittableUntil().after(admittableAt))
+                .filter(item -> valueUnset(droppableAt) ||
+                        item.getDroppableUntil().after(droppableAt))
+                .collect(Collectors.toList());
     }
 
     public void checkParamsAddExam(Context ctx, String[] params) throws ParameterError {
@@ -217,7 +216,8 @@ public class ExamContractUtil extends ContractUtil {
         final String droppableAt = params[6];
 
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+        Type listType = new TypeToken<ArrayList<String>>() {
+        }.getType();
         try {
             GsonWrapper.fromJson(examIds, listType);
         } catch (Exception e) {
