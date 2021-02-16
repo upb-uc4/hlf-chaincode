@@ -112,9 +112,6 @@ public abstract class AbstractAdmission {
         if (cUtil.valueUnset(this.enrollmentId)) {
             invalidParams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
         }
-        if (cUtil.valueUnset(this.timestamp)) {
-            invalidParams.add(cUtil.getInvalidTimestampParamLocalDateTime("timestamp"));
-        }
         if (cUtil.valueUnset(this.type)) {
             invalidParams.add(cUtil.getInvalidTypeParam());
         }
