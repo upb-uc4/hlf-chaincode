@@ -16,6 +16,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Contract(
@@ -79,7 +80,7 @@ public class ExamContract extends ContractBase {
             final String moduleIds,
             final String types,
             final String admittableAt,
-            final String droppableAt) throws ParseException {
+            final String droppableAt) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{examIds, courseIds, lecturerIds, moduleIds, types, admittableAt, droppableAt};
         try {
@@ -106,8 +107,8 @@ public class ExamContract extends ContractBase {
                 GsonWrapper.fromJson(lecturerIds, listType),
                 GsonWrapper.fromJson(moduleIds, listType),
                 GsonWrapper.fromJson(types, listType),
-                DateSerializer.internalDeserialize(admittableAt),
-                DateSerializer.internalDeserialize(droppableAt));
+                GsonWrapper.fromJson(admittableAt, Date.class),
+                GsonWrapper.fromJson(droppableAt, Date.class));
         return GsonWrapper.toJson(examList);
     }
 }
