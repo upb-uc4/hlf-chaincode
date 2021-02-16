@@ -49,12 +49,27 @@ public class OperationContract extends ContractBase {
         initiator = cUtil.valueUnset(initiator) ? clientId : initiator;
 
         OperationData operationData;
+        OperationDataState operationState;
         try {
             operationData = cUtil.getOrInitializeOperationData(ctx, initiator, contractName, transactionName, params);
+            operationState = operationData.getState();
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
+        // check whether transaction still PENDING
+        if(operationState != OperationDataState.PENDING){
+            return GsonWrapper.toJson(cUtil.getApprovalImpossibleError());
+        }
 
+        try {if(!cUtil.mayParticipateInOperation(ctx, operationData)) {
+            return GsonWrapper.toJson(cUtil.getApprovalDeniedError());
+        }
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
+        if(!operationData.getMissingApprovals().getUsers().contains(initiator)){
+        //    return GsonWrapper.toJson(cUtil.getApprovalDeniedError());
+        }
         // approve
         try {
             operationData = cUtil.approveOperation(ctx, operationData);
@@ -75,12 +90,23 @@ public class OperationContract extends ContractBase {
     @Transaction()
     public String approveOperation(final Context ctx, String operationId) {
         OperationData operationData;
+        OperationDataState operationState;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
+            operationState = operationData.getState();
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
-
+        //check whether transaction still PENDING
+        if(operationState != OperationDataState.PENDING){
+            return GsonWrapper.toJson(cUtil.getApprovalImpossibleError());
+        }
+        try {if(!cUtil.mayParticipateInOperation(ctx, operationData)) {
+            return GsonWrapper.toJson(cUtil.getApprovalDeniedError());
+        }
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
         // approve
         try {
             operationData = cUtil.approveOperation(ctx, operationData);
@@ -95,15 +121,20 @@ public class OperationContract extends ContractBase {
     @Transaction
     public String rejectOperation(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
+        OperationDataState operationState;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
+            operationState = operationData.getState();
             if(!cUtil.mayParticipateInOperation(ctx, operationData)) {
                 return GsonWrapper.toJson(cUtil.getRejectionDeniedError());
             }
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        // TODO check if operation is pending
+        //check whether transaction still PENDING
+        if(operationState != OperationDataState.PENDING){
+            return GsonWrapper.toJson(cUtil.getRejectionImpossibleError());
+        }
         // reject
         if(cUtil.valueUnset(rejectMessage)){
             return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getEmptyInvalidParameter("rejectMessage")))).getJsonError();
