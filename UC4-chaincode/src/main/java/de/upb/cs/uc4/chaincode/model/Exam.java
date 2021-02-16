@@ -143,7 +143,7 @@ public class Exam {
         return this.date;
     }
     public String getDateString() {
-        return this.date == null ? "" : DateSerializer.format.format(this.date);
+        return this.date == null ? "" : DateSerializer.internalSerialize(this.date);
     }
 
     public void setDate(Date value) {
@@ -185,7 +185,7 @@ public class Exam {
         return this.admittableUntil;
     }
     public String getAdmittableUntilString() {
-        return DateSerializer.format.format(this.admittableUntil);
+        return DateSerializer.internalSerialize(this.admittableUntil);
     }
 
     public void setAdmittableUntil(Date value) {
@@ -207,7 +207,7 @@ public class Exam {
         return this.droppableUntil;
     }
     public String getDroppableUntilString() {
-        return DateSerializer.format.format(this.droppableUntil);
+        return DateSerializer.internalSerialize(this.droppableUntil);
     }
 
     public void setDroppableUntil(Date value) {

@@ -4,20 +4,23 @@ import java.lang.reflect.Type;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 import com.google.gson.*;
 
 public class DateSerializer implements JsonDeserializer<Date>, JsonSerializer<Date> {
 
-    public static String datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";
-    public static SimpleDateFormat format = new SimpleDateFormat(datePattern);
+    private static final String datePattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+    private static final SimpleDateFormat format = new SimpleDateFormat(datePattern);
+    private static final TimeZone tz = TimeZone.getTimeZone("UTC");
 
     @Override
     public Date deserialize(JsonElement element, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
         String dateString = element.getAsString();
 
+        format.setTimeZone(tz);
         try {
-            return format.parse(dateString);
+            return internalDeserialize(dateString);
         } catch (ParseException exp) {
             return null;
         }
@@ -25,6 +28,15 @@ public class DateSerializer implements JsonDeserializer<Date>, JsonSerializer<Da
 
     @Override
     public JsonElement serialize(Date src, Type typeOfSrc, JsonSerializationContext context) {
-        return new JsonPrimitive(format.format(src));
+        return new JsonPrimitive(internalSerialize(src));
+    }
+
+    public static String internalSerialize(Date src){
+        format.setTimeZone(tz);
+        return format.format(src);
+    }
+    public static Date internalDeserialize(String src) throws ParseException {
+        format.setTimeZone(tz);
+        return format.parse(src);
     }
 }
