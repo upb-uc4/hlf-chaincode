@@ -14,7 +14,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class GsonWrapper {
 
@@ -36,7 +35,7 @@ public class GsonWrapper {
                     (JsonSerializer<LocalDateTime>) (date, typeOfSrc, context) -> {
                         return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)); // "YYYY-MM-DDThh:mm:ss"
                     })
-            .registerTypeAdapter(Date.class, new InstantAdapter())
+            .registerTypeAdapter(Instant.class, new InstantAdapter())
             .registerTypeAdapter(
                     Integer.class,
                     (JsonDeserializer<Integer>) (json, type, jsonDeserializationContext) -> {
@@ -79,7 +78,7 @@ public class GsonWrapper {
             .create();
 
     public static <T> T fromJson(String json, Class<T> t) throws JsonSyntaxException {
-        if (t.equals(Date.class)) {
+        if (t.equals(Instant.class)) {
             return (T) InstantAdapter.internalDeserialize(json);
         }
         return gson.fromJson(json, t);
@@ -103,7 +102,7 @@ public class GsonWrapper {
                 return cleanGson.fromJson("[]", type);
             }
         }
-        if (type.equals(Date.class)) {
+        if (type.equals(Instant.class)) {
             return (T) InstantAdapter.internalDeserialize(json);
         }
         return gson.fromJson(json, type);

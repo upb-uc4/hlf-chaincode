@@ -42,7 +42,6 @@ public class AdmissionContract extends ContractBase {
     @Transaction()
     public String addAdmission(final Context ctx, String admissionJson) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
-        String timeStamp = cUtil.getTimestamp(ctx.getStub());
         final String[] args = new String[]{admissionJson};
         try {
             cUtil.checkParamsAddAdmission(ctx, args);
@@ -52,7 +51,7 @@ public class AdmissionContract extends ContractBase {
 
         ChaincodeStub stub = ctx.getStub();
         AbstractAdmission newAdmission = GsonWrapper.fromJson(admissionJson, AbstractAdmission.class);
-        newAdmission.setTimestamp(GsonWrapper.fromJson(timeStamp, Instant.class));
+        newAdmission.setTimestamp(ctx.getStub().getTxTimestamp());
         newAdmission.resetAdmissionId();
 
         try {

@@ -176,10 +176,6 @@ abstract public class ContractUtil {
         return clientId.substring(9).split(",")[0];
     }
 
-    public String getTimestamp(ChaincodeStub stub) {
-        DateTimeFormatter fm = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
-        return fm.format(stub.getTxTimestamp().truncatedTo(SECONDS));
-    }
 
     public void finishOperation(
             final ChaincodeStub stub,

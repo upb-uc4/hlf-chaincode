@@ -29,7 +29,7 @@ public class InstantAdapter implements JsonDeserializer<Instant>, JsonSerializer
 
     public static Instant internalDeserialize(String src) {
         try {
-            return Instant.parse(src);
+            return Instant.from(DateTimeFormatter.ISO_ZONED_DATE_TIME.parse(src));
         } catch (DateTimeParseException e) {
             return null;
         }

@@ -64,7 +64,7 @@
         "moduleId": "M.1",
         "admissionId": "0000001:C.1",
         "enrollmentId": "0000001",
-        "timestamp": "1970-01-01T00:00:00",
+        "timestamp": "1970-01-01T00:00:00Z",
         "type": "Course"
       }
     ]
@@ -105,17 +105,17 @@
       {
         "admissionId": "",
         "enrollmentId": "0000001",
-        "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
-        "timestamp": "2020-12-31T23:59:59",
+        "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00Z",
+        "timestamp": "2020-12-31T23:59:59Z",
         "type": "Exam"
       }
     ],
     "compare": [
       {
-        "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
-        "admissionId": "0000001:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00",
+        "examId": "ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00Z",
+        "admissionId": "0000001:ExampleCourse:M.1:WrittenExam:2021-02-16T10:00:00Z",
         "enrollmentId": "0000001",
-        "timestamp": "1970-01-01T00:00:00",
+        "timestamp": "1970-01-01T00:00:00Z",
         "type": "Exam"
       }
     ]

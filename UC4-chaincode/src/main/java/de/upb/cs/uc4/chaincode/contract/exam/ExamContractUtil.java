@@ -245,10 +245,10 @@ public class ExamContractUtil extends ContractUtil {
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("types"));
         }
-        if (GsonWrapper.fromJson(admittableAt, Date.class) == null && !admittableAt.isEmpty()) {
+        if (GsonWrapper.fromJson(admittableAt, Instant.class) == null && !admittableAt.isEmpty()) {
             invalidParams.add(getUnparsableParam("admittableAt"));
         }
-        if (GsonWrapper.fromJson(droppableAt, Date.class) == null && ! droppableAt.isEmpty()) {
+        if (GsonWrapper.fromJson(droppableAt, Instant.class) == null && ! droppableAt.isEmpty()) {
             invalidParams.add(getUnparsableParam("droppableAt"));
         }
         if (!invalidParams.isEmpty()) {

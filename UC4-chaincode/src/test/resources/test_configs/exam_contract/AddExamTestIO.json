@@ -52,7 +52,7 @@
         "lecturerEnrollmentId": "0000005",
         "moduleId": "M.1",
         "type": "Written Exam",
-        "date": "2022-12-31T23:59:59.000Z",
+        "date": "2022-12-31T23:59:59Z",
         "ects": 3,
         "admittableUntil": "2021-04-30T23:59:59.000Z",
         "droppableUntil": "2021-12-31T23:59:59.000Z"
@@ -60,15 +60,15 @@
     ],
     "compare": [
       {
-        "examId": "C.1:M.1:Written Exam:2022-12-31T23:59:59.000Z",
+        "examId": "C.1:M.1:Written Exam:2022-12-31T23:59:59Z",
         "courseId": "C.1",
         "lecturerEnrollmentId": "0000005",
         "moduleId": "M.1",
         "type": "Written Exam",
-        "date": "2022-12-31T23:59:59.000Z",
+        "date": "2022-12-31T23:59:59Z",
         "ects": 3,
-        "admittableUntil": "2021-04-30T23:59:59.000Z",
-        "droppableUntil": "2021-12-31T23:59:59.000Z"
+        "admittableUntil": "2021-04-30T23:59:59Z",
+        "droppableUntil": "2021-12-31T23:59:59Z"
       }
     ]
   },
@@ -133,15 +133,15 @@
     ],
     "compare": [
       {
-        "examId": "C.1:M.1:Written Exam:2022-12-31T12:59:59.000Z",
+        "examId": "C.1:M.1:Written Exam:2022-12-31T12:59:59Z",
         "courseId": "C.1",
         "lecturerEnrollmentId": "0000005",
         "moduleId": "M.1",
         "type": "Written Exam",
-        "date": "2022-12-31T12:59:59.000Z",
+        "date": "2022-12-31T12:59:59Z",
         "ects": 3,
-        "admittableUntil": "2021-04-30T23:59:59.000Z",
-        "droppableUntil": "2021-12-31T23:59:59.000Z"
+        "admittableUntil": "2021-04-30T23:59:59Z",
+        "droppableUntil": "2021-12-31T23:59:59Z"
       }
     ]
   },
@@ -184,8 +184,8 @@
         "type": "Written Exam",
         "date": "",
         "ects": 3,
-        "admittableUntil": "2021-04-30T23:59:59.000Z",
-        "droppableUntil": "2021-12-31T23:59:59.000Z"
+        "admittableUntil": "2021-04-30T23:59:59Z",
+        "droppableUntil": "2021-12-31T23:59:59Z"
       }
     ],
     "compare": [
