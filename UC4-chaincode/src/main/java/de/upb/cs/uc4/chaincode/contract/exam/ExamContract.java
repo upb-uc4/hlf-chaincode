@@ -80,7 +80,7 @@ public class ExamContract extends ContractBase {
             final String moduleIds,
             final String types,
             final String admittableAt,
-            final String droppableAt) throws ParseException {
+            final String droppableAt) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{examIds, courseIds, lecturerIds, moduleIds, types, admittableAt, droppableAt};
         try {
