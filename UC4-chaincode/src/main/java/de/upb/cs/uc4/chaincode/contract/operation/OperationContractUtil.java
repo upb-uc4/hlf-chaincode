@@ -148,6 +148,18 @@ public class OperationContractUtil extends ContractUtil {
                 .title("You are not allowed to reject the given operation");
     }
 
+    public GenericError getApprovalImpossibleError(){
+        return new GenericError()
+                .type("HLApprovalImpossible")
+                .title("The operation is not in pending state");
+    }
+
+    public GenericError getRejectionImpossibleError(){
+        return new GenericError()
+                .type("HLRejectionImpossible")
+                .title("The operation is not in pending state");
+    }
+
     public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws NoSuchAlgorithmException {
         String key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
         OperationData operationData;

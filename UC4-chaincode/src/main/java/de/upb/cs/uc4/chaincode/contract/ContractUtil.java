@@ -113,7 +113,6 @@ abstract public class ContractUtil {
                 .title("The given number of parameters does not match the required number of parameters for the specified transaction");
     }
 
-
     public void validateApprovals(
             final Context ctx,
             String contractName,
