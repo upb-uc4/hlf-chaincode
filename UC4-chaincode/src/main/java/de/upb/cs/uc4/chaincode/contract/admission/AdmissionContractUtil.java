@@ -44,6 +44,12 @@ public class AdmissionContractUtil extends ContractUtil {
                 .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
     }
 
+    public InvalidParameter getStudentNotMatriculatedParam(String parameterName) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The student is not matriculated in any examinationRegulation");
+    }
+
     public List<CourseAdmission> getCourseAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
         return this.getAllStates(stub, CourseAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
@@ -58,6 +64,18 @@ public class AdmissionContractUtil extends ContractUtil {
                 .filter(item -> admissionIds.isEmpty() || admissionIds.contains(item.getAdmissionId()))
                 .filter(item -> examIds.isEmpty() || examIds.contains(item.getExamId()))
                 .collect(Collectors.toList());
+    }
+
+    public boolean checkStudentMatriculated(ChaincodeStub stub, AbstractAdmission admission) {
+        ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
+        MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
+
+        try {
+            matUtil.getState(stub, admission.getEnrollmentId(), MatriculationData.class);
+        } catch (LedgerAccessError e) {
+            return false;
+        }
+        return true;
     }
 
     public boolean checkModuleAvailable(ChaincodeStub stub, CourseAdmission admission) {
