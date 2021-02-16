@@ -4,6 +4,7 @@ import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.DateSerializer;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.Exam;
@@ -13,6 +14,7 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,7 +79,7 @@ public class ExamContract extends ContractBase {
             final String moduleIds,
             final String types,
             final String admittableAt,
-            final String droppableAt) {
+            final String droppableAt) throws ParseException {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{examIds, courseIds, lecturerIds, moduleIds, types, admittableAt, droppableAt};
         try {
@@ -104,8 +106,8 @@ public class ExamContract extends ContractBase {
                 GsonWrapper.fromJson(lecturerIds, listType),
                 GsonWrapper.fromJson(moduleIds, listType),
                 GsonWrapper.fromJson(types, listType),
-                GsonWrapper.absoluteDateTimeFromJson(admittableAt),
-                GsonWrapper.absoluteDateTimeFromJson(droppableAt));
+                DateSerializer.internalDeserialize(admittableAt),
+                DateSerializer.internalDeserialize(droppableAt));
         return GsonWrapper.toJson(examList);
     }
 }

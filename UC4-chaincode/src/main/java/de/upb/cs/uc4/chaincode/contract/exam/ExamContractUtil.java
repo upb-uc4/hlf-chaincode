@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.DateSerializer;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -169,9 +170,9 @@ public class ExamContractUtil extends ContractUtil {
                             moduleIds.contains(item.getModuleId()))
                     .filter(item -> types.isEmpty() ||
                             types.contains(item.getType()))
-                    .filter(item -> valueUnset(admittableAt) ||
+                    .filter(item -> admittableAt == null ||
                             item.getAdmittableUntil().after(admittableAt))
-                    .filter(item -> valueUnset(droppableAt) ||
+                    .filter(item -> droppableAt == null ||
                             item.getDroppableUntil().after(droppableAt))
                     .collect(Collectors.toList());
     }
@@ -245,12 +246,12 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getUnparsableParam("types"));
         }
         try {
-            GsonWrapper.absoluteDateTimeFromJson(admittableAt);
+            DateSerializer.internalDeserialize(admittableAt);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("admittableAt"));
         }
         try {
-            GsonWrapper.absoluteDateTimeFromJson(droppableAt);
+            DateSerializer.internalDeserialize(droppableAt);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("droppableAt"));
         }
