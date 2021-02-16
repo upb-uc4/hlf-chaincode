@@ -10,6 +10,7 @@ import org.jsoup.safety.Whitelist;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -78,10 +79,16 @@ public class GsonWrapper {
             .create();
 
     public static <T> T fromJson(String json, Class<T> t) throws JsonSyntaxException {
+        if (t.equals(Date.class)) {
+            return (T) InstantAdapter.internalDeserialize(json);
+        }
         return gson.fromJson(json, t);
     }
 
     public static <T> String toJson(T object) {
+        if (object instanceof Instant) {
+            return InstantAdapter.internalSerialize((Instant) object);
+        }
         return gson.toJson(object);
     }
 
@@ -96,14 +103,9 @@ public class GsonWrapper {
                 return cleanGson.fromJson("[]", type);
             }
         }
-        return gson.fromJson(json, type);
-    }
-
-    public static Date absoluteDateTimeFromJson(String s){
-        if(s.isEmpty()){
-            return null;
+        if (type.equals(Date.class)) {
+            return (T) InstantAdapter.internalDeserialize(json);
         }
-
-        return GsonWrapper.fromJson(s, Date.class);
+        return gson.fromJson(json, type);
     }
 }

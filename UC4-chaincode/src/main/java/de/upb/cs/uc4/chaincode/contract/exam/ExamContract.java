@@ -13,7 +13,10 @@ import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Contract(
@@ -104,8 +107,8 @@ public class ExamContract extends ContractBase {
                 GsonWrapper.fromJson(lecturerIds, listType),
                 GsonWrapper.fromJson(moduleIds, listType),
                 GsonWrapper.fromJson(types, listType),
-                GsonWrapper.absoluteDateTimeFromJson(admittableAt),
-                GsonWrapper.absoluteDateTimeFromJson(droppableAt));
+                GsonWrapper.fromJson(admittableAt, Instant.class),
+                GsonWrapper.fromJson(droppableAt, Instant.class));
         return GsonWrapper.toJson(examList);
     }
 }

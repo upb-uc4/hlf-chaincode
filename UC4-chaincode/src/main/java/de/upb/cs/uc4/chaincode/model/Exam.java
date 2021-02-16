@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode.model;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.InstantAdapter;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -143,7 +144,7 @@ public class Exam {
         return this.date;
     }
     public String getDateString() {
-        return this.date == null ? "" : InstantAdapter.internalSerialize(this.date);
+        return GsonWrapper.toJson(this.date);
     }
 
     public void setDate(Instant value) {
@@ -185,7 +186,7 @@ public class Exam {
         return this.admittableUntil;
     }
     public String getAdmittableUntilString() {
-        return InstantAdapter.internalSerialize(this.admittableUntil);
+        return GsonWrapper.toJson(this.admittableUntil);
     }
 
     public void setAdmittableUntil(Instant value) {
@@ -207,7 +208,7 @@ public class Exam {
         return this.droppableUntil;
     }
     public String getDroppableUntilString() {
-        return InstantAdapter.internalSerialize(this.droppableUntil);
+        return GsonWrapper.toJson(this.droppableUntil);
     }
 
     public void setDroppableUntil(Instant value) {
