@@ -87,8 +87,8 @@ public class ExamContractUtil extends ContractUtil {
         if (exam.getAdmittableUntil() != null &&
                 (
                         !(exam.getAdmittableUntil().after(Date.from(ZonedDateTime.now().toInstant()))) //admittableUntil lies in future
-                                || !(exam.getAdmittableUntil().before(exam.getDate())) // admittabelUntil before date
-                                || !(exam.getAdmittableUntil().before(exam.getDroppableUntil())) // admittableUntil before droppableUntil
+                                || (exam.getDate() != null && !(exam.getAdmittableUntil().before(exam.getDate()))) // admittabelUntil before date
+                                || (exam.getDroppableUntil() != null && !(exam.getAdmittableUntil().before(exam.getDroppableUntil()))) // admittableUntil before droppableUntil
                 )
         ) {
             invalidParameters.add(getInvalidAdmittableDate("admittableUntil"));
@@ -97,8 +97,8 @@ public class ExamContractUtil extends ContractUtil {
         if (exam.getDroppableUntil() != null &&
                 (
                         !(exam.getDroppableUntil().after(Date.from(ZonedDateTime.now().toInstant()))) //dropableUntil lies in future
-                                || !(exam.getDroppableUntil().before(exam.getDate())) // dropableUntil before date
-                                || !(exam.getAdmittableUntil().before(exam.getDroppableUntil())) // dropableUntil after admittableUntil
+                                || (exam.getDate() != null && !(exam.getDroppableUntil().before(exam.getDate()))) // dropableUntil before date
+                                || (exam.getAdmittableUntil() != null && !(exam.getAdmittableUntil().before(exam.getDroppableUntil()))) // dropableUntil after admittableUntil
                 )
         ) {
             invalidParameters.add(getInvalidDroppableDate("droppableUntil"));
