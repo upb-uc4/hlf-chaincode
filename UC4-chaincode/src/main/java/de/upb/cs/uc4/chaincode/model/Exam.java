@@ -1,10 +1,11 @@
 package de.upb.cs.uc4.chaincode.model;
 
 import com.google.gson.annotations.SerializedName;
-import de.upb.cs.uc4.chaincode.helper.DateSerializer;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.InstantAdapter;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.Objects;
 
@@ -21,13 +22,13 @@ public class Exam {
     @SerializedName("type")
     private String type;
     @SerializedName("date")
-    private Date date;
+    private Instant date;
     @SerializedName("ects")
     private int ects;
     @SerializedName("admittableUntil")
-    private Date admittableUntil;
+    private Instant admittableUntil;
     @SerializedName("droppableUntil")
-    private Date droppableUntil;
+    private Instant droppableUntil;
 
     protected static final String DELIMITER = ":";
 
@@ -139,19 +140,19 @@ public class Exam {
      * @return date
      **/
     @ApiModelProperty()
-    public Date getDate() {
+    public Instant getDate() {
         return this.date;
     }
     public String getDateString() {
         return GsonWrapper.toJson(this.date);
     }
 
-    public void setDate(Date value) {
+    public void setDate(Instant value) {
         this.date = value;
         resetExamId();
     }
 
-    public Exam date(Date date) {
+    public Exam date(Instant date) {
         this.date = date;
         return this;
     }
@@ -181,18 +182,18 @@ public class Exam {
      * @return admittableUntil
      **/
     @ApiModelProperty()
-    public Date getAdmittableUntil() {
+    public Instant getAdmittableUntil() {
         return this.admittableUntil;
     }
     public String getAdmittableUntilString() {
         return GsonWrapper.toJson(this.admittableUntil);
     }
 
-    public void setAdmittableUntil(Date value) {
+    public void setAdmittableUntil(Instant value) {
         this.admittableUntil = value;
     }
 
-    public Exam admittableUntil(Date admittableUntil) {
+    public Exam admittableUntil(Instant admittableUntil) {
         this.admittableUntil = admittableUntil;
         return this;
     }
@@ -203,18 +204,18 @@ public class Exam {
      * @return droppableUntil
      **/
     @ApiModelProperty()
-    public Date getDroppableUntil() {
+    public Instant getDroppableUntil() {
         return this.droppableUntil;
     }
     public String getDroppableUntilString() {
         return GsonWrapper.toJson(this.droppableUntil);
     }
 
-    public void setDroppableUntil(Date value) {
+    public void setDroppableUntil(Instant value) {
         this.droppableUntil = value;
     }
 
-    public Exam droppableUntil(Date droppableUntil) {
+    public Exam droppableUntil(Instant droppableUntil) {
         this.droppableUntil = droppableUntil;
         return this;
     }

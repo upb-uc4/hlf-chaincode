@@ -50,7 +50,7 @@ public class OperationContractUtil extends ContractUtil {
         existingApprovals.addGroupsItems(clientGroups);
 
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
-        return operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))
+        return operationData.lastModifiedTimestamp(ctx.getStub().getTxTimestamp())
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
     }
@@ -161,14 +161,13 @@ public class OperationContractUtil extends ContractUtil {
     public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws NoSuchAlgorithmException {
         String key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
         OperationData operationData;
-        String timeStamp = getTimestamp(ctx.getStub());
         try {
             operationData = getState(ctx.getStub(), key, OperationData.class);
         } catch (LedgerAccessError ledgerAccessError) {
             operationData = new OperationData()
                     .initiator(initiator)
                     .operationId(key)
-                    .initiatedTimestamp(timeStamp)
+                    .initiatedTimestamp(ctx.getStub().getTxTimestamp())
                     .transactionInfo(new TransactionInfo().contractName(contractName).transactionName(transactionName).parameters(params))
                     .state(OperationDataState.PENDING)
                     .reason("");

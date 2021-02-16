@@ -110,11 +110,6 @@ abstract public class ContractUtil {
                 .name(errorPrefix + "." + param)
                 .reason(param + " must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z\", e.g. \"2020-12-31T23:59:59.999Z\"");
     }
-    public InvalidParameter getInvalidTimestampParamLocalDateTime(String param) {
-        return new InvalidParameter()
-                .name(errorPrefix + "." + param)
-                .reason(param + " must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
-    }
 
     public GenericError getInternalError() {
         return new GenericError()
@@ -181,10 +176,6 @@ abstract public class ContractUtil {
         return clientId.substring(9).split(",")[0];
     }
 
-    public String getTimestamp(ChaincodeStub stub) {
-        DateTimeFormatter fm = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
-        return fm.format(stub.getTxTimestamp().truncatedTo(SECONDS));
-    }
 
     public void finishOperation(
             final ChaincodeStub stub,

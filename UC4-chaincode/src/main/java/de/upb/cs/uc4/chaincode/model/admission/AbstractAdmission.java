@@ -6,7 +6,7 @@ import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import io.swagger.annotations.ApiModelProperty;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -20,7 +20,7 @@ public abstract class AbstractAdmission {
     protected String enrollmentId;
 
     @SerializedName("timestamp")
-    protected LocalDateTime timestamp;
+    protected Instant timestamp;
 
     @SerializedName("type")
     protected AdmissionType type;
@@ -48,11 +48,11 @@ public abstract class AbstractAdmission {
     }
 
     @ApiModelProperty()
-    public LocalDateTime getTimestamp() {
+    public Instant getTimestamp() {
         return this.timestamp;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
+    public void setTimestamp(Instant timestamp) {
         this.timestamp = timestamp;
     }
 
