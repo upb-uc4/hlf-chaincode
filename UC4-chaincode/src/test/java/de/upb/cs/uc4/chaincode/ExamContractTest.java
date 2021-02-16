@@ -96,18 +96,4 @@ public final class ExamContractTest extends TestCreationBase {
         };
     }
 
-    private Executable getExamsFailureTest(
-            JsonIOTestSetup setup,
-            List<String> input,
-            List<String> compare,
-            List<String> ids
-    ) {
-        return () -> {
-            Context ctx = TestUtil.buildContext(GroupContract.contractName, GroupContract.transactionNameGetUsersForGroup, setup, input, ids);
-
-            String result = contract.getExams(ctx, input.get(0), input.get(1), input.get(2), input.get(3), input.get(4), input.get(5), input.get(6));
-            assertThat(result).isEqualTo(compare.get(0));
-        };
-    }
-
 }
