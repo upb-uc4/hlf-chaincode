@@ -7,8 +7,9 @@ import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulat
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
-import de.upb.cs.uc4.chaincode.model.Exam;
+import de.upb.cs.uc4.chaincode.model.exam.Exam;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.exam.ExamType;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
@@ -16,7 +17,7 @@ import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,6 +40,12 @@ public class ExamContractUtil extends ContractUtil {
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
                 .reason("The exam cannot be specified for the given module.");
+    }
+
+    public InvalidParameter getInvalidEnumValue(String parameterName, String[] possibleValues) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The " + parameterName + " has to be one of {" + String.join(", ", possibleValues) + "}");
     }
 
     public InvalidParameter getInvalidDate(String parameterName) {
@@ -73,14 +80,17 @@ public class ExamContractUtil extends ContractUtil {
 
         ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
 
+        // lecturer exists
         if (!(certificateUtil.keyExists(stub, exam.getLecturerEnrollmentId()))) {
             invalidParameters.add(getInvalidUserNotRegistered());
         }
 
+        // module exists
         if (!new ExaminationRegulationContractUtil().moduleExists(stub, exam.getModuleId())) {
             invalidParameters.add(getInvalidModuleAvailable("moduleId"));
         }
 
+        // time checks
         Instant now = ZonedDateTime.now().toInstant();
 
         if (initializedAndBefore(exam.getDate(), now)) {
@@ -136,7 +146,7 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getInvalidTimestampParam("date"));
         }
         if (valueUnset(exam.getType())) {
-            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".type"));
+            invalidParams.add(getInvalidEnumValue("type", Arrays.stream(ExamType.values()).map(ExamType::toString).toArray(String[]::new)));
         }
         if (valueUnset(exam.getAdmittableUntil())) {
             invalidParams.add(getInvalidTimestampParam("admittableUntil"));
@@ -168,7 +178,7 @@ public class ExamContractUtil extends ContractUtil {
                 .filter(item -> moduleIds.isEmpty() ||
                         moduleIds.contains(item.getModuleId()))
                 .filter(item -> types.isEmpty() ||
-                        types.contains(item.getType()))
+                        (item.getType() != null && types.contains(item.getType().toString())))
                 .filter(item -> valueUnset(admittableAt) ||
                         item.getAdmittableUntil().isAfter(admittableAt))
                 .filter(item -> valueUnset(droppableAt) ||

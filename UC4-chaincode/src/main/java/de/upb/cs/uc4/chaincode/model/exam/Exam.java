@@ -1,12 +1,10 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.exam;
 
 import com.google.gson.annotations.SerializedName;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
-import de.upb.cs.uc4.chaincode.helper.InstantAdapter;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.Instant;
-import java.util.Date;
 import java.util.Objects;
 
 public class Exam {
@@ -20,7 +18,7 @@ public class Exam {
     @SerializedName("moduleId")
     private String moduleId;
     @SerializedName("type")
-    private String type;
+    private ExamType type;
     @SerializedName("date")
     private Instant date;
     @SerializedName("ects")
@@ -120,16 +118,16 @@ public class Exam {
      * @return type
      **/
     @ApiModelProperty()
-    public String getType() {
+    public ExamType getType() {
         return this.type;
     }
 
-    public void setType(String value) {
+    public void setType(ExamType value) {
         this.type = value;
         resetExamId();
     }
 
-    public Exam type(String type) {
+    public Exam type(ExamType type) {
         this.type = type;
         return this;
     }
