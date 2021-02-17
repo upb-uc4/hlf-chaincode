@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode.model.admission;
 
 import com.google.gson.annotations.SerializedName;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import io.swagger.annotations.ApiModelProperty;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -92,7 +93,24 @@ public class ExamAdmission extends AbstractAdmission {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
         ArrayList<InvalidParameter> invalidParameters = super.getSemanticErrors(stub);
 
-        // TODO add remaining checks once all necessary contracts available
+        if (!cUtil.checkExamExists(stub, this)) {
+            invalidParameters.add(cUtil.getAdmissionExamNotExistsParam());
+        }
+        if (!cUtil.checkExamAvailableForStudent(stub, this)) {
+            invalidParameters.add(cUtil.getAdmissionExamNotAvailableParam("enrollmentId"));
+            invalidParameters.add(cUtil.getAdmissionExamNotAvailableParam("examId"));
+        }
+        if (!cUtil.checkExamAdmissionNotAlreadyExists(stub, this)) {
+            invalidParameters.add(cUtil.getAdmissionAlreadyExistsParam("enrollmentId"));
+            invalidParameters.add(cUtil.getAdmissionAlreadyExistsParam("examId"));
+        }
+        if (!cUtil.checkCourseAdmissionExists(stub, this)) {
+            invalidParameters.add(cUtil.getCourseAdmissionNotExistsParam("enrollmentId"));
+            invalidParameters.add(cUtil.getCourseAdmissionNotExistsParam("examId"));
+        }
+        if (!cUtil.checkExamAdmittable(stub, this)) {
+            invalidParameters.add(cUtil.getAdmissionNotPossibleParam());
+        }
 
         return invalidParameters;
     }
