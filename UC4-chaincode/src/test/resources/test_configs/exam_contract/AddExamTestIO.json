@@ -154,9 +154,9 @@
     ],
     "setup": {
       "certificateContract": [
-      "0000005",
-      "legit certificate"
-    ],
+        "0000005",
+        "legit certificate"
+      ],
       "examinationRegulationContract": [
         "Computer Science",
         {
@@ -312,6 +312,62 @@
           {
             "name": "exam.moduleId",
             "reason": "The exam cannot be specified for the given module."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addNonExistingExam_Garbage_ExamType",
+    "type": "addExam_FAILURE",
+    "ids": [
+      "User1",
+      "0000005"
+    ],
+    "setup": {
+      "certificateContract": [
+        "0000005",
+        "legit certificate"
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id": "M.1",
+              "name": "Math 1"
+            },
+            {
+              "id": "M.2",
+              "name": "Math 2"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "examId": "",
+        "courseId": "C.1",
+        "lecturerEnrollmentId": "0000005",
+        "moduleId": "M.1",
+        "type": "GarbageExam",
+        "date": "2022-04-30T23:59:59Z",
+        "ects": 3,
+        "admittableUntil": "2021-04-30T23:59:59Z",
+        "droppableUntil": "2021-12-31T23:59:59Z"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "exam.type",
+            "reason": "The type has to be one of {Written Exam, Oral Exam}"
           }
         ]
       }
