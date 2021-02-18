@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode.contract.examresult;
 import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -44,7 +45,7 @@ public class ExamResultContract extends ContractBase {
         final String[] args = new String[]{examResult};
         try {
             cUtil.checkParamsAddExamResult(ctx, args);
-        } catch (ParameterError e) {
+        } catch (ParameterError | LedgerAccessError e) {
             return e.getJsonError();
         }
 
