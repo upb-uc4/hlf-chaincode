@@ -19,6 +19,19 @@
           ]
         }
       ],
+      "examContract" : [
+        {
+          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
+          "moduleId": "Some Module ID",
+          "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
+          "type": "Written Exam",
+          "date": "2021-02-18T09:35:14.069Z",
+          "ects": 5,
+          "admittableUntil": "2021-02-16T09:33:14.069Z",
+          "droppableUntil": "2021-02-16T09:34:14.069Z"
+        }
+      ],
       "groupContract": [
         "System",
         {
@@ -90,6 +103,19 @@
           ]
         }
       ],
+      "examContract" : [
+        {
+          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
+          "moduleId": "Some Module ID",
+          "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
+          "type": "Written Exam",
+          "date": "2021-02-18T09:35:14.069Z",
+          "ects": 5,
+          "admittableUntil": "2021-02-16T09:33:14.069Z",
+          "droppableUntil": "2021-02-16T09:34:14.069Z"
+        }
+      ],
       "certificateContract": [
         "0000010",
         "legit certificate",
@@ -141,6 +167,19 @@
               "name": "Module 2"
             }
           ]
+        }
+      ],
+      "examContract" : [
+        {
+          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
+          "moduleId": "Some Module ID",
+          "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
+          "type": "Written Exam",
+          "date": "2021-02-18T09:35:14.069Z",
+          "ects": 5,
+          "admittableUntil": "2021-02-16T09:33:14.069Z",
+          "droppableUntil": "2021-02-16T09:34:14.069Z"
         }
       ],
       "groupContract": [
@@ -215,6 +254,19 @@
           ]
         }
       ],
+      "examContract" : [
+        {
+          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
+          "moduleId": "Some Module ID",
+          "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
+          "type": "Written Exam",
+          "date": "2021-02-18T09:35:14.069Z",
+          "ects": 5,
+          "admittableUntil": "2021-02-16T09:33:14.069Z",
+          "droppableUntil": "2021-02-16T09:34:14.069Z"
+        }
+      ],
       "groupContract": [
         "System",
         {
@@ -279,6 +331,19 @@
               "name": "Module 1"
             }
           ]
+        }
+      ],
+      "examContract" : [
+        {
+          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
+          "moduleId": "Some Module ID",
+          "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
+          "type": "Written Exam",
+          "date": "2021-02-18T09:35:14.069Z",
+          "ects": 5,
+          "admittableUntil": "2021-02-16T09:33:14.069Z",
+          "droppableUntil": "2021-02-16T09:34:14.069Z"
         }
       ],
       "groupContract": [
@@ -357,6 +422,19 @@
           ]
         }
       ],
+      "examContract" : [
+        {
+          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
+          "moduleId": "Some Module ID",
+          "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
+          "type": "Written Exam",
+          "date": "2021-02-18T09:35:14.069Z",
+          "ects": 5,
+          "admittableUntil": "2021-02-16T09:33:14.069Z",
+          "droppableUntil": "2021-02-16T09:34:14.069Z"
+        }
+      ],
       "groupContract": [
         "System",
         {
@@ -423,6 +501,19 @@
               "name": "Module 1"
             }
           ]
+        }
+      ],
+      "examContract" : [
+        {
+          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
+          "moduleId": "Some Module ID",
+          "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
+          "type": "Written Exam",
+          "date": "2021-02-18T09:35:14.069Z",
+          "ects": 5,
+          "admittableUntil": "2021-02-16T09:33:14.069Z",
+          "droppableUntil": "2021-02-16T09:34:14.069Z"
         }
       ],
       "groupContract": [
