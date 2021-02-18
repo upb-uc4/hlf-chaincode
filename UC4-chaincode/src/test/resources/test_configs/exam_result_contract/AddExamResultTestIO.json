@@ -20,8 +20,9 @@
         }
       ],
       "examContract" : [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
-          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
           "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
           "moduleId": "Some Module ID",
           "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
@@ -104,8 +105,9 @@
         }
       ],
       "examContract" : [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
-          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
           "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
           "moduleId": "Some Module ID",
           "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
@@ -170,8 +172,9 @@
         }
       ],
       "examContract" : [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
-          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
           "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
           "moduleId": "Some Module ID",
           "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
@@ -255,8 +258,9 @@
         }
       ],
       "examContract" : [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
-          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
           "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
           "moduleId": "Some Module ID",
           "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
@@ -334,8 +338,9 @@
         }
       ],
       "examContract" : [
+        "invalid",
         {
-          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "examId": "invalid",
           "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
           "moduleId": "Some Module ID",
           "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
@@ -423,8 +428,9 @@
         }
       ],
       "examContract" : [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
-          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
           "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
           "moduleId": "Some Module ID",
           "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
@@ -504,8 +510,9 @@
         }
       ],
       "examContract" : [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
-          "examId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1:Some Module ID:Written Exam:2021-02-18T09:35:14.069Z",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
           "courseId": "1fcd57e7-71cc-11eb-9b23-2db8ad0e72b1",
           "moduleId": "Some Module ID",
           "lecturerEnrollmentId": "12d9edda9e7a833a88d4a23f125de8b37be8a628936999764d680fab22da7fe4",
