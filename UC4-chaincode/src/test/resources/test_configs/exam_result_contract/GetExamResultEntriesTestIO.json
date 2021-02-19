@@ -16,7 +16,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -51,7 +51,7 @@
             }
           ]
         },
-        "2",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -206,7 +206,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -241,7 +241,7 @@
             }
           ]
         },
-        "2",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -304,7 +304,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -324,7 +324,7 @@
             }
           ]
         },
-        "2",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -349,7 +349,7 @@
             }
           ]
         },
-        "3",
+        "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -435,7 +435,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -455,7 +455,7 @@
             }
           ]
         },
-        "2",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -480,7 +480,7 @@
             }
           ]
         },
-        "3",
+        "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -541,7 +541,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -597,7 +597,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -641,7 +641,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -680,7 +680,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {

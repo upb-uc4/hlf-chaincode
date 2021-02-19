@@ -62,11 +62,8 @@ public class ExamResultContract extends ContractBase {
             return e.getJsonError();
         }
 
-        try {
-            return cUtil.putAndGetStringState(stub, cUtil.getKey(newExamResult), GsonWrapper.toJson(newExamResult));
-        } catch (NoSuchAlgorithmException e) {
-            return GsonWrapper.toJson(cUtil.getInternalError());
-        }
+        return cUtil.putAndGetStringState(stub, cUtil.getKey(newExamResult), GsonWrapper.toJson(newExamResult));
+
     }
 
     /**

@@ -502,7 +502,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -530,7 +530,10 @@
       }
     ],
     "compare": [
-      "Throw Error that it is not possible to update existing result Entries"
+      {
+        "type": "HLConflict",
+        "title": "There is already an exam result for the given exam"
+      }
     ]
   }
 ]

@@ -58,8 +58,14 @@ public class ExamResultContractUtil extends ContractUtil {
                 .reason("Grade must be AnyOf(\"1.0\", \"1.3\", \"1.7\", \"2.0\", \"2.3\", \"2.7\", \"3.0\", \"3.3\", \"3.7\", \"4.0\", \"5.0\")");
     }
 
-    public String getKey(ExamResult examResult) throws NoSuchAlgorithmException {
-        return hashAndEncodeBase64url(GsonWrapper.toJson(examResult));
+    public InvalidParameter emptyExamResultEntriesParam() {
+        return new InvalidParameter()
+                .name("examResultEntries")
+                .reason("There must be at least one exam result entry");
+    }
+
+    public String getKey(ExamResult examResult) {
+        return examResult.getExamResultEntries().get(0).getExamId();
     }
 
     public List<InvalidParameter> getParameterErrorsForExamResultEntry(Context ctx, ExamResultEntry entry, int index) {
@@ -109,6 +115,12 @@ public class ExamResultContractUtil extends ContractUtil {
         } catch (Exception e) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableParam("examResult"))));
         }
+        if(newExamResult.getExamResultEntries().isEmpty()){
+            throw new ParameterError(GsonWrapper.toJson(emptyExamResultEntriesParam()));
+        }
+        if(this.keyExists(ctx.getStub(), getKey(newExamResult))){
+            throw new ParameterError(GsonWrapper.toJson(getConflictError("exam result", "exam")));
+        }
         ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
         List<ExamResultEntry> examResultEntries = newExamResult.getExamResultEntries();
         //for each entry
@@ -119,6 +131,7 @@ public class ExamResultContractUtil extends ContractUtil {
         if (distinctExamIds(examResultEntries)) {
             invalidParams.add(getDistinctExamIdsParam());
         }
+
         // todo: Check All students referenced must be admitted (?)
         // todo: Check All students admitted must be referenced (?)
         if (!invalidParams.isEmpty()) {
