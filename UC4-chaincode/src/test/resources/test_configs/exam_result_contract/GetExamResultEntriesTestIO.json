@@ -16,7 +16,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -51,7 +51,7 @@
             }
           ]
         },
-        "2",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -163,6 +163,33 @@
     ]
   },
   {
+    "name": "queryNonExistingExamIdResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
+    "input": [
+      "",
+      [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00"
+      ]
+    ],
+    "compare": [
+      []
+    ]
+  },
+  {
     "name": "queryExistingEnrollmentIdExamResultEntries",
     "type": "getExamResultEntries",
     "ids": [
@@ -179,7 +206,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -214,7 +241,7 @@
             }
           ]
         },
-        "2",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -277,7 +304,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -297,7 +324,7 @@
             }
           ]
         },
-        "2",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -322,7 +349,7 @@
             }
           ]
         },
-        "3",
+        "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -408,7 +435,7 @@
         }
       ],
       "examResultContract": [
-        "1",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -428,7 +455,7 @@
             }
           ]
         },
-        "2",
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -453,7 +480,7 @@
             }
           ]
         },
-        "3",
+        "ExampleCourse:M.3:Written Exam:2021-02-12T10:00:00",
         {
           "examResultEntries": [
             {
@@ -495,6 +522,184 @@
           "grade": "2.0"
         }
       ]
+    ]
+  },
+  {
+    "name": "queryExistingSameExamIdExamResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examResultContract": [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.3"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "",
+      [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00"
+      ]
+    ],
+    "compare": [
+      [
+        {
+          "enrollmentId": "0000010",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.0"
+        },
+        {
+          "enrollmentId": "0000013",
+          "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+          "grade": "1.3"
+        }
+      ]
+    ]
+  },
+  {
+    "name": "queryFalseFormatExamResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examResultContract": [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.0"
+            },
+            {
+              "enrollmentId": "0000013",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.3"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "",
+      [
+        "invalid"
+      ]
+    ],
+    "compare": [
+      []
+    ]
+  },
+  {
+    "name": "queryExistingEnrollmentIdAndNonExistingExamIdExamResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examResultContract": [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.0"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "0000010",
+      [
+        "ExampleCourse:M.2:Written Exam:2021-02-12T10:00:00"
+      ]
+    ],
+    "compare": [
+      []
+    ]
+  },
+  {
+    "name": "queryNonExistingEnrollmentIdAndExistingExamIdExamResultEntries",
+    "type": "getExamResultEntries",
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examResultContract": [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+        {
+          "examResultEntries": [
+            {
+              "enrollmentId": "0000010",
+              "examId": "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00",
+              "grade": "1.0"
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      "0000011",
+      [
+        "ExampleCourse:M.1:Written Exam:2021-02-12T10:00:00"
+      ]
+    ],
+    "compare": [
+      []
     ]
   }
 ]
