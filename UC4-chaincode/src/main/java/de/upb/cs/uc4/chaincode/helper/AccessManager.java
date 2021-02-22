@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.contract.examresult.ExamResultContract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
@@ -16,6 +17,8 @@ import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.exam.Exam;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
+import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
 import org.hyperledger.fabric.contract.Context;
 
 import java.lang.reflect.Type;
@@ -275,9 +278,14 @@ public class AccessManager {
                 .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForAddExamResult(Context ctx, List<String> params) {
-        // TODO add corresponding lecturer
+    private static ApprovalList getRequiredApprovalsForAddExamResult(Context ctx, List<String> params) throws LedgerAccessError {
+        List<ExamResultEntry> examResultEntries = GsonWrapper.fromJson(params.get(0), ExamResult.class).getExamResultEntries();
+
+        ExamContractUtil cUtil = new ExamContractUtil();
+        Exam exam = cUtil.getState(ctx.getStub(), examResultEntries.get(0).getExamId(), Exam.class);
+
         return new ApprovalList()
+                .addUsersItem(exam.getLecturerEnrollmentId())
                 .addGroupsItem(SYSTEM);
     }
 
