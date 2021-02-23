@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.admission;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
@@ -15,9 +14,7 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
-import java.time.Instant;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Contract(
@@ -159,9 +156,8 @@ public class AdmissionContract extends ContractBase {
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        List<String> admissionIdList = GsonWrapper.fromJson(admissionIds, listType);
-        List<String> examIdList = GsonWrapper.fromJson(examIds, listType);
+        List<String> admissionIdList = Arrays.asList(GsonWrapper.fromJson(admissionIds, String[].class).clone());
+        List<String> examIdList = Arrays.asList(GsonWrapper.fromJson(examIds, String[].class).clone());
         List<ExamAdmission> admissions = cUtil.getExamAdmissions(stub, admissionIdList, enrollmentId, examIdList);
         try {
             cUtil.finishOperation(stub, contractName,  transactionName, args);

@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiModelProperty;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CourseAdmission extends AbstractAdmission {
@@ -96,9 +97,9 @@ public class CourseAdmission extends AbstractAdmission {
     }
 
     @Override
-    public ArrayList<InvalidParameter> getParameterErrors() {
+    public List<InvalidParameter> getParameterErrors() {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidParams = super.getParameterErrors();
+        List<InvalidParameter> invalidParams = super.getParameterErrors();
 
         if (cUtil.valueUnset(this.getCourseId())) {
             invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".courseId"));
@@ -111,9 +112,9 @@ public class CourseAdmission extends AbstractAdmission {
     }
 
     @Override
-    public ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
+    public List<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidParameters = super.getSemanticErrors(stub);
+        List<InvalidParameter> invalidParameters = super.getSemanticErrors(stub);
 
         if (!cUtil.checkModuleAvailable(stub, this)) {
             invalidParameters.add(cUtil.getInvalidModuleAvailable("moduleId"));

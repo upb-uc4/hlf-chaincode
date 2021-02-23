@@ -1,26 +1,14 @@
 package de.upb.cs.uc4.chaincode;
 
-
-import com.google.gson.reflect.TypeToken;
-import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
-import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
-import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
-import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
-import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.function.Executable;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.operation;
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
@@ -13,9 +12,9 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
-import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Contract(
@@ -154,18 +153,17 @@ public class OperationContract extends ContractBase {
             final String initiatorEnrollmentId,
             final String involvedEnrollmentId,
             final String states) {
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         List<String> operationIdList = null;
         try {
-            operationIdList = GsonWrapper.fromJson(operationIds, listType);
+            operationIdList = Arrays.asList(GsonWrapper.fromJson(operationIds, String[].class).clone());
         } catch (Exception e) {
             invalidParams.add(cUtil.getUnparsableParam("operationIds"));
         }
         List<String> stateList = null;
         try {
-            stateList = GsonWrapper.fromJson(states, listType);
+            stateList = Arrays.asList(GsonWrapper.fromJson(states, String[].class).clone());
         } catch (Exception e) {
             invalidParams.add(cUtil.getUnparsableParam("states"));
         }
@@ -181,6 +179,6 @@ public class OperationContract extends ContractBase {
                         initiatorEnrollmentId,
                         involvedEnrollmentId,
                         stateList);
-        return GsonWrapper.toJson(operations);
+        return GsonWrapper.toJson(operations.toArray());
     }
 }

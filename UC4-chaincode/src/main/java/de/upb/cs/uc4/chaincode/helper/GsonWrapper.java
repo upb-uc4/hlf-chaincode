@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.helper;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
@@ -8,12 +7,9 @@ import de.upb.cs.uc4.chaincode.model.admission.AdmissionType;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
-import java.io.Reader;
-import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class GsonWrapper {
 
@@ -78,6 +74,11 @@ public class GsonWrapper {
             .create();
 
     public static <T> T fromJson(String json, Class<T> t) throws JsonSyntaxException {
+        if (t.equals(String[].class)) {
+            if (json == null || json.equals("")) {
+                return cleanGson.fromJson("[]", t);
+            }
+        }
         if (t.equals(Instant.class)) {
             return (T) InstantAdapter.internalDeserialize(json);
         }
@@ -89,22 +90,5 @@ public class GsonWrapper {
             return InstantAdapter.internalSerialize((Instant) object);
         }
         return gson.toJson(object);
-    }
-
-    public static <T> T fromJson(Reader reader, Type type) {
-        return gson.fromJson(reader, type);
-    }
-
-    public static <T> T fromJson(String json, Type type) {
-        Type listType = new TypeToken<ArrayList<String>> () {}.getType();
-        if (type.equals(listType)) {
-            if (json == null || json.equals("")) {
-                return cleanGson.fromJson("[]", type);
-            }
-        }
-        if (type.equals(Instant.class)) {
-            return (T) InstantAdapter.internalDeserialize(json);
-        }
-        return gson.fromJson(json, type);
     }
 }

@@ -1,11 +1,9 @@
 package de.upb.cs.uc4.chaincode.contract.examresult;
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
@@ -15,10 +13,7 @@ import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 @Contract(
@@ -98,11 +93,8 @@ public class ExamResultContract extends ContractBase {
             return e.getJsonError();
         }
 
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
-        List<ExamResultEntry>examResults = cUtil.getExamResultEntries(
-                stub,
-                enrollmentId,
-                GsonWrapper.fromJson(examIds, listType));
+        List<ExamResultEntry>examResults = cUtil.getExamResultEntries(stub, enrollmentId,
+                Arrays.asList(GsonWrapper.fromJson(examIds, String[].class).clone()));
         return GsonWrapper.toJson(examResults);
     }
 

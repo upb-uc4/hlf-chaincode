@@ -18,16 +18,16 @@ public class CertificateContractUtil extends ContractUtil {
         identifier = "enrollmentId";
     }
 
-    private ArrayList<InvalidParameter> getErrorForEnrollmentId(final String enrollmentId) {
-        ArrayList<InvalidParameter> list = new ArrayList<>();
+    private List<InvalidParameter> getErrorForEnrollmentId(final String enrollmentId) {
+        List<InvalidParameter> list = new ArrayList<>();
         if (enrollmentId == null || enrollmentId.equals("")) {
             list.add(getEmptyEnrollmentIdParam());
         }
         return list;
     }
 
-    private ArrayList<InvalidParameter> getErrorForCertificate(final String certificate) {
-        ArrayList<InvalidParameter> list = new ArrayList<>();
+    private List<InvalidParameter> getErrorForCertificate(final String certificate) {
+        List<InvalidParameter> list = new ArrayList<>();
         if (certificate == null || certificate.equals("")) {
             list.add(getEmptyInvalidParameter("certificate"));
         }
@@ -43,7 +43,7 @@ public class CertificateContractUtil extends ContractUtil {
 
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         invalidParams.addAll(getErrorForEnrollmentId(enrollmentId));
         invalidParams.addAll(getErrorForCertificate(certificate));
 
@@ -66,7 +66,7 @@ public class CertificateContractUtil extends ContractUtil {
 
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         invalidParams.addAll(getErrorForEnrollmentId(enrollmentId));
         invalidParams.addAll(getErrorForCertificate(certificate));
 
@@ -89,7 +89,7 @@ public class CertificateContractUtil extends ContractUtil {
 
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>(getErrorForEnrollmentId(enrollmentId));
+        List<InvalidParameter> invalidParams = new ArrayList<>(getErrorForEnrollmentId(enrollmentId));
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }

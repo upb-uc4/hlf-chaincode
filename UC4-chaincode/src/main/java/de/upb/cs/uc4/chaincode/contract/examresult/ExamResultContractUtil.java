@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.examresult;
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
@@ -15,10 +14,7 @@ import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -126,7 +122,7 @@ public class ExamResultContractUtil extends ContractUtil {
         if(this.keyExists(ctx.getStub(), getKey(newExamResult))){
             throw new ParameterError(GsonWrapper.toJson(getConflictError("exam result", "exam")));
         }
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         List<ExamResultEntry> examResultEntries = newExamResult.getExamResultEntries();
         //for each entry
         for (int i=0; i< examResultEntries.size();i++){
@@ -153,7 +149,7 @@ public class ExamResultContractUtil extends ContractUtil {
     }
 
     private boolean distinctExamIds(List<ExamResultEntry> entries) {
-        return entries.stream().map(entry -> entry.getExamId()).distinct().count() > 1;
+        return entries.stream().map(ExamResultEntry::getExamId).distinct().count() > 1;
     }
 
     public void checkParamsGetExamResultEntries(Context ctx, String[] params) throws ParameterError {
@@ -162,10 +158,9 @@ public class ExamResultContractUtil extends ContractUtil {
         }
         String examIds = params[1];
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         try {
-            GsonWrapper.fromJson(examIds, listType);
+            GsonWrapper.fromJson(examIds, String[].class);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("examIds"));
         }
@@ -181,7 +176,7 @@ public class ExamResultContractUtil extends ContractUtil {
 
         return this.getAllStates(stub, ExamResult.class).stream()
                 .map(result -> result.getExamResultEntries().stream())
-                .reduce((entries1, entries2) -> Stream.concat(entries1, entries2))
+                .reduce(Stream::concat)
                 .orElse(Stream.empty())
                 .filter(item -> enrollmentId.isEmpty() ||
                         enrollmentId.equals(item.getEnrollmentId()))

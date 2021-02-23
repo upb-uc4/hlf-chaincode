@@ -1,8 +1,6 @@
 package de.upb.cs.uc4.chaincode.contract;
 
-import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
-import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.*;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
@@ -24,15 +22,9 @@ import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 abstract public class ContractUtil {
 
@@ -42,10 +34,10 @@ abstract public class ContractUtil {
     protected String identifier = "";
 
     public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
-        return getUnprocessableEntityError(getArrayList(invalidParam));
+        return getUnprocessableEntityError(getList(invalidParam));
     }
 
-    public DetailedError getUnprocessableEntityError(ArrayList<InvalidParameter> invalidParams) {
+    public DetailedError getUnprocessableEntityError(List<InvalidParameter> invalidParams) {
         return new DetailedError()
                 .type("HLUnprocessableEntity")
                 .title("The following parameters do not conform to the specified format")
@@ -228,7 +220,7 @@ abstract public class ContractUtil {
         return stub.getStateByPartialCompositeKey(key);
     }
 
-    public ArrayList<InvalidParameter> getArrayList(InvalidParameter invalidParam) {
+    public List<InvalidParameter> getList(InvalidParameter invalidParam) {
         return new ArrayList<InvalidParameter>() {{
             add(invalidParam);
         }};
@@ -298,7 +290,7 @@ abstract public class ContractUtil {
     public <T> List<T> getAllStates(ChaincodeStub stub, Class<T> c) {
         QueryResultsIterator<KeyValue> qrIterator;
         qrIterator = getAllRawStates(stub);
-        ArrayList<T> resultItems = new ArrayList<>();
+        List<T> resultItems = new ArrayList<>();
         for (KeyValue item : qrIterator) {
             String jsonValue = item.getStringValue();
             try {
@@ -309,28 +301,5 @@ abstract public class ContractUtil {
             }
         }
         return resultItems;
-    }
-
-    public boolean checkModuleAvailable(ChaincodeStub stub, String enrollmentId, String moduleId) {
-        ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
-        MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
-
-        try {
-            MatriculationData matriculationData = matUtil.getState(stub, enrollmentId, MatriculationData.class);
-            List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
-            for (SubjectMatriculation matriculation : matriculations) {
-                String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
-                ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
-                List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
-                for (ExaminationRegulationModule module : modules) {
-                    if (module.getId().equals(moduleId)) {
-                        return true;
-                    }
-                }
-            }
-        } catch (LedgerAccessError e) {
-            return false;
-        }
-        return false;
     }
 }

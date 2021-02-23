@@ -8,6 +8,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public abstract class AbstractAdmission {
@@ -105,9 +106,9 @@ public abstract class AbstractAdmission {
         return o.toString().replace("\n", "\n    ");
     }
 
-    public ArrayList<InvalidParameter> getParameterErrors() {
+    public List<InvalidParameter> getParameterErrors() {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (cUtil.valueUnset(this.enrollmentId)) {
             invalidParams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
@@ -119,9 +120,9 @@ public abstract class AbstractAdmission {
         return invalidParams;
     }
 
-    public ArrayList<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
+    public List<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
+        List<InvalidParameter> invalidParameters = new ArrayList<>();
         if (!cUtil.checkStudentMatriculated(stub, this)) {
             invalidParameters.add(cUtil.getStudentNotMatriculatedParam("enrollmentId"));
         }

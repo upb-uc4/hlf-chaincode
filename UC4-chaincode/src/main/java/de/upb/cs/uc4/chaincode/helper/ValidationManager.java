@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.helper;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
@@ -20,21 +19,18 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransact
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import org.hyperledger.fabric.contract.Context;
 
-import java.lang.reflect.Type;
-
 public class ValidationManager {
-    private static AdmissionContractUtil admissionUtil = new AdmissionContractUtil();
-    private static OperationContractUtil operationUtil = new OperationContractUtil();
-    private static CertificateContractUtil certificateUtil = new CertificateContractUtil();
-    private static ExaminationRegulationContractUtil examinationRegulationUtil = new ExaminationRegulationContractUtil();
-    private static GroupContractUtil groupUtil = new GroupContractUtil();
-    private static MatriculationDataContractUtil matriculationDataUtil = new MatriculationDataContractUtil();
-    private static ExamContractUtil examUtil = new ExamContractUtil();
-    private static ExamResultContractUtil examResultContractUtil = new ExamResultContractUtil();
+    private static final AdmissionContractUtil admissionUtil = new AdmissionContractUtil();
+    private static final OperationContractUtil operationUtil = new OperationContractUtil();
+    private static final CertificateContractUtil certificateUtil = new CertificateContractUtil();
+    private static final ExaminationRegulationContractUtil examinationRegulationUtil = new ExaminationRegulationContractUtil();
+    private static final GroupContractUtil groupUtil = new GroupContractUtil();
+    private static final MatriculationDataContractUtil matriculationDataUtil = new MatriculationDataContractUtil();
+    private static final ExamContractUtil examUtil = new ExamContractUtil();
+    private static final ExamResultContractUtil examResultContractUtil = new ExamResultContractUtil();
 
     public static void validateParams(Context ctx, String contractName, String transactionName, String params) throws SerializableError {
-        Type listType = new TypeToken<String[]>() {}.getType();
-        String[] paramList = GsonWrapper.fromJson(params, listType);
+        String[] paramList = GsonWrapper.fromJson(params, String[].class);
         switch (contractName) {
             case MatriculationDataContract.contractName:
                 switch (transactionName) {

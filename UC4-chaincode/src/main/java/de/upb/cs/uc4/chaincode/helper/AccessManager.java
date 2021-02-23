@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.helper;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
@@ -21,12 +20,11 @@ import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
 import org.hyperledger.fabric.contract.Context;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AccessManager {
-    private static OperationContractUtil operationUtil = new OperationContractUtil();
+    private static final OperationContractUtil operationUtil = new OperationContractUtil();
 
     public static final String ADMIN = "Admin";
     public static final String SYSTEM = "System";
@@ -34,9 +32,7 @@ public class AccessManager {
     public static final String HLF_ATTRIBUTE_SYSADMIN = "sysAdmin";
 
     public static ApprovalList getRequiredApprovals(Context ctx, String contractName, String transactionName, String params) throws MissingTransactionError, LedgerAccessError {
-        Type listType = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        List<String> paramList = GsonWrapper.fromJson(params, listType);
+        List<String> paramList = Arrays.asList(GsonWrapper.fromJson(params, String[].class).clone());
         switch (contractName) {
             case MatriculationDataContract.contractName:
                 switch (transactionName) {

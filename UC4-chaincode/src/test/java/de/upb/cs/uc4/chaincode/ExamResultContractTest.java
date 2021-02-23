@@ -1,15 +1,12 @@
 package de.upb.cs.uc4.chaincode;
 
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.examresult.ExamResultContract;
 import de.upb.cs.uc4.chaincode.contract.examresult.ExamResultContractUtil;
-import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
-import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
@@ -18,8 +15,7 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -72,10 +68,9 @@ public final class ExamResultContractTest extends TestCreationBase {
         return () -> {
             Context ctx = TestUtil.buildContext(ExamResultContract.contractName, ExamResultContract.transactionNameGetExamResultEntries, setup, input, ids);
 
-            Type listType = new TypeToken<ArrayList<ExamResultEntry>>() {}.getType();
-            List<ExamResultEntry> compareExamResult = GsonWrapper.fromJson(compare.get(0), listType);
-            List<ExamResultEntry> ledgerExamResult = GsonWrapper.fromJson(
-                    contract.getExamResultEntries(ctx, input.get(0), input.get(1)), listType);
+            List<ExamResultEntry> compareExamResult = Arrays.asList(GsonWrapper.fromJson(compare.get(0), ExamResultEntry[].class).clone());
+            List<ExamResultEntry> ledgerExamResult = Arrays.asList(GsonWrapper.fromJson(
+                    contract.getExamResultEntries(ctx, input.get(0), input.get(1)), ExamResultEntry[].class).clone());
             assertThat(ledgerExamResult).isEqualTo(compareExamResult);
         };
     }

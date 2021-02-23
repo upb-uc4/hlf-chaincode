@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.exam;
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
@@ -15,6 +14,7 @@ import org.hyperledger.fabric.shim.ChaincodeStub;
 import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Contract(
@@ -97,14 +97,13 @@ public class ExamContract extends ContractBase {
             return e.getJsonError();
         }
 
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         List<Exam> examList = cUtil.getExams(
                 ctx.getStub(),
-                GsonWrapper.fromJson(examIds, listType),
-                GsonWrapper.fromJson(courseIds, listType),
-                GsonWrapper.fromJson(lecturerIds, listType),
-                GsonWrapper.fromJson(moduleIds, listType),
-                GsonWrapper.fromJson(types, listType),
+                Arrays.asList(GsonWrapper.fromJson(examIds, String[].class).clone()),
+                Arrays.asList(GsonWrapper.fromJson(courseIds, String[].class).clone()),
+                Arrays.asList(GsonWrapper.fromJson(lecturerIds, String[].class).clone()),
+                Arrays.asList(GsonWrapper.fromJson(moduleIds, String[].class).clone()),
+                Arrays.asList(GsonWrapper.fromJson(types, String[].class).clone()),
                 GsonWrapper.fromJson(admittableAt, Instant.class),
                 GsonWrapper.fromJson(droppableAt, Instant.class));
         return GsonWrapper.toJson(examList);

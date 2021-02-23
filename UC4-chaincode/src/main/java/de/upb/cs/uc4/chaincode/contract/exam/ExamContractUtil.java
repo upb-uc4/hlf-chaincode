@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.exam;
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
@@ -13,7 +12,6 @@ import de.upb.cs.uc4.chaincode.model.exam.ExamType;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
@@ -67,13 +65,13 @@ public class ExamContractUtil extends ContractUtil {
      * @param exam exam to return errors for
      * @return a list of all errors found for the given exam
      */
-    public ArrayList<InvalidParameter> getSemanticErrorsForExam(
+    public List<InvalidParameter> getSemanticErrorsForExam(
             ChaincodeStub stub,
             Exam exam) {
 
         CertificateContractUtil certificateUtil = new CertificateContractUtil();
 
-        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
+        List<InvalidParameter> invalidParameters = new ArrayList<>();
 
         // lecturer exists
         if (!(certificateUtil.keyExists(stub, exam.getLecturerEnrollmentId()))) {
@@ -120,10 +118,10 @@ public class ExamContractUtil extends ContractUtil {
      * @return a list of all errors found for the given exam
      */
 
-    public ArrayList<InvalidParameter> getParameterErrorsForExam(
+    public List<InvalidParameter> getParameterErrorsForExam(
             Exam exam) {
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(exam.getExamId())) {
             invalidParams.add(getEmptyEnrollmentIdParam(errorPrefix + ".examId"));
@@ -202,7 +200,7 @@ public class ExamContractUtil extends ContractUtil {
             throw new ParameterError(GsonWrapper.toJson(getConflictError()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getParameterErrorsForExam(exam);
+        List<InvalidParameter> invalidParams = getParameterErrorsForExam(exam);
         invalidParams.addAll(getSemanticErrorsForExam(stub, exam));
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
@@ -221,34 +219,30 @@ public class ExamContractUtil extends ContractUtil {
         final String admittableAt = params[5];
         final String droppableAt = params[6];
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        Type listType = new TypeToken<ArrayList<String>>() {
-        }.getType();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         try {
-            GsonWrapper.fromJson(examIds, listType);
+            GsonWrapper.fromJson(examIds, String[].class);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("examIds"));
         }
         try {
-            GsonWrapper.fromJson(courseIds, listType);
+            GsonWrapper.fromJson(courseIds, String[].class);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("courseIds"));
         }
         try {
-            GsonWrapper.fromJson(lecturerIds, listType);
+            GsonWrapper.fromJson(lecturerIds, String[].class);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("lecturerIds"));
         }
         try {
-            GsonWrapper.fromJson(moduleIds, listType);
+            GsonWrapper.fromJson(moduleIds, String[].class);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("moduleIds"));
         }
 
-        Type listTypeExamTypes = new TypeToken<ArrayList<ExamType>>() {
-        }.getType();
         try {
-            List<ExamType> examTypes = GsonWrapper.fromJson(types, listTypeExamTypes);
+            List<ExamType> examTypes = Arrays.asList(GsonWrapper.fromJson(types, ExamType[].class).clone());
             if (examTypes.stream().anyMatch(Objects::isNull)){
                 invalidParams.add(getInvalidEnumValue("types", ExamType.possibleStringValues()));
             }

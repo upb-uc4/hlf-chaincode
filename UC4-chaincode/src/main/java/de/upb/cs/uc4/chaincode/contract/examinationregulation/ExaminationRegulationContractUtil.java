@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.examinationregulation;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
@@ -11,7 +10,6 @@ import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -60,11 +58,11 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
     }
 
     public boolean checkModuleAvailable(ChaincodeStub stub, String moduleId) {
-         return getValidModules(stub).stream().map(module -> module.getId()).anyMatch(item -> item.equals(moduleId));
+         return getValidModules(stub).stream().map(ExaminationRegulationModule::getId).anyMatch(item -> item.equals(moduleId));
     }
 
-    public ArrayList<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<ExaminationRegulationModule> validModules) {
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+    public List<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<ExaminationRegulationModule> validModules) {
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(examinationRegulation.getName())) {
             invalidParams.add(getEmptyInvalidParameter(this.prefix + ".name"));
@@ -77,13 +75,13 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         return invalidParams;
     }
 
-    public ArrayList<InvalidParameter> getErrorForModuleList(List<ExaminationRegulationModule> modules, String errorName, Set<ExaminationRegulationModule> validModules) {
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+    public List<InvalidParameter> getErrorForModuleList(List<ExaminationRegulationModule> modules, String errorName, Set<ExaminationRegulationModule> validModules) {
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(modules)) {
             invalidParams.add(getEmptyInvalidParameter(errorName));
         } else {
-            ArrayList<String> existingModules = new ArrayList<>();
+            List<String> existingModules = new ArrayList<>();
 
             for (int moduleIndex = 0; moduleIndex < modules.size(); moduleIndex++) {
 
@@ -127,7 +125,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         }
 
         HashSet<ExaminationRegulationModule> validModules = getValidModules(stub);
-        ArrayList<InvalidParameter> invalidParams = getErrorForExaminationRegulation(newExaminationRegulation, validModules);
+        List<InvalidParameter> invalidParams = getErrorForExaminationRegulation(newExaminationRegulation, validModules);
 
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
@@ -145,9 +143,8 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
         }
         String names = params[0];
 
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         try {
-            GsonWrapper.fromJson(names, listType);
+            GsonWrapper.fromJson(names, String[].class);
         } catch (Exception e) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableNameListParam())));
         }
