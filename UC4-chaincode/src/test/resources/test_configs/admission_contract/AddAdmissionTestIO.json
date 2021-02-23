@@ -746,5 +746,97 @@
         ]
       }
     ]
-  }
+  },
+  {
+  "name": "addNonExistingAdmission_InvalidType",
+  "type": "addAdmission_FAILURE",
+  "ids": [
+    "User1",
+    "0000001"
+  ],
+  "setup": {
+    "admissionContract": [
+      "0000001:C.1",
+      {
+        "admissionId": "0000001:C.1",
+        "enrollmentId": "0000001",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59.000Z",
+        "type": "Course"
+      }
+    ],
+    "examContract": [
+      "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+      {
+        "examId": "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+        "courseId": "C.1",
+        "lecturerEnrollmentId": "lecturer",
+        "moduleId": "M.1",
+        "type": "Written Exam",
+        "date": "2022-02-12T10:00:00Z",
+        "ects": 3,
+        "admittableUntil": "2022-01-30T23:59:59.000Z",
+        "droppableUntil": "2022-01-31T23:59:59.000Z"
+      }
+    ],
+    "examinationRegulationContract": [
+      "Computer Science",
+      {
+        "name": "Computer Science",
+        "active": true,
+        "modules": [
+          {
+            "id":"M.1",
+            "name": "Module1"
+          }
+        ]
+      }
+    ],
+    "groupContract": [
+      "System",
+      {
+        "groupId": "System",
+        "userList": [
+          "User1"
+        ]
+      }
+    ],
+    "matriculationDataContract": [
+      "0000001",
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "input": [
+    {
+      "admissionId": "",
+      "enrollmentId": "0000001",
+      "examId": "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+      "timestamp": "2021-01-30T23:59:59.000Z",
+      "type": "Garbage"
+    }
+  ],
+  "compare": [
+    {
+      "type": "HLUnprocessableEntity",
+      "title": "The following parameters do not conform to the specified format",
+      "invalidParams": [
+        {
+          "name": "admission.type",
+          "reason": "The admission.type has/have to be one of {Written Exam, Oral Exam}"
+        }
+      ]
+    }
+  ]
+}
 ]

@@ -4,6 +4,7 @@ import com.google.gson.*;
 import de.upb.cs.uc4.chaincode.model.Dummy;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
 import de.upb.cs.uc4.chaincode.model.admission.AdmissionType;
+import de.upb.cs.uc4.chaincode.model.admission.UntypedAdmission;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 
@@ -69,7 +70,11 @@ public class GsonWrapper {
                         JsonObject wrapper = (JsonObject) json;
                         JsonElement jsonType = wrapper.get("type");
                         AdmissionType admissionType = jsonDeserializationContext.deserialize(jsonType, AdmissionType.class);
-                        return jsonDeserializationContext.deserialize(json, admissionType.valueToType());
+                        if(admissionType == null){
+                            return jsonDeserializationContext.deserialize(json, UntypedAdmission.class);
+                        } else {
+                            return jsonDeserializationContext.deserialize(json, admissionType.valueToType());
+                        }
                     })
             .create();
 
