@@ -12,7 +12,6 @@ import de.upb.cs.uc4.chaincode.model.exam.ExamType;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
