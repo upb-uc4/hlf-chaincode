@@ -2,7 +2,6 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 
 import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
-import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.OperationAccessError;
@@ -10,16 +9,13 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
-import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.*;
-import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
 import java.lang.reflect.Type;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,14 +40,11 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
 
-        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        initiator = cUtil.valueUnset(initiator) ? clientId : initiator;
-
         OperationData operationData;
         try {
             operationData = cUtil.getOrInitializeOperationData(ctx, initiator, contractName, transactionName, params);
-        } catch (NoSuchAlgorithmException e) {
-            return GsonWrapper.toJson(cUtil.getInternalError());
+        } catch (ValidationError e) {
+            return e.getJsonError();
         }
 
         try {
@@ -98,10 +91,11 @@ public class OperationContract extends ContractBase {
         }
 
         try {
-            cUtil.rejectOperation(ctx, operationData, rejectMessage);
+            cUtil.checkMayParticipate(ctx, operationData);
         } catch (OperationAccessError | MissingTransactionError e) {
             return e.getJsonError();
         }
+        operationData.state(OperationDataState.REJECTED).reason(cUtil.getUserRejectionMessage(rejectMessage));
         return cUtil.putAndGetStringState(ctx.getStub(), operationId, GsonWrapper.toJson(operationData));
     }
 

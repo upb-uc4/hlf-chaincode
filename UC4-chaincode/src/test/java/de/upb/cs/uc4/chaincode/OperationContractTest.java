@@ -4,6 +4,7 @@ package de.upb.cs.uc4.chaincode;
 import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
 import java.lang.reflect.Type;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -204,7 +204,7 @@ public final class OperationContractTest extends TestCreationBase {
 
     }
 
-    private String operationId(List<String> input) throws NoSuchAlgorithmException {
+    private String operationId(List<String> input) throws ValidationError {
         return OperationContractUtil.getDraftKey(contract(input), transaction(input), params(input));
     }
 }

@@ -4,6 +4,7 @@ import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.OperationAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -38,21 +39,9 @@ public class OperationContractUtil extends ContractUtil {
         return message;
     }
 
-    public boolean hasRightToParticipate(Context ctx, OperationData operationData) throws MissingTransactionError {
-        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(operationData);
-        return requiredApprovals.getUsers().contains(clientId) || requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains);
-    }
-
     public void approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError, OperationAccessError {
 
-        if (!operationData.getState().equals(OperationDataState.PENDING)) {
-            throw new OperationAccessError(GsonWrapper.toJson(getApprovalImpossibleError()));
-        }
-        if(!hasRightToParticipate(ctx, operationData)) {
-            throw new OperationAccessError(GsonWrapper.toJson(getApprovalDeniedError()));
-        }
+        checkMayParticipate(ctx, operationData);
 
         String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
@@ -63,17 +52,6 @@ public class OperationContractUtil extends ContractUtil {
         operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
-    }
-
-    public void rejectOperation(Context ctx, OperationData operationData, String rejectMessage) throws OperationAccessError, MissingTransactionError {
-        if(!operationData.getState().equals(OperationDataState.PENDING)){
-            throw new OperationAccessError(GsonWrapper.toJson(getRejectionImpossibleError()));
-        }
-        if (!hasRightToParticipate(ctx, operationData)) {
-            throw new OperationAccessError(GsonWrapper.toJson(getRejectionDeniedError()));
-        }
-
-        operationData.state(OperationDataState.REJECTED).reason(getUserRejectionMessage(rejectMessage));
     }
 
     public List<OperationData> getOperations(
@@ -118,9 +96,14 @@ public class OperationContractUtil extends ContractUtil {
         return missingApprovals;
     }
 
-    public static String getDraftKey(final String contractName, final String transactionName, final String params) throws NoSuchAlgorithmException {
+    public static String getDraftKey(final String contractName, final String transactionName, final String params) throws ValidationError {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params.replace(" ", "");
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
+        }
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
         return new String(Base64.getUrlEncoder().encode(bytes));
     }
@@ -137,24 +120,28 @@ public class OperationContractUtil extends ContractUtil {
                 .reason("The given transaction \"" + transactionName + "\" does not exist"));
     }
 
+    // TODO utilize participation denied error instead
     public GenericError getApprovalDeniedError(){
         return new GenericError()
                 .type("HLApprovalDenied")
                 .title("You are not allowed to approve the given operation");
     }
 
+    // TODO utilize not pending error instead
     public GenericError getApprovalImpossibleError(){
         return new GenericError()
                 .type("HLApprovalImpossible")
                 .title("The operation is not in pending state");
     }
 
+    // TODO utilize participation denied error instead
     public GenericError getRejectionDeniedError(){
         return new GenericError()
                 .type("HLRejectionDenied")
                 .title("You are not allowed to reject the given operation");
     }
 
+    // TODO utilize not pending error instead
     public GenericError getRejectionImpossibleError(){
         return new GenericError()
                 .type("HLRejectionImpossible")
@@ -169,8 +156,12 @@ public class OperationContractUtil extends ContractUtil {
         return getUnprocessableEntityError(getEmptyInvalidParameter("transactionName"));
     }
 
-    public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws NoSuchAlgorithmException {
-        String key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
+    public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws ValidationError {
+        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        initiator = valueUnset(initiator) ? clientId : initiator;
+
+        String key;
+        key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
         OperationData operationData;
         String timeStamp = getTimestamp(ctx.getStub());
         try {

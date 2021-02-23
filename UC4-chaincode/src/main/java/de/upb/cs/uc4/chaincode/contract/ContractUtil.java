@@ -3,10 +3,12 @@ package de.upb.cs.uc4.chaincode.contract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.*;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.OperationAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.OperationDataState;
@@ -21,7 +23,6 @@ import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
-import java.security.NoSuchAlgorithmException;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -81,6 +82,18 @@ abstract public class ContractUtil {
                 .title("The approvals present on the ledger do not suffice to execute this transaction");
     }
 
+    public GenericError getParticipationDeniedError(){
+        return new GenericError()
+                .type("HLParticipationDenied")
+                .title("You are not allowed to participate in the given operation");
+    }
+
+    public GenericError getOperationNotPendingError(){
+        return new GenericError()
+                .type("HLParticipationImpossible")
+                .title("The operation is not in pending state");
+    }
+
     public InvalidParameter getUnparsableParam(String parameterName) {
         return new InvalidParameter()
                 .name(parameterName)
@@ -101,7 +114,7 @@ abstract public class ContractUtil {
         return getEmptyInvalidParameter(prefix + "enrollmentId");
     }
 
-    public GenericError getInternalError() {
+    public static GenericError getInternalError() {
         return new GenericError()
                 .type("HLInternalError")
                 .title("SHA-256 apparently does not exist lol...");
@@ -113,13 +126,27 @@ abstract public class ContractUtil {
                 .title("The given number of parameters does not match the required number of parameters for the specified transaction");
     }
 
+    public void checkMayParticipate(Context ctx, OperationData operationData) throws MissingTransactionError, OperationAccessError {
+        if (!operationData.getState().equals(OperationDataState.PENDING)) {
+            throw new OperationAccessError(GsonWrapper.toJson(getOperationNotPendingError()));
+        }
+        if(!hasRightToParticipate(ctx, operationData)) {
+            throw new OperationAccessError(GsonWrapper.toJson(getParticipationDeniedError()));
+        }
+    }
+
+    private boolean hasRightToParticipate(Context ctx, OperationData operationData) throws MissingTransactionError {
+        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(operationData);
+        return requiredApprovals.getUsers().contains(clientId) || requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains);
+    }
 
     public void validateApprovals(
             final Context ctx,
             String contractName,
             String transactionName,
             final String[] args) throws SerializableError {
-        ChaincodeStub stub = ctx.getStub();
         String jsonArgs = GsonWrapper.toJson(args);
         ApprovalList requiredApprovals =  AccessManager.getRequiredApprovals(contractName, transactionName, jsonArgs);
         if (requiredApprovals.isEmpty()) {
@@ -127,28 +154,12 @@ abstract public class ContractUtil {
         }
 
         OperationContractUtil oUtil = new OperationContractUtil();
-        String key;
-        try {
-            key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
-        } catch (NoSuchAlgorithmException e) {
-            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
-        }
-        ApprovalList approvals;
-        OperationDataState operationState;
-        try{
-            OperationData operation = oUtil.getState(stub, key, OperationData.class);
-            approvals = operation.getExistingApprovals();
-            operationState = operation.getState();
-        } catch (Exception e) {
-            approvals = new ApprovalList();
-            operationState = OperationDataState.PENDING;
-        }
+        OperationData operationData = oUtil.getOrInitializeOperationData(ctx, null, contractName, transactionName, jsonArgs);
+        checkMayParticipate(ctx, operationData);
         String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-        approvals.addUsersItem(clientId);
-        approvals.addGroupsItems(clientGroups);
-
-        if(operationState != OperationDataState.PENDING || !OperationContractUtil.covers(requiredApprovals, approvals)){
+        operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
+        if (!OperationContractUtil.covers(requiredApprovals, operationData.getExistingApprovals())){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
     }
@@ -170,12 +181,7 @@ abstract public class ContractUtil {
         String jsonArgs = GsonWrapper.toJson(args);
 
         OperationContractUtil oUtil = new OperationContractUtil();
-        String key;
-        try {
-            key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
-        } catch (NoSuchAlgorithmException e) {
-            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
-        }
+        String key = OperationContractUtil.getDraftKey(contractName, transactionName, jsonArgs);
         OperationData operation;
         try{
             operation = oUtil.getState(stub, key, OperationData.class);
