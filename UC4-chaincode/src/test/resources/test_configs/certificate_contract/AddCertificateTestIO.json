@@ -2,7 +2,20 @@
   {
     "name": "addNonExistingCertificate",
     "type": "addCertificate_SUCCESS",
-    "setup": {},
+    "ids": [
+      "User1"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ]
+    },
     "input": [
       "0000001",
       "legit certificate"

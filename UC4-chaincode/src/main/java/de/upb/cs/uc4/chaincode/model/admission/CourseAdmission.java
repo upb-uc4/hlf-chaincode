@@ -1,63 +1,36 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.admission;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import io.swagger.annotations.ApiModelProperty;
+import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
-public class Admission {
-    private static final String DELIMITER = ":";
+public class CourseAdmission extends AbstractAdmission {
 
-    @SerializedName("admissionId")
-    private String admissionId;
-
-    @SerializedName("enrollmentId")
-    private String enrollmentId;
+    public CourseAdmission () {
+        type = AdmissionType.COURSE;
+    }
 
     @SerializedName("courseId")
-    private String courseId;
+    protected String courseId;
 
     @SerializedName("moduleId")
-    private String moduleId;
+    protected String moduleId;
 
-    @SerializedName("timestamp")
-    private LocalDateTime timestamp;
-
-    /**
-     * Get admissionId
-     *
-     * @return admissionId
-     **/
     @ApiModelProperty()
     public String getAdmissionId() {
         return this.admissionId;
     }
 
     public void resetAdmissionId() {
-        this.admissionId = this.enrollmentId + Admission.DELIMITER + this.courseId;
+        this.admissionId = this.enrollmentId + DELIMITER + this.courseId;
     }
 
-    /**
-     * Get enrollmentId
-     *
-     * @return enrollmentId
-     **/
-    @ApiModelProperty()
-    public String getEnrollmentId() {
-        return this.enrollmentId;
-    }
-
-    public void setEnrollmentId(String enrollmentId) {
-        this.enrollmentId = enrollmentId;
-        resetAdmissionId();
-    }
-
-    /**
-     * Get courseId
-     *
-     * @return courseId
-     **/
     @ApiModelProperty()
     public String getCourseId() {
         return this.courseId;
@@ -68,11 +41,6 @@ public class Admission {
         resetAdmissionId();
     }
 
-    /**
-     * Get moduleId
-     *
-     * @return moduleId
-     **/
     @ApiModelProperty()
     public String getModuleId() {
         return this.moduleId;
@@ -80,21 +48,6 @@ public class Admission {
 
     public void setModuleId(String moduleId) {
         this.moduleId = moduleId;
-        resetAdmissionId();
-    }
-
-    /**
-     * Get timestamp
-     *
-     * @return timestamp
-     **/
-    @ApiModelProperty()
-    public LocalDateTime getTimestamp() {
-        return this.timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
         resetAdmissionId();
     }
 
@@ -106,17 +59,15 @@ public class Admission {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Admission other = (Admission) o;
-        return Objects.equals(this.admissionId, other.admissionId)
-                && Objects.equals(this.enrollmentId, other.enrollmentId)
-                && Objects.equals(this.courseId, other.courseId)
+        CourseAdmission other = (CourseAdmission) o;
+        return Objects.equals(this.courseId, other.courseId)
                 && Objects.equals(this.moduleId, other.moduleId)
-                && Objects.equals(this.timestamp, other.timestamp);
+                && super.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.admissionId, this.enrollmentId, this.courseId, this.moduleId, this.timestamp);
+        return Objects.hash(this.admissionId, this.enrollmentId, this.courseId, this.moduleId, this.timestamp, type);
     }
 
 
@@ -129,6 +80,7 @@ public class Admission {
         sb.append("    courseId: ").append(toIndentedString(this.courseId)).append("\n");
         sb.append("    moduleId: ").append(toIndentedString(this.moduleId)).append("\n");
         sb.append("    timestamp: ").append(toIndentedString(this.timestamp)).append("\n");
+        sb.append("    type: ").append(toIndentedString(this.type)).append("\n");
         sb.append("}");
         return sb.toString();
     }
@@ -143,5 +95,34 @@ public class Admission {
         }
         return o.toString().replace("\n", "\n    ");
     }
+
+    @Override
+    public List<InvalidParameter> getParameterErrors() {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        List<InvalidParameter> invalidParams = super.getParameterErrors();
+
+        if (cUtil.valueUnset(this.getCourseId())) {
+            invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".courseId"));
+        }
+        if (cUtil.valueUnset(this.getModuleId())) {
+            invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".moduleId"));
+        }
+
+        return invalidParams;
+    }
+
+    @Override
+    public List<InvalidParameter> getSemanticErrors(ChaincodeStub stub) {
+        AdmissionContractUtil cUtil = new AdmissionContractUtil();
+        List<InvalidParameter> invalidParameters = super.getSemanticErrors(stub);
+
+        if (!cUtil.checkModuleAvailable(stub, this)) {
+            invalidParameters.add(cUtil.getInvalidModuleAvailable("moduleId"));
+        }
+        return invalidParameters;
+    }
+
+    @Override
+    public void ensureIsDroppable(ChaincodeStub stub) {}
 }
 

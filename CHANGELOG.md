@@ -1,3 +1,44 @@
+# [v0.18.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.17.0...v0.18.1) (2021-02-23)
+
+## Feature
+- add exam contract
+- add exam result contract
+- add exam admission contract
+- add operation pending checks and errors
+
+## Bugfix
+- deny rejection if reject message empty
+
+## Refactor
+- update readme
+- update timestamps (java instant)
+- replace type tokens by utilizing array deserialization instead
+
+# [v0.17.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.8...v0.17.0) (2021-01-29)
+
+## Feature
+- Restrict GroupContract transaction access 
+  - only users with hlf.attribut sysAdmin=true are allowed to manipulate groups
+
+## Bugfix
+- operationIds now no longer contain "=" signs
+
+# [v0.16.8](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.7...v0.16.8) (2021-01-27)
+
+## Feature
+- adding System Group to required approvals for most transactions
+
+# [v0.16.7](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.6...v0.16.7) (2021-01-26)
+
+## Bugfix
+- only users required to approve an operation are now allowed to approve the operation
+
+
+# [v0.16.6](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.5...v0.16.6) (2021-01-26)
+
+## Bugfix
+- only users required to approve an operation are now allowed to reject the operation
+
 # [v0.16.5](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.4...v0.16.5) (2021-01-25)
 
 ## Refactor

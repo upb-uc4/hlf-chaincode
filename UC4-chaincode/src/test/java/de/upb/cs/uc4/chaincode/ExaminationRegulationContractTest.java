@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 
+import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
@@ -32,18 +33,19 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
         JsonIOTestSetup setup = test.getSetup();
         List<String> input = TestUtil.toStringList(test.getInput());
         List<String> compare = TestUtil.toStringList(test.getCompare());
+        List<String> ids = test.getIds();
 
         switch (testType) {
             case "getExaminationRegulations":
-                return DynamicTest.dynamicTest(testName, getExaminationRegulationsTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, getExaminationRegulationsTest(setup, input, compare, ids));
             case "addExaminationRegulation_SUCCESS":
-                return DynamicTest.dynamicTest(testName, addExaminationRegulationSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addExaminationRegulationSuccessTest(setup, input, compare, ids));
             case "addExaminationRegulation_FAILURE":
-                return DynamicTest.dynamicTest(testName, addExaminationRegulationFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, addExaminationRegulationFailureTest(setup, input, compare, ids));
             case "closeExaminationRegulation_SUCCESS":
-                return DynamicTest.dynamicTest(testName, closeExaminationRegulationSuccessTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, closeExaminationRegulationSuccessTest(setup, input, compare, ids));
             case "closeExaminationRegulation_FAILURE":
-                return DynamicTest.dynamicTest(testName, closeExaminationRegulationFailureTest(setup, input, compare));
+                return DynamicTest.dynamicTest(testName, closeExaminationRegulationFailureTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -52,11 +54,11 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private Executable getExaminationRegulationsTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:getExaminationRegulations");
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(ExaminationRegulationContract.contractName, ExaminationRegulationContract.transactionNameGetExaminationRegulations, setup, input, ids);
 
             String regulations = contract.getExaminationRegulations(ctx, input.get(0));
             assertThat(regulations).isEqualTo(compare.get(0));
@@ -66,11 +68,11 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private Executable addExaminationRegulationSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:addExaminationRegulation");
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(ExaminationRegulationContract.contractName, ExaminationRegulationContract.transactionNameAddExaminationRegulation, setup, input, ids);
 
             String result = contract.addExaminationRegulation(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -85,11 +87,11 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private Executable addExaminationRegulationFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:addExaminationRegulation");
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(ExaminationRegulationContract.contractName, ExaminationRegulationContract.transactionNameAddExaminationRegulation, setup, input, ids);
 
             String result = contract.addExaminationRegulation(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -99,11 +101,11 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private Executable closeExaminationRegulationSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:closeExaminationRegulation");
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(ExaminationRegulationContract.contractName, ExaminationRegulationContract.transactionNameCloseExaminationRegulation, setup, input, ids);
 
             String result = contract.closeExaminationRegulation(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
@@ -118,11 +120,11 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
     private Executable closeExaminationRegulationFailureTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.ExaminationRegulation:closeExaminationRegulation");
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(ExaminationRegulationContract.contractName, ExaminationRegulationContract.transactionNameCloseExaminationRegulation, setup, input, ids);
 
             String result = contract.closeExaminationRegulation(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));

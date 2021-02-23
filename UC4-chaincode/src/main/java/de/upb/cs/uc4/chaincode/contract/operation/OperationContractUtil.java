@@ -7,21 +7,15 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.OperationAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
-import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.OperationDataState;
 import de.upb.cs.uc4.chaincode.model.TransactionInfo;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
-import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,21 +29,17 @@ public class OperationContractUtil extends ContractUtil {
         identifier = "operationId";
     }
 
-    public String getUserRejectionMessage(String message) {
-        return message;
-    }
-
-    public void approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError, OperationAccessError {
+    public void approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError, OperationAccessError, LedgerAccessError {
 
         checkMayParticipate(ctx, operationData);
 
         String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
         ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(operationData);
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(ctx, operationData);
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
 
-        operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))
+        operationData.lastModifiedTimestamp(ctx.getStub().getTxTimestamp())
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
     }
@@ -98,14 +88,7 @@ public class OperationContractUtil extends ContractUtil {
 
     public static String getDraftKey(final String contractName, final String transactionName, final String params) throws ValidationError {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params.replace(" ", "");
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
-        }
-        byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
-        return new String(Base64.getUrlEncoder().encode(bytes));
+        return hashAndEncodeBase64url(all);
     }
 
     public DetailedError getContractUnprocessableError(String contractName) {
@@ -135,14 +118,13 @@ public class OperationContractUtil extends ContractUtil {
         String key;
         key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
         OperationData operationData;
-        String timeStamp = getTimestamp(ctx.getStub());
         try {
             operationData = getState(ctx.getStub(), key, OperationData.class);
         } catch (LedgerAccessError ledgerAccessError) {
             operationData = new OperationData()
                     .initiator(initiator)
                     .operationId(key)
-                    .initiatedTimestamp(timeStamp)
+                    .initiatedTimestamp(ctx.getStub().getTxTimestamp())
                     .transactionInfo(new TransactionInfo().contractName(contractName).transactionName(transactionName).parameters(params))
                     .state(OperationDataState.PENDING)
                     .reason("");

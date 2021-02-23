@@ -1,11 +1,10 @@
 package de.upb.cs.uc4.chaincode;
 
-import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
-import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
@@ -41,8 +40,10 @@ public final class AdmissionContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(testName, dropAdmissionSuccessTest(setup, input, compare, ids));
             case "dropAdmission_FAILURE":
                 return DynamicTest.dynamicTest(testName, dropAdmissionFailureTest(setup, input, compare, ids));
-            case "getAdmissions_SUCCESS":
-                return DynamicTest.dynamicTest(testName, getAdmissionsSuccessTest(setup, input, compare));
+            case "getCourseAdmissions_SUCCESS":
+                return DynamicTest.dynamicTest(testName, getCourseAdmissionsSuccessTest(setup, input, compare, ids));
+            case "getExamAdmissions_SUCCESS":
+                return DynamicTest.dynamicTest(testName, getExamAdmissionsSuccessTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -55,18 +56,13 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:addAdmission");
-            OperationContract approvalContract = new OperationContract();
-            for (String id : ids) {
-                Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.initiateOperation(ctx, id, AdmissionContract.contractName, "addAdmission", GsonWrapper.toJson(input));
-            }
-            Context ctx = TestUtil.mockContext(stub);
-            String addResult = contract.addAdmission(ctx, input.get(0));
-            assertThat(addResult).isEqualTo(compare.get(0));
+            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameAddAdmission, setup, input, ids);
 
-            Admission compareAdmission = GsonWrapper.fromJson(compare.get(0), Admission.class);
-            Admission ledgerAdmission = cUtil.getState(stub, compareAdmission.getAdmissionId(), Admission.class);
+            String addResult = contract.addAdmission(ctx, input.get(0));
+
+            assertThat(addResult).isEqualTo(compare.get(0));
+            CourseAdmission compareAdmission = GsonWrapper.fromJson(compare.get(0), CourseAdmission.class);
+            CourseAdmission ledgerAdmission = cUtil.getState(ctx.getStub(), compareAdmission.getAdmissionId(), CourseAdmission.class);
             assertThat(ledgerAdmission).isEqualTo(compareAdmission);
             assertThat(ledgerAdmission.toString()).isEqualTo(compareAdmission.toString());
         };
@@ -79,13 +75,7 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:addAdmission");
-            OperationContract approvalContract = new OperationContract();
-            for (String id : ids) {
-                Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.initiateOperation(ctx, id, AdmissionContract.contractName, "addAdmission", GsonWrapper.toJson(input));
-            }
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameAddAdmission, setup, input, ids);
             String result = contract.addAdmission(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
         };
@@ -98,17 +88,12 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:dropAdmission");
-            OperationContract approvalContract = new OperationContract();
-            for (String id : ids) {
-                Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.initiateOperation(ctx, id, AdmissionContract.contractName, "dropAdmission", GsonWrapper.toJson(input));
-            }
-            Context ctx = TestUtil.mockContext(stub);
-            String dropResult = contract.dropAdmission(ctx, input.get(0));
-            assertThat(dropResult).isEqualTo(compare.get(0));
+            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameDropAdmission, setup, input, ids);
 
-            List<Admission> ledgerState = cUtil.getAllStates(stub, Admission.class);
+            String dropResult = contract.dropAdmission(ctx, input.get(0));
+
+            assertThat(dropResult).isEqualTo(compare.get(0));
+            List<CourseAdmission> ledgerState = cUtil.getAllStates(ctx.getStub(), CourseAdmission.class);
             assertThat(ledgerState).allMatch(item -> !(item.getAdmissionId().equals(input.get(0))));
         };
     }
@@ -120,27 +105,37 @@ public final class AdmissionContractTest extends TestCreationBase {
             List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:dropAdmission");
-            OperationContract approvalContract = new OperationContract();
-            for (String id : ids) {
-                Context ctx = TestUtil.mockContext(stub, id);
-                approvalContract.initiateOperation(ctx, id, AdmissionContract.contractName, "dropAdmission", GsonWrapper.toJson(input));
-            }
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameDropAdmission, setup, input, ids);
+
             String result = contract.dropAdmission(ctx, input.get(0));
             assertThat(result).isEqualTo(compare.get(0));
         };
     }
 
-    private Executable getAdmissionsSuccessTest(
+    private Executable getCourseAdmissionsSuccessTest(
             JsonIOTestSetup setup,
             List<String> input,
-            List<String> compare
+            List<String> compare,
+            List<String> ids
     ) {
         return () -> {
-            MockChaincodeStub stub = TestUtil.mockStub(setup, "UC4.Admission:getAdmissions");
-            Context ctx = TestUtil.mockContext(stub);
-            String getResult = contract.getAdmissions(ctx, input.get(0), input.get(1), input.get(2));
+            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameGetCourseAdmissions, setup, input, ids);
+
+            String getResult = contract.getCourseAdmissions(ctx, input.get(0), input.get(1), input.get(2));
+            assertThat(getResult).isEqualTo(compare.get(0));
+        };
+    }
+
+    private Executable getExamAdmissionsSuccessTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<String> ids
+    ) {
+        return () -> {
+            Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameGetExamAdmissions, setup, input, ids);
+
+            String getResult = contract.getExamAdmissions(ctx, input.get(0), input.get(1), input.get(2));
             assertThat(getResult).isEqualTo(compare.get(0));
         };
     }

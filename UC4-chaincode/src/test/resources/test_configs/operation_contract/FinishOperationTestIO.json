@@ -35,7 +35,7 @@
     },
     "input": [
       {
-        "enrollmentId": "User1",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",
@@ -68,7 +68,7 @@
     },
     "input": [
       {
-        "enrollmentId": "User1",
+        "enrollmentId": "0000001",
         "matriculationStatus": [
           {
             "fieldOfStudy": "Computer Science",

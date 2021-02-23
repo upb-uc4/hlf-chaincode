@@ -45,13 +45,14 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ],
       "groupContract": [
-        "Admin",
+        "System",
         {
-          "groupId": "Admin",
+          "groupId": "System",
           "userList": [
             "User1"
           ]
@@ -111,7 +112,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -171,7 +173,8 @@
           "enrollmentId": "0000001",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T23:59:59"
+          "timestamp": "2020-12-31T23:59:59",
+          "type": "Course"
         }
       ]
     },

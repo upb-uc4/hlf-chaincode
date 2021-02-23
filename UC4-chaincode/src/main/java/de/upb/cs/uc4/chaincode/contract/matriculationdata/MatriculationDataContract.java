@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.matriculationdata;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
@@ -14,9 +13,8 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 
 @Contract(
         name = MatriculationDataContract.contractName
@@ -25,6 +23,10 @@ public class MatriculationDataContract extends ContractBase {
     private final MatriculationDataContractUtil cUtil = new MatriculationDataContractUtil();
 
     public final static String contractName = "UC4.MatriculationData";
+    public final static String transactionNameAddMatriculationData = "addMatriculationData";
+    public final static String transactionNameUpdateMatriculationData = "updateMatriculationData";
+    public final static String transactionNameGetMatriculationData = "getMatriculationData";
+    public final static String transactionNameAddEntriesToMatriculationData = "addEntriesToMatriculationData";
 
     /**
      * Adds MatriculationData to the ledger.
@@ -36,22 +38,23 @@ public class MatriculationDataContract extends ContractBase {
     @Transaction()
     public String addMatriculationData(final Context ctx, String matriculationData) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        final String[] args = new String[]{matriculationData};
         try {
-            cUtil.checkParamsAddMatriculationData(ctx, Collections.singletonList(matriculationData));
+            cUtil.checkParamsAddMatriculationData(ctx, args);
         } catch (ParameterError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{matriculationData});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
         MatriculationData newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
         try {
-            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{matriculationData});
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -68,21 +71,22 @@ public class MatriculationDataContract extends ContractBase {
     @Transaction()
     public String updateMatriculationData(final Context ctx, String matriculationData) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        final String[] args = new String[]{matriculationData};
         try {
-            cUtil.checkParamsUpdateMatriculationData(ctx, Collections.singletonList(matriculationData));
+            cUtil.checkParamsUpdateMatriculationData(ctx, args);
         } catch (ParameterError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{matriculationData});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         MatriculationData newMatriculationData = GsonWrapper.fromJson(matriculationData, MatriculationData.class);
         try {
-            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{matriculationData});
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -99,15 +103,16 @@ public class MatriculationDataContract extends ContractBase {
     @Transaction()
     public String getMatriculationData(final Context ctx, final String enrollmentId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        final String[] args = new String[]{enrollmentId};
         try {
-            cUtil.checkParamsGetMatriculationData(ctx, Collections.singletonList(enrollmentId));
+            cUtil.checkParamsGetMatriculationData(ctx, args);
         } catch (ParameterError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -118,7 +123,7 @@ public class MatriculationDataContract extends ContractBase {
             return e.getJsonError();
         }
         try {
-            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId});
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -139,21 +144,21 @@ public class MatriculationDataContract extends ContractBase {
             final String enrollmentId,
             final String matriculations) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
+        final String[] args = new String[]{enrollmentId, matriculations};
         try {
-            cUtil.checkParamsAddEntriesToMatriculationData(ctx, new ArrayList<String>(){{add(enrollmentId); add(matriculations);}});
+            cUtil.checkParamsAddEntriesToMatriculationData(ctx, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
         ChaincodeStub stub = ctx.getStub();
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, new String[]{enrollmentId, matriculations});
+            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        Type listType = new TypeToken<ArrayList<SubjectMatriculation>>() {}.getType();
-        ArrayList<SubjectMatriculation> matriculationStatus;
-        matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
+        List<SubjectMatriculation> matriculationStatus;
+        matriculationStatus = Arrays.asList(GsonWrapper.fromJson(matriculations, SubjectMatriculation[].class));
 
         MatriculationData matriculationData;
         try {
@@ -164,7 +169,7 @@ public class MatriculationDataContract extends ContractBase {
 
         matriculationData.addAbsent(matriculationStatus);
         try {
-            cUtil.finishOperation(stub, contractName,  transactionName, new String[]{enrollmentId, matriculations});
+            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
