@@ -17,7 +17,7 @@ import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContr
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.operation.ApprovalList;
 import org.hyperledger.fabric.contract.Context;
 
 import java.util.stream.Collectors;

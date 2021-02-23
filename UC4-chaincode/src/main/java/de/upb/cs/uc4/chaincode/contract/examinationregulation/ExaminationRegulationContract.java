@@ -7,7 +7,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateN
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
-import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;

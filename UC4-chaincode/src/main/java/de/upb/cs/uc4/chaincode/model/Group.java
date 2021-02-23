@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode.model;
 
 import com.google.gson.annotations.SerializedName;
-import io.swagger.annotations.ApiModelProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,6 @@ public class Group {
      *
      * @return groupId
      **/
-    @ApiModelProperty()
     public String getGroupId() {
         return this.groupId;
     }
@@ -34,7 +32,6 @@ public class Group {
      *
      * @return userList
      **/
-    @ApiModelProperty()
     public List<String> getUserList() {
         return this.userList;
     }
@@ -56,28 +53,12 @@ public class Group {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.groupId);
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class Group {\n");
-        sb.append("    groupId: ").append(toIndentedString(this.groupId)).append("\n");
-        sb.append("    userList: ").append(toIndentedString(this.userList)).append("\n");
+        sb.append("    groupId: ").append(this.groupId).append("\n");
+        sb.append("    userList: ").append(this.userList).append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

@@ -28,7 +28,6 @@ public class GenericError {
      *
      * @return type
      **/
-    @ApiModelProperty(value = "")
     public String getType() {
         return type;
     }
@@ -47,7 +46,6 @@ public class GenericError {
      *
      * @return title
      **/
-    @ApiModelProperty(value = "")
     public String getTitle() {
         return title;
     }
@@ -71,30 +69,12 @@ public class GenericError {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(type, title);
-    }
-
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class DetailedError {\n");
-        sb.append("    type: ").append(toIndentedString(type)).append("\n");
-        sb.append("    title: ").append(toIndentedString(title)).append("\n");
+        sb.append("    type: ").append(type).append("\n");
+        sb.append("    title: ").append(title).append("\n");
         sb.append("}");
         return sb.toString();
     }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
 }

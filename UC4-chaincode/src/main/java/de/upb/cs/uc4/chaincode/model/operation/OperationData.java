@@ -1,10 +1,9 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.operation;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class OperationData {
@@ -48,7 +47,6 @@ public class OperationData {
         return this;
     }
 
-    @ApiModelProperty(value = "")
     public String getOperationId() {
         return operationId;
     }
@@ -167,10 +165,4 @@ public class OperationData {
                 Objects.equals(this.existingApprovals, operationData.existingApprovals) &&
                 Objects.equals(this.missingApprovals, operationData.missingApprovals);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(operationId, transactionInfo, state, reason, existingApprovals, missingApprovals);
-    }
-
 }
