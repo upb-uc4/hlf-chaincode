@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode;
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -14,8 +13,7 @@ import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -97,9 +95,8 @@ public final class ExamContractTest extends TestCreationBase {
             String getResult = contract.getExams(ctx, input.get(0), input.get(1), input.get(2), input.get(3), input.get(4), input.get(5), input.get(6));
             assertThat(getResult).isEqualTo(compare.get(0));
 
-            Type listType = new TypeToken<ArrayList<OperationData>>() {}.getType();
-            List<OperationData> getExamsList = GsonWrapper.fromJson(getResult, listType);
-            List<OperationData> compareList = GsonWrapper.fromJson(compare.get(0), listType);
+            List<OperationData> getExamsList = Arrays.asList(GsonWrapper.fromJson(getResult, OperationData[].class).clone());
+            List<OperationData> compareList = Arrays.asList(GsonWrapper.fromJson(compare.get(0), OperationData[].class).clone());
             assertThat(getExamsList).isEqualTo(compareList);
         };
     }
