@@ -42,16 +42,10 @@ public class ExamContractUtil extends ContractUtil {
                 .reason("The exam cannot be specified for the given module.");
     }
 
-    public InvalidParameter getInvalidEnumValue(String parameterName, String[] possibleValues) {
-        return new InvalidParameter()
-                .name(errorPrefix + "." + parameterName)
-                .reason("The " + parameterName + " has to be one of {" + String.join(", ", possibleValues) + "}");
-    }
-
     public InvalidParameter getInvalidDate(String parameterName) {
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
-                .reason("The exam date has to be in the future and after admittbale and droppable date.");
+                .reason("The exam date has to be in the future and after admittable and droppable date.");
     }
 
     public InvalidParameter getInvalidAdmittableDate(String parameterName) {
@@ -143,16 +137,16 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
         }
         if (valueUnset(exam.getDate())) {
-            invalidParams.add(getInvalidTimestampParam("date"));
+            invalidParams.add(getInvalidTimestampParam(errorPrefix + ".date"));
         }
         if (valueUnset(exam.getType())) {
             invalidParams.add(getInvalidEnumValue("type", Arrays.stream(ExamType.values()).map(ExamType::toString).toArray(String[]::new)));
         }
         if (valueUnset(exam.getAdmittableUntil())) {
-            invalidParams.add(getInvalidTimestampParam("admittableUntil"));
+            invalidParams.add(getInvalidTimestampParam(errorPrefix + ".admittableUntil"));
         }
         if (valueUnset(exam.getDroppableUntil())) {
-            invalidParams.add(getInvalidTimestampParam("droppableUntil"));
+            invalidParams.add(getInvalidTimestampParam(errorPrefix + ".droppableUntil"));
         }
 
         return invalidParams;
@@ -256,10 +250,10 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getUnparsableParam("types"));
         }
         if (GsonWrapper.fromJson(admittableAt, Instant.class) == null && !admittableAt.isEmpty()) {
-            invalidParams.add(getUnparsableParam("admittableAt"));
+            invalidParams.add(getInvalidTimestampParam("admittableAt"));
         }
         if (GsonWrapper.fromJson(droppableAt, Instant.class) == null && ! droppableAt.isEmpty()) {
-            invalidParams.add(getUnparsableParam("droppableAt"));
+            invalidParams.add(getInvalidTimestampParam("droppableAt"));
         }
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
