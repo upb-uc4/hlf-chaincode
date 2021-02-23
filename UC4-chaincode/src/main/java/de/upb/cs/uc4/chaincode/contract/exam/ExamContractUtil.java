@@ -141,7 +141,7 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getInvalidTimestampParam(errorPrefix + ".date"));
         }
         if (valueUnset(exam.getType())) {
-            invalidParams.add(getInvalidEnumValue("type", ExamType.possibleStringValues()));
+            invalidParams.add(getInvalidEnumValue(errorPrefix + ".type", ExamType.possibleStringValues()));
         }
         if (valueUnset(exam.getAdmittableUntil())) {
             invalidParams.add(getInvalidTimestampParam(errorPrefix + ".admittableUntil"));

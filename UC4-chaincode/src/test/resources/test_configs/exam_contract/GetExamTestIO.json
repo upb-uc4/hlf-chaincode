@@ -747,7 +747,7 @@
         "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
           {
-            "name": "exam.types",
+            "name": "types",
             "reason": "The types has/have to be one of {Written Exam, Oral Exam}"
           }
         ]

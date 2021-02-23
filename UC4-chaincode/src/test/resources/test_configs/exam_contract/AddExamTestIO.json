@@ -367,7 +367,7 @@
         "invalidParams": [
           {
             "name": "exam.type",
-            "reason": "The type has/have to be one of {Written Exam, Oral Exam}"
+            "reason": "The exam.type has/have to be one of {Written Exam, Oral Exam}"
           }
         ]
       }
