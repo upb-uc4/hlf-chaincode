@@ -79,10 +79,10 @@ abstract public class ContractUtil {
                 .title("The approvals present on the ledger do not suffice to execute this transaction");
     }
 
-    public GenericError getParticipationDeniedError(){
+    public GenericError getAccessDeniedError(){
         return new GenericError()
-                .type("HLParticipationDenied")
-                .title("You are not allowed to participate in the given operation");
+                .type("HLAccessDenied")
+                .title("You are not allowed to execute in the given transaction");
     }
 
     public GenericError getOperationNotPendingError(){
@@ -140,7 +140,7 @@ abstract public class ContractUtil {
             throw new ParticipationError(GsonWrapper.toJson(getOperationNotPendingError()));
         }
         if(!hasRightToParticipate(ctx, operationData)) {
-            throw new ParticipationError(GsonWrapper.toJson(getParticipationDeniedError()));
+            throw new ParticipationError(GsonWrapper.toJson(getAccessDeniedError()));
         }
     }
 

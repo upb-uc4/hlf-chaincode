@@ -234,9 +234,8 @@
       "The transaction was invalid."
     ],
     "compare": [
-      {
-        "type": "HLParticipationDenied",
-        "title": "You are not allowed to participate in the given operation"
+      { "type": "HLAccessDenied",
+        "title": "You are not allowed to execute in the given transaction"
       }
     ]
   },
