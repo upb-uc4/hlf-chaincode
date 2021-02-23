@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode.model.exam;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -50,7 +51,7 @@ public class Exam {
     }
 
     public void resetExamId() {
-        this.examId = this.courseId + DELIMITER + this.moduleId + DELIMITER + this.type + DELIMITER + getDateString();
+        this.examId = this.courseId + DELIMITER + this.moduleId + DELIMITER + getTypeString() + DELIMITER + getDateString();
     }
 
     /**
@@ -130,6 +131,10 @@ public class Exam {
     public Exam type(ExamType type) {
         this.type = type;
         return this;
+    }
+
+    public String getTypeString() {
+        return GeneralHelper.enumValueAsString(this.type);
     }
 
     /**

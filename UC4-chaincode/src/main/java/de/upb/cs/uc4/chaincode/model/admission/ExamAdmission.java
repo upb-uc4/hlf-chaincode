@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode.model.admission;
 import com.google.gson.annotations.SerializedName;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import io.swagger.annotations.ApiModelProperty;
 import org.hyperledger.fabric.shim.ChaincodeStub;
@@ -83,7 +84,7 @@ public class ExamAdmission extends AbstractAdmission {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
         List<InvalidParameter> invalidParams = super.getParameterErrors();
 
-        if (cUtil.valueUnset(this.examId)) {
+        if (GeneralHelper.valueUnset(this.examId)) {
             invalidParams.add(cUtil.getEmptyInvalidParameter(cUtil.getErrorPrefix() + ".examId"));
         }
 

@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulat
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
@@ -77,7 +78,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
         List<InvalidParameter> invalidparams = new ArrayList<>();
 
-        if (valueUnset(matriculationData.getEnrollmentId())) {
+        if (GeneralHelper.valueUnset(matriculationData.getEnrollmentId())) {
             invalidparams.add(getEmptyEnrollmentIdParam(prefix));
         }
 
@@ -96,7 +97,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
         List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (valueUnset(matriculationStatus)) {
+        if (GeneralHelper.valueUnset(matriculationStatus)) {
             invalidParams.add(getEmptyInvalidParameter(prefix));
         } else {
             List<String> existingFields = new ArrayList<>();
@@ -106,7 +107,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
-                if (valueUnset(subMat.getFieldOfStudy())) {
+                if (GeneralHelper.valueUnset(subMat.getFieldOfStudy())) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].fieldOfStudy"));
                 } else {
                     if (!validErIds.contains(subMat.getFieldOfStudy())) { // TODO check if examination regulation exists for the given semester
@@ -119,7 +120,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 }
 
                 List<String> semesters = subMat.getSemesters();
-                if (valueUnset(semesters)) {
+                if (GeneralHelper.valueUnset(semesters)) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].semesters"));
                 }
 
@@ -237,7 +238,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
         ChaincodeStub stub = ctx.getStub();
 
         List<InvalidParameter> invalidParams = new ArrayList<>();
-        if (valueUnset(enrollmentId)) {
+        if (GeneralHelper.valueUnset(enrollmentId)) {
             invalidParams.add(getEmptyEnrollmentIdParam());
         }
         List<SubjectMatriculation> matriculationStatus;

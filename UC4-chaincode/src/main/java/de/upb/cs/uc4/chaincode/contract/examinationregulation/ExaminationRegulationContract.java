@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -97,7 +98,7 @@ public class ExaminationRegulationContract extends ContractBase {
         } else {
             // read information for names
             for (String name : nameList) {
-                if (!cUtil.valueUnset(name)) {
+                if (!GeneralHelper.valueUnset(name)) {
                     ExaminationRegulation regulation;
                     try {
                         regulation = cUtil.getState(stub, name, ExaminationRegulation.class);

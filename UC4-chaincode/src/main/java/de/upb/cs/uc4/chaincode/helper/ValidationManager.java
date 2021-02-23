@@ -17,7 +17,10 @@ import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContr
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import org.hyperledger.fabric.contract.Context;
+
+import java.util.stream.Collectors;
 
 public class ValidationManager {
     private static final AdmissionContractUtil admissionUtil = new AdmissionContractUtil();
@@ -177,5 +180,16 @@ public class ValidationManager {
             default:
                 throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getContractUnprocessableError(contractName)));
         }
+    }
+
+    public static boolean covers(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
+        return getMissingApprovalList(requiredApprovals, existingApprovals).isEmpty();
+    }
+
+    public static ApprovalList getMissingApprovalList(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
+        ApprovalList missingApprovals = new ApprovalList();
+        missingApprovals.setUsers(requiredApprovals.getUsers().stream().filter(user -> !existingApprovals.getUsers().contains(user)).collect(Collectors.toList()));
+        missingApprovals.setGroups(requiredApprovals.getGroups().stream().filter(group -> !existingApprovals.getGroups().contains(group)).collect(Collectors.toList()));
+        return missingApprovals;
     }
 }

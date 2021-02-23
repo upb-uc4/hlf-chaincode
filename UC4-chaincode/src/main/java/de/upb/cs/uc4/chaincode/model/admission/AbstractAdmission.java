@@ -2,6 +2,7 @@ package de.upb.cs.uc4.chaincode.model.admission;
 
 import com.google.gson.annotations.SerializedName;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.model.exam.ExamType;
 import io.swagger.annotations.ApiModelProperty;
@@ -111,11 +112,11 @@ public abstract class AbstractAdmission {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
         List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (cUtil.valueUnset(this.enrollmentId)) {
+        if (GeneralHelper.valueUnset(this.enrollmentId)) {
             invalidParams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
         }
-        if (cUtil.valueUnset(this.type)) {
-            invalidParams.add(cUtil.getInvalidEnumValue(cUtil.getErrorPrefix() + ".type", AdmissionType.possibleStringValues()));
+        if (GeneralHelper.valueUnset(this.type)) {
+            invalidParams.add(cUtil.getInvalidEnumValue(cUtil.getErrorPrefix() + ".type", AdmissionType.class));
         }
 
         return invalidParams;
