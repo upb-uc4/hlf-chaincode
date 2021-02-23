@@ -3,7 +3,7 @@ package de.upb.cs.uc4.chaincode.contract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.*;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.OperationAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParticipationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
@@ -135,12 +135,12 @@ abstract public class ContractUtil {
                 .title("The given number of parameters does not match the required number of parameters for the specified transaction");
     }
 
-    public void checkMayParticipate(Context ctx, OperationData operationData) throws MissingTransactionError, OperationAccessError, LedgerAccessError {
+    public void checkMayParticipate(Context ctx, OperationData operationData) throws MissingTransactionError, LedgerAccessError, ParticipationError {
         if (!operationData.getState().equals(OperationDataState.PENDING)) {
-            throw new OperationAccessError(GsonWrapper.toJson(getOperationNotPendingError()));
+            throw new ParticipationError(GsonWrapper.toJson(getOperationNotPendingError()));
         }
         if(!hasRightToParticipate(ctx, operationData)) {
-            throw new OperationAccessError(GsonWrapper.toJson(getParticipationDeniedError()));
+            throw new ParticipationError(GsonWrapper.toJson(getParticipationDeniedError()));
         }
     }
 
@@ -240,7 +240,7 @@ abstract public class ContractUtil {
     }
 
     public static String hashAndEncodeBase64url(String all) throws ValidationError {
-        MessageDigest digest = null;
+        MessageDigest digest;
         try {
             digest = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {

@@ -3,7 +3,7 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.OperationAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParticipationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
@@ -29,7 +29,7 @@ public class OperationContractUtil extends ContractUtil {
         identifier = "operationId";
     }
 
-    public void approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError, OperationAccessError, LedgerAccessError {
+    public void approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError, LedgerAccessError, ParticipationError {
 
         checkMayParticipate(ctx, operationData);
 

@@ -75,17 +75,17 @@ public class MatriculationDataContractUtil extends ContractUtil {
         if (!prefix.isEmpty())
             prefix += ".";
 
-        List<InvalidParameter> invalidparams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(matriculationData.getEnrollmentId())) {
-            invalidparams.add(getEmptyEnrollmentIdParam(prefix));
+            invalidParams.add(getEmptyEnrollmentIdParam(prefix));
         }
 
-        invalidparams.addAll(getErrorForSubjectMatriculationList(
+        invalidParams.addAll(getErrorForSubjectMatriculationList(
                 stub,
                 matriculationData.getMatriculationStatus(),
                 prefix + "matriculationStatus"));
-        return invalidparams;
+        return invalidParams;
     }
 
     public List<InvalidParameter> getErrorForSubjectMatriculationList(
