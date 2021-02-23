@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.OperationAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
@@ -47,29 +48,18 @@ public class OperationContract extends ContractBase {
         initiator = cUtil.valueUnset(initiator) ? clientId : initiator;
 
         OperationData operationData;
-        OperationDataState operationState;
         try {
             operationData = cUtil.getOrInitializeOperationData(ctx, initiator, contractName, transactionName, params);
-            operationState = operationData.getState();
         } catch (NoSuchAlgorithmException e) {
             return GsonWrapper.toJson(cUtil.getInternalError());
         }
-        // check whether transaction still PENDING
-        if(operationState != OperationDataState.PENDING){
-           return GsonWrapper.toJson(cUtil.getApprovalImpossibleError());
-        }
-        // check if the user trying to approve is not allowed to approve the operation
-        if(!operationData.getMissingApprovals().getUsers().contains(initiator)){
-            return GsonWrapper.toJson(cUtil.getApprovalDeniedError());
-        }
-        // approve
+
         try {
-            operationData = cUtil.approveOperation(ctx, operationData);
-        } catch (MissingTransactionError missingTransactionError) {
+            cUtil.approveOperation(ctx, operationData);
+        } catch (MissingTransactionError | OperationAccessError missingTransactionError) {
             return missingTransactionError.getJsonError();
         }
 
-        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
@@ -82,25 +72,18 @@ public class OperationContract extends ContractBase {
     @Transaction()
     public String approveOperation(final Context ctx, String operationId) {
         OperationData operationData;
-        OperationDataState operationState;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
-            operationState = operationData.getState();
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
-        //check whether transaction still PENDING
-        if(operationState != OperationDataState.PENDING){
-            return GsonWrapper.toJson(cUtil.getApprovalImpossibleError());
-        }
-        // approve
+
         try {
-            operationData = cUtil.approveOperation(ctx, operationData);
-        } catch (MissingTransactionError missingTransactionError) {
+            cUtil.approveOperation(ctx, operationData);
+        } catch (MissingTransactionError | OperationAccessError missingTransactionError) {
             return missingTransactionError.getJsonError();
         }
 
-        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
@@ -108,23 +91,17 @@ public class OperationContract extends ContractBase {
 
     public String rejectOperation(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
-        OperationDataState operationState;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
-            operationState = operationData.getState();
         } catch (LedgerAccessError e) {
             return e.getJsonError();
         }
-        //check whether transaction still PENDING
-        if(operationState != OperationDataState.PENDING){
-            return GsonWrapper.toJson(cUtil.getRejectionImpossibleError());
+
+        try {
+            cUtil.rejectOperation(ctx, operationData, rejectMessage);
+        } catch (OperationAccessError | MissingTransactionError e) {
+            return e.getJsonError();
         }
-
-
-        // reject
-        operationData.state(OperationDataState.REJECTED).reason(cUtil.getUserRejectionMessage(rejectMessage));
-
-        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationId, GsonWrapper.toJson(operationData));
     }
 

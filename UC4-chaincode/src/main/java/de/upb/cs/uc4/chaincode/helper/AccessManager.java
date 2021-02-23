@@ -10,6 +10,8 @@ import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.model.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.OperationData;
+import de.upb.cs.uc4.chaincode.model.TransactionInfo;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -20,6 +22,11 @@ public class AccessManager {
 
     public static final String ADMIN = "Admin";
     public static final String SYSTEM = "System";
+
+    public static ApprovalList getRequiredApprovals(OperationData operationData) throws MissingTransactionError {
+        TransactionInfo info = operationData.getTransactionInfo();
+        return AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
+    }
 
     public static ApprovalList getRequiredApprovals(String contractName, String transactionName, String params) throws MissingTransactionError {
         Type listType = new TypeToken<ArrayList<String>>() {

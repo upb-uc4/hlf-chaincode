@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.OperationAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -37,20 +38,42 @@ public class OperationContractUtil extends ContractUtil {
         return message;
     }
 
-    public OperationData approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError {
+    public boolean hasRightToParticipate(Context ctx, OperationData operationData) throws MissingTransactionError {
+        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(operationData);
+        return requiredApprovals.getUsers().contains(clientId) || requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains);
+    }
+
+    public void approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError, OperationAccessError {
+
+        if (!operationData.getState().equals(OperationDataState.PENDING)) {
+            throw new OperationAccessError(GsonWrapper.toJson(getApprovalImpossibleError()));
+        }
+        if(!hasRightToParticipate(ctx, operationData)) {
+            throw new OperationAccessError(GsonWrapper.toJson(getApprovalDeniedError()));
+        }
 
         String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-
         ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
-        TransactionInfo info = operationData.getTransactionInfo();
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(info.getContractName(), info.getTransactionName(), info.getParameters());
-
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(operationData);
         ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
 
-        return operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))
+        operationData.lastModifiedTimestamp(this.getTimestamp(ctx.getStub()))
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
+    }
+
+    public void rejectOperation(Context ctx, OperationData operationData, String rejectMessage) throws OperationAccessError, MissingTransactionError {
+        if(!operationData.getState().equals(OperationDataState.PENDING)){
+            throw new OperationAccessError(GsonWrapper.toJson(getRejectionImpossibleError()));
+        }
+        if (!hasRightToParticipate(ctx, operationData)) {
+            throw new OperationAccessError(GsonWrapper.toJson(getRejectionDeniedError()));
+        }
+
+        operationData.state(OperationDataState.REJECTED).reason(getUserRejectionMessage(rejectMessage));
     }
 
     public List<OperationData> getOperations(
@@ -112,6 +135,30 @@ public class OperationContractUtil extends ContractUtil {
         return getUnprocessableEntityError(new InvalidParameter()
                 .name("transactionName")
                 .reason("The given transaction \"" + transactionName + "\" does not exist"));
+    }
+
+    public GenericError getApprovalDeniedError(){
+        return new GenericError()
+                .type("HLApprovalDenied")
+                .title("You are not allowed to approve the given operation");
+    }
+
+    public GenericError getApprovalImpossibleError(){
+        return new GenericError()
+                .type("HLApprovalImpossible")
+                .title("The operation is not in pending state");
+    }
+
+    public GenericError getRejectionDeniedError(){
+        return new GenericError()
+                .type("HLRejectionDenied")
+                .title("You are not allowed to reject the given operation");
+    }
+
+    public GenericError getRejectionImpossibleError(){
+        return new GenericError()
+                .type("HLRejectionImpossible")
+                .title("The operation is not in pending state");
     }
 
     public DetailedError getEmptyContractNameError() {
