@@ -81,6 +81,10 @@ public class TestUtil {
     public static Context buildContext(String contractName, String transactionName, JsonIOTestSetup setup, List<String> input, List<String> ids) {
         MockChaincodeStub stub = TestUtil.mockStub(setup, contractName + ":" + transactionName);
         TestUtil.approveOperation(stub, contractName, transactionName, ids, input);
-        return TestUtil.mockContext(stub);
+        if (ids.isEmpty()) {
+            return TestUtil.mockContext(stub);
+        } else {
+            return TestUtil.mockContext(stub, ids.get(0));
+        }
     }
 }

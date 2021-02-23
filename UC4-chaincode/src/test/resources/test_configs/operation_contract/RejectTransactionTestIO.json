@@ -235,8 +235,8 @@
     ],
     "compare": [
       {
-        "type": "HLRejectionDenied",
-        "title": "You are not allowed to reject the given operation"
+        "type": "HLParticipationDenied",
+        "title": "You are not allowed to participate in the given operation"
       }
     ]
   },

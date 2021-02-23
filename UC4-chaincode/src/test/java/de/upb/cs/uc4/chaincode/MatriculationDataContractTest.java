@@ -1,10 +1,7 @@
 package de.upb.cs.uc4.chaincode;
 
 
-import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
-import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
-import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.model.MatriculationData;

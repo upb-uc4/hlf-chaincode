@@ -154,10 +154,9 @@ public final class OperationContractTest extends TestCreationBase {
                 Context ctx = TestUtil.mockContext(stub, id);
                 operationJson = contract.initiateOperation(ctx, "", MatriculationDataContract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
             }
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.mockContext(stub, ids.get(0));
             MatriculationDataContract matriculationContract = new MatriculationDataContract();
             stub.setFunction(MatriculationDataContract.contractName + ":addMatriculationData");
-            matriculationContract.addMatriculationData(ctx, input.get(0));
             matriculationContract.addMatriculationData(ctx, input.get(0));
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
             stub.setFunction("UC4.OperationData:approveTransaction");

@@ -98,6 +98,9 @@ public class OperationContract extends ContractBase {
         } catch (SerializableError e) {
             return e.getJsonError();
         }
+        if(cUtil.valueUnset(rejectMessage)){
+            return  GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getEmptyInvalidParameter("rejectMessage")));
+        }
         operationData.state(OperationDataState.REJECTED).reason(rejectMessage);
         return cUtil.putAndGetStringState(ctx.getStub(), operationId, GsonWrapper.toJson(operationData));
     }

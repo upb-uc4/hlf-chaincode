@@ -587,9 +587,9 @@
     ],
     "setup": {
       "operationContract": [
-        "DOrFun-1rnN5CFfW6gvlAAN6WOv5blaqeDkllJ6dxUI=",
+        "DOrFun-1rnN5CFfW6gvlAAN6WOv5blaqeDkllJ6dxUI",
         {
-          "operationId": "DOrFun-1rnN5CFfW6gvlAAN6WOv5blaqeDkllJ6dxUI=",
+          "operationId": "DOrFun-1rnN5CFfW6gvlAAN6WOv5blaqeDkllJ6dxUI",
           "transactionInfo":
           {
             "contractName": "UC4.MatriculationData",
@@ -604,7 +604,7 @@
           "existingApprovals":
           {
             "users": ["User1", "0000001"],
-            "groups": ["Admin"]
+            "groups": ["Admin", "System"]
           },
           "missingApprovals":
           {
@@ -654,12 +654,14 @@
   {
     "name": "addRejectedOperationMatriculationData",
     "type": "addMatriculationData_FAILURE",
-    "ids": [],
+    "ids": [
+      "User1"
+    ],
     "setup": {
       "operationContract": [
-        "mxRuZY52DtT0NcCIF9wXDO12JDAZVZTJIoqGr8SkI2A=",
+        "DOrFun-1rnN5CFfW6gvlAAN6WOv5blaqeDkllJ6dxUI",
         {
-          "operationId": "mxRuZY52DtT0NcCIF9wXDO12JDAZVZTJIoqGr8SkI2A=",
+          "operationId": "DOrFun-1rnN5CFfW6gvlAAN6WOv5blaqeDkllJ6dxUI",
           "transactionInfo":
           {
             "contractName": "UC4.MatriculationData",
@@ -674,7 +676,7 @@
           "existingApprovals":
           {
             "users": ["User1", "0000001"],
-            "groups": ["Admin"]
+            "groups": ["Admin", "System"]
           },
           "missingApprovals":
           {
@@ -716,8 +718,8 @@
     ],
     "compare": [
       {
-        "type": "HLInsufficientApprovals",
-        "title": "The approvals present on the ledger do not suffice to execute this transaction"
+        "type": "HLParticipationImpossible",
+        "title": "The operation is not in pending state"
       }
     ]
   }
