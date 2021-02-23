@@ -80,6 +80,7 @@ public final class ExamContractTest extends TestCreationBase {
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
+            assertThat(actualError.toString()).isEqualTo(expectedError.toString());
         };
     }
 
@@ -116,6 +117,7 @@ public final class ExamContractTest extends TestCreationBase {
             DetailedError actualError = GsonWrapper.fromJson(getResult, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
+            assertThat(actualError.toString()).isEqualTo(expectedError.toString());
         };
     }
 

@@ -8,8 +8,6 @@ import java.util.Objects;
 
 public class OperationData {
 
-
-
     @SerializedName("operationId")
     private String operationId = null;
     @SerializedName("transactionInfo")

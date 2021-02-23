@@ -15,7 +15,6 @@ import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -73,8 +72,6 @@ public final class OperationContractTest extends TestCreationBase {
                 List<String> operationIds = operationDataList.stream().map(OperationData::getOperationId).collect(Collectors.toList());
                 assertThat(GsonWrapper.toJson(operationIds)).isEqualTo(compare.get(i));
             }
-
-
         };
     }
 
@@ -88,9 +85,11 @@ public final class OperationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
             for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
+
+                String initiateResult = contract.initiateOperation(ctx, initiator(input), contract(input), transaction(input), params(input));
+                OperationData transactionResult = GsonWrapper.fromJson(initiateResult, OperationData.class);
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
-                OperationData transactionResult = GsonWrapper.fromJson(contract.initiateOperation(ctx, initiator(input), contract(input), transaction(input), params(input)), OperationData.class);
-                assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
+                assertThat(transactionResult).isEqualTo(compareResult);
             }
         };
     }
@@ -188,10 +187,5 @@ public final class OperationContractTest extends TestCreationBase {
 
     private String params(List<String> input) {
         return GsonWrapper.toJson(input.subList(3, input.size()));
-
-    }
-
-    private String operationId(List<String> input) throws NoSuchAlgorithmException {
-        return OperationContractUtil.getDraftKey(contract(input), transaction(input), params(input));
     }
 }

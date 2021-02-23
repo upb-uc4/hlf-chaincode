@@ -68,6 +68,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             MatriculationData ledgerMatriculationData = GsonWrapper.fromJson(
                     contract.getMatriculationData(ctx, input.get(0)), MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
+            assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };
     }
 
@@ -121,6 +122,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             MatriculationData ledgerMatriculationData =
                     cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
+            assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };
 
     }
@@ -155,6 +157,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             MatriculationData ledgerMatriculationData =
                     cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
+            assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };
     }
 

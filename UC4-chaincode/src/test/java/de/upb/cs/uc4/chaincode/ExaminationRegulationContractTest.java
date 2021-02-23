@@ -7,11 +7,13 @@ import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,6 +61,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             Context ctx = TestUtil.buildContext(ExaminationRegulationContract.contractName, ExaminationRegulationContract.transactionNameGetExaminationRegulations, setup, input, ids);
 
             String regulations = contract.getExaminationRegulations(ctx, input.get(0));
+
             assertThat(regulations).isEqualTo(compare.get(0));
         };
     }
@@ -111,6 +114,7 @@ public final class ExaminationRegulationContractTest extends TestCreationBase {
             ExaminationRegulation compareRegulation = GsonWrapper.fromJson(compare.get(0), ExaminationRegulation.class);
             ExaminationRegulation ledgerRegulation = cUtil.getState(ctx.getStub(), compareRegulation.getName(), ExaminationRegulation.class);
             assertThat(ledgerRegulation).isEqualTo(compareRegulation);
+            assertThat(ledgerRegulation.toString()).isEqualTo(compareRegulation.toString());
         };
 
     }
