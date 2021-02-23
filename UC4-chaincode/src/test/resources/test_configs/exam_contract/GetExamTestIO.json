@@ -662,9 +662,14 @@
       ]
     ]
   },
+
+
+
+
+
   {
-    "name": "getExistingExam_Filter_ExamType_Garbage_Ignore",
-    "type": "getExam_SUCCESS",
+    "name": "getExistingExam_Filter_ExamType_Garbage",
+    "type": "getExam_FAILURE",
     "ids": [
       "User1",
       "0000005"
@@ -737,12 +742,18 @@
       ""
     ],
     "compare": [
-      [ ]
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "exam.types",
+            "reason": "The types has/have to be one of {Written Exam, Oral Exam}"
+          }
+        ]
+      }
     ]
   },
-
-
-
   {
     "name": "getExistingExam_Filter_FaultyAdmittableAt",
     "type": "getExam_FAILURE",

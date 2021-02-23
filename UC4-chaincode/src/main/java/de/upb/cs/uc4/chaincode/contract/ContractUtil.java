@@ -114,7 +114,7 @@ abstract public class ContractUtil {
     public InvalidParameter getInvalidEnumValue(String parameterName, String[] possibleValues) {
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
-                .reason("The " + parameterName + " has to be one of {" + String.join(", ", possibleValues) + "}");
+                .reason("The " + parameterName + " has/have to be one of {" + String.join(", ", possibleValues) + "}");
     }
 
     public GenericError getInternalError() {

@@ -19,6 +19,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class ExamContractUtil extends ContractUtil {
@@ -140,7 +141,7 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getInvalidTimestampParam(errorPrefix + ".date"));
         }
         if (valueUnset(exam.getType())) {
-            invalidParams.add(getInvalidEnumValue("type", Arrays.stream(ExamType.values()).map(ExamType::toString).toArray(String[]::new)));
+            invalidParams.add(getInvalidEnumValue("type", ExamType.possibleStringValues()));
         }
         if (valueUnset(exam.getAdmittableUntil())) {
             invalidParams.add(getInvalidTimestampParam(errorPrefix + ".admittableUntil"));
@@ -244,8 +245,13 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getUnparsableParam("moduleIds"));
         }
 
+        Type listTypeExamTypes = new TypeToken<ArrayList<ExamType>>() {
+        }.getType();
         try {
-            GsonWrapper.fromJson(types, listType);
+            List<ExamType> examTypes = GsonWrapper.fromJson(types, listTypeExamTypes);
+            if (examTypes.stream().anyMatch(Objects::isNull)){
+                invalidParams.add(getInvalidEnumValue("types", ExamType.possibleStringValues()));
+            }
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("types"));
         }
