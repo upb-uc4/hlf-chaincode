@@ -1,18 +1,19 @@
 package de.upb.cs.uc4.chaincode;
 
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
+import org.assertj.core.util.Files;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.lang.reflect.Type;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,21 +30,14 @@ public abstract class TestCreationBase {
         File[] testConfigs = dir.listFiles();
 
         List<JsonIOTest> testConfig;
-        Type type = new TypeToken<List<JsonIOTest>>() {
-        }.getType();
-        ArrayList<DynamicTest> tests = new ArrayList<>();
+        List<DynamicTest> tests = new ArrayList<>();
 
         if (testConfigs == null) {
             throw new RuntimeException("No test configurations found.");
         }
 
         for (File file : testConfigs) {
-            try {
-                testConfig = GsonWrapper.fromJson(new FileReader(file.getPath()), type);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                return null;
-            }
+            testConfig = Arrays.asList(GsonWrapper.fromJson(Files.contentOf(file, Charset.defaultCharset()), JsonIOTest[].class));
 
             for (JsonIOTest test : testConfig) {
                 test.setIds(test.getIds().stream().map(TestUtil::wrapEnrollmentId).collect(Collectors.toList()));

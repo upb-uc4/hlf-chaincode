@@ -7,9 +7,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateN
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.UnprocessableLedgerStateError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
-import de.upb.cs.uc4.chaincode.model.OperationData;
-import de.upb.cs.uc4.chaincode.model.OperationDataState;
+import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -21,14 +19,12 @@ import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
-
-import static java.time.temporal.ChronoUnit.SECONDS;
 
 abstract public class ContractUtil {
 
@@ -38,10 +34,10 @@ abstract public class ContractUtil {
     protected String identifier = "";
 
     public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
-        return getUnprocessableEntityError(getArrayList(invalidParam));
+        return getUnprocessableEntityError(getList(invalidParam));
     }
 
-    public DetailedError getUnprocessableEntityError(ArrayList<InvalidParameter> invalidParams) {
+    public DetailedError getUnprocessableEntityError(List<InvalidParameter> invalidParams) {
         return new DetailedError()
                 .type("HLUnprocessableEntity")
                 .title("The following parameters do not conform to the specified format")
@@ -99,6 +95,18 @@ abstract public class ContractUtil {
 
     public InvalidParameter getEmptyEnrollmentIdParam(String prefix) {
         return getEmptyInvalidParameter(prefix + "enrollmentId");
+    }
+
+    public InvalidParameter getInvalidTimestampParam(String param) {
+        return new InvalidParameter()
+                .name(param)
+                .reason("Any date must conform to the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z\", e.g. \"2020-12-31T23:59:59.999Z\"");
+    }
+
+    public InvalidParameter getInvalidEnumValue(String parameterName, String[] possibleValues) {
+        return new InvalidParameter()
+                .name(parameterName)
+                .reason("The " + parameterName + " has/have to be one of {" + String.join(", ", possibleValues) + "}");
     }
 
     public GenericError getInternalError() {
@@ -166,10 +174,6 @@ abstract public class ContractUtil {
         return clientId.substring(9).split(",")[0];
     }
 
-    public String getTimestamp(ChaincodeStub stub) {
-        DateTimeFormatter fm = DateTimeFormatter.ISO_LOCAL_DATE_TIME.withZone(ZoneId.from(ZoneOffset.UTC));
-        return fm.format(stub.getTxTimestamp().truncatedTo(SECONDS));
-    }
 
     public void finishOperation(
             final ChaincodeStub stub,
@@ -216,7 +220,7 @@ abstract public class ContractUtil {
         return stub.getStateByPartialCompositeKey(key);
     }
 
-    public ArrayList<InvalidParameter> getArrayList(InvalidParameter invalidParam) {
+    public List<InvalidParameter> getList(InvalidParameter invalidParam) {
         return new ArrayList<InvalidParameter>() {{
             add(invalidParam);
         }};
@@ -225,6 +229,12 @@ abstract public class ContractUtil {
     public boolean keyExists(ChaincodeStub stub, String key) {
         String result = getStringState(stub, key);
         return result != null && !result.equals("");
+    }
+
+    public static String hashAndEncodeBase64url(String all) throws NoSuchAlgorithmException {
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
+        return new String(Base64.getUrlEncoder().withoutPadding().encode(bytes));
     }
 
     public boolean valueUnset(String value) {
@@ -277,10 +287,10 @@ abstract public class ContractUtil {
         deleteStringState(stub, key);
     }
 
-    public <T> ArrayList<T> getAllStates(ChaincodeStub stub, Class<T> c) {
+    public <T> List<T> getAllStates(ChaincodeStub stub, Class<T> c) {
         QueryResultsIterator<KeyValue> qrIterator;
         qrIterator = getAllRawStates(stub);
-        ArrayList<T> resultItems = new ArrayList<>();
+        List<T> resultItems = new ArrayList<>();
         for (KeyValue item : qrIterator) {
             String jsonValue = item.getStringValue();
             try {

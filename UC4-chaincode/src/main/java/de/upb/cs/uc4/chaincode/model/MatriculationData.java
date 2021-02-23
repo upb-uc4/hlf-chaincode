@@ -101,7 +101,7 @@ public class MatriculationData {
         return o.toString().replace("\n", "\n    ");
     }
 
-    public void addAbsent(ArrayList<SubjectMatriculation> matriculationStatus) {
+    public void addAbsent(List<SubjectMatriculation> matriculationStatus) {
         for (SubjectMatriculation newItem : matriculationStatus) {
             boolean exists = false;
             for (SubjectMatriculation item : this.getMatriculationStatus()) {

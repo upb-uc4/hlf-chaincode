@@ -1,7 +1,6 @@
 package de.upb.cs.uc4.chaincode;
 
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
@@ -13,9 +12,8 @@ import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
-import java.lang.reflect.Type;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,8 +66,7 @@ public final class OperationContractTest extends TestCreationBase {
 
             for (int i = 0; i < compare.size(); i++) {
                 String operations = contract.getOperations(ctx, input.get(i*6), input.get(i*6+1), input.get(i*6+2), input.get(i*6+3), input.get(i*6+4), input.get(i*6+5));
-                Type listType = new TypeToken<ArrayList<OperationData>>() {}.getType();
-                List<OperationData> operationDataList = GsonWrapper.fromJson(operations, listType);
+                List<OperationData> operationDataList = Arrays.asList(GsonWrapper.fromJson(operations, OperationData[].class).clone());
                 List<String> operationIds = operationDataList.stream().map(OperationData::getOperationId).collect(Collectors.toList());
                 assertThat(GsonWrapper.toJson(operationIds)).isEqualTo(compare.get(i));
             }
@@ -164,10 +161,10 @@ public final class OperationContractTest extends TestCreationBase {
             matriculationContract.addMatriculationData(ctx, input.get(0));
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
             stub.setFunction("UC4.OperationData:approveTransaction");
-            Type listType = new TypeToken<ArrayList<OperationData>>() {
 
-            }.getType();
-            List<OperationData> operations = GsonWrapper.fromJson(contract.getOperations(ctx, GsonWrapper.toJson(Collections.singletonList(operationId)), "", "", "", "", ""), listType);
+            String getOperationsResult = contract.getOperations(ctx, GsonWrapper.toJson(Collections.singletonList(operationId)), "", "", "", "", "");
+            List<OperationData> operations = Arrays.asList(GsonWrapper.fromJson
+                    (getOperationsResult, OperationData[].class).clone());
             OperationData operation = operations.get(0);
             OperationDataState expectedState = GsonWrapper.fromJson(compare.get(0), OperationDataState.class);
             assertThat(operation.getState()).isEqualTo(expectedState);

@@ -1,3 +1,19 @@
+# [v0.18.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.17.0...v0.18.1) (2021-02-23)
+
+## Feature
+- add exam contract
+- add exam result contract
+- add exam admission contract
+- add operation pending checks and errors
+
+## Bugfix
+- deny rejection if reject message empty
+
+## Refactor
+- update readme
+- update timestamps (java instant)
+- replace type tokens by utilizing array deserialization instead
+
 # [v0.17.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.16.8...v0.17.0) (2021-01-29)
 
 ## Feature
