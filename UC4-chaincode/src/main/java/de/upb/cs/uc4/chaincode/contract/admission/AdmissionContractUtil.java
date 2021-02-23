@@ -35,12 +35,6 @@ public class AdmissionContractUtil extends ContractUtil {
         return errorPrefix;
     }
 
-    public InvalidParameter getInvalidTypeParam() {
-        return new InvalidParameter()
-                .name(errorPrefix + ".type")
-                .reason("Type must be one of (Course|Exam)");
-    }
-
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
         return new InvalidParameter()
                 .name(errorPrefix + "." + parameterName)
@@ -243,7 +237,7 @@ public class AdmissionContractUtil extends ContractUtil {
         admission.ensureIsDroppable(stub);
     }
 
-    public void checkParamsGetExamAdmission(Context ctx, String[] params) throws LedgerAccessError, ParameterError {
+    public void checkParamsGetExamAdmission(Context ctx, String[] params) throws ParameterError {
         if (params.length != 3) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
