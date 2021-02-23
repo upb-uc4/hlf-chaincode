@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.matriculationdata;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
@@ -14,8 +13,8 @@ import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -68,7 +67,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
      * @param prefix            prefix used for error information
      * @return a list of all errors found for the given matriculationData
      */
-    public ArrayList<InvalidParameter> getErrorForMatriculationData(
+    public List<InvalidParameter> getErrorForMatriculationData(
             ChaincodeStub stub,
             MatriculationData matriculationData,
             String prefix) {
@@ -76,7 +75,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
         if (!prefix.isEmpty())
             prefix += ".";
 
-        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+        List<InvalidParameter> invalidparams = new ArrayList<>();
 
         if (valueUnset(matriculationData.getEnrollmentId())) {
             invalidparams.add(getEmptyEnrollmentIdParam(prefix));
@@ -89,18 +88,18 @@ public class MatriculationDataContractUtil extends ContractUtil {
         return invalidparams;
     }
 
-    public ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
+    public List<InvalidParameter> getErrorForSubjectMatriculationList(
             ChaincodeStub stub,
             List<SubjectMatriculation> matriculationStatus,
             String prefix) {
         ExaminationRegulationContractUtil eUtil = new ExaminationRegulationContractUtil();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (valueUnset(matriculationStatus)) {
             invalidParams.add(getEmptyInvalidParameter(prefix));
         } else {
-            ArrayList<String> existingFields = new ArrayList<>();
+            List<String> existingFields = new ArrayList<>();
 
             List<String> validErIds = eUtil.getAllStates(stub, ExaminationRegulation.class).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
             for (int subMatIndex = 0; subMatIndex < matriculationStatus.size(); subMatIndex++) {
@@ -124,7 +123,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
                     invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].semesters"));
                 }
 
-                ArrayList<String> existingSemesters = new ArrayList<>();
+                List<String> existingSemesters = new ArrayList<>();
                 for (int semesterIndex = 0; semesterIndex < Objects.requireNonNull(semesters).size(); semesterIndex++) {
 
                     String semester = semesters.get(semesterIndex);
@@ -179,7 +178,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableMatriculationDataParam())));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
+        List<InvalidParameter> invalidParams = getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
@@ -204,7 +203,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableMatriculationDataParam())));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
+        List<InvalidParameter> invalidParams = getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
@@ -237,14 +236,13 @@ public class MatriculationDataContractUtil extends ContractUtil {
 
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         if (valueUnset(enrollmentId)) {
             invalidParams.add(getEmptyEnrollmentIdParam());
         }
-        Type listType = new TypeToken<ArrayList<SubjectMatriculation>>() {}.getType();
-        ArrayList<SubjectMatriculation> matriculationStatus;
+        List<SubjectMatriculation> matriculationStatus;
         try {
-            matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
+            matriculationStatus = Arrays.asList(GsonWrapper.fromJson(matriculations, SubjectMatriculation[].class));
         } catch (Exception e) {
             invalidParams.add(getUnparsableMatriculationParam());
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));

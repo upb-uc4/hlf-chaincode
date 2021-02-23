@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.matriculationdata;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
@@ -14,9 +13,8 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.List;
 
 @Contract(
         name = MatriculationDataContract.contractName
@@ -159,9 +157,8 @@ public class MatriculationDataContract extends ContractBase {
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        Type listType = new TypeToken<ArrayList<SubjectMatriculation>>() {}.getType();
-        ArrayList<SubjectMatriculation> matriculationStatus;
-        matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
+        List<SubjectMatriculation> matriculationStatus;
+        matriculationStatus = Arrays.asList(GsonWrapper.fromJson(matriculations, SubjectMatriculation[].class));
 
         MatriculationData matriculationData;
         try {

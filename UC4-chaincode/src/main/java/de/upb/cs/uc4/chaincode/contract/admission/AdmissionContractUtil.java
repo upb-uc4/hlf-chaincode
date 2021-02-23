@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.admission;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
@@ -17,7 +16,6 @@ import de.upb.cs.uc4.chaincode.model.exam.Exam;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -224,7 +222,7 @@ public class AdmissionContractUtil extends ContractUtil {
             throw new ParameterError(GsonWrapper.toJson(getConflictError()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         invalidParams.addAll(newAdmission.getParameterErrors());
         invalidParams.addAll(newAdmission.getSemanticErrors(stub));
         if (!invalidParams.isEmpty()) {
@@ -247,15 +245,14 @@ public class AdmissionContractUtil extends ContractUtil {
         if (params.length != 3) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        Type listType = new TypeToken<String[]>() {}.getType();
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
         try {
-            GsonWrapper.fromJson(params[0], listType);
+            GsonWrapper.fromJson(params[0], String[].class);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("admissionIds"));
         }
         try {
-            GsonWrapper.fromJson(params[2], listType);
+            GsonWrapper.fromJson(params[2], String[].class);
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("examIds"));
         }

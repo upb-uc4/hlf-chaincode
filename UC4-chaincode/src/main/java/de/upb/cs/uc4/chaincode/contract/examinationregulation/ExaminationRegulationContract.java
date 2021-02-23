@@ -1,6 +1,5 @@
 package de.upb.cs.uc4.chaincode.contract.examinationregulation;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
@@ -14,9 +13,8 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 @Contract(
@@ -85,10 +83,9 @@ public class ExaminationRegulationContract extends ContractBase {
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        ArrayList<String> nameList;
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
+        List<String> nameList;
         try {
-            nameList = GsonWrapper.fromJson(names, listType);
+            nameList = Arrays.asList(GsonWrapper.fromJson(names, String[].class).clone());
         } catch (Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableNameListParam()));
         }
