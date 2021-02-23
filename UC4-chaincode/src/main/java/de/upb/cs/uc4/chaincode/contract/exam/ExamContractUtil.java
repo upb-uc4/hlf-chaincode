@@ -242,10 +242,8 @@ public class ExamContractUtil extends ContractUtil {
             invalidParams.add(getUnparsableParam("moduleIds"));
         }
 
-        Type listTypeExamTypes = new TypeToken<ArrayList<ExamType>>() {
-        }.getType();
         try {
-            List<ExamType> examTypes = GsonWrapper.fromJson(types, ExamType[].class);
+            List<ExamType> examTypes = Arrays.asList(GsonWrapper.fromJson(types, ExamType[].class).clone());
             if (examTypes.stream().anyMatch(Objects::isNull)){
                 invalidParams.add(getInvalidEnumValue("types", ExamType.possibleStringValues()));
             }
