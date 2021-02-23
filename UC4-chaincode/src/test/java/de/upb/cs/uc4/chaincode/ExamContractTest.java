@@ -1,8 +1,10 @@
 package de.upb.cs.uc4.chaincode;
 
+import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.model.OperationData;
 import de.upb.cs.uc4.chaincode.model.exam.Exam;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
@@ -12,6 +14,8 @@ import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -40,6 +44,8 @@ public final class ExamContractTest extends TestCreationBase {
                 return DynamicTest.dynamicTest(testName, addExamFailureTest(setup, input, compare, ids));
             case "getExam_SUCCESS":
                 return DynamicTest.dynamicTest(testName, getExamsSuccessTest(setup, input, compare, ids));
+            case "getExam_FAILURE":
+                return DynamicTest.dynamicTest(testName, getExamsFailureTest(setup, input, compare, ids));
             default:
                 throw new RuntimeException("Test " + testName + " of type " + testType + " could not be matched.");
         }
@@ -90,6 +96,29 @@ public final class ExamContractTest extends TestCreationBase {
 
             String getResult = contract.getExams(ctx, input.get(0), input.get(1), input.get(2), input.get(3), input.get(4), input.get(5), input.get(6));
             assertThat(getResult).isEqualTo(compare.get(0));
+
+            Type listType = new TypeToken<ArrayList<OperationData>>() {}.getType();
+            List<OperationData> getExamsList = GsonWrapper.fromJson(getResult, listType);
+            List<OperationData> compareList = GsonWrapper.fromJson(compare.get(0), listType);
+            assertThat(getExamsList).isEqualTo(compareList);
+        };
+    }
+
+    private Executable getExamsFailureTest(
+            JsonIOTestSetup setup,
+            List<String> input,
+            List<String> compare,
+            List<String> ids
+    ) {
+        return () -> {
+            Context ctx = TestUtil.buildContext(ExamContract.contractName, ExamContract.transactionNameGetExams, setup, input, ids);
+
+            String getResult = contract.getExams(ctx, input.get(0), input.get(1), input.get(2), input.get(3), input.get(4), input.get(5), input.get(6));
+            assertThat(getResult).isEqualTo(compare.get(0));
+
+            DetailedError actualError = GsonWrapper.fromJson(getResult, DetailedError.class);
+            DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
+            assertThat(actualError).isEqualTo(expectedError);
         };
     }
 
