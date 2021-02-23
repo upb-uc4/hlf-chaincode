@@ -120,34 +120,6 @@ public class OperationContractUtil extends ContractUtil {
                 .reason("The given transaction \"" + transactionName + "\" does not exist"));
     }
 
-    // TODO utilize participation denied error instead
-    public GenericError getApprovalDeniedError(){
-        return new GenericError()
-                .type("HLApprovalDenied")
-                .title("You are not allowed to approve the given operation");
-    }
-
-    // TODO utilize not pending error instead
-    public GenericError getApprovalImpossibleError(){
-        return new GenericError()
-                .type("HLApprovalImpossible")
-                .title("The operation is not in pending state");
-    }
-
-    // TODO utilize participation denied error instead
-    public GenericError getRejectionDeniedError(){
-        return new GenericError()
-                .type("HLRejectionDenied")
-                .title("You are not allowed to reject the given operation");
-    }
-
-    // TODO utilize not pending error instead
-    public GenericError getRejectionImpossibleError(){
-        return new GenericError()
-                .type("HLRejectionImpossible")
-                .title("The operation is not in pending state");
-    }
-
     public DetailedError getEmptyContractNameError() {
         return getUnprocessableEntityError(getEmptyInvalidParameter("contractName"));
     }
