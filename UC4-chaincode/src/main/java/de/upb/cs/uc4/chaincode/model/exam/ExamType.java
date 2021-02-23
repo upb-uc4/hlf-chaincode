@@ -2,6 +2,8 @@ package de.upb.cs.uc4.chaincode.model.exam;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Arrays;
+
 public enum ExamType {
     @SerializedName("Written Exam")
     WRITTEN_EXAM ("Written Exam"),
@@ -17,5 +19,9 @@ public enum ExamType {
     @Override
     public String toString() {
         return this.beautifulValue;
+    }
+
+    public static String[] possibleStringValues(){
+        return Arrays.stream(ExamType.values()).map(ExamType::toString).toArray(String[]::new);
     }
 }
