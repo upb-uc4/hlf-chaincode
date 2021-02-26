@@ -72,6 +72,7 @@ public final class ExamResultContractTest extends TestCreationBase {
             List<ExamResultEntry> ledgerExamResult = Arrays.asList(GsonWrapper.fromJson(
                     contract.getExamResultEntries(ctx, input.get(0), input.get(1)), ExamResultEntry[].class).clone());
             assertThat(ledgerExamResult).isEqualTo(compareExamResult);
+            assertThat(ledgerExamResult.toString()).isEqualTo(compareExamResult.toString());
         };
     }
 

@@ -1,6 +1,7 @@
 package de.upb.cs.uc4.chaincode.model.exam;
 
 import com.google.gson.annotations.SerializedName;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -35,7 +36,6 @@ public class Exam {
      *
      * @return examId
      **/
-    @ApiModelProperty()
     public String getExamId() {
         return this.examId;
     }
@@ -50,7 +50,7 @@ public class Exam {
     }
 
     public void resetExamId() {
-        this.examId = this.courseId + DELIMITER + this.moduleId + DELIMITER + this.type + DELIMITER + getDateString();
+        this.examId = this.courseId + DELIMITER + this.moduleId + DELIMITER + getTypeString() + DELIMITER + getDateString();
     }
 
     /**
@@ -58,7 +58,6 @@ public class Exam {
      *
      * @return courseId
      **/
-    @ApiModelProperty()
     public String getCourseId() {
         return this.courseId;
     }
@@ -78,7 +77,6 @@ public class Exam {
      *
      * @return lecturerEnrollmentId
      **/
-    @ApiModelProperty()
     public String getLecturerEnrollmentId() {
         return this.lecturerEnrollmentId;
     }
@@ -97,7 +95,6 @@ public class Exam {
      *
      * @return moduleId
      **/
-    @ApiModelProperty()
     public String getModuleId() {
         return this.moduleId;
     }
@@ -117,7 +114,6 @@ public class Exam {
      *
      * @return type
      **/
-    @ApiModelProperty()
     public ExamType getType() {
         return this.type;
     }
@@ -132,12 +128,15 @@ public class Exam {
         return this;
     }
 
+    public String getTypeString() {
+        return GeneralHelper.enumValueAsString(this.type);
+    }
+
     /**
      * Get date
      *
      * @return date
      **/
-    @ApiModelProperty()
     public Instant getDate() {
         return this.date;
     }
@@ -160,7 +159,6 @@ public class Exam {
      *
      * @return ects
      **/
-    @ApiModelProperty()
     public int getEcts() {
         return this.ects;
     }
@@ -179,7 +177,6 @@ public class Exam {
      *
      * @return admittableUntil
      **/
-    @ApiModelProperty()
     public Instant getAdmittableUntil() {
         return this.admittableUntil;
     }
@@ -201,7 +198,6 @@ public class Exam {
      *
      * @return droppableUntil
      **/
-    @ApiModelProperty()
     public Instant getDroppableUntil() {
         return this.droppableUntil;
     }
@@ -238,35 +234,19 @@ public class Exam {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.examId);
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class Exam {\n");
-        sb.append("    examId: ").append(toIndentedString(this.examId)).append("\n");
-        sb.append("    courseId: ").append(toIndentedString(this.courseId)).append("\n");
-        sb.append("    lecturerEnrollmentId: ").append(toIndentedString(this.lecturerEnrollmentId)).append("\n");
-        sb.append("    moduleId: ").append(toIndentedString(this.moduleId)).append("\n");
-        sb.append("    type: ").append(toIndentedString(this.type)).append("\n");
-        sb.append("    date: ").append(toIndentedString(getDateString())).append("\n");
-        sb.append("    ects: ").append(toIndentedString(this.ects)).append("\n");
-        sb.append("    admittableUntil: ").append(toIndentedString(getAdmittableUntilString())).append("\n");
-        sb.append("    droppableUntil: ").append(toIndentedString(getDroppableUntilString())).append("\n");
+        sb.append("    examId: ").append(this.examId).append("\n");
+        sb.append("    courseId: ").append(this.courseId).append("\n");
+        sb.append("    lecturerEnrollmentId: ").append(this.lecturerEnrollmentId).append("\n");
+        sb.append("    moduleId: ").append(this.moduleId).append("\n");
+        sb.append("    type: ").append(this.type).append("\n");
+        sb.append("    date: ").append(this.getDateString()).append("\n");
+        sb.append("    ects: ").append(this.ects).append("\n");
+        sb.append("    admittableUntil: ").append(this.getAdmittableUntilString()).append("\n");
+        sb.append("    droppableUntil: ").append(this.getDroppableUntilString()).append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

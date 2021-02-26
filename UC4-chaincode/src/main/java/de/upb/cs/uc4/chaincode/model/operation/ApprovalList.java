@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.operation;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
@@ -34,7 +34,6 @@ public class ApprovalList {
      *
      * @return matriculationStatus
      **/
-    @ApiModelProperty(value = "")
     public List<String> getUsers() {
         return users;
     }
@@ -70,7 +69,6 @@ public class ApprovalList {
      *
      * @return matriculationStatus
      **/
-    @ApiModelProperty(value = "")
     public List<String> getGroups() {
         return groups;
     }
@@ -94,34 +92,16 @@ public class ApprovalList {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(users, groups);
-    }
-
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class MatriculationData {\n");
-        sb.append("    users: ").append(toIndentedString(users)).append("\n");
-        sb.append("    groups: ").append(toIndentedString(groups)).append("\n");
+        sb.append("    users: ").append(users).append("\n");
+        sb.append("    groups: ").append(groups).append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
     public boolean isEmpty() {
         return this.users.isEmpty() && this.groups.isEmpty();
     }
-
 }

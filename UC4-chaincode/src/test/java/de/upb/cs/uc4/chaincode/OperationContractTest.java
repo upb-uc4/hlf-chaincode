@@ -3,16 +3,18 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -70,8 +72,6 @@ public final class OperationContractTest extends TestCreationBase {
                 List<String> operationIds = operationDataList.stream().map(OperationData::getOperationId).collect(Collectors.toList());
                 assertThat(GsonWrapper.toJson(operationIds)).isEqualTo(compare.get(i));
             }
-
-
         };
     }
 
@@ -85,9 +85,11 @@ public final class OperationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
             for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
+
+                String initiateResult = contract.initiateOperation(ctx, initiator(input), contract(input), transaction(input), params(input));
+                OperationData transactionResult = GsonWrapper.fromJson(initiateResult, OperationData.class);
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
-                OperationData transactionResult = GsonWrapper.fromJson(contract.initiateOperation(ctx, initiator(input), contract(input), transaction(input), params(input)), OperationData.class);
-                assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
+                assertThat(transactionResult).isEqualTo(compareResult);
             }
         };
     }
@@ -101,7 +103,7 @@ public final class OperationContractTest extends TestCreationBase {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
             for (String s : compare) {
-                Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
+                Context ctx = GeneralHelper.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
                 String result = contract.initiateOperation(ctx, "", contract(input), transaction(input), params(input));
                 assertThat(result).isEqualTo(s);
             }
@@ -185,10 +187,5 @@ public final class OperationContractTest extends TestCreationBase {
 
     private String params(List<String> input) {
         return GsonWrapper.toJson(input.subList(3, input.size()));
-
-    }
-
-    private String operationId(List<String> input) throws NoSuchAlgorithmException {
-        return OperationContractUtil.getDraftKey(contract(input), transaction(input), params(input));
     }
 }

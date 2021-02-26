@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.exam.Exam;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -123,28 +124,28 @@ public class ExamContractUtil extends ContractUtil {
 
         List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (valueUnset(exam.getExamId())) {
+        if (GeneralHelper.valueUnset(exam.getExamId())) {
             invalidParams.add(getEmptyEnrollmentIdParam(errorPrefix + ".examId"));
         }
-        if (valueUnset(exam.getCourseId())) {
+        if (GeneralHelper.valueUnset(exam.getCourseId())) {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".courseId"));
         }
-        if (valueUnset(exam.getLecturerEnrollmentId())) {
+        if (GeneralHelper.valueUnset(exam.getLecturerEnrollmentId())) {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".lecturerEnrollmentId"));
         }
-        if (valueUnset(exam.getModuleId())) {
+        if (GeneralHelper.valueUnset(exam.getModuleId())) {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
         }
-        if (valueUnset(exam.getDate())) {
+        if (GeneralHelper.valueUnset(exam.getDate())) {
             invalidParams.add(getInvalidTimestampParam(errorPrefix + ".date"));
         }
-        if (valueUnset(exam.getType())) {
-            invalidParams.add(getInvalidEnumValue(errorPrefix + ".type", ExamType.possibleStringValues()));
+        if (GeneralHelper.valueUnset(exam.getType())) {
+            invalidParams.add(getInvalidEnumValue(errorPrefix + ".type", ExamType.class));
         }
-        if (valueUnset(exam.getAdmittableUntil())) {
+        if (GeneralHelper.valueUnset(exam.getAdmittableUntil())) {
             invalidParams.add(getInvalidTimestampParam(errorPrefix + ".admittableUntil"));
         }
-        if (valueUnset(exam.getDroppableUntil())) {
+        if (GeneralHelper.valueUnset(exam.getDroppableUntil())) {
             invalidParams.add(getInvalidTimestampParam(errorPrefix + ".droppableUntil"));
         }
 
@@ -157,7 +158,7 @@ public class ExamContractUtil extends ContractUtil {
             final List<String> courseIds,
             final List<String> lecturerIds,
             final List<String> moduleIds,
-            final List<String> types,
+            final List<ExamType> types,
             final Instant admittableAt,
             final Instant droppableAt) {
 
@@ -171,10 +172,10 @@ public class ExamContractUtil extends ContractUtil {
                 .filter(item -> moduleIds.isEmpty() ||
                         moduleIds.contains(item.getModuleId()))
                 .filter(item -> types.isEmpty() ||
-                        (item.getType() != null && types.contains(item.getType().toString())))
-                .filter(item -> valueUnset(admittableAt) ||
+                        (item.getType() != null && types.contains(item.getType())))
+                .filter(item -> GeneralHelper.valueUnset(admittableAt) ||
                         item.getAdmittableUntil().isAfter(admittableAt))
-                .filter(item -> valueUnset(droppableAt) ||
+                .filter(item -> GeneralHelper.valueUnset(droppableAt) ||
                         item.getDroppableUntil().isAfter(droppableAt))
                 .collect(Collectors.toList());
     }
@@ -244,7 +245,7 @@ public class ExamContractUtil extends ContractUtil {
         try {
             List<ExamType> examTypes = Arrays.asList(GsonWrapper.fromJson(types, ExamType[].class).clone());
             if (examTypes.stream().anyMatch(Objects::isNull)){
-                invalidParams.add(getInvalidEnumValue("types", ExamType.possibleStringValues()));
+                invalidParams.add(getInvalidEnumValue("types", ExamType.class));
             }
         } catch (Exception e) {
             invalidParams.add(getUnparsableParam("types"));
