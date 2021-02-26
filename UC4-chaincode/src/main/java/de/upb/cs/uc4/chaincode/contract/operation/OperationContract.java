@@ -4,10 +4,13 @@ import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
-import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -44,8 +47,8 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
 
-        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        initiator = cUtil.valueUnset(initiator) ? clientId : initiator;
+        String clientId = HyperledgerManager.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        initiator = GeneralHelper.valueUnset(initiator) ? clientId : initiator;
 
         OperationData operationData;
         OperationDataState operationState;
@@ -135,7 +138,7 @@ public class OperationContract extends ContractBase {
             return GsonWrapper.toJson(cUtil.getRejectionImpossibleError());
         }
         // reject
-        if(cUtil.valueUnset(rejectMessage)){
+        if(GeneralHelper.valueUnset(rejectMessage)){
             return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getEmptyInvalidParameter("rejectMessage")))).getJsonError();
         }
         operationData.state(OperationDataState.REJECTED).reason(rejectMessage);

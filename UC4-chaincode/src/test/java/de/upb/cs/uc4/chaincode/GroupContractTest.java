@@ -95,6 +95,7 @@ public final class GroupContractTest extends TestCreationBase {
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
+            assertThat(actualError.toString()).isEqualTo(expectedError.toString());
         };
     }
 
@@ -114,9 +115,8 @@ public final class GroupContractTest extends TestCreationBase {
                 Group compareGroup = GsonWrapper.fromJson(i, Group.class);
                 Group ledgerGroup = cUtil.getState(ctx.getStub(), compareGroup.getGroupId(), Group.class);
                 assertThat(ledgerGroup).isEqualTo(compareGroup);
+                assertThat(ledgerGroup.toString()).isEqualTo(compareGroup.toString());
             }
-
-
         };
     }
 
@@ -151,9 +151,8 @@ public final class GroupContractTest extends TestCreationBase {
                 Group compareGroup = GsonWrapper.fromJson(i, Group.class);
                 Group ledgerGroup = cUtil.getState(ctx.getStub(), compareGroup.getGroupId(), Group.class);
                 assertThat(ledgerGroup).isEqualTo(compareGroup);
+                assertThat(ledgerGroup.toString()).isEqualTo(compareGroup.toString());
             }
-
-
         };
     }
 
@@ -170,6 +169,7 @@ public final class GroupContractTest extends TestCreationBase {
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
+            assertThat(actualError.toString()).isEqualTo(expectedError.toString());
         };
     }
 
@@ -185,7 +185,6 @@ public final class GroupContractTest extends TestCreationBase {
 
             String dropResult = contract.getAllGroups(ctx);
             assertThat(dropResult).isEqualTo(compare.get(0));
-
         };
     }
 
@@ -200,7 +199,6 @@ public final class GroupContractTest extends TestCreationBase {
 
             String dropResult = contract.getUsersForGroup(ctx, input.get(0));
             assertThat(dropResult).isEqualTo(compare.get(0));
-
         };
     }
 
@@ -229,7 +227,6 @@ public final class GroupContractTest extends TestCreationBase {
 
             String dropResult = contract.getGroupsForUser(ctx, input.get(0));
             assertThat(dropResult).isEqualTo(compare.get(0));
-
         };
     }
 
@@ -245,6 +242,7 @@ public final class GroupContractTest extends TestCreationBase {
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
+            assertThat(actualError.toString()).isEqualTo(expectedError.toString());
         };
     }
 

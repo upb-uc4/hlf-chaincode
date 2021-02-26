@@ -20,7 +20,6 @@ public class ExamResultEntry {
      * Get enrollmentId
      * @return enrollmentId
      **/
-    @ApiModelProperty()
     public String getEnrollmentId() {
         return this.enrollmentId;
     }
@@ -33,7 +32,6 @@ public class ExamResultEntry {
      * Get grade
      * @return grade
      **/
-    @ApiModelProperty()
     public GradeType getGrade() {
         return this.grade;
     }
@@ -46,7 +44,6 @@ public class ExamResultEntry {
      * Get examID
      * @return examID
      **/
-    @ApiModelProperty()
     public String getExamId() {
         return this.examId;
     }
@@ -70,30 +67,13 @@ public class ExamResultEntry {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.enrollmentId, this.examId, this.grade);
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ExamResultEntry {\n");
-        sb.append("    enrollmentId: ").append(toIndentedString(this.enrollmentId)).append("\n");
-        sb.append("    examId: ").append(toIndentedString(this.examId)).append("\n");
-        sb.append("    grade: ").append(toIndentedString(this.grade)).append("\n");
+        sb.append("    enrollmentId: ").append(this.enrollmentId).append("\n");
+        sb.append("    examId: ").append(this.examId).append("\n");
+        sb.append("    grade: ").append(this.grade).append("\n");
         sb.append("}");
         return sb.toString();
     }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
 }

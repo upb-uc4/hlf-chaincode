@@ -2,10 +2,11 @@ package de.upb.cs.uc4.chaincode.model.admission;
 
 import com.google.gson.annotations.SerializedName;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.model.exam.ExamType;
 import io.swagger.annotations.ApiModelProperty;
 import org.hyperledger.fabric.shim.ChaincodeStub;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -32,14 +33,12 @@ public abstract class AbstractAdmission {
      *
      * @return admissionId
      **/
-    @ApiModelProperty()
     public String getAdmissionId() {
         return this.admissionId;
     }
 
     public abstract void resetAdmissionId();
 
-    @ApiModelProperty()
     public String getEnrollmentId() {
         return this.enrollmentId;
     }
@@ -49,7 +48,6 @@ public abstract class AbstractAdmission {
         resetAdmissionId();
     }
 
-    @ApiModelProperty()
     public Instant getTimestamp() {
         return this.timestamp;
     }
@@ -58,7 +56,6 @@ public abstract class AbstractAdmission {
         this.timestamp = timestamp;
     }
 
-    @ApiModelProperty()
     public AdmissionType getType() {
         return this.type;
     }
@@ -79,43 +76,26 @@ public abstract class AbstractAdmission {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.admissionId, this.enrollmentId, this.timestamp, this.type);
-    }
-
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class Admission {\n");
-        sb.append("    admissionId: ").append(toIndentedString(this.admissionId)).append("\n");
-        sb.append("    enrollmentId: ").append(toIndentedString(this.enrollmentId)).append("\n");
-        sb.append("    timestamp: ").append(toIndentedString(this.timestamp)).append("\n");
-        sb.append("    type: ").append(toIndentedString(this.type)).append("\n");
+        sb.append("    admissionId: ").append(this.admissionId).append("\n");
+        sb.append("    enrollmentId: ").append(this.enrollmentId).append("\n");
+        sb.append("    timestamp: ").append(this.timestamp).append("\n");
+        sb.append("    type: ").append(this.type).append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 
     public List<InvalidParameter> getParameterErrors() {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
         List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (cUtil.valueUnset(this.enrollmentId)) {
+        if (GeneralHelper.valueUnset(this.enrollmentId)) {
             invalidParams.add(cUtil.getEmptyEnrollmentIdParam(cUtil.getErrorPrefix() + "."));
         }
-        if (cUtil.valueUnset(this.type)) {
-            invalidParams.add(cUtil.getInvalidEnumValue(cUtil.getErrorPrefix() + ".type", AdmissionType.possibleStringValues()));
+        if (GeneralHelper.valueUnset(this.type)) {
+            invalidParams.add(cUtil.getInvalidEnumValue(cUtil.getErrorPrefix() + ".type", AdmissionType.class));
         }
 
         return invalidParams;
@@ -130,6 +110,8 @@ public abstract class AbstractAdmission {
         return invalidParameters;
     }
 
-    public abstract void ensureIsDroppable(ChaincodeStub stub);
+    public void ensureIsDroppable(ChaincodeStub stub) {
+        throw new NotImplementedException();
+    }
 }
 

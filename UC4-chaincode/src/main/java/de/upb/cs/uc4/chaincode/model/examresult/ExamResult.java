@@ -16,7 +16,6 @@ public class ExamResult {
      * Get examResultEntries
      * @return examResultEntries
      **/
-    @ApiModelProperty()
     public List<ExamResultEntry> getExamResultEntries() {
         return this.examResultEntries;
     }
@@ -42,6 +41,7 @@ public class ExamResult {
         }
         return this;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -55,27 +55,11 @@ public class ExamResult {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(this.examResultEntries);
-    }
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ExamResult {\n");
-        sb.append("    examResultEntries: ").append(toIndentedString(this.examResultEntries)).append("\n");
+        sb.append("    examResultEntries: ").append(this.examResultEntries).append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

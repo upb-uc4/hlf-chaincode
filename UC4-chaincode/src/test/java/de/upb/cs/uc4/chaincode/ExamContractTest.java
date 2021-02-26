@@ -3,7 +3,7 @@ package de.upb.cs.uc4.chaincode;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
-import de.upb.cs.uc4.chaincode.model.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
 import de.upb.cs.uc4.chaincode.model.exam.Exam;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
@@ -80,6 +80,7 @@ public final class ExamContractTest extends TestCreationBase {
             DetailedError actualError = GsonWrapper.fromJson(result, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
+            assertThat(actualError.toString()).isEqualTo(expectedError.toString());
         };
     }
 
@@ -116,6 +117,7 @@ public final class ExamContractTest extends TestCreationBase {
             DetailedError actualError = GsonWrapper.fromJson(getResult, DetailedError.class);
             DetailedError expectedError = GsonWrapper.fromJson(compare.get(0), DetailedError.class);
             assertThat(actualError).isEqualTo(expectedError);
+            assertThat(actualError.toString()).isEqualTo(expectedError.toString());
         };
     }
 
