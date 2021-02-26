@@ -136,11 +136,11 @@ abstract public class ContractUtil {
     }
 
     public void checkMayParticipate(Context ctx, OperationData operationData) throws MissingTransactionError, LedgerAccessError, ParticipationError {
-        if (!operationData.getState().equals(OperationDataState.PENDING)) {
-            throw new ParticipationError(GsonWrapper.toJson(getOperationNotPendingError()));
-        }
         if(!hasRightToParticipate(ctx, operationData)) {
             throw new ParticipationError(GsonWrapper.toJson(getAccessDeniedError()));
+        }
+        if (!operationData.getState().equals(OperationDataState.PENDING)) {
+            throw new ParticipationError(GsonWrapper.toJson(getOperationNotPendingError()));
         }
     }
 
