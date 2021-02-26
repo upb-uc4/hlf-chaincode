@@ -7,10 +7,11 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.ParticipationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.helper.AccessManager;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
-import de.upb.cs.uc4.chaincode.model.OperationData;
-import de.upb.cs.uc4.chaincode.model.OperationDataState;
-import de.upb.cs.uc4.chaincode.model.TransactionInfo;
+import de.upb.cs.uc4.chaincode.helper.*;
+import de.upb.cs.uc4.chaincode.model.operation.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
+import de.upb.cs.uc4.chaincode.model.operation.TransactionInfo;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
@@ -33,11 +34,11 @@ public class OperationContractUtil extends ContractUtil {
 
         checkMayParticipate(ctx, operationData);
 
-        String clientId = this.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        String clientId = HyperledgerManager.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
         ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
         ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(ctx, operationData);
-        ApprovalList missingApprovals = OperationContractUtil.getMissingApprovalList(requiredApprovals, existingApprovals);
+        ApprovalList missingApprovals = ValidationManager.getMissingApprovalList(requiredApprovals, existingApprovals);
 
         operationData.lastModifiedTimestamp(ctx.getStub().getTxTimestamp())
                 .existingApprovals(existingApprovals)
@@ -75,20 +76,9 @@ public class OperationContractUtil extends ContractUtil {
                 .collect(Collectors.toList());
     }
 
-    public static boolean covers(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
-        return getMissingApprovalList(requiredApprovals, existingApprovals).isEmpty();
-    }
-
-    public static ApprovalList getMissingApprovalList(ApprovalList requiredApprovals, ApprovalList existingApprovals) {
-        ApprovalList missingApprovals = new ApprovalList();
-        missingApprovals.setUsers(requiredApprovals.getUsers().stream().filter(user -> !existingApprovals.getUsers().contains(user)).collect(Collectors.toList()));
-        missingApprovals.setGroups(requiredApprovals.getGroups().stream().filter(group -> !existingApprovals.getGroups().contains(group)).collect(Collectors.toList()));
-        return missingApprovals;
-    }
-
     public static String getDraftKey(final String contractName, final String transactionName, final String params) throws ValidationError {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params.replace(" ", "");
-        return hashAndEncodeBase64url(all);
+        return GeneralHelper.hashAndEncodeBase64url(all);
     }
 
     public DetailedError getContractUnprocessableError(String contractName) {
@@ -112,8 +102,8 @@ public class OperationContractUtil extends ContractUtil {
     }
 
     public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws ValidationError {
-        String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        initiator = valueUnset(initiator) ? clientId : initiator;
+        String clientId = HyperledgerManager.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        initiator = GeneralHelper.valueUnset(initiator) ? clientId : initiator;
 
         String key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
         OperationData operationData;
@@ -127,7 +117,6 @@ public class OperationContractUtil extends ContractUtil {
                     .transactionInfo(new TransactionInfo().contractName(contractName).transactionName(transactionName).parameters(params))
                     .state(OperationDataState.PENDING)
                     .reason("");
-
         }
         return operationData;
     }

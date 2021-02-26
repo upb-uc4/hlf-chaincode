@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.exam.Exam;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
@@ -77,7 +78,7 @@ public class ExamResultContractUtil extends ContractUtil {
         if (entry.getGrade() == null) {
             invalidParams.add(getIncorrectGradeParam(index));
         }
-        if (valueUnset(entry.getEnrollmentId())) {
+        if (GeneralHelper.valueUnset(entry.getEnrollmentId())) {
             invalidParams.add(getEmptyEnrollmentIdParam());
         }
         if(!(certUtil.keyExists(stub, entry.getEnrollmentId()))){
@@ -180,7 +181,7 @@ public class ExamResultContractUtil extends ContractUtil {
                 .orElse(Stream.empty())
                 .filter(item -> enrollmentId.isEmpty() ||
                         enrollmentId.equals(item.getEnrollmentId()))
-                .filter(item -> valueUnset(examIds) ||
+                .filter(item -> GeneralHelper.valueUnset(examIds) ||
                         examIds.contains(item.getExamId()))
                 .collect(Collectors.toList());
     }

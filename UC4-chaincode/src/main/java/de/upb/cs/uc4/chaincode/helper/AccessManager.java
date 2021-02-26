@@ -13,14 +13,14 @@ import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.operation.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.exam.Exam;
-import de.upb.cs.uc4.chaincode.model.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.matriculation.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.TransactionInfo;
 import org.hyperledger.fabric.contract.Context;
-import de.upb.cs.uc4.chaincode.model.OperationData;
-import de.upb.cs.uc4.chaincode.model.TransactionInfo;
 
 import java.util.Arrays;
 import java.util.List;

@@ -16,7 +16,6 @@ public class Dummy {
         return this;
     }
 
-    @ApiModelProperty(value = "")
     public String getContent() {
         return content;
     }

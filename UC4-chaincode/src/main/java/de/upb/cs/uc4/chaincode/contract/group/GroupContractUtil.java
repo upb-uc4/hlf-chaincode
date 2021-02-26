@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.model.Group;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -68,7 +69,7 @@ public class GroupContractUtil extends ContractUtil {
 
         List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (valueUnset(enrollmentId)) {
+        if (GeneralHelper.valueUnset(enrollmentId)) {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".enrollmentId"));
         }
 
@@ -78,7 +79,7 @@ public class GroupContractUtil extends ContractUtil {
     public List<InvalidParameter> getParameterErrorsForGroupId(String groupId) {
         List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (valueUnset(groupId)) {
+        if (GeneralHelper.valueUnset(groupId)) {
             invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".groupId"));
         }
 

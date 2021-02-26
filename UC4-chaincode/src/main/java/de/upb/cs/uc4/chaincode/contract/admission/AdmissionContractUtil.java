@@ -3,7 +3,8 @@ package de.upb.cs.uc4.chaincode.contract.admission;
 import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation.ExaminationRegulation;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation.ExaminationRegulationModule;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
 import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
 import de.upb.cs.uc4.chaincode.model.admission.ExamAdmission;
@@ -13,6 +14,8 @@ import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulat
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.exam.Exam;
+import de.upb.cs.uc4.chaincode.model.matriculation.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.matriculation.SubjectMatriculation;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 

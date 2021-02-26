@@ -9,24 +9,23 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.Unprocessabl
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.helper.*;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
-import de.upb.cs.uc4.chaincode.helper.AccessManager;
-import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.model.operation.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
+
+import static de.upb.cs.uc4.chaincode.helper.HyperledgerManager.getEnrollmentIdFromClientId;
 
 abstract public class ContractUtil {
 
@@ -36,7 +35,7 @@ abstract public class ContractUtil {
     protected String identifier = "";
 
     public DetailedError getUnprocessableEntityError(InvalidParameter invalidParam) {
-        return getUnprocessableEntityError(getList(invalidParam));
+        return getUnprocessableEntityError(GeneralHelper.wrapItemByList(invalidParam));
     }
 
     public DetailedError getUnprocessableEntityError(List<InvalidParameter> invalidParams) {
@@ -117,10 +116,11 @@ abstract public class ContractUtil {
                 .reason("Any date must conform to the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z\", e.g. \"2020-12-31T23:59:59.999Z\"");
     }
 
-    public InvalidParameter getInvalidEnumValue(String parameterName, String[] possibleValues) {
+    public <E extends Enum<E>> InvalidParameter getInvalidEnumValue(String parameterName, Class<E> enumClass) {
+        String[] possibleValues = GeneralHelper.possibleStringValues(enumClass);
         return new InvalidParameter()
                 .name(parameterName)
-                .reason("The " + parameterName + " has/have to be one of {" + String.join(", ", possibleValues) + "}");
+                .reason("The " + parameterName + " has/have to be one of {" + String.join(", ", possibleValues)+ "}");
     }
 
     public static GenericError getInternalError() {
@@ -168,25 +168,20 @@ abstract public class ContractUtil {
         String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
         operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
-        if (!OperationContractUtil.covers(requiredApprovals, operationData.getExistingApprovals())){
+        if (!ValidationManager.covers(requiredApprovals, operationData.getExistingApprovals())){
             throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
         }
     }
 
-    public void validateAttributes(Context ctx, List<String> attributes) throws SerializableError {
+    public void validateCurrentUserHasAttributes(Context ctx, List<String> attributes) throws SerializableError {
         for (String attribute : attributes){
-            boolean userIsSysAdmin = ctx.getClientIdentity().assertAttributeValue(attribute, "true");
-            if(!userIsSysAdmin){
+            boolean userHasAttribute = ctx.getClientIdentity().assertAttributeValue(attribute, "true");
+            if(!userHasAttribute){
                 // TODO: better Error?
                 throw new ValidationError(GsonWrapper.toJson(getInsufficientApprovalsError()));
             }
         }
     }
-
-    public String getEnrollmentIdFromClientId(String clientId) {
-        return clientId.substring(9).split(",")[0];
-    }
-
 
     public void finishOperation(
             final ChaincodeStub stub,
@@ -228,40 +223,10 @@ abstract public class ContractUtil {
         return stub.getStateByPartialCompositeKey(key);
     }
 
-    public List<InvalidParameter> getList(InvalidParameter invalidParam) {
-        return new ArrayList<InvalidParameter>() {{
-            add(invalidParam);
-        }};
-    }
-
     public boolean keyExists(ChaincodeStub stub, String key) {
         String result = getStringState(stub, key);
         return result != null && !result.equals("");
     }
-
-    public static String hashAndEncodeBase64url(String all) throws ValidationError {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA-256");
-        } catch (NoSuchAlgorithmException e) {
-            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
-        }
-        byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
-        return new String(Base64.getUrlEncoder().withoutPadding().encode(bytes));
-    }
-
-    public boolean valueUnset(String value) {
-        return valueUnset((Object) value) || value.equals("");
-    }
-
-    public boolean valueUnset(Object value) {
-        return value == null;
-    }
-
-    public <T> boolean valueUnset(List<T> value) {
-        return valueUnset((Object) value) || value.isEmpty();
-    }
-
 
     public <T> T getState(ChaincodeStub stub, String key, Class<T> c) throws LedgerAccessError {
         // read key
@@ -274,7 +239,7 @@ abstract public class ContractUtil {
     private String getJsonState(ChaincodeStub stub, String key) throws LedgerAccessError {
         // read key
         String jsonValue = getStringState(stub, key);
-        if (valueUnset(jsonValue)) {
+        if (GeneralHelper.valueUnset(jsonValue)) {
             throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
 
@@ -293,7 +258,7 @@ abstract public class ContractUtil {
 
     public void delState(ChaincodeStub stub, String key) throws LedgerAccessError {
         String jsonValue = getStringState(stub, key);
-        if (valueUnset(jsonValue)) {
+        if (GeneralHelper.valueUnset(jsonValue)) {
             throw new LedgerStateNotFoundError(GsonWrapper.toJson(getNotFoundError()));
         }
 

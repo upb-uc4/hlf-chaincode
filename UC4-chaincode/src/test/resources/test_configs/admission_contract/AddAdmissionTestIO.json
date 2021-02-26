@@ -833,7 +833,7 @@
       "invalidParams": [
         {
           "name": "admission.type",
-          "reason": "The admission.type has/have to be one of {Written Exam, Oral Exam}"
+          "reason": "The admission.type has/have to be one of {Course, Exam}"
         }
       ]
     }

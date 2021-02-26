@@ -6,6 +6,7 @@ import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
 import de.upb.cs.uc4.chaincode.model.exam.Exam;
+import de.upb.cs.uc4.chaincode.model.exam.ExamType;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -101,7 +102,7 @@ public class ExamContract extends ContractBase {
                 Arrays.asList(GsonWrapper.fromJson(courseIds, String[].class).clone()),
                 Arrays.asList(GsonWrapper.fromJson(lecturerIds, String[].class).clone()),
                 Arrays.asList(GsonWrapper.fromJson(moduleIds, String[].class).clone()),
-                Arrays.asList(GsonWrapper.fromJson(types, String[].class).clone()),
+                Arrays.asList(GsonWrapper.fromJson(types, ExamType[].class).clone()),
                 GsonWrapper.fromJson(admittableAt, Instant.class),
                 GsonWrapper.fromJson(droppableAt, Instant.class));
         return GsonWrapper.toJson(examList);

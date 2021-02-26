@@ -4,7 +4,7 @@ package de.upb.cs.uc4.chaincode;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.model.JsonIOTest;
 import de.upb.cs.uc4.chaincode.model.JsonIOTestSetup;
-import de.upb.cs.uc4.chaincode.model.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.matriculation.MatriculationData;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
@@ -68,6 +68,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             MatriculationData ledgerMatriculationData = GsonWrapper.fromJson(
                     contract.getMatriculationData(ctx, input.get(0)), MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
+            assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };
     }
 
@@ -121,6 +122,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             MatriculationData ledgerMatriculationData =
                     cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
+            assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };
 
     }
@@ -155,6 +157,7 @@ public final class MatriculationDataContractTest extends TestCreationBase {
             MatriculationData ledgerMatriculationData =
                     cUtil.getState(ctx.getStub(), compareMatriculationData.getEnrollmentId(), MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
+            assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };
     }
 

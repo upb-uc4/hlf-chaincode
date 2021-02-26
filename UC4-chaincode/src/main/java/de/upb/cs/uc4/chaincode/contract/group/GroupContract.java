@@ -63,7 +63,7 @@ public class GroupContract extends ContractBase {
 
         try {
             
-            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
+            cUtil.validateCurrentUserHasAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
             cUtil.validateApprovals(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
@@ -107,7 +107,7 @@ public class GroupContract extends ContractBase {
 
         try {
             
-            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
+            cUtil.validateCurrentUserHasAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
             cUtil.validateApprovals(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
@@ -142,7 +142,7 @@ public class GroupContract extends ContractBase {
         ChaincodeStub stub = ctx.getStub();
         try {
             
-            cUtil.validateAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
+            cUtil.validateCurrentUserHasAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
             cUtil.validateApprovals(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();

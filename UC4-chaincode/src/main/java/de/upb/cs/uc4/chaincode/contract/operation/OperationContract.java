@@ -3,11 +3,13 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
-import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
@@ -84,7 +86,6 @@ public class OperationContract extends ContractBase {
     }
 
     @Transaction
-
     public String rejectOperation(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
         try {
@@ -98,7 +99,7 @@ public class OperationContract extends ContractBase {
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        if(cUtil.valueUnset(rejectMessage)){
+        if(GeneralHelper.valueUnset(rejectMessage)){
             return  GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getEmptyInvalidParameter("rejectMessage")));
         }
         operationData.state(OperationDataState.REJECTED).reason(rejectMessage);

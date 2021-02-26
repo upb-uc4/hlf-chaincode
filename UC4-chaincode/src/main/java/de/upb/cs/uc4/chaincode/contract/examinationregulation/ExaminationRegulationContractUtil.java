@@ -3,8 +3,9 @@ package de.upb.cs.uc4.chaincode.contract.examinationregulation;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
-import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
-import de.upb.cs.uc4.chaincode.model.ExaminationRegulationModule;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation.ExaminationRegulation;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation.ExaminationRegulationModule;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
@@ -64,7 +65,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
     public List<InvalidParameter> getErrorForExaminationRegulation(ExaminationRegulation examinationRegulation, Set<ExaminationRegulationModule> validModules) {
         List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (valueUnset(examinationRegulation.getName())) {
+        if (GeneralHelper.valueUnset(examinationRegulation.getName())) {
             invalidParams.add(getEmptyInvalidParameter(this.prefix + ".name"));
         }
 
@@ -78,7 +79,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
     public List<InvalidParameter> getErrorForModuleList(List<ExaminationRegulationModule> modules, String errorName, Set<ExaminationRegulationModule> validModules) {
         List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (valueUnset(modules)) {
+        if (GeneralHelper.valueUnset(modules)) {
             invalidParams.add(getEmptyInvalidParameter(errorName));
         } else {
             List<String> existingModules = new ArrayList<>();
@@ -87,7 +88,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
 
                 ExaminationRegulationModule module = modules.get(moduleIndex);
 
-                if (valueUnset(module.getId())) {
+                if (GeneralHelper.valueUnset(module.getId())) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + ".modules[" + moduleIndex + "].id"));
                 } else {
                     if (existingModules.contains(module.getId())) {
@@ -95,7 +96,7 @@ public class ExaminationRegulationContractUtil extends ContractUtil {
                     } else
                         existingModules.add(module.getId());
                 }
-                if (valueUnset(module.getName())) {
+                if (GeneralHelper.valueUnset(module.getName())) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + ".modules[" + moduleIndex + "].name"));
                 }
                 for (ExaminationRegulationModule validModule : validModules) {

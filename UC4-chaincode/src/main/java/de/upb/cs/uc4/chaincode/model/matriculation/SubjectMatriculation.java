@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.matriculation;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,7 +24,6 @@ public class SubjectMatriculation {
      *
      * @return fieldOfStudy
      **/
-    @ApiModelProperty(value = "")
     public String getFieldOfStudy() {
         return fieldOfStudy;
     }
@@ -51,7 +50,6 @@ public class SubjectMatriculation {
      *
      * @return semesters
      **/
-    @ApiModelProperty(value = "")
     public List<String> getSemesters() {
         return semesters;
     }
@@ -75,30 +73,12 @@ public class SubjectMatriculation {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(fieldOfStudy, semesters);
-    }
-
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class SubjectImmatriculationInterval {\n");
-        sb.append("    fieldOfStudy: ").append(toIndentedString(fieldOfStudy)).append("\n");
-        sb.append("    semesters: ").append(toIndentedString(semesters)).append("\n");
+        sb.append("    fieldOfStudy: ").append(fieldOfStudy).append("\n");
+        sb.append("    semesters: ").append(semesters).append("\n");
         sb.append("}");
         return sb.toString();
     }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
 }

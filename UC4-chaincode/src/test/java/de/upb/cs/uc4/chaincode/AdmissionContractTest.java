@@ -5,11 +5,13 @@ import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
+import de.upb.cs.uc4.chaincode.model.admission.ExamAdmission;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -122,6 +124,12 @@ public final class AdmissionContractTest extends TestCreationBase {
             Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameGetCourseAdmissions, setup, input, ids);
 
             String getResult = contract.getCourseAdmissions(ctx, input.get(0), input.get(1), input.get(2));
+
+            // compare
+            List<CourseAdmission> courseAdmissions = Arrays.asList(GsonWrapper.fromJson(getResult, CourseAdmission[].class).clone());
+            List<CourseAdmission> compareAdmissions = Arrays.asList(GsonWrapper.fromJson(compare.get(0), CourseAdmission[].class).clone());
+            assertThat(courseAdmissions).isEqualTo(compareAdmissions);
+            assertThat(courseAdmissions.toString()).isEqualTo(compareAdmissions.toString());
             assertThat(getResult).isEqualTo(compare.get(0));
         };
     }
@@ -136,6 +144,12 @@ public final class AdmissionContractTest extends TestCreationBase {
             Context ctx = TestUtil.buildContext(AdmissionContract.contractName, AdmissionContract.transactionNameGetExamAdmissions, setup, input, ids);
 
             String getResult = contract.getExamAdmissions(ctx, input.get(0), input.get(1), input.get(2));
+
+            // compare
+            List<ExamAdmission> examAdmissions = Arrays.asList(GsonWrapper.fromJson(getResult, ExamAdmission[].class).clone());
+            List<ExamAdmission> compareAdmissions = Arrays.asList(GsonWrapper.fromJson(compare.get(0), ExamAdmission[].class).clone());
+            assertThat(examAdmissions).isEqualTo(compareAdmissions);
+            assertThat(examAdmissions.toString()).isEqualTo(compareAdmissions.toString());
             assertThat(getResult).isEqualTo(compare.get(0));
         };
     }
