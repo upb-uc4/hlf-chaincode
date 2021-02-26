@@ -1,3 +1,13 @@
+# [v0.18.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.18.1...v0.18.2) (2021-02-26)
+
+## Bugfix
+- wrong info in enum_error for Admissions (should be Course/Exam, was OralExam/WrittenExam)
+
+## Refactor
+- improve testCoverage --> 80%
+- code clean up
+- outsource methods to static helpers
+
 # [v0.18.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.17.0...v0.18.1) (2021-02-23)
 
 ## Feature
