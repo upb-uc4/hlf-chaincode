@@ -115,8 +115,7 @@ public class OperationContractUtil extends ContractUtil {
         String clientId = getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         initiator = valueUnset(initiator) ? clientId : initiator;
 
-        String key;
-        key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
+        String key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
         OperationData operationData;
         try {
             operationData = getState(ctx.getStub(), key, OperationData.class);
