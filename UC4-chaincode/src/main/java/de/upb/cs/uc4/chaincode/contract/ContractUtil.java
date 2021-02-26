@@ -87,7 +87,7 @@ abstract public class ContractUtil {
 
     public GenericError getOperationNotPendingError(){
         return new GenericError()
-                .type("HLParticipationImpossible")
+                .type("HLExecutionImpossible")
                 .title("The operation is not in pending state");
     }
 

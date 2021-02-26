@@ -686,7 +686,7 @@
     ],
     "compare": [
       {
-        "type": "HLParticipationImpossible",
+        "type": "HLExecutionImpossible",
         "title": "The operation is not in pending state"
       }
     ]
