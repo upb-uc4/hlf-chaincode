@@ -1,8 +1,9 @@
 # hyperledger_chaincode
-
 ## Repository to provide designated chaincode for UC4 project
 
-Find our API - documentation for the different contracts here: https://github.com/upb-uc4/api/tree/develop/hlf/chaincode
+
+Find our API - documentation for the different contracts here: https://github.com/upb-uc4/api/tree/develop/hlf/chaincode \
+The chaincode repository requires java jdk1.8, make sure you configure your IDE with this version
 
 ## How to install our chaincode
 
@@ -105,8 +106,7 @@ echo "##########################################################################
 ```
 
 ## How to run local chaincode tests 
-clone the chaincode repository: hlf-chaincode \
-the chaincode repository requires java jdk1.8, make sure you configure your IDE with this version
+clone the chaincode repository: hlf-chaincode
 ```
 open folder: hlf-chaincode/UC4-chaincode
 open this project in this folder with an IDE for example IntelliJ IDEA
