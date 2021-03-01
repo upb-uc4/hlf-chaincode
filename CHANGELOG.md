@@ -1,3 +1,9 @@
+# [v0.19.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.18.2...v0.19.0) (2021-03-01)
+
+## Refactor
+- [errors related to operation lifecycle](https://github.com/upb-uc4/api/pull/115)
+- update readme (state java version earlier)
+
 # [v0.18.2](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.18.1...v0.18.2) (2021-02-26)
 
 ## Bugfix
