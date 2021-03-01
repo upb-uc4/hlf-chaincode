@@ -88,7 +88,7 @@ public class ExamResultContractUtil extends ContractUtil {
     }
 
     public List<InvalidParameter> getParameterErrorsForExamId(Context ctx, String examId, int index) {
-        String moduleId = null;
+        String moduleId;
         try {
             moduleId = getModuleFromKey(examId);
         } catch (ArrayIndexOutOfBoundsException e) {

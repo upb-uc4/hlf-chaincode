@@ -2,22 +2,21 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
-import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParticipationError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
+import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.*;
 import de.upb.cs.uc4.chaincode.model.operation.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.operation.OperationData;
 import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import de.upb.cs.uc4.chaincode.model.operation.TransactionInfo;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
-import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,36 +30,19 @@ public class OperationContractUtil extends ContractUtil {
         identifier = "operationId";
     }
 
-    public OperationData approveOperation(Context ctx, OperationData operationData) throws SerializableError {
+    public void approveOperation(Context ctx, OperationData operationData) throws MissingTransactionError, LedgerAccessError, ParticipationError {
+
+        checkMayParticipate(ctx, operationData);
+
         String clientId = HyperledgerManager.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
         List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-
-        TransactionInfo info = operationData.getTransactionInfo();
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(ctx, info.getContractName(), info.getTransactionName(), info.getParameters());
-
-        if (!requiredApprovals.getUsers().contains(clientId) && !requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains)) {
-            throw new ParticipationError(GsonWrapper.toJson(getApprovalDeniedError()));
-        }
-        ApprovalList existingApprovals = operationData.getExistingApprovals();
-        existingApprovals.addUsersItem(clientId);
-        existingApprovals.addGroupsItems(clientGroups);
-
+        ApprovalList existingApprovals = operationData.getExistingApprovals().addUsersItem(clientId).addGroupsItems(clientGroups);
+        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(ctx, operationData);
         ApprovalList missingApprovals = ValidationManager.getMissingApprovalList(requiredApprovals, existingApprovals);
-        return operationData.lastModifiedTimestamp(ctx.getStub().getTxTimestamp())
+
+        operationData.lastModifiedTimestamp(ctx.getStub().getTxTimestamp())
                 .existingApprovals(existingApprovals)
                 .missingApprovals(missingApprovals);
-    }
-
-    public boolean mayParticipateInOperation(Context ctx, OperationData operationData) throws MissingTransactionError, LedgerAccessError {
-        String clientId = HyperledgerManager.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        List<String> clientGroups = new GroupContractUtil().getGroupNamesForUser(ctx.getStub(), clientId);
-
-        TransactionInfo info = operationData.getTransactionInfo();
-        ApprovalList requiredApprovals = AccessManager.getRequiredApprovals(ctx, info.getContractName(), info.getTransactionName(), info.getParameters());
-        if (requiredApprovals.getUsers().contains(clientId) || requiredApprovals.getGroups().stream().anyMatch(clientGroups::contains)) {
-            return true;
-        }
-        return false;
     }
 
     public List<OperationData> getOperations(
@@ -94,7 +76,7 @@ public class OperationContractUtil extends ContractUtil {
                 .collect(Collectors.toList());
     }
 
-    public static String getDraftKey(final String contractName, final String transactionName, final String params) throws NoSuchAlgorithmException {
+    public static String getDraftKey(final String contractName, final String transactionName, final String params) throws ValidationError {
         String all = contractName + HASH_DELIMITER + transactionName + HASH_DELIMITER + params.replace(" ", "");
         return GeneralHelper.hashAndEncodeBase64url(all);
     }
@@ -119,31 +101,10 @@ public class OperationContractUtil extends ContractUtil {
         return getUnprocessableEntityError(getEmptyInvalidParameter("transactionName"));
     }
 
-    public GenericError getApprovalDeniedError() {
-        return new GenericError()
-                .type("HLApprovalDenied")
-                .title("You are not allowed to approve the given operation");
-    }
+    public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws ValidationError {
+        String clientId = HyperledgerManager.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
+        initiator = GeneralHelper.valueUnset(initiator) ? clientId : initiator;
 
-    public GenericError getRejectionDeniedError() {
-        return new GenericError()
-                .type("HLRejectionDenied")
-                .title("You are not allowed to reject the given operation");
-    }
-
-    public GenericError getApprovalImpossibleError(){
-        return new GenericError()
-                .type("HLApprovalImpossible")
-                .title("The operation is not in pending state");
-    }
-
-    public GenericError getRejectionImpossibleError(){
-        return new GenericError()
-                .type("HLRejectionImpossible")
-                .title("The operation is not in pending state");
-    }
-
-    public OperationData getOrInitializeOperationData(Context ctx, String initiator, String contractName, String transactionName, String params) throws NoSuchAlgorithmException {
         String key = OperationContractUtil.getDraftKey(contractName, transactionName, params);
         OperationData operationData;
         try {

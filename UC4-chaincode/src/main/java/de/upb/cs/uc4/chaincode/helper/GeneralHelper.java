@@ -1,6 +1,6 @@
 package de.upb.cs.uc4.chaincode.helper;
 
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+
+import static de.upb.cs.uc4.chaincode.contract.ContractUtil.getInternalError;
 
 /**
  *      Helper for everything
@@ -53,8 +55,13 @@ public class GeneralHelper {
         }};
     }
 
-    public static String hashAndEncodeBase64url(String all) throws NoSuchAlgorithmException {
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+    public static String hashAndEncodeBase64url(String all) throws ValidationError {
+        MessageDigest digest;
+        try {
+            digest = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            throw new ValidationError(GsonWrapper.toJson(getInternalError()));
+        }
         byte[] bytes = digest.digest(all.getBytes(StandardCharsets.UTF_8));
         return new String(Base64.getUrlEncoder().withoutPadding().encode(bytes));
     }

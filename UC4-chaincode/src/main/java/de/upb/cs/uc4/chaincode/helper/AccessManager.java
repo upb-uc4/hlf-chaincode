@@ -18,6 +18,8 @@ import de.upb.cs.uc4.chaincode.model.exam.Exam;
 import de.upb.cs.uc4.chaincode.model.matriculation.MatriculationData;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
 import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.TransactionInfo;
 import org.hyperledger.fabric.contract.Context;
 
 import java.util.Arrays;
@@ -30,6 +32,11 @@ public class AccessManager {
     public static final String SYSTEM = "System";
 
     public static final String HLF_ATTRIBUTE_SYSADMIN = "sysAdmin";
+
+    public static ApprovalList getRequiredApprovals(Context ctx, OperationData operationData) throws MissingTransactionError, LedgerAccessError {
+        TransactionInfo info = operationData.getTransactionInfo();
+        return AccessManager.getRequiredApprovals(ctx, info.getContractName(), info.getTransactionName(), info.getParameters());
+    }
 
     public static ApprovalList getRequiredApprovals(Context ctx, String contractName, String transactionName, String params) throws MissingTransactionError, LedgerAccessError {
         List<String> paramList = Arrays.asList(GsonWrapper.fromJson(params, String[].class).clone());

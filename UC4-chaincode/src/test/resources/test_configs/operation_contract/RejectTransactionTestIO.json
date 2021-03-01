@@ -234,9 +234,8 @@
       "The transaction was invalid."
     ],
     "compare": [
-      {
-        "type": "HLRejectionDenied",
-        "title": "You are not allowed to reject the given operation"
+      { "type": "HLAccessDenied",
+        "title": "You are not allowed to execute in the given transaction"
       }
     ]
   },

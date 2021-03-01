@@ -9,8 +9,6 @@ import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.util.ArrayList;
-import java.util.Collections;
 
 @Contract(
         name = CertificateContract.contractName

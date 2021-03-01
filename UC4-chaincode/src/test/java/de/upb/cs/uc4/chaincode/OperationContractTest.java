@@ -3,6 +3,7 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
@@ -156,10 +157,9 @@ public final class OperationContractTest extends TestCreationBase {
                 Context ctx = TestUtil.mockContext(stub, id);
                 operationJson = contract.initiateOperation(ctx, "", MatriculationDataContract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
             }
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.mockContext(stub, ids.get(0));
             MatriculationDataContract matriculationContract = new MatriculationDataContract();
             stub.setFunction(MatriculationDataContract.contractName + ":addMatriculationData");
-            matriculationContract.addMatriculationData(ctx, input.get(0));
             matriculationContract.addMatriculationData(ctx, input.get(0));
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
             stub.setFunction("UC4.OperationData:approveTransaction");
@@ -187,5 +187,6 @@ public final class OperationContractTest extends TestCreationBase {
 
     private String params(List<String> input) {
         return GsonWrapper.toJson(input.subList(3, input.size()));
+
     }
 }

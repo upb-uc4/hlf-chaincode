@@ -10,8 +10,6 @@ import com.google.gson.*;
 
 public class InstantAdapter implements JsonDeserializer<Instant>, JsonSerializer<Instant> {
 
-    private static final TimeZone tz = TimeZone.getTimeZone("UTC");
-
     @Override
     public Instant deserialize(JsonElement element, Type arg1, JsonDeserializationContext arg2) throws JsonParseException {
         String dateString = element.getAsString();

@@ -67,23 +67,23 @@ public class GroupContractUtil extends ContractUtil {
      */
     public List<InvalidParameter> getParameterErrorsForEnrollmentId(String enrollmentId) {
 
-        List<InvalidParameter> invalidparams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (GeneralHelper.valueUnset(enrollmentId)) {
-            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".enrollmentId"));
+            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".enrollmentId"));
         }
 
-        return invalidparams;
+        return invalidParams;
     }
 
     public List<InvalidParameter> getParameterErrorsForGroupId(String groupId) {
-        List<InvalidParameter> invalidparams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
         if (GeneralHelper.valueUnset(groupId)) {
-            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".groupId"));
+            invalidParams.add(getEmptyInvalidParameter(errorPrefix + ".groupId"));
         }
 
-        return invalidparams;
+        return invalidParams;
     }
 
     public List<Group> getAllGroups(ChaincodeStub stub) {
