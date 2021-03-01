@@ -1,20 +1,21 @@
 package de.upb.cs.uc4.chaincode.contract.operation;
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
-import java.lang.reflect.Type;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Contract(
@@ -44,24 +45,19 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
 
-        String clientId = cUtil.getEnrollmentIdFromClientId(ctx.getClientIdentity().getId());
-        initiator = cUtil.valueUnset(initiator) ? clientId : initiator;
-
         OperationData operationData;
         try {
             operationData = cUtil.getOrInitializeOperationData(ctx, initiator, contractName, transactionName, params);
-        } catch (NoSuchAlgorithmException e) {
-            return GsonWrapper.toJson(cUtil.getInternalError());
+        } catch (ValidationError e) {
+            return e.getJsonError();
         }
 
-        // approve
         try {
-            operationData = cUtil.approveOperation(ctx, operationData);
+            cUtil.approveOperation(ctx, operationData);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
@@ -80,14 +76,12 @@ public class OperationContract extends ContractBase {
             return e.getJsonError();
         }
 
-        // approve
         try {
-            operationData = cUtil.approveOperation(ctx, operationData);
+            cUtil.approveOperation(ctx, operationData);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationData.getOperationId(), GsonWrapper.toJson(operationData));
     }
 
@@ -96,17 +90,19 @@ public class OperationContract extends ContractBase {
         OperationData operationData;
         try {
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
-            if(!cUtil.mayParticipateInOperation(ctx, operationData)) {
-                return GsonWrapper.toJson(cUtil.getRejectionDeniedError());
-            }
+        } catch (LedgerAccessError e) {
+            return e.getJsonError();
+        }
+
+        try {
+            cUtil.checkMayParticipate(ctx, operationData);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
-        // TODO check if operation is pending
-        // reject
+        if(GeneralHelper.valueUnset(rejectMessage)){
+            return  GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getEmptyInvalidParameter("rejectMessage")));
+        }
         operationData.state(OperationDataState.REJECTED).reason(rejectMessage);
-
-        // store
         return cUtil.putAndGetStringState(ctx.getStub(), operationId, GsonWrapper.toJson(operationData));
     }
 
@@ -119,23 +115,22 @@ public class OperationContract extends ContractBase {
             final String initiatorEnrollmentId,
             final String involvedEnrollmentId,
             final String states) {
-        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
 
-        List<String> operationIdList = new ArrayList<>();
-        if(!cUtil.valueUnset(operationIds)) {
-            try {
-                operationIdList = GsonWrapper.fromJson(operationIds, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("operationIds")))).getJsonError();
-            }
+        List<InvalidParameter> invalidParams = new ArrayList<>();
+        List<String> operationIdList = null;
+        try {
+            operationIdList = Arrays.asList(GsonWrapper.fromJson(operationIds, String[].class).clone());
+        } catch (Exception e) {
+            invalidParams.add(cUtil.getUnparsableParam("operationIds"));
         }
-        List<String> stateList = new ArrayList<>();
-        if(!cUtil.valueUnset(states)) {
-            try {
-                stateList = GsonWrapper.fromJson(states, listType);
-            } catch (Exception e) {
-                return  new ParameterError(GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableParam("states")))).getJsonError();
-            }
+        List<String> stateList = null;
+        try {
+            stateList = Arrays.asList(GsonWrapper.fromJson(states, String[].class).clone());
+        } catch (Exception e) {
+            invalidParams.add(cUtil.getUnparsableParam("states"));
+        }
+        if (!invalidParams.isEmpty()) {
+            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
         }
 
         List<OperationData> operations = cUtil.getOperations(
@@ -146,6 +141,6 @@ public class OperationContract extends ContractBase {
                         initiatorEnrollmentId,
                         involvedEnrollmentId,
                         stateList);
-        return GsonWrapper.toJson(operations);
+        return GsonWrapper.toJson(operations.toArray());
     }
 }

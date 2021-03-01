@@ -1,6 +1,6 @@
 [
   {
-    "name": "addNonExistingAdmission",
+    "name": "addNonExistingCourseAdmission",
     "type": "addAdmission_SUCCESS",
     "ids": [
       "User1",
@@ -54,16 +54,107 @@
         "enrollmentId": "0000001",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T23:59:59"
+        "timestamp": "",
+        "type": "Course"
       }
     ],
     "compare": [
       {
-        "admissionId": "0000001:C.1",
-        "enrollmentId": "0000001",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T23:59:59"
+        "admissionId": "0000001:C.1",
+        "enrollmentId": "0000001",
+        "timestamp": "1970-01-01T00:00:00Z",
+        "type": "Course"
+      }
+    ]
+  },
+  {
+    "name": "addNonExistingExamAdmission",
+    "type": "addAdmission_SUCCESS",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "admissionContract": [
+        "0000001:C.1",
+        {
+          "admissionId": "0000001:C.1",
+          "enrollmentId": "0000001",
+          "courseId": "C.1",
+          "moduleId": "M.1",
+          "timestamp": "2020-12-31T23:59:59.000Z",
+          "type": "Course"
+        }
+      ],
+      "examContract": [
+        "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+        {
+          "examId": "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+          "courseId": "C.1",
+          "lecturerEnrollmentId": "lecturer",
+          "moduleId": "M.1",
+          "type": "Written Exam",
+          "date": "2022-02-12T10:00:00Z",
+          "ects": 3,
+          "admittableUntil": "2022-01-30T23:59:59.000Z",
+          "droppableUntil": "2022-01-31T23:59:59.000Z"
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id":"M.1",
+              "name": "Module1"
+            }
+          ]
+        }
+      ],
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000001",
+        "examId": "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+        "timestamp": "2021-01-30T23:59:59.000Z",
+        "type": "Exam"
+      }
+    ],
+    "compare": [
+      {
+        "examId": "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+        "admissionId": "0000001:ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+        "enrollmentId": "0000001",
+        "timestamp": "1970-01-01T00:00:00Z",
+        "type": "Exam"
       }
     ]
   },
@@ -169,7 +260,8 @@
         "enrollmentId": "",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T23:59:59"
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -183,11 +275,60 @@
           },
           {
             "name": "admission.enrollmentId",
-            "reason":"The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+            "reason":"The student is not matriculated in any examinationRegulation"
           },
           {
             "name": "admission.moduleId",
             "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "addNonExistingExamAdmission_EmptyExamId",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "examId": "",
+        "admissionId": "",
+        "enrollmentId": "0000001",
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Exam"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.examId",
+            "reason": "The given parameter must not be empty"
+          },
+          {
+            "name":"admission.examId",
+            "reason":"The exam you are trying to admit for does not exist."
           }
         ]
       }
@@ -239,7 +380,8 @@
         "enrollmentId": "0000003",
         "courseId": "",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T23:59:59"
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -301,7 +443,8 @@
         "enrollmentId": "0000004",
         "courseId": "C.1",
         "moduleId": "",
-        "timestamp": "2020-12-31T23:59:59"
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -314,136 +457,8 @@
             "reason": "The given parameter must not be empty"
           },
           {
-            "name": "admission.enrollmentId",
-            "reason":"The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
-          },
-          {
             "name": "admission.moduleId",
             "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "addNonExistingAdmission_EmptyParam_Timestamp",
-    "type": "addAdmission_FAILURE",
-    "ids": [
-      "User1",
-      "0000005"
-    ],
-    "setup": {
-      "examinationRegulationContract": [
-        "Computer Science",
-        {
-          "name": "Computer Science",
-          "active": true,
-          "modules": [
-            {
-              "id": "M.1",
-              "name": "Math 1"
-            },
-            {
-              "id": "M.2",
-              "name": "Math 2"
-            }
-          ]
-        }
-      ],
-      "matriculationDataContract": [
-        "0000005",
-        {
-          "enrollmentId": "0000005",
-          "matriculationStatus": [
-            {
-              "fieldOfStudy": "Computer Science",
-              "semesters": [
-                "WS2018/19"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "input": [
-      {
-        "admissionId": "",
-        "enrollmentId": "0000005",
-        "courseId": "C.1",
-        "moduleId": "M.1",
-        "timestamp": ""
-      }
-    ],
-    "compare": [
-      {
-        "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format",
-        "invalidParams": [
-          {
-            "name": "admission.timestamp",
-            "reason": "Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "name": "addNonExistingAdmission_WrongFormatParam_Timestamp",
-    "type": "addAdmission_FAILURE",
-    "ids": [
-      "User1",
-      "0000006"
-    ],
-    "setup": {
-      "examinationRegulationContract": [
-        "Computer Science",
-        {
-          "name": "Computer Science",
-          "active": true,
-          "modules": [
-            {
-              "id": "M.1",
-              "name": "Math 1"
-            },
-            {
-              "id": "M.2",
-              "name": "Math 2"
-            }
-          ]
-        }
-      ],
-      "matriculationDataContract": [
-        "0000006",
-        {
-          "enrollmentId": "0000006",
-          "matriculationStatus": [
-            {
-              "fieldOfStudy": "Computer Science",
-              "semesters": [
-                "WS2018/19"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    "input": [
-      {
-        "admissionId": "",
-        "enrollmentId": "0000006",
-        "courseId": "C.1",
-        "moduleId": "M.1",
-        "timestamp": "2020-12-31-23:59:59"
-      }
-    ],
-    "compare": [
-      {
-        "type": "HLUnprocessableEntity",
-        "title": "The following parameters do not conform to the specified format",
-        "invalidParams": [
-          {
-            "name": "admission.timestamp",
-            "reason": "Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\""
           }
         ]
       }
@@ -495,7 +510,8 @@
         "enrollmentId": "0000007",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T12:59:59"
+        "timestamp": "2020-12-31T12:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -505,7 +521,7 @@
         "invalidParams": [
           {
             "name": "admission.enrollmentId",
-            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
+            "reason": "The student is not matriculated in any examinationRegulation"
           },
           {
             "name": "admission.moduleId",
@@ -561,7 +577,8 @@
         "enrollmentId": "0000009",
         "courseId": "C.1",
         "moduleId": "M.3",
-        "timestamp": "2020-12-31T12:59:59"
+        "timestamp": "2020-12-31T12:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -569,10 +586,6 @@
         "type": "HLUnprocessableEntity",
         "title": "The following parameters do not conform to the specified format",
         "invalidParams": [
-          {
-            "name": "admission.enrollmentId",
-            "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
-          },
           {
             "name": "admission.moduleId",
             "reason": "The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in"
@@ -627,7 +640,8 @@
           "enrollmentId": "0000008",
           "courseId": "C.1",
           "moduleId": "M.1",
-          "timestamp": "2020-12-31T12:59:59"
+          "timestamp": "2020-12-31T12:59:59",
+          "type": "Course"
         }
       ]
     },
@@ -637,7 +651,8 @@
         "enrollmentId": "0000008",
         "courseId": "C.1",
         "moduleId": "M.1",
-        "timestamp": "2020-12-31T12:59:59"
+        "timestamp": "2020-12-31T12:59:59",
+        "type": "Course"
       }
     ],
     "compare": [
@@ -646,5 +661,182 @@
         "title": "There is already an Admission for the given admissionId"
       }
     ]
-  }
+  },
+  {
+    "name": "addInvalidEnrollmentIdExamAdmission",
+    "type": "addAdmission_FAILURE",
+    "ids": [
+      "User1",
+      "0000001"
+    ],
+    "setup": {
+      "groupContract": [
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User1"
+          ]
+        }
+      ],
+      "examContract": [
+        "ExampleCourse:M.1:WrittenExam:2022-02-12T10:00:00Z",
+        {
+          "examId": "ExampleCourse:M.1:WrittenExam:2022-02-12T10:00:00Z",
+          "courseId": "ExampleCourse",
+          "lecturerEnrollmentId": "lecturer",
+          "moduleId": "M.1",
+          "type": "Written Exam",
+          "date": "2022-02-12T10:00:00Z",
+          "ects": 3,
+          "admittableUntil": "2022-01-30T23:59:59.000Z",
+          "droppableUntil": "2022-01-31T23:59:59.000Z"
+        }
+      ],
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": [
+            {
+              "id":"M.1",
+              "name": "Module1"
+            }
+          ]
+        }
+      ],
+      "matriculationDataContract": [
+        "0000001",
+        {
+          "enrollmentId": "0000001",
+          "matriculationStatus": [
+            {
+              "fieldOfStudy": "Computer Science",
+              "semesters": [
+                "WS2018/19"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "input": [
+      {
+        "admissionId": "",
+        "enrollmentId": "0000001",
+        "examId": "ExampleCourse:M.1:WrittenExam:2022-02-12T10:00:00Z",
+        "timestamp": "2020-12-31T23:59:59",
+        "type": "Exam"
+      }
+    ],
+    "compare": [
+      {
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "admission.enrollmentId",
+            "reason": "The student is not admitted in the course of the exam."
+          },
+          {
+            "name": "admission.examId",
+            "reason": "The student is not admitted in the course of the exam."
+          }
+        ]
+      }
+    ]
+  },
+  {
+  "name": "addNonExistingAdmission_InvalidType",
+  "type": "addAdmission_FAILURE",
+  "ids": [
+    "User1",
+    "0000001"
+  ],
+  "setup": {
+    "admissionContract": [
+      "0000001:C.1",
+      {
+        "admissionId": "0000001:C.1",
+        "enrollmentId": "0000001",
+        "courseId": "C.1",
+        "moduleId": "M.1",
+        "timestamp": "2020-12-31T23:59:59.000Z",
+        "type": "Course"
+      }
+    ],
+    "examContract": [
+      "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+      {
+        "examId": "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+        "courseId": "C.1",
+        "lecturerEnrollmentId": "lecturer",
+        "moduleId": "M.1",
+        "type": "Written Exam",
+        "date": "2022-02-12T10:00:00Z",
+        "ects": 3,
+        "admittableUntil": "2022-01-30T23:59:59.000Z",
+        "droppableUntil": "2022-01-31T23:59:59.000Z"
+      }
+    ],
+    "examinationRegulationContract": [
+      "Computer Science",
+      {
+        "name": "Computer Science",
+        "active": true,
+        "modules": [
+          {
+            "id":"M.1",
+            "name": "Module1"
+          }
+        ]
+      }
+    ],
+    "groupContract": [
+      "System",
+      {
+        "groupId": "System",
+        "userList": [
+          "User1"
+        ]
+      }
+    ],
+    "matriculationDataContract": [
+      "0000001",
+      {
+        "enrollmentId": "0000001",
+        "matriculationStatus": [
+          {
+            "fieldOfStudy": "Computer Science",
+            "semesters": [
+              "WS2018/19"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "input": [
+    {
+      "admissionId": "",
+      "enrollmentId": "0000001",
+      "examId": "ExampleCourse:M.1:Written Exam:2022-02-12T10:00:00Z",
+      "timestamp": "2021-01-30T23:59:59.000Z",
+      "type": "Garbage"
+    }
+  ],
+  "compare": [
+    {
+      "type": "HLUnprocessableEntity",
+      "title": "The following parameters do not conform to the specified format",
+      "invalidParams": [
+        {
+          "name": "admission.type",
+          "reason": "The admission.type has/have to be one of {Course, Exam}"
+        }
+      ]
+    }
+  ]
+}
 ]

@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.matriculation;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
@@ -24,7 +24,6 @@ public class MatriculationData {
      *
      * @return matriculationId
      **/
-    @ApiModelProperty(value = "")
     public String getEnrollmentId() {
         return enrollmentId;
     }
@@ -51,7 +50,6 @@ public class MatriculationData {
      *
      * @return matriculationStatus
      **/
-    @ApiModelProperty(value = "")
     public List<SubjectMatriculation> getMatriculationStatus() {
         return matriculationStatus;
     }
@@ -75,33 +73,16 @@ public class MatriculationData {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(enrollmentId, matriculationStatus);
-    }
-
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class MatriculationData {\n");
-        sb.append("    enrollmentId: ").append(toIndentedString(enrollmentId)).append("\n");
-        sb.append("    matriculationStatus: ").append(toIndentedString(matriculationStatus)).append("\n");
+        sb.append("    enrollmentId: ").append(enrollmentId).append("\n");
+        sb.append("    matriculationStatus: ").append(matriculationStatus).append("\n");
         sb.append("}");
         return sb.toString();
     }
 
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-    public void addAbsent(ArrayList<SubjectMatriculation> matriculationStatus) {
+    public void addAbsent(List<SubjectMatriculation> matriculationStatus) {
         for (SubjectMatriculation newItem : matriculationStatus) {
             boolean exists = false;
             for (SubjectMatriculation item : this.getMatriculationStatus()) {

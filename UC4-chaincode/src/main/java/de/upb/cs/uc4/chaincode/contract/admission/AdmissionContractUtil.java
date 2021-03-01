@@ -1,16 +1,25 @@
 package de.upb.cs.uc4.chaincode.contract.admission;
 
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
-import de.upb.cs.uc4.chaincode.model.*;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation.ExaminationRegulation;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation.ExaminationRegulationModule;
+import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
+import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
+import de.upb.cs.uc4.chaincode.model.admission.ExamAdmission;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.model.exam.Exam;
+import de.upb.cs.uc4.chaincode.model.matriculation.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.matriculation.SubjectMatriculation;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,10 +32,8 @@ public class AdmissionContractUtil extends ContractUtil {
         identifier = "admissionId";
     }
 
-    public InvalidParameter getInvalidTimestampParam() {
-        return new InvalidParameter()
-                .name(errorPrefix + ".timestamp")
-                .reason("Timestamp must be the following format \"(\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\", e.g. \"2020-12-31T23:59:59\"");
+    public String getErrorPrefix() {
+        return errorPrefix;
     }
 
     public InvalidParameter getInvalidModuleAvailable(String parameterName) {
@@ -35,46 +42,99 @@ public class AdmissionContractUtil extends ContractUtil {
                 .reason("The student is not matriculated in any examinationRegulation containing the module he is trying to enroll in");
     }
 
-    public List<Admission> getAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
-        return this.getAllStates(stub, Admission.class).stream()
+    public InvalidParameter getStudentNotMatriculatedParam(String parameterName) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The student is not matriculated in any examinationRegulation");
+    }
+
+    public InvalidParameter getAdmissionAlreadyExistsParam(String parameterName) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The student is already admitted for the exam.");
+    }
+
+    public InvalidParameter getCourseAdmissionNotExistsParam(String parameterName) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The student is not admitted in the course of the exam.");
+    }
+
+    public InvalidParameter getAdmissionExamNotExistsParam() {
+        return new InvalidParameter()
+                .name(errorPrefix + ".examId")
+                .reason("The exam you are trying to admit for does not exist.");
+    }
+
+    public InvalidParameter getAdmissionNotPossibleParam() {
+        return new InvalidParameter()
+                .name(errorPrefix + ".timestamp")
+                .reason("The exam you are trying to admit for is no longer admittable.");
+    }
+
+    public InvalidParameter getAdmissionExamNotAvailableParam(String parameterName) {
+        return new InvalidParameter()
+                .name(errorPrefix + "." + parameterName)
+                .reason("The student is not matriculated in any examinationRegulation containing the module the exam is referencing.");
+    }
+
+    public List<CourseAdmission> getCourseAdmissions(ChaincodeStub stub, String enrollmentId, String courseId, String moduleId) {
+        return this.getAllStates(stub, CourseAdmission.class).stream()
                 .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
                 .filter(item -> courseId.isEmpty() || item.getCourseId().equals(courseId))
-                .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId)).collect(Collectors.toList());
+                .filter(item -> moduleId.isEmpty() || item.getModuleId().equals(moduleId))
+                .collect(Collectors.toList());
     }
 
-    /**
-     * Returns a list of errors describing everything wrong with the given admission parameters
-     *
-     * @param admission admission to return errors for
-     * @return a list of all errors found for the given matriculationData
-     */
-    public ArrayList<InvalidParameter> getSemanticErrorsForAdmission(
-            ChaincodeStub stub,
-            Admission admission) {
-
-        ArrayList<InvalidParameter> invalidParameters = new ArrayList<>();
-
-        if (!this.checkModuleAvailable(stub, admission)) {
-            invalidParameters.add(getInvalidModuleAvailable("enrollmentId"));
-            invalidParameters.add(getInvalidModuleAvailable("moduleId"));
-        }
-
-        return invalidParameters;
+    public List<ExamAdmission> getExamAdmissions(ChaincodeStub stub, List<String> admissionIds, String enrollmentId, List<String> examIds) {
+        return this.getAllStates(stub, ExamAdmission.class).stream()
+                .filter(item -> enrollmentId.isEmpty() || item.getEnrollmentId().equals(enrollmentId))
+                .filter(item -> admissionIds.isEmpty() || admissionIds.contains(item.getAdmissionId()))
+                .filter(item -> examIds.isEmpty() || examIds.contains(item.getExamId()))
+                .collect(Collectors.toList());
     }
 
-    private boolean checkModuleAvailable(ChaincodeStub stub, Admission admission) {
-        ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
+    public boolean checkStudentMatriculated(ChaincodeStub stub, AbstractAdmission admission) {
         MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
 
         try {
-            MatriculationData matriculationData = matUtil.getState(stub, admission.getEnrollmentId(), MatriculationData.class);
+            matUtil.getState(stub, admission.getEnrollmentId(), MatriculationData.class);
+        } catch (LedgerAccessError e) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean checkModuleAvailable(ChaincodeStub stub, CourseAdmission admission) {
+        return studentListensToModule(stub, admission.getEnrollmentId(), admission.getModuleId());
+    }
+
+    public boolean checkExamAvailableForStudent(ChaincodeStub stub, ExamAdmission admission) {
+        if(!checkExamExists(stub, admission)){
+            return true; // the simpler error is already reported
+        }
+
+        // check
+        try {
+            Exam exam = new ExamContractUtil().getState(stub, admission.getExamId(), Exam.class);
+            return studentListensToModule(stub, admission.getEnrollmentId(), exam.getModuleId());
+        } catch (LedgerAccessError e) {
+            return false;
+        }
+    }
+
+    private boolean studentListensToModule(ChaincodeStub stub, String enrollmentId, String moduleId){
+        ExaminationRegulationContractUtil erUtil = new ExaminationRegulationContractUtil();
+        MatriculationDataContractUtil matUtil = new MatriculationDataContractUtil();
+        try {
+            MatriculationData matriculationData = matUtil.getState(stub, enrollmentId, MatriculationData.class);
             List<SubjectMatriculation> matriculations = matriculationData.getMatriculationStatus();
             for (SubjectMatriculation matriculation : matriculations) {
                 String examinationRegulationIdentifier = matriculation.getFieldOfStudy();
                 ExaminationRegulation examinationRegulation = erUtil.getState(stub, examinationRegulationIdentifier, ExaminationRegulation.class);
                 List<ExaminationRegulationModule> modules = examinationRegulation.getModules();
                 for (ExaminationRegulationModule module : modules) {
-                    if (module.getId().equals(admission.getModuleId())) {
+                    if (module.getId().equals(moduleId)) {
                         return true;
                     }
                 }
@@ -82,48 +142,74 @@ public class AdmissionContractUtil extends ContractUtil {
         } catch (LedgerAccessError e) {
             return false;
         }
-
         return false;
     }
 
-    /**
-     * Returns a list of errors describing everything wrong with the given admission parameters
-     *
-     * @param admission admission to return errors for
-     * @return a list of all errors found for the given matriculationData
-     */
-    public ArrayList<InvalidParameter> getParameterErrorsForAdmission(
-            Admission admission) {
-
-        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
-
-        if (valueUnset(admission.getEnrollmentId())) {
-            invalidparams.add(getEmptyEnrollmentIdParam(errorPrefix + "."));
-        }
-        if (valueUnset(admission.getCourseId())) {
-            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".courseId"));
-        }
-        if (valueUnset(admission.getModuleId())) {
-            invalidparams.add(getEmptyInvalidParameter(errorPrefix + ".moduleId"));
-        }
-        if (valueUnset(admission.getTimestamp())) {
-            invalidparams.add(getInvalidTimestampParam());
+    public boolean checkExamAdmittable(ChaincodeStub stub, ExamAdmission admission) {
+        if(!checkExamExists(stub, admission)){
+            return true; // the simpler error is already reported
         }
 
-        return invalidparams;
+        // check
+        try {
+            Exam exam = new ExamContractUtil().getState(stub, admission.getExamId(), Exam.class);
+            return exam.getAdmittableUntil().isAfter(Instant.now());
+        } catch (LedgerAccessError e) {
+            return false;
+        }
     }
 
-    public void checkParamsAddAdmission(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public boolean checkExamExists(ChaincodeStub stub, ExamAdmission admission) {
+        try {
+            Exam exam = new ExamContractUtil().getState(stub, admission.getExamId(), Exam.class);
+            if (exam != null){
+                return true;
+            }
+        } catch (LedgerAccessError e) {
+            return false;
+        }
+        return false;
+    }
+
+    public boolean checkExamAdmissionNotAlreadyExists(ChaincodeStub stub, ExamAdmission admission) {
+        if(!checkExamExists(stub, admission)){
+            return true; // the simpler error is already reported
+        }
+
+        // check
+        List<ExamAdmission> examAdmissions = this.getAllStates(stub, ExamAdmission.class);
+        return examAdmissions.stream().noneMatch(item ->
+                item.getExamId().equals(admission.getExamId())
+                && item.getEnrollmentId().equals(admission.getEnrollmentId()));
+    }
+    public boolean checkCourseAdmissionExists(ChaincodeStub stub, ExamAdmission admission) {
+        if(!checkExamExists(stub, admission)){
+            return true; // the simpler error is already reported
+        }
+
+        // check
+        try{
+            Exam exam = new ExamContractUtil().getState(stub, admission.getExamId(), Exam.class);
+            List<CourseAdmission> courseAdmissions = this.getAllStates(stub, CourseAdmission.class);
+            return courseAdmissions.stream().anyMatch(item ->
+                    item.getCourseId().equals(exam.getCourseId())
+                    && item.getEnrollmentId().equals(admission.getEnrollmentId()));
+        } catch (LedgerAccessError e){
+            return false;
+        }
+    }
+
+    public void checkParamsAddAdmission(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String admissionJson = params.get(0);
+        String admissionJson = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 
-        Admission newAdmission;
+        AbstractAdmission newAdmission;
         try {
-            newAdmission = GsonWrapper.fromJson(admissionJson, Admission.class);
+            newAdmission = GsonWrapper.fromJson(admissionJson, AbstractAdmission.class);
             newAdmission.resetAdmissionId();
         } catch (Exception e) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableParam("admission"))));
@@ -133,21 +219,49 @@ public class AdmissionContractUtil extends ContractUtil {
             throw new ParameterError(GsonWrapper.toJson(getConflictError()));
         }
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        invalidParams.addAll(getParameterErrorsForAdmission(newAdmission));
-        invalidParams.addAll(getSemanticErrorsForAdmission(stub, newAdmission));
+        List<InvalidParameter> invalidParams = new ArrayList<>();
+        invalidParams.addAll(newAdmission.getParameterErrors());
+        invalidParams.addAll(newAdmission.getSemanticErrors(stub));
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
     }
 
-    public void checkParamsDropAdmission(Context ctx, List<String> params) throws LedgerAccessError, ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsDropAdmission(Context ctx, String[] params) throws LedgerAccessError, ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String admissionId = params.get(0);
+        String admissionId = params[0];
 
         ChaincodeStub stub = ctx.getStub();
-        getState(stub, admissionId, Admission.class);
+        AbstractAdmission admission = getState(stub, admissionId, AbstractAdmission.class);
+        admission.ensureIsDroppable(stub);
+    }
+
+    public void checkParamsGetExamAdmission(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 3) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+        List<InvalidParameter> invalidParams = new ArrayList<>();
+        try {
+            GsonWrapper.fromJson(params[0], String[].class);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("admissionIds"));
+        }
+        try {
+            GsonWrapper.fromJson(params[2], String[].class);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("examIds"));
+        }
+
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
+    }
+
+    @Override
+    public <T> List<T> getAllStates(ChaincodeStub stub, Class<T> c) {
+        List<AbstractAdmission> states = super.getAllStates(stub, AbstractAdmission.class);
+        return (List<T>) states.stream().filter(item -> item.getClass() == c).collect(Collectors.toList());
     }
 }

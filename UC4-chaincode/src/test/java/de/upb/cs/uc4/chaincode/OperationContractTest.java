@@ -1,21 +1,22 @@
 package de.upb.cs.uc4.chaincode;
 
 
-import com.google.common.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import de.upb.cs.uc4.chaincode.util.TestUtil;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.function.Executable;
 
-import java.lang.reflect.Type;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,13 +69,10 @@ public final class OperationContractTest extends TestCreationBase {
 
             for (int i = 0; i < compare.size(); i++) {
                 String operations = contract.getOperations(ctx, input.get(i*6), input.get(i*6+1), input.get(i*6+2), input.get(i*6+3), input.get(i*6+4), input.get(i*6+5));
-                Type listType = new TypeToken<ArrayList<OperationData>>() {}.getType();
-                List<OperationData> operationDataList = GsonWrapper.fromJson(operations, listType);
+                List<OperationData> operationDataList = Arrays.asList(GsonWrapper.fromJson(operations, OperationData[].class).clone());
                 List<String> operationIds = operationDataList.stream().map(OperationData::getOperationId).collect(Collectors.toList());
                 assertThat(GsonWrapper.toJson(operationIds)).isEqualTo(compare.get(i));
             }
-
-
         };
     }
 
@@ -88,9 +86,11 @@ public final class OperationContractTest extends TestCreationBase {
             MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
             for (int i = 0; i < ids.size(); i++) {
                 Context ctx = TestUtil.mockContext(stub, ids.get(i));
+
+                String initiateResult = contract.initiateOperation(ctx, initiator(input), contract(input), transaction(input), params(input));
+                OperationData transactionResult = GsonWrapper.fromJson(initiateResult, OperationData.class);
                 OperationData compareResult = GsonWrapper.fromJson(compare.get(i), OperationData.class);
-                OperationData transactionResult = GsonWrapper.fromJson(contract.initiateOperation(ctx, initiator(input), contract(input), transaction(input), params(input)), OperationData.class);
-                assertThat(GsonWrapper.toJson(transactionResult)).isEqualTo(GsonWrapper.toJson(compareResult)); // TODO remove serialization
+                assertThat(transactionResult).isEqualTo(compareResult);
             }
         };
     }
@@ -104,7 +104,7 @@ public final class OperationContractTest extends TestCreationBase {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
             for (String s : compare) {
-                Context ctx = cUtil.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
+                Context ctx = GeneralHelper.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
                 String result = contract.initiateOperation(ctx, "", contract(input), transaction(input), params(input));
                 assertThat(result).isEqualTo(s);
             }
@@ -157,17 +157,16 @@ public final class OperationContractTest extends TestCreationBase {
                 Context ctx = TestUtil.mockContext(stub, id);
                 operationJson = contract.initiateOperation(ctx, "", MatriculationDataContract.contractName, "addMatriculationData", GsonWrapper.toJson(input));
             }
-            Context ctx = TestUtil.mockContext(stub);
+            Context ctx = TestUtil.mockContext(stub, ids.get(0));
             MatriculationDataContract matriculationContract = new MatriculationDataContract();
             stub.setFunction(MatriculationDataContract.contractName + ":addMatriculationData");
             matriculationContract.addMatriculationData(ctx, input.get(0));
-            matriculationContract.addMatriculationData(ctx, input.get(0));
             String operationId = GsonWrapper.fromJson(operationJson, OperationData.class).getOperationId();
             stub.setFunction("UC4.OperationData:approveTransaction");
-            Type listType = new TypeToken<ArrayList<OperationData>>() {
 
-            }.getType();
-            List<OperationData> operations = GsonWrapper.fromJson(contract.getOperations(ctx, GsonWrapper.toJson(Collections.singletonList(operationId)), "", "", "", "", ""), listType);
+            String getOperationsResult = contract.getOperations(ctx, GsonWrapper.toJson(Collections.singletonList(operationId)), "", "", "", "", "");
+            List<OperationData> operations = Arrays.asList(GsonWrapper.fromJson
+                    (getOperationsResult, OperationData[].class).clone());
             OperationData operation = operations.get(0);
             OperationDataState expectedState = GsonWrapper.fromJson(compare.get(0), OperationDataState.class);
             assertThat(operation.getState()).isEqualTo(expectedState);
@@ -189,9 +188,5 @@ public final class OperationContractTest extends TestCreationBase {
     private String params(List<String> input) {
         return GsonWrapper.toJson(input.subList(3, input.size()));
 
-    }
-
-    private String operationId(List<String> input) throws NoSuchAlgorithmException {
-        return OperationContractUtil.getDraftKey(contract(input), transaction(input), params(input));
     }
 }

@@ -1,14 +1,12 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.operation;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
 
-import java.util.ArrayList;
+import java.time.Instant;
 import java.util.Objects;
 
 public class OperationData {
-
-
 
     @SerializedName("operationId")
     private String operationId = null;
@@ -17,9 +15,9 @@ public class OperationData {
     @SerializedName("initiator")
     private String initiator = null;
     @SerializedName("initiatedTimestamp")
-    private String initiatedTimestamp = null;
+    private Instant initiatedTimestamp = null;
     @SerializedName("lastModifiedTimestamp")
-    private String lastModifiedTimestamp = null;
+    private Instant lastModifiedTimestamp = null;
     @SerializedName("state")
     private OperationDataState state = OperationDataState.PENDING;
     @SerializedName("reason")
@@ -47,7 +45,6 @@ public class OperationData {
         return this;
     }
 
-    @ApiModelProperty(value = "")
     public String getOperationId() {
         return operationId;
     }
@@ -56,28 +53,28 @@ public class OperationData {
         this.operationId = operationId;
     }
 
-    public String getInitiatedTimestamp() {
+    public Instant getInitiatedTimestamp() {
         return initiatedTimestamp;
     }
 
-    public void setInitiatedTimestamp(String initiatedTimestamp) {
+    public void setInitiatedTimestamp(Instant initiatedTimestamp) {
         this.initiatedTimestamp = initiatedTimestamp;
     }
 
-    public OperationData initiatedTimestamp(String initiatedTimestamp) {
+    public OperationData initiatedTimestamp(Instant initiatedTimestamp) {
         this.initiatedTimestamp = initiatedTimestamp;
         return this;
     }
 
-    public String getLastModifiedTimestamp() {
+    public Instant getLastModifiedTimestamp() {
         return lastModifiedTimestamp;
     }
 
-    public void setLastModifiedTimestamp(String lastModifiedTimestamp) {
+    public void setLastModifiedTimestamp(Instant lastModifiedTimestamp) {
         this.lastModifiedTimestamp = lastModifiedTimestamp;
     }
 
-    public OperationData lastModifiedTimestamp(String lastModifiedTimestamp) {
+    public OperationData lastModifiedTimestamp(Instant lastModifiedTimestamp) {
         this.lastModifiedTimestamp = lastModifiedTimestamp;
         return this;
     }
@@ -166,10 +163,4 @@ public class OperationData {
                 Objects.equals(this.existingApprovals, operationData.existingApprovals) &&
                 Objects.equals(this.missingApprovals, operationData.missingApprovals);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(operationId, transactionInfo, state, reason, existingApprovals, missingApprovals);
-    }
-
 }

@@ -1,21 +1,21 @@
 package de.upb.cs.uc4.chaincode.contract.matriculationdata;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
-import de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
-import de.upb.cs.uc4.chaincode.model.MatriculationData;
-import de.upb.cs.uc4.chaincode.model.SubjectMatriculation;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
+import de.upb.cs.uc4.chaincode.model.ExaminationRegulation.ExaminationRegulation;
+import de.upb.cs.uc4.chaincode.model.matriculation.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.matriculation.SubjectMatriculation;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -68,7 +68,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
      * @param prefix            prefix used for error information
      * @return a list of all errors found for the given matriculationData
      */
-    public ArrayList<InvalidParameter> getErrorForMatriculationData(
+    public List<InvalidParameter> getErrorForMatriculationData(
             ChaincodeStub stub,
             MatriculationData matriculationData,
             String prefix) {
@@ -76,38 +76,38 @@ public class MatriculationDataContractUtil extends ContractUtil {
         if (!prefix.isEmpty())
             prefix += ".";
 
-        ArrayList<InvalidParameter> invalidparams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (valueUnset(matriculationData.getEnrollmentId())) {
-            invalidparams.add(getEmptyEnrollmentIdParam(prefix));
+        if (GeneralHelper.valueUnset(matriculationData.getEnrollmentId())) {
+            invalidParams.add(getEmptyEnrollmentIdParam(prefix));
         }
 
-        invalidparams.addAll(getErrorForSubjectMatriculationList(
+        invalidParams.addAll(getErrorForSubjectMatriculationList(
                 stub,
                 matriculationData.getMatriculationStatus(),
                 prefix + "matriculationStatus"));
-        return invalidparams;
+        return invalidParams;
     }
 
-    public ArrayList<InvalidParameter> getErrorForSubjectMatriculationList(
+    public List<InvalidParameter> getErrorForSubjectMatriculationList(
             ChaincodeStub stub,
             List<SubjectMatriculation> matriculationStatus,
             String prefix) {
         ExaminationRegulationContractUtil eUtil = new ExaminationRegulationContractUtil();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
+        List<InvalidParameter> invalidParams = new ArrayList<>();
 
-        if (valueUnset(matriculationStatus)) {
+        if (GeneralHelper.valueUnset(matriculationStatus)) {
             invalidParams.add(getEmptyInvalidParameter(prefix));
         } else {
-            ArrayList<String> existingFields = new ArrayList<>();
+            List<String> existingFields = new ArrayList<>();
 
             List<String> validErIds = eUtil.getAllStates(stub, ExaminationRegulation.class).stream().map(ExaminationRegulation::getName).collect(Collectors.toList());
             for (int subMatIndex = 0; subMatIndex < matriculationStatus.size(); subMatIndex++) {
 
                 SubjectMatriculation subMat = matriculationStatus.get(subMatIndex);
 
-                if (valueUnset(subMat.getFieldOfStudy())) {
+                if (GeneralHelper.valueUnset(subMat.getFieldOfStudy())) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].fieldOfStudy"));
                 } else {
                     if (!validErIds.contains(subMat.getFieldOfStudy())) { // TODO check if examination regulation exists for the given semester
@@ -120,11 +120,11 @@ public class MatriculationDataContractUtil extends ContractUtil {
                 }
 
                 List<String> semesters = subMat.getSemesters();
-                if (valueUnset(semesters)) {
+                if (GeneralHelper.valueUnset(semesters)) {
                     invalidParams.add(getEmptyInvalidParameter(prefix + "[" + subMatIndex + "].semesters"));
                 }
 
-                ArrayList<String> existingSemesters = new ArrayList<>();
+                List<String> existingSemesters = new ArrayList<>();
                 for (int semesterIndex = 0; semesterIndex < Objects.requireNonNull(semesters).size(); semesterIndex++) {
 
                     String semester = semesters.get(semesterIndex);
@@ -164,11 +164,11 @@ public class MatriculationDataContractUtil extends ContractUtil {
         return true;
     }
 
-    public void checkParamsAddMatriculationData(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsAddMatriculationData(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String matriculationData = params.get(0);
+        String matriculationData = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -179,7 +179,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableMatriculationDataParam())));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
+        List<InvalidParameter> invalidParams = getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
@@ -189,11 +189,11 @@ public class MatriculationDataContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsUpdateMatriculationData(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsUpdateMatriculationData(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String matriculationData = params.get(0);
+        String matriculationData = params[0];
 
         ChaincodeStub stub = ctx.getStub();
 
@@ -204,7 +204,7 @@ public class MatriculationDataContractUtil extends ContractUtil {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(getUnparsableMatriculationDataParam())));
         }
 
-        ArrayList<InvalidParameter> invalidParams = getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
+        List<InvalidParameter> invalidParams = getErrorForMatriculationData(stub, newMatriculationData, "matriculationData");
         if (!invalidParams.isEmpty()) {
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
         }
@@ -214,11 +214,11 @@ public class MatriculationDataContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsGetMatriculationData(Context ctx, List<String> params) throws ParameterError {
-        if (params.size() != 1) {
+    public void checkParamsGetMatriculationData(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 1) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String enrollmentId = params.get(0);
+        String enrollmentId = params[0];
 
         ChaincodeStub stub = ctx.getStub();
         try {
@@ -228,23 +228,22 @@ public class MatriculationDataContractUtil extends ContractUtil {
         }
     }
 
-    public void checkParamsAddEntriesToMatriculationData(Context ctx, List<String> params) throws SerializableError {
-        if (params.size() != 2) {
+    public void checkParamsAddEntriesToMatriculationData(Context ctx, String[] params) throws SerializableError {
+        if (params.length != 2) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
         }
-        String enrollmentId = params.get(0);
-        String matriculations = params.get(1);
+        String enrollmentId = params[0];
+        String matriculations = params[1];
 
         ChaincodeStub stub = ctx.getStub();
 
-        ArrayList<InvalidParameter> invalidParams = new ArrayList<>();
-        if (valueUnset(enrollmentId)) {
+        List<InvalidParameter> invalidParams = new ArrayList<>();
+        if (GeneralHelper.valueUnset(enrollmentId)) {
             invalidParams.add(getEmptyEnrollmentIdParam());
         }
-        Type listType = new TypeToken<ArrayList<SubjectMatriculation>>() {}.getType();
-        ArrayList<SubjectMatriculation> matriculationStatus;
+        List<SubjectMatriculation> matriculationStatus;
         try {
-            matriculationStatus = GsonWrapper.fromJson(matriculations, listType);
+            matriculationStatus = Arrays.asList(GsonWrapper.fromJson(matriculations, SubjectMatriculation[].class));
         } catch (Exception e) {
             invalidParams.add(getUnparsableMatriculationParam());
             throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));

@@ -234,9 +234,86 @@
       "The transaction was invalid."
     ],
     "compare": [
+      { "type": "HLAccessDenied",
+        "title": "You are not allowed to execute in the given transaction"
+      }
+    ]
+  },
+  {
+    "name": "rejectEmptyRejectMessage",
+    "type": "rejectTransaction_FAILURE",
+    "ids": [
+      "User2"
+    ],
+    "setup": {
+      "examinationRegulationContract": [
+        "Computer Science",
+        {
+          "name": "Computer Science",
+          "active": true,
+          "modules": []
+        }
+      ],
+      "groupContract": [
+        "Admin",
+        {
+          "groupId": "Admin",
+          "userList": [
+            "User2"
+          ]
+        },
+        "System",
+        {
+          "groupId": "System",
+          "userList": [
+            "User2"
+          ]
+        }
+      ],
+      "operationContract": [
+        "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
+        {
+          "operationId": "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
+          "transactionInfo": {
+            "contractName": "UC4.MatriculationData",
+            "transactionName": "addMatriculationData",
+            "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
+          },
+          "initiator": "User1",
+          "initiatedTimestamp":  "1970-01-01T00:00:00",
+          "lastModifiedTimestamp": "1970-01-01T00:00:00",
+          "state": "PENDING",
+          "reason": "",
+          "existingApprovals": {
+            "users": [
+              "User1"
+            ],
+            "groups": []
+          },
+          "missingApprovals": {
+            "users": [],
+            "groups": [
+              "Admin",
+              "System"
+            ]
+          }
+        }
+      ]
+    },
+    "input": [
+      "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
+      ""
+    ],
+    "compare": [
       {
-        "type": "HLRejectionDenied",
-        "title": "You are not allowed to reject the given operation"
+        "type": "HLUnprocessableEntity",
+        "title": "The following parameters do not conform to the specified format",
+        "invalidParams": [
+          {
+            "name": "rejectMessage",
+            "reason": "The given parameter must not be empty"
+          }
+        ]
       }
     ]
   }

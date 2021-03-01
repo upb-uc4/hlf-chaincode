@@ -1,9 +1,7 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.operation;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class TransactionInfo {
@@ -69,30 +67,13 @@ public class TransactionInfo {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(contractName, transactionName, parameters);
-    }
-
-
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class TransactionInfo {\n");
-        sb.append("    contractName: ").append(toIndentedString(contractName)).append("\n");
-        sb.append("    transactionName: ").append(toIndentedString(transactionName)).append("\n");
-        sb.append("    parameters: ").append(toIndentedString(parameters)).append("\n");
+        sb.append("    contractName: ").append(contractName).append("\n");
+        sb.append("    transactionName: ").append(transactionName).append("\n");
+        sb.append("    parameters: ").append(parameters).append("\n");
         sb.append("}");
         return sb.toString();
-    }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
     }
 }

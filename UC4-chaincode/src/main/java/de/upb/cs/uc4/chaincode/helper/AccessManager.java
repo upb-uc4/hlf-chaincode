@@ -1,36 +1,45 @@
 package de.upb.cs.uc4.chaincode.helper;
 
-import com.google.gson.reflect.TypeToken;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContract;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContract;
+import de.upb.cs.uc4.chaincode.contract.examresult.ExamResultContract;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContract;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
-import de.upb.cs.uc4.chaincode.model.Admission;
-import de.upb.cs.uc4.chaincode.model.ApprovalList;
-import de.upb.cs.uc4.chaincode.model.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
+import de.upb.cs.uc4.chaincode.model.operation.ApprovalList;
+import de.upb.cs.uc4.chaincode.model.exam.Exam;
+import de.upb.cs.uc4.chaincode.model.matriculation.MatriculationData;
+import de.upb.cs.uc4.chaincode.model.examresult.ExamResult;
+import de.upb.cs.uc4.chaincode.model.examresult.ExamResultEntry;
+import de.upb.cs.uc4.chaincode.model.operation.OperationData;
+import de.upb.cs.uc4.chaincode.model.operation.TransactionInfo;
 import org.hyperledger.fabric.contract.Context;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AccessManager {
-    private static OperationContractUtil operationUtil = new OperationContractUtil();
+    private static final OperationContractUtil operationUtil = new OperationContractUtil();
 
     public static final String ADMIN = "Admin";
     public static final String SYSTEM = "System";
 
     public static final String HLF_ATTRIBUTE_SYSADMIN = "sysAdmin";
 
+    public static ApprovalList getRequiredApprovals(Context ctx, OperationData operationData) throws MissingTransactionError, LedgerAccessError {
+        TransactionInfo info = operationData.getTransactionInfo();
+        return AccessManager.getRequiredApprovals(ctx, info.getContractName(), info.getTransactionName(), info.getParameters());
+    }
+
     public static ApprovalList getRequiredApprovals(Context ctx, String contractName, String transactionName, String params) throws MissingTransactionError, LedgerAccessError {
-        Type listType = new TypeToken<ArrayList<String>>() {
-        }.getType();
-        List<String> paramList = GsonWrapper.fromJson(params, listType);
+        List<String> paramList = Arrays.asList(GsonWrapper.fromJson(params, String[].class).clone());
         switch (contractName) {
             case MatriculationDataContract.contractName:
                 switch (transactionName) {
@@ -55,8 +64,10 @@ public class AccessManager {
                         return getRequiredApprovalsForAddAdmission(ctx, paramList);
                     case AdmissionContract.transactionNameDropAdmission:
                         return getRequiredApprovalsForDropAdmission(ctx, paramList);
-                    case AdmissionContract.transactionNameGetAdmissions:
-                        return getRequiredApprovalsForGetAdmissions(ctx, paramList);
+                    case AdmissionContract.transactionNameGetCourseAdmissions:
+                        return getRequiredApprovalsForGetCourseAdmissions(ctx, paramList);
+                    case AdmissionContract.transactionNameGetExamAdmissions:
+                        return getRequiredApprovalsForGetExamAdmissions(ctx, paramList);
                     case AdmissionContract.transactionNameGetVersion:
                         return new ApprovalList();
                     case "":
@@ -115,6 +126,30 @@ public class AccessManager {
                     default:
                         throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
                 }
+            case ExamContract.contractName:
+                switch (transactionName) {
+                    case ExamContract.transactionNameAddExam:
+                        return getRequiredApprovalsForAddExam(ctx, paramList);
+                    case ExamContract.transactionNameGetExams:
+                        return getRequiredApprovalsForGetExams(ctx, paramList);
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
+                    default:
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
+                }
+            case ExamResultContract.contractName:
+                switch (transactionName) {
+                    case ExamResultContract.transactionNameAddExamResult:
+                        return getRequiredApprovalsForAddExamResult(ctx, paramList);
+                    case ExamResultContract.transactionNameGetExamResultEntries:
+                        return getRequiredApprovalsForGetExamResultEntries(ctx, paramList);
+                    case ExaminationRegulationContract.transactionNameGetVersion:
+                        return new ApprovalList();
+                    case "":
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyTransactionNameError()));
+                    default:
+                        throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getTransactionUnprocessableError(transactionName)));
+                }
             case "":
                 throw new MissingTransactionError(GsonWrapper.toJson(operationUtil.getEmptyContractNameError()));
             default:
@@ -149,7 +184,7 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForAddAdmission(Context ctx, List<String> params) {
-        Admission admission = GsonWrapper.fromJson(params.get(0), Admission.class);
+        AbstractAdmission admission = GsonWrapper.fromJson(params.get(0), AbstractAdmission.class);
         return new ApprovalList()
                 .addUsersItem(admission.getEnrollmentId())
                 .addGroupsItem(SYSTEM);
@@ -157,13 +192,18 @@ public class AccessManager {
 
     private static ApprovalList getRequiredApprovalsForDropAdmission(Context ctx, List<String> params) throws LedgerAccessError {
         AdmissionContractUtil cUtil = new AdmissionContractUtil();
-        Admission admission = cUtil.getState(ctx.getStub(), params.get(0), Admission.class);
+        AbstractAdmission admission = cUtil.getState(ctx.getStub(), params.get(0), AbstractAdmission.class);
         return new ApprovalList()
                 .addUsersItem(admission.getEnrollmentId())
                 .addGroupsItem(SYSTEM);
     }
 
-    private static ApprovalList getRequiredApprovalsForGetAdmissions(Context ctx, List<String> params) {
+    private static ApprovalList getRequiredApprovalsForGetCourseAdmissions(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetExamAdmissions(Context ctx, List<String> params) {
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }
@@ -224,6 +264,35 @@ public class AccessManager {
     }
 
     private static ApprovalList getRequiredApprovalsForCloseExaminationRegulation(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForAddExam(Context ctx, List<String> params) {
+        Exam exam = GsonWrapper.fromJson(params.get(0), Exam.class);
+        return new ApprovalList()
+                .addUsersItem(exam.getLecturerEnrollmentId())
+                .addGroupsItem(ADMIN)
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetExams(Context ctx, List<String> params) {
+        return new ApprovalList()
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForAddExamResult(Context ctx, List<String> params) throws LedgerAccessError {
+        List<ExamResultEntry> examResultEntries = GsonWrapper.fromJson(params.get(0), ExamResult.class).getExamResultEntries();
+
+        ExamContractUtil cUtil = new ExamContractUtil();
+        Exam exam = cUtil.getState(ctx.getStub(), examResultEntries.get(0).getExamId(), Exam.class);
+
+        return new ApprovalList()
+                .addUsersItem(exam.getLecturerEnrollmentId())
+                .addGroupsItem(SYSTEM);
+    }
+
+    private static ApprovalList getRequiredApprovalsForGetExamResultEntries(Context ctx, List<String> params) {
         return new ApprovalList()
                 .addGroupsItem(SYSTEM);
     }

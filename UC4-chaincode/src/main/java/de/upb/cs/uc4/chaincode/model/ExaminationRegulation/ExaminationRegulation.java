@@ -1,4 +1,4 @@
-package de.upb.cs.uc4.chaincode.model;
+package de.upb.cs.uc4.chaincode.model.ExaminationRegulation;
 
 import com.google.gson.annotations.SerializedName;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,7 +22,6 @@ public class ExaminationRegulation {
         return this;
     }
 
-    @ApiModelProperty(value = "")
     public String getName() {
         return name;
     }
@@ -36,7 +35,6 @@ public class ExaminationRegulation {
         return this;
     }
 
-    @ApiModelProperty(value = "")
     public boolean getActive() {
         return active;
     }
@@ -58,7 +56,6 @@ public class ExaminationRegulation {
         return this;
     }
 
-    @ApiModelProperty(value = "")
     public List<ExaminationRegulationModule> getModules() {
         return modules;
     }
@@ -86,29 +83,11 @@ public class ExaminationRegulation {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("class ExaminationRegulation {\n");
-
-        sb.append("    name: ").append(toIndentedString(name)).append("\n");
-        sb.append("    active: ").append(toIndentedString(active)).append("\n");
-        sb.append("    modules: ").append(toIndentedString(modules)).append("\n");
+        sb.append("    name: ").append(name).append("\n");
+        sb.append("    active: ").append(active).append("\n");
+        sb.append("    modules: ").append(modules).append("\n");
         sb.append("}");
         return sb.toString();
     }
-
-    /**
-     * Convert the given object to string with each line indented by 4 spaces
-     * (except the first line).
-     */
-    private String toIndentedString(Object o) {
-        if (o == null) {
-            return "null";
-        }
-        return o.toString().replace("\n", "\n    ");
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, modules);
-    }
-
 }
 

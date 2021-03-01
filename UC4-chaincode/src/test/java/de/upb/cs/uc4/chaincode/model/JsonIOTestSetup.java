@@ -4,7 +4,9 @@ import com.google.gson.annotations.SerializedName;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContractUtil;
+import de.upb.cs.uc4.chaincode.contract.exam.ExamContractUtil;
 import de.upb.cs.uc4.chaincode.contract.examinationregulation.ExaminationRegulationContractUtil;
+import de.upb.cs.uc4.chaincode.contract.examresult.ExamResultContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
@@ -99,6 +101,31 @@ public class JsonIOTestSetup {
         this.certificateContract = certificateContract;
     }
 
+    @SerializedName("examContract")
+    private List<Dummy> examContract = null;
+
+    public JsonIOTestSetup examContract(List<Dummy> examContract) {
+        this.examContract = examContract;
+        return this;
+    }
+
+    public JsonIOTestSetup addExamContractItem(Dummy examContractItem) {
+        if (this.examContract == null) {
+            this.examContract = new ArrayList<Dummy>();
+        }
+        this.examContract.add(examContractItem);
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public List<Dummy> getExamContract() {
+        return examContract;
+    }
+
+    public void setExamContract(List<Dummy> examContract) {
+        this.examContract = examContract;
+    }
+
     @SerializedName("examinationRegulationContract")
     private List<Dummy> examinationRegulationContract = null;
 
@@ -174,6 +201,31 @@ public class JsonIOTestSetup {
         this.matriculationDataContract = matriculationDataContract;
     }
 
+    @SerializedName("examResultContract")
+    private List<Dummy> examResultContract = null;
+
+    public JsonIOTestSetup examResultContract(List<Dummy> examResultContract) {
+        this.examResultContract = examResultContract;
+        return this;
+    }
+
+    public JsonIOTestSetup addexamResultContractItem(Dummy examResultContractItem) {
+        if (this.examResultContract == null) {
+            this.examResultContract = new ArrayList<Dummy>();
+        }
+        this.examResultContract.add(examResultContractItem);
+        return this;
+    }
+
+    @ApiModelProperty(value = "")
+    public List<Dummy> getexamResultContract() {
+        return examResultContract;
+    }
+
+    public void setexamResultContract(List<Dummy> examResultContract) {
+        this.examResultContract = examResultContract;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -183,16 +235,17 @@ public class JsonIOTestSetup {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        JsonIOTestSetup matriculationData = (JsonIOTestSetup) o;
-        return Objects.equals(this.operationContract, matriculationData.operationContract) &&
-                Objects.equals(this.certificateContract, matriculationData.certificateContract) &&
-                Objects.equals(this.examinationRegulationContract, matriculationData.examinationRegulationContract) &&
-                Objects.equals(this.matriculationDataContract, matriculationData.matriculationDataContract);
+        JsonIOTestSetup other = (JsonIOTestSetup) o;
+        return Objects.equals(this.operationContract, other.operationContract) &&
+                Objects.equals(this.certificateContract, other.certificateContract) &&
+                Objects.equals(this.examinationRegulationContract, other.examinationRegulationContract) &&
+                Objects.equals(this.matriculationDataContract, other.matriculationDataContract) &&
+                Objects.equals(this.examResultContract, other.examResultContract);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(operationContract, certificateContract, examinationRegulationContract, matriculationDataContract);
+        return Objects.hash(operationContract, certificateContract, examinationRegulationContract, matriculationDataContract, examResultContract);
     }
 
 
@@ -205,6 +258,7 @@ public class JsonIOTestSetup {
         sb.append("    certificateContract: ").append(toIndentedString(certificateContract)).append("\n");
         sb.append("    examinationRegulationContract: ").append(toIndentedString(examinationRegulationContract)).append("\n");
         sb.append("    matriculationDataContract: ").append(toIndentedString(matriculationDataContract)).append("\n");
+        sb.append("    examResultContract: ").append(toIndentedString(examResultContract)).append("\n");
         sb.append("}");
         return sb.toString();
     }
@@ -253,6 +307,18 @@ public class JsonIOTestSetup {
 
         cUtil = new GroupContractUtil();
         setup = TestUtil.toStringList(this.groupContract);
+        for (int i = 0; i < setup.size(); i += 2) {
+            cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i + 1));
+        }
+
+        cUtil = new ExamContractUtil();
+        setup = TestUtil.toStringList(this.examContract);
+        for (int i = 0; i < setup.size(); i += 2) {
+            cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i + 1));
+        }
+
+        cUtil = new ExamResultContractUtil();
+        setup = TestUtil.toStringList(this.examResultContract);
         for (int i = 0; i < setup.size(); i += 2) {
             cUtil.putAndGetStringState(stub, setup.get(i).toString(), setup.get(i + 1));
         }
