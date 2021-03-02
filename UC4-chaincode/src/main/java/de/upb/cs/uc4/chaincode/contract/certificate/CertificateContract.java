@@ -34,20 +34,10 @@ public class CertificateContract extends ContractBase {
     public String addCertificate(final Context ctx, final String enrollmentId, final String certificate) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final  String[] args = new String[]{enrollmentId, certificate};
-        try {
-            cUtil.checkParamsAddCertificate(ctx, args);
-        } catch (ParameterError e) {
-            return e.getJsonError();
-        }
-
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -66,20 +56,10 @@ public class CertificateContract extends ContractBase {
     public String updateCertificate(final Context ctx, final String enrollmentId, final String certificate) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{enrollmentId, certificate};
-        try {
-            cUtil.checkParamsUpdateCertificate(ctx, args);
-        } catch (ParameterError e) {
-            return e.getJsonError();
-        }
-
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -97,20 +77,10 @@ public class CertificateContract extends ContractBase {
     public String getCertificate(final Context ctx, final String enrollmentId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{enrollmentId};
-        try {
-            cUtil.checkParamsGetCertificate(ctx, args);
-        } catch (ParameterError e) {
-            return e.getJsonError();
-        }
-
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }

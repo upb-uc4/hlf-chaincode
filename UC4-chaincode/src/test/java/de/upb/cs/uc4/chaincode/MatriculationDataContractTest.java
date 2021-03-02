@@ -64,9 +64,10 @@ public final class MatriculationDataContractTest extends TestCreationBase {
         return () -> {
             Context ctx = TestUtil.buildContext(MatriculationDataContract.contractName, MatriculationDataContract.transactionNameGetMatriculationData, setup, input, ids);
 
+            String getResult = contract.getMatriculationData(ctx, input.get(0));
+            assertThat(getResult).isEqualTo(compare.get(0));
             MatriculationData compareMatriculationData = GsonWrapper.fromJson(compare.get(0), MatriculationData.class);
-            MatriculationData ledgerMatriculationData = GsonWrapper.fromJson(
-                    contract.getMatriculationData(ctx, input.get(0)), MatriculationData.class);
+            MatriculationData ledgerMatriculationData = GsonWrapper.fromJson(getResult, MatriculationData.class);
             assertThat(ledgerMatriculationData).isEqualTo(compareMatriculationData);
             assertThat(ledgerMatriculationData.toString()).isEqualTo(compareMatriculationData.toString());
         };

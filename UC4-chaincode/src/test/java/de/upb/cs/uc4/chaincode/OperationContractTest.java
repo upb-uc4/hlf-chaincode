@@ -3,7 +3,6 @@ package de.upb.cs.uc4.chaincode;
 
 import de.upb.cs.uc4.chaincode.contract.matriculationdata.MatriculationDataContract;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContract;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.mock.MockChaincodeStub;
 import de.upb.cs.uc4.chaincode.model.*;
@@ -103,6 +102,7 @@ public final class OperationContractTest extends TestCreationBase {
     ) {
         return () -> {
             MockChaincodeStub stub = TestUtil.mockStub(setup, OperationContract.contractName + ":" + OperationContract.transactionNameApproveOperation);
+
             for (String s : compare) {
                 Context ctx = GeneralHelper.valueUnset(ids) ? TestUtil.mockContext(stub) : TestUtil.mockContext(stub, ids.get(0));
                 String result = contract.initiateOperation(ctx, "", contract(input), transaction(input), params(input));

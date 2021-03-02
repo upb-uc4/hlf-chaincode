@@ -238,6 +238,12 @@ public class AdmissionContractUtil extends ContractUtil {
         admission.ensureIsDroppable(stub);
     }
 
+    public void checkParamsGetCourseAdmission(Context ctx, String[] params) throws ParameterError {
+        if (params.length != 3) {
+            throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));
+        }
+    }
+
     public void checkParamsGetExamAdmission(Context ctx, String[] params) throws ParameterError {
         if (params.length != 3) {
             throw new ParameterError(GsonWrapper.toJson(getParamNumberError()));

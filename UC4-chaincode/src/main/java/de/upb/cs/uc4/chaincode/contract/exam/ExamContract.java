@@ -37,27 +37,16 @@ public class ExamContract extends ContractBase {
     public String addExam(final Context ctx, String examJson) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{examJson};
+        ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.checkParamsAddExam(ctx, args);
-        } catch (ParameterError e) {
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        ChaincodeStub stub = ctx.getStub();
         Exam exam = GsonWrapper.fromJson(examJson, Exam.class);
         exam.resetExamId();
-
-        try {
-            cUtil.validateApprovals(ctx, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-
-        try {
-            cUtil.finishOperation(stub, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return cUtil.putAndGetStringState(stub, exam.getExamId(), GsonWrapper.toJson(exam));
     }
 
@@ -80,18 +69,9 @@ public class ExamContract extends ContractBase {
             final String droppableAt) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{examIds, courseIds, lecturerIds, moduleIds, types, admittableAt, droppableAt};
+
         try {
-            cUtil.checkParamsGetExams(ctx, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-        try {
-            cUtil.validateApprovals(ctx, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-        try {
-            cUtil.finishOperation(ctx.getStub(), contractName, transactionName, args);
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }

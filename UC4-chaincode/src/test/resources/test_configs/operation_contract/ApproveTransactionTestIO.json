@@ -427,12 +427,12 @@
   },
   {
     "name": "approveInvalidLedgerStateTransaction",
-    "type": "approveTransaction_FAILURE",
+    "type": "approveTransaction_SUCCESS",
     "ids": [
       "User1"
     ],
     "setup": {
-      "approvalContract": [
+      "operationContract": [
         "OZLstfMzKRKyKuaT4lTAqmeneVgk2TW0A-6h89W8Sxs",
         "something invalid"
       ],
@@ -470,8 +470,6 @@
           "parameters": "[\"{\\\"enrollmentId\\\":\\\"User1\\\",\\\"matriculationStatus\\\":[{\\\"fieldOfStudy\\\":\\\"Computer Science\\\",\\\"semesters\\\":[\\\"WS2018/19\\\"]}]}\"]"
         },
         "initiator": "User1",
-        "initiatedTimestamp":  "1970-01-01T00:00:00Z",
-        "lastModifiedTimestamp": "1970-01-01T00:00:00Z",
         "state": "PENDING",
         "reason": "",
         "existingApprovals": {
