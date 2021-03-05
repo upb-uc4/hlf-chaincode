@@ -2,14 +2,17 @@ package de.upb.cs.uc4.chaincode.contract;
 
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.contract.operation.OperationContractUtil;
-import de.upb.cs.uc4.chaincode.exceptions.*;
+import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParticipationError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.LedgerStateNotFoundError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ledgeraccess.UnprocessableLedgerStateError;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
-import de.upb.cs.uc4.chaincode.helper.*;
+import de.upb.cs.uc4.chaincode.helper.AccessManager;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
+import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
+import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
 import de.upb.cs.uc4.chaincode.model.errors.GenericError;
 import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
@@ -22,6 +25,7 @@ import org.hyperledger.fabric.shim.ledger.CompositeKey;
 import org.hyperledger.fabric.shim.ledger.KeyValue;
 import org.hyperledger.fabric.shim.ledger.QueryResultsIterator;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,6 +86,12 @@ abstract public class ContractUtil {
         return new GenericError()
                 .type("HLAccessDenied")
                 .title("You are not allowed to execute in the given transaction");
+    }
+
+    public GenericError getTransactionTimestampInvalidError(){
+        return new GenericError()
+                .type("HLTransactionTimestampInvalid")
+                .title("The transaction you submitted contains a timestamp differing more than two minutes from the current system time");
     }
 
     public GenericError getOperationNotPendingError(){
@@ -279,5 +289,27 @@ abstract public class ContractUtil {
             }
         }
         return resultItems;
+    }
+
+    public void checkTimestamp(Context ctx) throws ValidationError {
+        Instant timestamp = ctx.getStub().getTxTimestamp();
+        Instant current = Instant.now();
+
+        long diff = timestamp.getEpochSecond() - current.getEpochSecond();
+        diff = diff < 0 ? (-diff) : diff;
+
+        if(diff > 120){
+            throw new ValidationError(GsonWrapper.toJson(getTransactionTimestampInvalidError()));
+        }
+    }
+
+    public void validateTransaction(Context ctx,
+                                    String contractName,
+                                    String transactionName,
+                                    String[] args) throws SerializableError {
+        checkTimestamp(ctx);
+        ValidationManager.validateParams(ctx, contractName, transactionName, GsonWrapper.toJson(args));
+        validateApprovals(ctx, contractName, transactionName, args);
+        finishOperation(ctx.getStub(), contractName, transactionName, args);
     }
 }

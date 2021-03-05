@@ -2,19 +2,16 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 
 import de.upb.cs.uc4.chaincode.contract.ContractBase;
 import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
-import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
-import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
+import de.upb.cs.uc4.chaincode.helper.GeneralHelper;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
 import de.upb.cs.uc4.chaincode.helper.ValidationManager;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.model.operation.OperationData;
 import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.contract.annotation.Contract;
 import org.hyperledger.fabric.contract.annotation.Transaction;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,6 +37,7 @@ public class OperationContract extends ContractBase {
     @Transaction()
     public String initiateOperation(final Context ctx, String initiator, final String contractName, final String transactionName, final String params) {
         try {
+            cUtil.checkTimestamp(ctx);
             ValidationManager.validateParams(ctx, contractName, transactionName, params);
         } catch (SerializableError e) {
             return e.getJsonError();
@@ -71,12 +69,8 @@ public class OperationContract extends ContractBase {
     public String approveOperation(final Context ctx, String operationId) {
         OperationData operationData;
         try {
+            cUtil.checkTimestamp(ctx);
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
-        } catch (LedgerAccessError e) {
-            return e.getJsonError();
-        }
-
-        try {
             cUtil.approveOperation(ctx, operationData);
         } catch (SerializableError e) {
             return e.getJsonError();
@@ -89,16 +83,13 @@ public class OperationContract extends ContractBase {
     public String rejectOperation(final Context ctx, final String operationId, final String rejectMessage) {
         OperationData operationData;
         try {
+            cUtil.checkTimestamp(ctx);
             operationData = cUtil.getState(ctx.getStub(), operationId, OperationData.class);
-        } catch (LedgerAccessError e) {
-            return e.getJsonError();
-        }
-
-        try {
             cUtil.checkMayParticipate(ctx, operationData);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
+
         if(GeneralHelper.valueUnset(rejectMessage)){
             return  GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getEmptyInvalidParameter("rejectMessage")));
         }
@@ -115,23 +106,15 @@ public class OperationContract extends ContractBase {
             final String initiatorEnrollmentId,
             final String involvedEnrollmentId,
             final String states) {
+        try {
+            cUtil.checkTimestamp(ctx);
+            cUtil.checkParamsGetOperations(operationIds, states);
+        } catch (SerializableError e) {
+            return e.getJsonError();
+        }
 
-        List<InvalidParameter> invalidParams = new ArrayList<>();
-        List<String> operationIdList = null;
-        try {
-            operationIdList = Arrays.asList(GsonWrapper.fromJson(operationIds, String[].class).clone());
-        } catch (Exception e) {
-            invalidParams.add(cUtil.getUnparsableParam("operationIds"));
-        }
-        List<String> stateList = null;
-        try {
-            stateList = Arrays.asList(GsonWrapper.fromJson(states, String[].class).clone());
-        } catch (Exception e) {
-            invalidParams.add(cUtil.getUnparsableParam("states"));
-        }
-        if (!invalidParams.isEmpty()) {
-            return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(invalidParams));
-        }
+        List<String> operationIdList = Arrays.asList(GsonWrapper.fromJson(operationIds, String[].class).clone());
+        List<String> stateList = Arrays.asList(GsonWrapper.fromJson(states, String[].class).clone());
 
         List<OperationData> operations = cUtil.getOperations(
                         ctx.getStub(),

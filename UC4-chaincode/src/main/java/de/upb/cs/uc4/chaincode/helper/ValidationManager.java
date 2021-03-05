@@ -1,5 +1,6 @@
 package de.upb.cs.uc4.chaincode.helper;
 
+import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContract;
 import de.upb.cs.uc4.chaincode.contract.admission.AdmissionContractUtil;
 import de.upb.cs.uc4.chaincode.contract.certificate.CertificateContract;
@@ -66,7 +67,7 @@ public class ValidationManager {
                         admissionUtil.checkParamsDropAdmission(ctx, paramList);
                         break;
                     case AdmissionContract.transactionNameGetCourseAdmissions:
-                        // pass
+                        admissionUtil.checkParamsGetCourseAdmission(ctx, paramList);
                         break;
                     case AdmissionContract.transactionNameGetExamAdmissions:
                         admissionUtil.checkParamsGetExamAdmission(ctx, paramList);

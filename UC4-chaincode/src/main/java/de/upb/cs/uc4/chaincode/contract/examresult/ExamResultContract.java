@@ -38,25 +38,15 @@ public class ExamResultContract extends ContractBase {
     public String addExamResult(final Context ctx, String examResult) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{examResult};
-        try {
-            cUtil.checkParamsAddExamResult(ctx, args);
-        } catch (ParameterError | LedgerAccessError e) {
-            return e.getJsonError();
-        }
-
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
         ExamResult newExamResult = GsonWrapper.fromJson(examResult, ExamResult.class);
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
 
         return cUtil.putAndGetStringState(stub, cUtil.getKey(newExamResult), GsonWrapper.toJson(newExamResult));
 
@@ -75,20 +65,10 @@ public class ExamResultContract extends ContractBase {
     public String getExamResultEntries(final Context ctx, String enrollmentId, String examIds) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         String[] args = new String[]{enrollmentId, examIds};
-        try {
-            cUtil.checkParamsGetExamResultEntries(ctx, args);
-        } catch (ParameterError e) {
-            return e.getJsonError();
-        }
         ChaincodeStub stub = ctx.getStub();
-        try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
 
         try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }

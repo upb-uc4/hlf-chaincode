@@ -42,13 +42,15 @@ public class GroupContract extends ContractBase {
     public String addUserToGroup(final Context ctx, String enrollmentId, String groupId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{enrollmentId, groupId};
+        ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.checkParamsAddUserToGroup(ctx, args);
-        } catch (ParameterError e) {
+            cUtil.validateCurrentUserHasAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        ChaincodeStub stub = ctx.getStub();
         Group group;
         try {
             group = cUtil.getState(stub, groupId, Group.class);
@@ -61,20 +63,7 @@ public class GroupContract extends ContractBase {
             group.getUserList().add(enrollmentId);
         }
 
-        try {
-            
-            cUtil.validateCurrentUserHasAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
-            cUtil.validateApprovals(ctx, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-
         cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
-        try {
-            cUtil.finishOperation(stub, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return "";
     }
 
@@ -90,13 +79,15 @@ public class GroupContract extends ContractBase {
     public String removeUserFromGroup(final Context ctx, String enrollmentId, String groupId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{enrollmentId, groupId};
+        ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.checkParamsRemoveUserFromGroup(ctx, args);
+            cUtil.validateCurrentUserHasAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        ChaincodeStub stub = ctx.getStub();
         Group group;
         try {
             group = cUtil.getState(stub, groupId, Group.class);
@@ -104,21 +95,7 @@ public class GroupContract extends ContractBase {
             return e.getJsonError();
         }
         group.getUserList().remove(enrollmentId);
-
-        try {
-            
-            cUtil.validateCurrentUserHasAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
-            cUtil.validateApprovals(ctx, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-
         cUtil.putAndGetStringState(stub, groupId, GsonWrapper.toJson(group));
-        try {
-            cUtil.finishOperation(stub, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return "";
     }
 
@@ -133,17 +110,11 @@ public class GroupContract extends ContractBase {
     public String removeUserFromAllGroups(final Context ctx, String enrollmentId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{enrollmentId};
-        try {
-            cUtil.checkParamsRemoveUserFromAllGroups(args);
-        } catch (ParameterError e) {
-            return e.getJsonError();
-        }
-
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            
             cUtil.validateCurrentUserHasAttributes(ctx, new ArrayList<String>() {{add(AccessManager.HLF_ATTRIBUTE_SYSADMIN);}});
-            cUtil.validateApprovals(ctx, contractName, transactionName, args);
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
@@ -152,11 +123,6 @@ public class GroupContract extends ContractBase {
             group.getUserList().remove(enrollmentId);
             cUtil.putAndGetStringState(stub, group.getGroupId(), GsonWrapper.toJson(group));
         });
-        try {
-            cUtil.finishOperation(stub, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return "";
     }
 
@@ -170,17 +136,14 @@ public class GroupContract extends ContractBase {
     public String getAllGroups(final Context ctx) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.validateApprovals(ctx, contractName, transactionName, new String[]{});
+            cUtil.validateTransaction(ctx, contractName, transactionName, new String[]{});
         } catch (SerializableError e) {
             return e.getJsonError();
         }
+
         List<Group> groupList = cUtil.getAllGroups(stub);
-        try {
-            cUtil.finishOperation(stub, contractName, transactionName, new String[]{});
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return GsonWrapper.toJson(groupList);
     }
 
@@ -194,27 +157,18 @@ public class GroupContract extends ContractBase {
     public String getUsersForGroup(final Context ctx, String groupId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{groupId};
+        ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.checkParamsGetUsersForGroup(ctx, args);
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        ChaincodeStub stub = ctx.getStub();
-        try {
-            cUtil.validateApprovals(ctx, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         List<String> userList;
         try {
             userList = cUtil.getUsersForGroup(stub, groupId);
         } catch (LedgerAccessError e) {
-            return e.getJsonError();
-        }
-        try {
-            cUtil.finishOperation(stub, contractName, transactionName, args);
-        } catch (SerializableError e) {
             return e.getJsonError();
         }
         return GsonWrapper.toJson(userList);
@@ -231,24 +185,15 @@ public class GroupContract extends ContractBase {
     public String getGroupsForUser(final Context ctx, String enrollmentId) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{enrollmentId};
+        ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.checkParamsGetGroupsForUser(args);
-        } catch (ParameterError e) {
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        ChaincodeStub stub = ctx.getStub();
-        try {
-            cUtil.validateApprovals(ctx, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         List<String> groupIdList = cUtil.getGroupNamesForUser(stub, enrollmentId);
-        try {
-            cUtil.finishOperation(stub, contractName, transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return GsonWrapper.toJson(groupIdList);
     }
 }

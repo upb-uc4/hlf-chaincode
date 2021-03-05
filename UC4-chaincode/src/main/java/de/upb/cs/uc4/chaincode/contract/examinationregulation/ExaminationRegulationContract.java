@@ -40,24 +40,14 @@ public class ExaminationRegulationContract extends ContractBase {
     public String addExaminationRegulation(final Context ctx, final String examinationRegulation) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{examinationRegulation};
-        try {
-            cUtil.checkParamsAddExaminationRegulation(ctx, args);
-        } catch (ParameterError e) {
-            return e.getJsonError();
-        }
-
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
         ExaminationRegulation newExaminationRegulation = GsonWrapper.fromJson(examinationRegulation, ExaminationRegulation.class);
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return cUtil.putAndGetStringState(stub, newExaminationRegulation.getName(), GsonWrapper.toJson(newExaminationRegulation));
     }
 
@@ -72,25 +62,20 @@ public class ExaminationRegulationContract extends ContractBase {
     public String getExaminationRegulations(final Context ctx, final String names) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{names};
-        try {
-            cUtil.checkParamsGetExaminationRegulations(args);
-        } catch (ParameterError e) {
-            return e.getJsonError();
-        }
-
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
+
         List<String> nameList;
         try {
             nameList = Arrays.asList(GsonWrapper.fromJson(names, String[].class).clone());
         } catch (Exception e) {
             return GsonWrapper.toJson(cUtil.getUnprocessableEntityError(cUtil.getUnparsableNameListParam()));
         }
-
         List<ExaminationRegulation> regulations = new ArrayList<>();
         if (nameList.isEmpty()) {
             // read all existing information
@@ -111,11 +96,7 @@ public class ExaminationRegulationContract extends ContractBase {
                 }
             }
         }
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
+
         return GsonWrapper.toJson(regulations);
     }
 
@@ -130,18 +111,14 @@ public class ExaminationRegulationContract extends ContractBase {
     public String closeExaminationRegulation(final Context ctx, final String name) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{name};
+        ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.checkParamsCloseExaminationRegulation(ctx, args);
+            cUtil.validateTransaction(ctx, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        ChaincodeStub stub = ctx.getStub();
-        try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         ExaminationRegulation regulation;
         try {
             regulation = cUtil.getState(stub, name, ExaminationRegulation.class);
@@ -150,11 +127,6 @@ public class ExaminationRegulationContract extends ContractBase {
         }
 
         regulation.setActive(false);
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return cUtil.putAndGetStringState(stub, regulation.getName(), GsonWrapper.toJson(regulation));
     }
 }
