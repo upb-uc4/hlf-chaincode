@@ -46,6 +46,14 @@ jobs:
         echo "##########################"
         popd
 
+    # Upload Test Report
+    - name: Upload test report
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v1
+      with:
+        name: test-report
+        path: UC4-chaincode/build/reports/tests
+
     # Upload Coverage Report
     - name: Upload coverage report
       if: ${{ always() }}
