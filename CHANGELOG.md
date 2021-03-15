@@ -1,3 +1,7 @@
+# [v1.0.0](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.19.1...v1.0.0) (2021-03-15)
+
+Release (no changes to previous version)
+
 # [v0.19.1](https://github.com/upb-uc4/hyperledger_chaincode/compare/v0.19.0...v0.19.1) (2021-03-02)
 
 ## Feature
