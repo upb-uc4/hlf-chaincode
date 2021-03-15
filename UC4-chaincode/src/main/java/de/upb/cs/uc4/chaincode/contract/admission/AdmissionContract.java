@@ -5,6 +5,7 @@ import de.upb.cs.uc4.chaincode.exceptions.SerializableError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.helper.HyperledgerManager;
+import de.upb.cs.uc4.chaincode.helper.ValidationManager;
 import de.upb.cs.uc4.chaincode.model.admission.AbstractAdmission;
 import de.upb.cs.uc4.chaincode.model.admission.CourseAdmission;
 import de.upb.cs.uc4.chaincode.helper.GsonWrapper;
@@ -40,27 +41,17 @@ public class AdmissionContract extends ContractBase {
     public String addAdmission(final Context ctx, String admissionJson) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{admissionJson};
+        ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.checkParamsAddAdmission(ctx, args);
-        } catch (ParameterError e) {
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
+        } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        ChaincodeStub stub = ctx.getStub();
         AbstractAdmission newAdmission = GsonWrapper.fromJson(admissionJson, AbstractAdmission.class);
         newAdmission.setTimestamp(ctx.getStub().getTxTimestamp());
         newAdmission.resetAdmissionId();
-
-        try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         // TODO: can we create a composite key of all inputs to improve reading performance for get...forUser/Module/Course
         return cUtil.putAndGetStringState(stub, newAdmission.getAdmissionId(), GsonWrapper.toJson(newAdmission));
     }
@@ -74,32 +65,22 @@ public class AdmissionContract extends ContractBase {
      */
     @Transaction()
     public String dropAdmission(final Context ctx, String admissionId) {
-        String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
-        final String[] args = new String[]{admissionId};
-        try {
-            cUtil.checkParamsDropAdmission(ctx, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
-
         ChaincodeStub stub = ctx.getStub();
+        String transactionName = HyperledgerManager.getTransactionName(stub);
+        final String[] args = new String[]{admissionId};
+
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        // perform delete
         try {
             cUtil.delState(stub, admissionId);
-        } catch (LedgerAccessError e) {
-            return e.getJsonError();
-        }
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
+
         return "";
     }
 
@@ -117,17 +98,14 @@ public class AdmissionContract extends ContractBase {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{enrollmentId, courseId, moduleId};
         ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
+
         List<CourseAdmission> admissions = cUtil.getCourseAdmissions(stub, enrollmentId, courseId, moduleId);
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return GsonWrapper.toJson(admissions);
     }
 
@@ -144,26 +122,17 @@ public class AdmissionContract extends ContractBase {
     public String getExamAdmissions(final Context ctx, final String admissionIds, final String enrollmentId, final String examIds) {
         String transactionName = HyperledgerManager.getTransactionName(ctx.getStub());
         final String[] args = new String[]{admissionIds, enrollmentId, examIds};
+        ChaincodeStub stub = ctx.getStub();
+
         try {
-            cUtil.checkParamsGetExamAdmission(ctx, args);
+            cUtil.validateTransaction(ctx, contractName, transactionName, args);
         } catch (SerializableError e) {
             return e.getJsonError();
         }
 
-        ChaincodeStub stub = ctx.getStub();
-        try {
-            cUtil.validateApprovals(ctx, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         List<String> admissionIdList = Arrays.asList(GsonWrapper.fromJson(admissionIds, String[].class).clone());
         List<String> examIdList = Arrays.asList(GsonWrapper.fromJson(examIds, String[].class).clone());
         List<ExamAdmission> admissions = cUtil.getExamAdmissions(stub, admissionIdList, enrollmentId, examIdList);
-        try {
-            cUtil.finishOperation(stub, contractName,  transactionName, args);
-        } catch (SerializableError e) {
-            return e.getJsonError();
-        }
         return GsonWrapper.toJson(admissions);
     }
 }

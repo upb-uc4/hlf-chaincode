@@ -314,7 +314,7 @@ public final class MockChaincodeStub implements ChaincodeStub {
 
     @Override
     public Instant getTxTimestamp() {
-        return Instant.ofEpochSecond(0);
+        return Instant.now();
     }
 
     @Override

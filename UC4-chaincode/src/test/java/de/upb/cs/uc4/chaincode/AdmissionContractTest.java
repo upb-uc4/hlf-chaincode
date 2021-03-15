@@ -62,11 +62,16 @@ public final class AdmissionContractTest extends TestCreationBase {
 
             String addResult = contract.addAdmission(ctx, input.get(0));
 
-            assertThat(addResult).isEqualTo(compare.get(0));
             CourseAdmission compareAdmission = GsonWrapper.fromJson(compare.get(0), CourseAdmission.class);
+            CourseAdmission returnAdmission = GsonWrapper.fromJson(addResult, CourseAdmission.class);
             CourseAdmission ledgerAdmission = cUtil.getState(ctx.getStub(), compareAdmission.getAdmissionId(), CourseAdmission.class);
-            assertThat(ledgerAdmission).isEqualTo(compareAdmission);
-            assertThat(ledgerAdmission.toString()).isEqualTo(compareAdmission.toString());
+            for(CourseAdmission testAdmission : new CourseAdmission[]{returnAdmission, ledgerAdmission}){
+                assertThat(testAdmission.getCourseId()).isEqualTo(compareAdmission.getCourseId());
+                assertThat(testAdmission.getModuleId()).isEqualTo(compareAdmission.getModuleId());
+                assertThat(testAdmission.getAdmissionId()).isEqualTo(compareAdmission.getAdmissionId());
+                assertThat(testAdmission.getEnrollmentId()).isEqualTo(compareAdmission.getEnrollmentId());
+                assertThat(testAdmission.getType()).isEqualTo(compareAdmission.getType());
+            }
         };
     }
 

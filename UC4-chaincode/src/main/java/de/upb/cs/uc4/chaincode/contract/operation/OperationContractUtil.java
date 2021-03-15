@@ -3,20 +3,21 @@ package de.upb.cs.uc4.chaincode.contract.operation;
 import de.upb.cs.uc4.chaincode.contract.ContractUtil;
 import de.upb.cs.uc4.chaincode.contract.group.GroupContractUtil;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.LedgerAccessError;
+import de.upb.cs.uc4.chaincode.exceptions.serializable.ParameterError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ParticipationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.ValidationError;
 import de.upb.cs.uc4.chaincode.exceptions.serializable.parameter.MissingTransactionError;
-import de.upb.cs.uc4.chaincode.helper.AccessManager;
 import de.upb.cs.uc4.chaincode.helper.*;
+import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
+import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import de.upb.cs.uc4.chaincode.model.operation.ApprovalList;
 import de.upb.cs.uc4.chaincode.model.operation.OperationData;
 import de.upb.cs.uc4.chaincode.model.operation.OperationDataState;
 import de.upb.cs.uc4.chaincode.model.operation.TransactionInfo;
-import de.upb.cs.uc4.chaincode.model.errors.DetailedError;
-import de.upb.cs.uc4.chaincode.model.errors.InvalidParameter;
 import org.hyperledger.fabric.contract.Context;
 import org.hyperledger.fabric.shim.ChaincodeStub;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -119,5 +120,25 @@ public class OperationContractUtil extends ContractUtil {
                     .reason("");
         }
         return operationData;
+    }
+
+    public void checkParamsGetOperations(final String operationIds,
+                                         final String states) throws ParameterError {
+        List<InvalidParameter> invalidParams = new ArrayList<>();
+
+        try {
+            GsonWrapper.fromJson(operationIds, String[].class);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("operationIds"));
+        }
+        try {
+            GsonWrapper.fromJson(states, String[].class);
+        } catch (Exception e) {
+            invalidParams.add(getUnparsableParam("states"));
+        }
+
+        if (!invalidParams.isEmpty()) {
+            throw new ParameterError(GsonWrapper.toJson(getUnprocessableEntityError(invalidParams)));
+        }
     }
 }

@@ -7,6 +7,8 @@ on:
       - '**fix**'
       - develop
       - master
+    paths-ignore:
+      - '**.md'
   pull_request:
     branches: 
       - develop
@@ -43,6 +45,14 @@ jobs:
         echo "#  finish chaincode test #"
         echo "##########################"
         popd
+
+    # Upload Test Report
+    - name: Upload test report
+      if: ${{ always() }}
+      uses: actions/upload-artifact@v1
+      with:
+        name: test-report
+        path: UC4-chaincode/build/reports/tests
 
     # Upload Coverage Report
     - name: Upload coverage report
